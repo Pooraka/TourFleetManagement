@@ -2,36 +2,36 @@
     <head>
     <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css"/>
     </head>
-    <body>
+    <body style="background-image: url('../images/background.jpg');background-size: cover; background-repeat: no-repeat">
         <!-- Login container -->
         <div class="container">
-            <div class="row" style="height:100px">
-            </div>
+            <h1 class="text-center" style="color:white">Tour Fleet Management System</h1>
+            <div class="row" style="height:20px"></div>
             <form action="../controller/login_controller.php?status=login" method="post">
                 <!-- Error message display row -->
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3" id="msg"></div>
+                    <div class="col-md-6 col-md-offset-3 text-center" id="msg" style="height:60px"></div>
                     <?php
-                    if(isset($_GET["message"])){
-                    ?>
-                    <div class="col-md-6 col-md-offset-3 alert alert-danger">
-                        <?php 
-                            echo base64_decode($_GET["message"]);
+                    if(isset($_GET["msg"])){
                         ?>
-                    </div>
-                    <?php
-                        }
+                        <div  class="col-md-6 col-md-offset-3 alert alert-danger text-center"><b>
+                            <?php
+                                echo base64_decode($_GET["msg"]);
+                            ?>
+                        </div></b>
+                        <?php
+                            }
                     ?>
                 </div>
 
                 <!-- End error message row -->
                 <div class="row">
                     <!-- Panel -->
-                    <div class="col-md-8 col-md-offset-2 panel panel-default" style="height:300px">
+                    <div class="col-md-8 col-md-offset-2 panel panel-default" style="height:300px; background-color: #000000; opacity: 0.7; color: white;">
 
                         <!-- Left box image -->
                         <div class="col-md-6 col-md-offset-0 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-6" style="height:300px">
-                            <img src="../images/logo.png" height="300px"/>
+                            <a href="./login.php"><img src="../images/logo.png" height="300px"/></a>
                         </div>
 
                         <!-- Right box login data -->
@@ -86,6 +86,6 @@
         </div>
         <!-- Login container end -->
     </body>
-    <!-- <script src="../js/jquery-3.7.1.js"></script> -->
+    <script src="../js/jquery-3.7.1.js"></script>
     <script src="../js/loginValidation.js"></script>
 </html>

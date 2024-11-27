@@ -55,7 +55,7 @@ switch($status)
             $msg = base64_encode($msg);
             ?>
                 <script>
-                    window.location="../view/login.php?message=<?php echo $msg?>";
+                    window.location="../view/login.php?msg=<?php echo $msg?>";
                 </script>
             <?php
         }

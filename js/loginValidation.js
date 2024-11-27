@@ -5,12 +5,12 @@ $(document).ready(function(){
         var password = $("#loginpassword").val();
 
         if(username==""){
-            $("#msg").addClass("alert alert-danger");
+            $("#msg").addClass("alert alert-danger text-center");
             $("#msg").html("<b>Username cannot be empty</b>");
             return false;
         }
         else if(password==""){
-            $("#msg").addClass("alert alert-danger");
+            $("#msg").addClass("alert alert-danger text-center");
             $("#msg").html("<b>Password cannot be empty</b>");
             return false;
         }
