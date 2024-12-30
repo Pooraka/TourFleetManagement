@@ -38,12 +38,14 @@
                 </div> 
                 <div class="col-md-5 col-sm-5 panel panel-default" style="height:100%;border-radius:0px 35px 35px 0px" >
                     <div class="row">
-                        <div class="col-md-2 col-md-offset-3 col-sm-2 col-sm-offset-2">
+                        <div style="text-align:center">
                             <a href="../index.php">
-                                <img src="../images/logo.png" alt="" style="height:200px">
+                                <img src="../images/logo.png" alt="" style="height:170px">
                             </a>
                         </div>
                     </div>
+                    </br>
+                    </br>
                     <div class="row">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <label style="font-size:20px">Sign Into Your Account</label>  

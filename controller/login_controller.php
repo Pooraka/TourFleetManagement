@@ -1,5 +1,5 @@
 <?php
-
+include '../commons/session.php';
 include '../model/login_model.php';
 $loginObj = new Login();
 
@@ -64,7 +64,7 @@ switch ($status)
             <?php
         }
         break;
-        
+
     case "logout";
         session_destroy();
         ?>
