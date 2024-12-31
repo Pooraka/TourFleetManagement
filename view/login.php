@@ -18,9 +18,8 @@
                 <?php if(isset($_GET["msg"])){
                     ?>
                     <script>
-                        $(document).ready(function(){
-                            $("#msg").addClass("alert alert-danger");
-                        });
+                        var msgElement = document.getElementById("msg");
+                        msgElement.classList.add("alert", "alert-danger");
                     </script>
                     <b> <p align="center">
                     <?php
@@ -37,9 +36,9 @@
             <div class="row" style="height:500px;">
                 <div class="col-md-5 col-md-offset-1 col-sm-7 panel panel-default hidden-xs" 
                 style="height:100%;background-image:url('../images/loginimage.jpg');
-                background-size: cover; background-repeat: no-repeat;border-radius:35px 0px 0px 35px; background-position: center center">
+                background-size: cover; background-repeat: no-repeat;border-radius:35px 0px 0px 35px; background-position: center center;box-shadow: 10px 10px 10px grey">
                 </div> 
-                <div class="col-md-5 col-sm-5 col-xs-12 panel panel-default login-panel" style="height:100%;border-radius:0px 35px 35px 0px" >
+                <div class="col-md-5 col-sm-5 col-xs-12 panel panel-default login-panel" style="height:100%;border-radius:0px 35px 35px 0px;   box-shadow: 10px 10px 10px grey" >
                     <div class="row">
                         <div style="text-align:center">
                             <a href="../index.php">
@@ -101,5 +100,5 @@
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
-<!-- <script src="../js/loginValidation.js"></script> -->
+<script src="../js/loginValidation.js"></script>
 </html>
