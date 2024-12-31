@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2024 at 07:32 PM
+-- Generation Time: Dec 31, 2024 at 07:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -40,7 +40,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`) VALUES
-(1, 'kamal@esoft.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1);
+(1, 'kamal@esoft.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1);
 
 -- --------------------------------------------------------
 
