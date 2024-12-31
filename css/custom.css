@@ -1,0 +1,9 @@
+@media (max-width: 767.99px) {
+    .login-panel {
+        border-radius: 35px 35px 35px 35px !important;
+    }
+
+    .login-page-body{
+        background-color:#c8ddf0 !important;
+    }
+}

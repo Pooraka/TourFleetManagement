@@ -10,7 +10,7 @@ else{
 $hostname=$_SERVER["HTTP_HOST"];
 
 $url.=$hostname;
-$url.="/onlineclothesstore/view/login.php";
+$url.="/tourfleetmanagement/view/login.php";
 
 ?>
 
