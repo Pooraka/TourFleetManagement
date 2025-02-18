@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2024 at 07:02 AM
+-- Generation Time: Feb 18, 2025 at 06:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -24,6 +24,84 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `function`
+--
+
+CREATE TABLE `function` (
+  `function_id` int(11) NOT NULL,
+  `function_name` varchar(50) NOT NULL,
+  `module_id` int(11) NOT NULL,
+  `function_status` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `function`
+--
+
+INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_status`) VALUES
+(1, 'View Generated Quotations', 1, 1),
+(2, 'Generate Customer Quotations', 1, 1),
+(3, 'Generate Invoice', 1, 1),
+(4, 'View Pending Invoices', 1, 1),
+(5, 'Send payment reminders', 1, 1),
+(6, 'Accept Customer Payments', 1, 1),
+(7, 'Track Ongoing Tour Bus Location', 2, 1),
+(8, 'View Tours', 2, 1),
+(9, 'Create Tours', 2, 1),
+(10, 'Update Tours', 2, 1),
+(11, 'Remove Tours', 2, 1),
+(12, 'Create Tender', 3, 1),
+(13, 'View Tender', 3, 1),
+(14, 'Maintain Tender Status', 3, 1),
+(15, 'Add Bids', 3, 1),
+(16, 'Award Bids', 3, 1),
+(17, 'View Awarded Bids', 4, 1),
+(18, 'Generate Purchase Order', 4, 1),
+(19, 'Add Supplier Invoice', 4, 1),
+(20, 'View Purchase Orders', 4, 1),
+(21, 'Approve/Reject Purchase Orders', 4, 1),
+(22, 'Add Goods Received Notice (GRN)', 5, 1),
+(23, 'View Spare Parts', 5, 1),
+(24, 'Issue Spare Parts', 5, 1),
+(25, 'Remove Spare Parts', 5, 1),
+(26, 'View Bus Details', 6, 1),
+(27, 'Remove Bus', 6, 1),
+(28, 'Update Bus Details', 6, 1),
+(29, 'Generate Bus Performance Report', 6, 1),
+(30, 'Register Bus', 6, 1),
+(31, 'View Service Details', 7, 1),
+(32, 'Trigger Buses For Services', 7, 1),
+(33, 'Manage Service Station Details', 7, 1),
+(34, 'Maintain Bus Inspection Status', 7, 1),
+(35, 'Manage Inspection Checklist', 7, 1),
+(36, 'View Customer', 8, 1),
+(37, 'Update Customer Details', 8, 1),
+(38, 'Register Customer', 8, 1),
+(39, 'Remove Customer', 8, 1),
+(40, 'Generate Financial Reports', 9, 1),
+(41, 'View Pending Supplier Payments', 9, 1),
+(42, 'Make Supplier Payments', 9, 1),
+(43, 'View Customer Invoices', 9, 1),
+(44, 'Validate Paid Invoices', 9, 1),
+(45, 'View User', 10, 1),
+(46, 'Add User', 10, 1),
+(47, 'Update User', 10, 1),
+(48, 'Generate User Reports', 10, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `function_user`
+--
+
+CREATE TABLE `function_user` (
+  `function_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `login`
 --
 
@@ -40,7 +118,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`) VALUES
-(1, 'kamal@esoft.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1);
+(1, 'chanu@skylinetours.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -61,16 +139,16 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`) VALUES
-(1, ' Booking management', 'test.png', 'booking.php', 1),
-(2, ' Tours and tracking', 'test.png', 'tours.php', 1),
-(3, ' Tender Management', 'test.png', 'tender.php', 1),
+(1, 'Booking management', 'test.png', 'booking.php', 1),
+(2, 'Tours and tracking', 'test.png', 'tours.php', 1),
+(3, 'Tender Management', 'test.png', 'tender.php', 1),
 (4, 'Purchasing', 'test.png', 'purchasing.php', 1),
-(5, ' Spare parts management', 'test.png', 'spareparts.php', 1),
+(5, 'Spare parts management', 'test.png', 'spareparts.php', 1),
 (6, 'Bus management', 'test.png', 'busmanagement.php', 1),
-(7, ' Bus maintenance', 'test.png', 'busmaintenance.php', 1),
+(7, 'Bus maintenance', 'test.png', 'busmaintenance.php', 1),
 (8, 'Customer', 'test.png', 'customer.php', 1),
-(9, ' Finance management', 'test.png', 'finance.php', 1),
-(10, ' User management', 'test.png', 'user.php', 1);
+(9, 'Finance management', 'test.png', 'finance.php', 1),
+(10, 'User management', 'test.png', 'user.php', 1);
 
 -- --------------------------------------------------------
 
@@ -80,7 +158,7 @@ INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `
 
 CREATE TABLE `role` (
   `role_id` int(11) NOT NULL,
-  `role_name` varchar(20) NOT NULL,
+  `role_name` varchar(30) NOT NULL,
   `role_status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -89,7 +167,14 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`role_id`, `role_name`, `role_status`) VALUES
-(1, 'Director', 1);
+(1, 'Director', 1),
+(2, 'Finance Officer', 1),
+(3, 'Customer Service Officer', 1),
+(4, 'Operations Manager', 1),
+(5, 'Fleet Manager', 1),
+(6, 'Service Technician', 1),
+(7, 'Warehouse Controller', 1),
+(8, 'Procurement Officer', 1);
 
 -- --------------------------------------------------------
 
@@ -114,7 +199,22 @@ INSERT INTO `role_module` (`role_id`, `module_id`) VALUES
 (1, 5),
 (1, 6),
 (1, 7),
-(1, 8);
+(1, 8),
+(1, 9),
+(1, 10),
+(2, 4),
+(2, 9),
+(3, 1),
+(3, 2),
+(3, 8),
+(4, 1),
+(4, 2),
+(4, 8),
+(5, 6),
+(5, 7),
+(6, 7),
+(7, 5),
+(8, 3);
 
 -- --------------------------------------------------------
 
@@ -139,11 +239,23 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
-(1, 'Kamal', 'Perera', '2024-11-05', '956421442V', 1, '', 'kamal@esoft.lk', 1);
+(1, 'Chanu', 'Munasinghe', '1998-03-13', '986421442V', 1, '', 'chanu@skylinetours.lk', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `function`
+--
+ALTER TABLE `function`
+  ADD PRIMARY KEY (`function_id`);
+
+--
+-- Indexes for table `function_user`
+--
+ALTER TABLE `function_user`
+  ADD PRIMARY KEY (`function_id`,`user_id`);
 
 --
 -- Indexes for table `login`
@@ -181,6 +293,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `function`
+--
+ALTER TABLE `function`
+  MODIFY `function_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
@@ -196,7 +314,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
