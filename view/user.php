@@ -27,15 +27,15 @@ $moduleResult = $moduleObj->getAllModules();
             <ul class="list-group">
                 <a href="add-user.php" class="list-group-item">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add user
+                    Add User
                 </a>
                 <a href="view-users.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View users
+                    View Users
                 </a>
                 <a href="generate-user-reports.php" class="list-group-item">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate user reports
+                    Generate User Reports
                 </a>
             </ul>
         </div>
