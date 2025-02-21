@@ -24,9 +24,9 @@ $moduleResult = $moduleObj->getAllModules();
         <?php include_once "../includes/header_row_includes.php";?>
         <?php while($moduleRow=$moduleResult->fetch_assoc()){
             ?>
-            <div class="col-md-4">
+            <div class="col-md-3 col-sm-4">
                 <a href="<?php echo $moduleRow["module_url"]?>" style="text-decoration:none; color:#fff">
-                    <div class="panel" style="height:170px; background-color:#5cacc4">
+                    <div class="panel" style="height:150px; background-color:#5cacc4">
                         <h1 align="center">
                             <img src="../images/moduleimages/<?php echo $moduleRow["module_icon"]?>" style="height:80px">
                         </h1>
