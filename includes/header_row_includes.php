@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-3 col-xs-3 col-sm-3" style="vertical-align: middle;margin-top:5px">
-        <b><?php echo ucwords($userRow["user_fname"]." ".$userRow["user_lname"]); ?></b>
+        <b><?php echo ucwords($userSession["user_fname"]." ".$userSession["user_lname"]); ?></b>
     </div>
     <div class="col-md-6 col-xs-6 col-sm-6" style="text-align:center;margin-top:5px">
         <b><?php echo $pageName; ?></b> 
