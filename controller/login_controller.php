@@ -1,6 +1,6 @@
 <?php
-include '../commons/session.php';
-include '../model/login_model.php';
+include_once '../commons/session.php';
+include_once '../model/login_model.php';
 $loginObj = new Login();
 
 if(!isset($_GET["status"])){
@@ -34,10 +34,10 @@ switch ($status)
             if($loginResult->num_rows>0){
 
                 //converting $loginResult to an array
-                $userRow = $loginResult->fetch_assoc();
+                $userSession = $loginResult->fetch_assoc();
 
-                //assign $userRow to a session
-                $_SESSION["user"] = $userRow;
+                //assign $userSessionRow to a session
+                $_SESSION["user"] = $userSession;
 
                 ?>
                 <script>
