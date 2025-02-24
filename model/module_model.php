@@ -1,6 +1,6 @@
 <?php
 
-include '../commons/db_connection.php';
+include_once '../commons/db_connection.php';
 
 $dbCon= new DbConnection();
 
