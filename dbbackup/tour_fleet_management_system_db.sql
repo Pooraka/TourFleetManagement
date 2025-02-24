@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2025 at 06:56 PM
+-- Generation Time: Feb 24, 2025 at 03:06 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -99,6 +99,20 @@ CREATE TABLE `function_user` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `function_user`
+--
+
+INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
+(12, 3),
+(13, 3),
+(14, 3),
+(16, 3),
+(22, 4),
+(23, 4),
+(24, 4),
+(25, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -118,7 +132,9 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`) VALUES
-(1, 'chanu@skylinetours.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1);
+(1, 'chanu@skylinetours.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1),
+(4, 'yehentennakoon@gmail.com', '52fbd35f82a73848807154640259deb53f8f4f75', 3, 1),
+(5, 'tvseriesmail4@gmail.com', '32bbc738414b75dc9685218bda9932c520a27afd', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -139,16 +155,16 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`) VALUES
-(1, 'Booking management', 'test.png', 'booking.php', 1),
-(2, 'Tours and tracking', 'test.png', 'tours.php', 1),
-(3, 'Tender Management', 'test.png', 'tender.php', 1),
-(4, 'Purchasing', 'test.png', 'purchasing.php', 1),
-(5, 'Spare parts management', 'test.png', 'spareparts.php', 1),
-(6, 'Bus management', 'test.png', 'busmanagement.php', 1),
-(7, 'Bus maintenance', 'test.png', 'busmaintenance.php', 1),
-(8, 'Customer', 'test.png', 'customer.php', 1),
-(9, 'Finance management', 'test.png', 'finance.php', 1),
-(10, 'User management', 'test.png', 'user.php', 1);
+(1, 'Booking management', 'booking.png', 'booking.php', 1),
+(2, 'Tours and tracking', 'tours.png', 'tours.php', 1),
+(3, 'Tender management', 'tender.png', 'tender.php', 1),
+(4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1),
+(5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1),
+(6, 'Bus management', 'busmanagement.png', 'busmanagement.php', 1),
+(7, 'Bus maintenance', 'busmaintenance.png', 'busmaintenance.php', 1),
+(8, 'Customer', 'customer.png', 'customer.php', 1),
+(9, 'Finance management', 'finance.png', 'finance.php', 1),
+(10, 'User management', 'user.png', 'user.php', 1);
 
 -- --------------------------------------------------------
 
@@ -239,7 +255,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
-(1, 'Chanu', 'Munasinghe', '1998-03-13', '986421442V', 1, '', 'chanu@skylinetours.lk', 1);
+(1, 'Chanu', 'Munasinghe', '1998-03-13', '986421442V', 1, '', 'chanu@skylinetours.lk', 1),
+(3, 'Yehen', 'Tennakoon', '2025-02-12', '999999999V', 8, 'sample.jpg', 'yehentennakoon@gmail.com', 1),
+(4, 'Shevan', 'Fernando', '2025-02-18', '999555777V', 7, '', 'tvseriesmail4@gmail.com', 0);
 
 --
 -- Indexes for dumped tables
@@ -302,7 +320,7 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `login_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `login_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `module`
@@ -320,7 +338,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
