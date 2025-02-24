@@ -7,7 +7,7 @@
     <title>Welcome</title>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
-<body style="background-color:#f2f3ee" class="login-page-body">
+<body>
     <div class="container">
         <div class="row" style="height:100px;">
             </br>

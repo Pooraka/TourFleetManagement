@@ -2,13 +2,32 @@
     .login-panel {
         border-radius: 35px 35px 35px 35px !important;
     }
+    
+    
+}
 
-    .login-page-body{
-        background-color:#c8ddf0 !important;
-    }
-    
-/*    .dashboard-page-body{
-        background-color:#c8ddf0 !important;
-    }*/
-    
+body {
+    background: linear-gradient(to bottom right, #E8F6F8, #B6DDE0, #74B2C8);
+    height: 100vh;
+    margin: 0;
+    background-attachment: fixed;
+}
+
+input[type="text"], input[type="email"], input[type="date"],input[type="file"],input[type="password"],select{
+    background-color: #e4eaeb !important;
+}
+
+.table {
+    background-color:#e3edf7;
+    border-radius: 8px;
+    overflow: hidden; 
+    /* overflow: hidden; --->>>Ensures rounded corners apply properly */
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #dadfe0;
+}
+
+.table thead {
+    background-color: #bbbfbf;
 }

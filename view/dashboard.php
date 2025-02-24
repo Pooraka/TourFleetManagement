@@ -4,7 +4,7 @@ include_once '../commons/session.php';
 include_once '../model/module_model.php';
 
 //get user information from session
-$userRow=$_SESSION["user"];
+$userSession=$_SESSION["user"];
 
 $moduleObj = new Module();
 
@@ -26,7 +26,7 @@ $moduleResult = $moduleObj->getAllModules();
             ?>
             <div class="col-md-3 col-sm-4">
                 <a href="<?php echo $moduleRow["module_url"]?>" style="text-decoration:none; color:#fff">
-                    <div class="panel" style="height:150px; background-color:#5cacc4">
+                    <div class="panel" style="height:150px; background-color:#2A7F97">
                         <h1 align="center">
                             <img src="../images/moduleimages/<?php echo $moduleRow["module_icon"]?>" style="height:80px">
                         </h1>
