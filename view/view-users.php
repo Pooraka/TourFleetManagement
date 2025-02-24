@@ -60,7 +60,7 @@ $userResult = $userObj->getAllUsers();
             
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Image</th>
@@ -95,71 +95,56 @@ $userResult = $userObj->getAllUsers();
                                     $user_id = $userRow["user_id"];
                                     $user_id = base64_encode($user_id);
                             ?>
-                                    <tr>
+                                    <tr
+                                        <?php
+                                                
+                                                if($userRow["user_status"]==1){
+                                            ?>
+                                                    style="background-color:#a1f2a0;color: black;"
+                                            <?php
+                                                }elseif($userRow["user_status"]==0){
+                                            ?>        
+                                                    style="background-color:#f77e7e;color: white;"
+                                            <?php
+                                                }
+                                            ?>
+                                        >
                                         <td>
                                             <img src="<?php echo $img_path;?>" style="border-radius: 50%" height="60px" width="60px"/>
                                         </td>
                                         <td><?php echo $userRow["user_fname"]." ".$userRow["user_lname"];?></td>
                                         <td><?php echo $userRow["user_email"];?></td>
-                                        <td
-                                            <?php
-                                                
-                                                if($userRow["user_status"]==1){
-                                            ?>
-                                                    class="success"
-                                            <?php
-                                                }elseif($userRow["user_status"]==0){
-                                            ?>        
-                                                    class="danger"
-                                            <?php
-                                                }
-                                            ?>
-                                            
-                                            
-                                            
-                                            ><?php echo $status;?></td>
+                                        <td><?php echo $status;?></td>
                                         <td>
-                                          
-                                                <a href="" class="btn btn-info">
-                                                    <span class="glyphicon glyphicon-search"></span>
-                                                    &nbsp;
-                                                    View
-                                                </a>
-                                                &nbsp;
-                                                <a href="edit-user.php?user_id=<?php echo $user_id; ?>" class="btn btn-warning">
-                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                    &nbsp;
-                                                    Edit
-                                                </a>
-                                                &nbsp;
-                                                <?php
-                                                if($userRow["user_status"]==0){
-                                                ?>
-                                                <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $user_id; ?>" class="btn btn-success">
-                                                    <span class="glyphicon glyphicon-ok"></span>
-                                                    &nbsp;
-                                                    Activate
-                                                </a>
-                                                &nbsp;
-                                                <?php
-                                                }elseif ($userRow["user_status"]==1) {     
-                                                ?>
-                                                <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $user_id; ?>" class="btn btn-danger">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                    &nbsp;
-                                                    Deactivate
-                                                </a>
-                                                &nbsp;
-                                                <?php
-                                                }
-                                                ?>
-                                                <a href="../controller/user_controller.php?status=delete&user_id=<?php echo $user_id; ?>" class="btn btn-danger">
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                    &nbsp;
-                                                    Delete
-                                                </a>
-                                                &nbsp;
-                                                
+                                            <a href="" class="btn btn-info" style="margin:2px">
+                                                <span class="glyphicon glyphicon-search"></span>                                                  
+                                                View
+                                            </a>
+                                            <a href="edit-user.php?user_id=<?php echo $user_id; ?>" class="btn btn-warning" style="margin:2px">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                Edit
+                                            </a>
+                                            <?php
+                                            if($userRow["user_status"]==0){
+                                            ?>
+                                            <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $user_id; ?>" class="btn btn-success" style="margin:2px">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                                Activate
+                                            </a>
+                                            <?php
+                                            }elseif ($userRow["user_status"]==1) {     
+                                            ?>
+                                            <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                Deactivate
+                                            </a>
+                                            <?php
+                                            }
+                                            ?>
+                                            <a href="../controller/user_controller.php?status=delete&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                Delete
+                                            </a>   
                                         </td>
                                     </tr>
                             <?php
