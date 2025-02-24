@@ -10,6 +10,25 @@ $userObj = new User();
 
 $roleResult = $userObj->getAllRoles();
 
+$user_id = $_GET["user_id"];
+$user_id = base64_decode($user_id);
+
+$userResult = $userObj->getUser($user_id);
+
+$userRow = $userResult->fetch_assoc();
+
+//getting already assigned user functions
+
+$functionArray = array();
+
+$userFunctionResult = $userObj->getUserFunctions($user_id);
+
+while($function_row= $userFunctionResult->fetch_Assoc()){
+    
+    array_push($functionArray,$function_row["function_id"]);
+    
+}
+
 ?>
 
 <html lang="en">
@@ -21,7 +40,7 @@ $roleResult = $userObj->getAllRoles();
 </head>
 <body>
     <div class="container">
-    <?php $pageName="User Management - Add User" ?>
+    <?php $pageName="User Management - Edit User" ?>
     <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group" style="background-color: transparent;">
@@ -61,13 +80,13 @@ $roleResult = $userObj->getAllRoles();
                         <label class="control-label">First Name</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="fname" id="fname"/>
+                        <input type="text" class="form-control" name="fname" id="fname" value="<?php echo $userRow["user_fname"];?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Last Name</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="lname" id="lname"/>
+                        <input type="text" class="form-control" name="lname" id="lname" value="<?php echo $userRow["user_lname"];?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -80,13 +99,13 @@ $roleResult = $userObj->getAllRoles();
                         <label class="control-label">Email</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="email" class="form-control" name="email" id="email"/>
+                        <input type="email" class="form-control" name="email" id="email" value="<?php echo $userRow["user_email"];?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Date of Birth</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" class="form-control" name="dob" id="dob"/>
+                        <input type="date" class="form-control" name="dob" id="dob" value="<?php echo $userRow["user_dob"];?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -99,7 +118,7 @@ $roleResult = $userObj->getAllRoles();
                         <label class="control-label">NIC</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="nic" id="nic"/>
+                        <input type="text" class="form-control" name="nic" id="nic" value="<?php echo $userRow["user_nic"];?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Image</label>
@@ -107,7 +126,15 @@ $roleResult = $userObj->getAllRoles();
                     <div class="col-md-3">
                         <input type="file" class="form-control" name="user_image" id="user_image" onchange="displayImage(this);"/>
                         <br/><!-- image preview line breaker -->
-                        <img id="img_prev" style="border-radius: 50%">
+                                <img id="img_prev" 
+                                    <?php   if($userRow["user_image"]!=""){
+                                                $img_path = "../images/userimages/".$userRow["user_image"];
+                                    ?>
+                                    style="border-radius: 50%" src="<?php echo $img_path;?>" width="60px" height="60px"
+                                    <?php
+                                        }
+                                        ?>
+                                />
                     </div>
                 </div>
                 <div class="row">
@@ -144,9 +171,20 @@ $roleResult = $userObj->getAllRoles();
                             <?php
                                 while($roleRow=$roleResult->fetch_assoc()){
                                     ?>
-                            <option value="<?php echo $roleRow['role_id'];?>">
-                                <?php echo $roleRow['role_name'];?>
-                            </option>
+                            <option value="<?php echo $roleRow['role_id'];?>" 
+                                    
+                                    <?php   if($roleRow["role_id"]==$userRow["user_role"]){ ?>
+                                       
+                                                selected
+                                    <?php
+                                            }
+                                            
+                                    ?>
+                                    
+                                    
+                                    >
+                                            <?php echo $roleRow['role_name'];?>
+                                        </option>
                             <?php
                                 }
                                 ?>
@@ -157,9 +195,67 @@ $roleResult = $userObj->getAllRoles();
                     <div class="col-md-12"> &nbsp; </div>
                 </div>
                 <div class="row">
-                        <div id="display_functions" style="text-wrap:wrap">
+                    <div id="display_functions">
+                        <?php
+                        //This section re-used from user_controller.php's load_functions case
+                        
+                        $role_id=$userRow["user_role"];
 
-                        </div>
+                        $moduleResult=$userObj->getRoleModules($role_id);
+                        $counter=0;
+
+                        while($moduleRow=$moduleResult->fetch_assoc())
+                        {
+                            $module_id=$moduleRow["module_id"];
+                            $functionResult=$userObj->getModuleFunctions($module_id);
+                            $counter++;
+
+                            if($counter%3==1){
+                                echo '<div class="row">';
+                            }
+                            ?>
+                            <div class="col-md-4" id="module_functions">
+                                <h4><b><?php echo $moduleRow['module_name'];echo "</br>";?></b></h4>
+                                <?php
+
+                                    while($function_row=$functionResult->fetch_assoc()){
+                                        ?>
+                                        <input type="checkbox" name="function[]" value="<?php echo $function_row["function_id"];?>" 
+                                               
+                                            <?php
+                                                    foreach ($functionArray as $function_id){
+                                                        
+                                                        if($function_id==$function_row["function_id"]){
+                                            ?>    
+                                                            checked
+                                            <?php
+                                                        }
+                                                    }
+                                            ?>
+ 
+                                               />
+                                        <?php
+                                            echo $function_row["function_name"];
+                                            ?>
+                                        </br>
+                                        <?php
+                                    }
+                                    ?>
+                            </div>
+                        <?php
+                            if($counter%3==0){
+                                echo '</div>';
+                            }
+                        }
+                        
+                        if($counter%3==0){
+                            echo '</div>';
+                        }
+                        
+                        //Above section re-used from user_controller.php's load_functions case
+                        
+                        ?>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12"> &nbsp; </div>
@@ -181,7 +277,7 @@ $roleResult = $userObj->getAllRoles();
             {
                 var reader = new FileReader();
                 reader.onload = function(e){
-                    $("#img_prev").attr('src',e.target.result).width(80).height(80);
+                    $("#img_prev").attr('src',e.target.result).width(60).height(60).css('border-radius', '50%');
                 };
                 reader.readAsDataURL(input.files[0]);
             }

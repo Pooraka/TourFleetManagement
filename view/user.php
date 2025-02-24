@@ -4,7 +4,7 @@ include_once '../commons/session.php';
 include_once '../model/module_model.php';
 
 //get user information from session
-$userRow=$_SESSION["user"];
+$userSession=$_SESSION["user"];
 
 $moduleObj = new Module();
 
@@ -24,16 +24,16 @@ $moduleResult = $moduleObj->getAllModules();
         <?php $pageName="User Management" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-user.php" class="list-group-item">
+            <ul class="list-group" style="background-color: transparent;">
+                <a href="add-user.php" class="list-group-item" style="background-color: #e4eaeb">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add User
                 </a>
-                <a href="view-users.php" class="list-group-item">
+                <a href="view-users.php" class="list-group-item" style="background-color: #e4eaeb">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Users
                 </a>
-                <a href="generate-user-reports.php" class="list-group-item">
+                <a href="generate-user-reports.php" class="list-group-item" style="background-color: #e4eaeb">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Generate User Reports
                 </a>
