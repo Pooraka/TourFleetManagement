@@ -35,7 +35,7 @@ switch ($status)
             }
             ?>
             <div class="col-md-4" id="module_functions">
-                <h5><b><?php echo $moduleRow['module_name'];echo "</br>";?></b></h5>
+                <h4><b><?php echo $moduleRow['module_name'];echo "</br>";?></b></h4>
                 <?php
                
                     while($function_row=$functionResult->fetch_assoc()){
