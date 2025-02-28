@@ -100,11 +100,11 @@ $userResult = $userObj->getAllUsers();
                                                 
                                                 if($userRow["user_status"]==1){
                                             ?>
-                                                    style="background-color:#a1f2a0;color: black;"
+                                                    style="background-color:#92bdbf;color: black;"
                                             <?php
                                                 }elseif($userRow["user_status"]==0){
                                             ?>        
-                                                    style="background-color:#f77e7e;color: white;"
+                                                    style="background-color:#d8bfd8;color: black;"
                                             <?php
                                                 }
                                             ?>
