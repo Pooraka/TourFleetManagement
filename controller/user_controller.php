@@ -260,14 +260,11 @@ switch ($status)
                         <input type="checkbox" name="function[]" value="<?php echo $function_row["function_id"];?>" 
 
                             <?php
-                                    foreach ($functionArray as $function_id){
-
-                                        if($function_id==$function_row["function_id"]){
-                            ?>    
-                                            checked
-                            <?php
-                                        }
-                                    }
+                                if(in_array($function_row["function_id"],$functionArray)){
+                                    ?>    
+                                        checked
+                                    <?php
+                                }
                             ?>
 
                                />
