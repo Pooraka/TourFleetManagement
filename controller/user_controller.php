@@ -123,6 +123,12 @@ switch ($status)
                 
                 $loginObj->addUserLogin($user_id,$email,$nic);
                 
+                //Add user contact numbers
+                $userObj->addUserContact($user_id,$mno,1);
+                $userObj->addUserContact($user_id,$lno,2);
+                
+                
+                //Add user functions
                 foreach($user_functions as $fun_id){
                     
                     $userObj->addUserFunctions($user_id,$fun_id);
@@ -214,6 +220,75 @@ switch ($status)
                 window.location="../view/view-users.php?msg=<?php echo $msg;?>";
             </script>
         <?php
+        
+    break;
+
+    case "reset_functions":
+        
+        $functionArray = array();
+        $user_id = $_POST["user_id"];
+        
+        $userFunctionResult = $userObj->getUserFunctions($user_id);
+
+        while($function_row= $userFunctionResult->fetch_Assoc()){
+    
+            array_push($functionArray,$function_row["function_id"]);
+    
+        }
+        
+        $role_id=$_POST["role"];
+        
+        $moduleResult=$userObj->getRoleModules($role_id);
+        $counter=0;
+
+        while($moduleRow=$moduleResult->fetch_assoc())
+        {
+            $module_id=$moduleRow["module_id"];
+            $functionResult=$userObj->getModuleFunctions($module_id);
+            $counter++;
+
+            if($counter%3==1){
+                echo '<div class="row">';
+            }
+            ?>
+            <div class="col-md-4" id="module_functions">
+                <h5><b><?php echo $moduleRow['module_name'];echo "</br>";?></b></h5>
+                <?php
+
+                    while($function_row=$functionResult->fetch_assoc()){
+                        ?>
+                        <input type="checkbox" name="function[]" value="<?php echo $function_row["function_id"];?>" 
+
+                            <?php
+                                    foreach ($functionArray as $function_id){
+
+                                        if($function_id==$function_row["function_id"]){
+                            ?>    
+                                            checked
+                            <?php
+                                        }
+                                    }
+                            ?>
+
+                               />
+                        <?php
+                            echo $function_row["function_name"];
+                            ?>
+                        </br>
+                        <?php
+                    }
+                    ?>
+            </div>
+        <?php
+            if($counter%3==0){
+                echo '</div>';
+            }
+        }
+
+        if($counter%3==0){
+            echo '</div>';
+        }
+        
         
     break;
         

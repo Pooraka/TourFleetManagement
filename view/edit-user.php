@@ -14,6 +14,15 @@ $user_id = $_GET["user_id"];
 $user_id = base64_decode($user_id);
 
 $userResult = $userObj->getUser($user_id);
+$contactResult = $userObj->getUserContact($user_id);
+
+$mobileRow=$contactResult->fetch_assoc();
+$landlineRow=$contactResult->fetch_assoc();
+
+if($mobileRow['contact_type']==2 && !isset($landlineRow)){
+    $landlineRow=$mobileRow;
+    $mobileRow=null;
+}
 
 $userRow = $userResult->fetch_assoc();
 
@@ -28,7 +37,6 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
     array_push($functionArray,$function_row["function_id"]);
     
 }
-
 ?>
 
 <html lang="en">
@@ -147,13 +155,13 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                         <label class="control-label">Mobile Number</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="mno" id="mno"/>
+                        <input type="text" class="form-control" name="mno" id="mno" value="<?php if(isset($mobileRow)){ echo $mobileRow['contact_number'];}?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Landline</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="lno" id="lno"/>
+                        <input type="text" class="form-control" name="lno" id="lno" value="<?php if(isset($landlineRow)) {echo $landlineRow['contact_number'];}?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -223,14 +231,12 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                                         <input type="checkbox" name="function[]" value="<?php echo $function_row["function_id"];?>" 
                                                
                                             <?php
-                                                    foreach ($functionArray as $function_id){
                                                         
-                                                        if($function_id==$function_row["function_id"]){
+                                                        if(in_array($function_row["function_id"],$functionArray)){
                                             ?>    
                                                             checked
                                             <?php
                                                         }
-                                                    }
                                             ?>
  
                                                />
@@ -248,7 +254,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                             }
                         }
                         
-                        if($counter%3==0){
+                        if($counter%3!=0){
                             echo '</div>';
                         }
                         
@@ -263,7 +269,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                 <div class="row">
                     <div class="col-md-offset-3 col-md-6">
                         <input type="submit" class="btn btn-primary" value="Submit"/>
-                        <input type="reset" class="btn btn-danger" value="Reset"/>
+                        <input type="reset" onclick="resetFunctions('<?php echo $user_id;?>','<?php echo $role_id;?>')"class="btn btn-danger" value="Reset"/>
                     </div>
                 </div>
             </div>

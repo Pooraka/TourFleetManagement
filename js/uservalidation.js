@@ -90,7 +90,16 @@ $(document).ready(function(){
         }
      
     });
-    
-    
 });
+
+function resetFunctions(user_id,role_id){
+        
+        var url= "../controller/user_controller.php?status=reset_functions";
+        
+        $.post(url,{user_id:user_id,role:role_id},function(data){
+            
+            $("#display_functions").html(data).show;
+            
+        });
+    }
 
