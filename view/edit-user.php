@@ -19,7 +19,7 @@ $contactResult = $userObj->getUserContact($user_id);
 $mobileRow=$contactResult->fetch_assoc();
 $landlineRow=$contactResult->fetch_assoc();
 
-if($mobileRow['contact_type']==2 && !isset($landlineRow)){
+if($mobileRow['contact_type']==2){
     $landlineRow=$mobileRow;
     $mobileRow=null;
 }
@@ -66,7 +66,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                 </a>
             </ul>
         </div>
-        <form action="../controller/user_controller.php?status=add_user" method="post" enctype="multipart/form-data">
+        <form action="../controller/user_controller.php?status=update_user" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
                     <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
