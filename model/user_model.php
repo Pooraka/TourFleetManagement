@@ -40,7 +40,8 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "INSERT INTO user (user_fname, user_lname, user_email, user_dob, user_nic, user_role, user_image) VALUES ('$fname','$lname','$email','$dob','$nic','$user_role','$user_image')";
+        $sql = "INSERT INTO user (user_fname, user_lname, user_email, user_dob, user_nic, user_role, user_image) "
+                . "VALUES ('$fname','$lname','$email','$dob','$nic','$user_role','$user_image')";
         
         $con->query($sql) or die ($con->error);
         $user_id=$con->insert_id;
@@ -132,5 +133,33 @@ class User{
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
+    }
+    
+    public function updateUser($fname,$lname,$email,$dob,$nic,$user_role,$user_image,$user_id){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "UPDATE user SET user_fname='$fname', user_lname='$lname', user_email='$email', user_dob='$dob', user_nic='$nic',"
+                . "user_role='$user_role', user_image='$user_image' WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die ($con->error);
+    }
+    
+    public function removeUserContact($user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="DELETE FROM user_contact WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error);
+    }
+    
+    public function removeUserFunctions($user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="DELETE FROM function_user WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error);
     }
 }

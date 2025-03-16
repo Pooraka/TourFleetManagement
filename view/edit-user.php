@@ -19,7 +19,7 @@ $contactResult = $userObj->getUserContact($user_id);
 $mobileRow=$contactResult->fetch_assoc();
 $landlineRow=$contactResult->fetch_assoc();
 
-if($mobileRow['contact_type']==2){
+if($mobileRow!=null && $mobileRow['contact_type']==2){
     $landlineRow=$mobileRow;
     $mobileRow=null;
 }
@@ -88,6 +88,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                         <label class="control-label">First Name</label>
                     </div>
                     <div class="col-md-3">
+                        <input type="hidden" name="user_id" value="<?php echo $user_id;?>" />
                         <input type="text" class="form-control" name="fname" id="fname" value="<?php echo $userRow["user_fname"];?>"/>
                     </div>
                     <div class="col-md-3">
@@ -155,13 +156,13 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
                         <label class="control-label">Mobile Number</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="mno" id="mno" value="<?php if(isset($mobileRow)){ echo $mobileRow['contact_number'];}?>"/>
+                        <input type="text" class="form-control" name="mno" id="mno" value="<?php if($mobileRow!=null){ echo $mobileRow['contact_number'];}?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Landline</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="lno" id="lno" value="<?php if(isset($landlineRow)) {echo $landlineRow['contact_number'];}?>"/>
+                        <input type="text" class="form-control" name="lno" id="lno" value="<?php if($landlineRow!=null) {echo $landlineRow['contact_number'];}?>"/>
                     </div>
                 </div>
                 <div class="row">

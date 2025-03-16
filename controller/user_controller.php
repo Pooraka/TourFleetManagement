@@ -123,12 +123,16 @@ switch ($status)
                 
                 $loginObj->addUserLogin($user_id,$email,$nic);
                 
-                //Add user contact numbers
-                $userObj->addUserContact($user_id,$mno,1);
-                $userObj->addUserContact($user_id,$lno,2);
+                //insert user contact numbers
+                if($mno!=""){
+                    $userObj->addUserContact($user_id,$mno,1);
+                }
+                if($lno!=""){
+                    $userObj->addUserContact($user_id,$lno,2);
+                }
                 
                 
-                //Add user functions
+                //insert user functions
                 foreach($user_functions as $fun_id){
                     
                     $userObj->addUserFunctions($user_id,$fun_id);
@@ -290,6 +294,116 @@ switch ($status)
     break;
     
     case "update_user":
+        
+        $user_id = $_POST["user_id"];
+        $fname = $_POST["fname"];
+        $lname = $_POST["lname"];
+        $email = $_POST["email"];
+        $dob = $_POST["dob"];
+        $nic = $_POST["nic"];
+        $mno = $_POST["mno"];
+        $lno = $_POST["lno"];
+        $user_role = $_POST["user_role"];
+        $user_image = $_FILES["user_image"];
+        
+        if(isset($_POST["function"])){
+            $user_functions = $_POST["function"];
+        }
+        
+        
+        try{
+            
+            if($fname==""){
+                throw new Exception("First Name cannot be Empty!!!!");
+            }
+            if($lname==""){
+                throw new Exception("Last Name cannot be Empty!!!!");
+            }
+            if($email==""){
+                throw new Exception("Email Name cannot be Empty!!!!");
+            }
+            if($dob==""){
+                throw new Exception("Date of Birth cannot be Empty!!!!");
+            }
+            if($nic==""){
+                throw new Exception("NIC cannot be Empty!!!!");
+            }
+            if($mno==""){
+                throw new Exception("Mobile Number cannot be Empty!!!!");
+            }
+            if($lno==""){
+                throw new Exception("Landline cannot be Empty!!!!");
+            }
+            if($user_role==""){
+                throw new Exception("User Role cannot be Empty!!!!");
+            }
+            
+            $userResult = $userObj->getUser($user_id);
+            $userRow = $userResult->fetch_assoc();
+            $prev_image = $userRow["user_image"];
+
+            if($user_image["name"]!=""){
+
+                //uploading new image
+                $file_name = time()."_".$user_image["name"];
+                $path = "../images/userimages/";
+                move_uploaded_file($user_image["tmp_name"],$path.$file_name);
+
+                //remove previous image
+                if($prev_image!="" && file_exists($path.$prev_image)){
+                    unlink($path.$prev_image);
+                }
+            }
+            else{
+                $file_name = $prev_image;
+            }
+
+            //update user
+            $userObj->updateUser($fname, $lname, $email, $dob, $nic, $user_role,$file_name, $user_id);
+
+            //remove existing user contact details
+            $userObj->removeUserContact($user_id);
+
+            //insert new contact details
+            if($mno!=""){
+                $userObj->addUserContact($user_id,$mno,1);
+            }
+            if($lno!=""){
+                $userObj->addUserContact($user_id,$lno,2);
+            }
+            
+            //remove existing user functions
+            $userObj->removeUserFunctions($user_id);
+            
+            //insert new user functions
+            foreach($user_functions as $fun_id){
+                    
+                $userObj->addUserFunctions($user_id,$fun_id);
+
+            }
+            
+            $msg = "User $fname $lname Updated Successfully";
+            $msg = base64_encode($msg);
+            
+            ?>
+            
+            <script>
+                window.location="../view/view-users.php?msg=<?php echo $msg;?>";
+            </script>
+            
+            <?php
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/edit-user.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+        }
         
     break;
         
