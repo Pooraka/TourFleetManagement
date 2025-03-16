@@ -122,7 +122,7 @@ class User{
         
         $sql="INSERT INTO user_contact (contact_type,contact_number,user_id) VALUES ('$type','$number','$user_id')";
         
-        $result = $con->query($sql) or die ($con->error);
+        $con->query($sql) or die ($con->error);
     }
     
     public function getUserContact($user_id){
