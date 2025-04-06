@@ -61,7 +61,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span>
                                 </span>
-                                <input type="email" id="loginusername" name="loginusername" class="form-control"/>
+                                <input type="email" id="loginusername" name="loginusername" class="form-control" placeholder="Enter username"/>
                             </span>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-lock"></span>
                                 </span>
-                                <input type="password" id="loginpassword" name="loginpassword" class="form-control"/>
+                                <input type="password" id="loginpassword" name="loginpassword" class="form-control" placeholder="Enter password"/>
                             </span>
                         </div>
                     </div>

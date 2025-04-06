@@ -72,6 +72,7 @@ switch ($status)
         $user_role = $_POST["user_role"];
         $user_image = $_FILES["user_image"];
         $user_functions = $_POST["function"];
+        $patnic = "/^[0-9]{9}[VvXx]{1}$/";
         
         
         try{
@@ -90,6 +91,9 @@ switch ($status)
             }
             if($nic==""){
                 throw new Exception("NIC cannot be Empty!!!!");
+            }
+            if(!preg_match($patnic, $nic)){
+                 throw new Exception("Invalid NIC");
             }
             if($mno==""){
                 throw new Exception("Mobile Number cannot be Empty!!!!");
@@ -305,6 +309,7 @@ switch ($status)
         $lno = $_POST["lno"];
         $user_role = $_POST["user_role"];
         $user_image = $_FILES["user_image"];
+        $patnic = "/^[0-9]{9}[VvXx]{1}$/";
         
         if(isset($_POST["function"])){
             $user_functions = $_POST["function"];
@@ -327,6 +332,9 @@ switch ($status)
             }
             if($nic==""){
                 throw new Exception("NIC cannot be Empty!!!!");
+            }
+            if(!preg_match($patnic, $nic)){
+                 throw new Exception("Invalid NIC");
             }
             if($mno==""){
                 throw new Exception("Mobile Number cannot be Empty!!!!");
@@ -382,7 +390,7 @@ switch ($status)
 
             }
             
-            $msg = "User $fname $lname Updated Successfully";
+            $msg = "User $fname Updated Successfully";
             $msg = base64_encode($msg);
             
             ?>

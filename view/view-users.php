@@ -116,7 +116,7 @@ $userResult = $userObj->getAllUsers();
                                         <td><?php echo $userRow["user_email"];?></td>
                                         <td><?php echo $status;?></td>
                                         <td>
-                                            <a href="" class="btn btn-info" style="margin:2px">
+                                            <a href="view-user.php?user_id=<?php echo $user_id;?>" class="btn btn-info" style="margin:2px">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
                                                 View
                                             </a>

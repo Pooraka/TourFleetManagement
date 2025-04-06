@@ -98,7 +98,7 @@ class User{
         
         $con = $GLOBALS["con"];
         
-        $sql="SELECT * FROM user WHERE user_id='$user_id'";
+        $sql="SELECT * FROM user u , role r WHERE u.user_role = r.role_id AND user_id='$user_id'";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
