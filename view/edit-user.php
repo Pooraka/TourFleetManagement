@@ -277,7 +277,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
         </form>
     </div>
     <script src="../js/jquery-3.7.1.js"></script>
-    <script src="../js/uservalidation.js"></script>
+    <script src="../js/userValidation.js"></script>
     <script>
         function displayImage(input){
             if(input.files && input.files[0])
