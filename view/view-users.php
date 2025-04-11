@@ -20,6 +20,8 @@ $userResult = $userObj->getAllUsers();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
+    
+    <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.min.css"/>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
@@ -60,7 +62,7 @@ $userResult = $userObj->getAllUsers();
             
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" id="usertable">
                         <thead>
                             <tr>
                                 <th>Image</th>
@@ -157,5 +159,13 @@ $userResult = $userObj->getAllUsers();
         </div>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+     <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+     <script>
+         $(document).ready(function(){
+             
+             $("#usertable").DataTable();
+         });
+     </script>
 </html>
