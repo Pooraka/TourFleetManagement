@@ -138,7 +138,7 @@ $roleResult = $userObj->getAllRoles();
                     <div class="col-md-3">
                         <label class="control-label">User Role</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select name="user_role" id="user_role" class="form-control" required="required">
                             <option value="">--------------------------</option>
                             <?php
@@ -151,6 +151,12 @@ $roleResult = $userObj->getAllRoles();
                                 }
                                 ?>
                         </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Username</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="username" id="username"/>
                     </div>
                 </div>
                 <div class="row">
@@ -167,7 +173,7 @@ $roleResult = $userObj->getAllRoles();
                 <div class="row">
                     <div class="col-md-offset-3 col-md-6">
                         <input type="submit" class="btn btn-primary" value="Submit"/>
-                        <input type="reset" class="btn btn-danger" value="Reset"/>
+                        <input type="reset" class="btn btn-danger" value="Reset" onclick="$('#display_functions').html('');"/>
                     </div>
                 </div>
             </div>

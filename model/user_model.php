@@ -36,6 +36,26 @@ class User{
         return $result;
     }
     
+    public function checkIfEmailExist($email){
+        
+        $con=$GLOBALS["con"];
+
+        $sql="SELECT user_email FROM user WHERE user_email='$email'";
+        
+        $result = $con->query($sql) or die($con->error);  
+        return $result;
+    }
+    
+    public function checkIfNICExist($nic){
+        
+        $con=$GLOBALS["con"];
+
+        $sql="SELECT user_nic FROM user WHERE user_nic='$nic'";
+        
+        $result = $con->query($sql) or die($con->error);  
+        return $result;
+    }
+    
     public function addUser($fname,$lname,$email,$dob,$nic,$user_role,$user_image){
 
         $con = $GLOBALS["con"];

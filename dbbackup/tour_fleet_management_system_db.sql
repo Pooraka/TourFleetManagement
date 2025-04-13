@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2025 at 04:07 PM
+-- Generation Time: Apr 13, 2025 at 04:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -104,30 +104,38 @@ CREATE TABLE `function_user` (
 --
 
 INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
+(1, 3),
 (1, 5),
+(2, 3),
 (2, 5),
+(3, 3),
 (3, 5),
+(4, 3),
 (4, 5),
+(5, 3),
 (5, 5),
+(6, 3),
 (6, 5),
-(12, 3),
-(13, 3),
-(14, 3),
-(16, 3),
-(22, 4),
+(7, 3),
+(8, 3),
+(9, 3),
+(9, 5),
+(10, 3),
+(11, 3),
 (22, 7),
-(22, 8),
-(23, 4),
-(23, 8),
-(24, 4),
 (24, 8),
-(25, 7),
+(36, 1),
+(36, 3),
 (36, 5),
+(37, 3),
 (37, 5),
+(38, 3),
 (38, 5),
+(39, 3),
 (39, 5),
 (40, 1),
-(43, 1);
+(43, 1),
+(46, 1);
 
 -- --------------------------------------------------------
 
@@ -140,20 +148,21 @@ CREATE TABLE `login` (
   `login_username` varchar(255) NOT NULL,
   `login_password` text NOT NULL,
   `user_id` int(10) NOT NULL,
-  `login_status` int(10) NOT NULL DEFAULT 1
+  `login_status` int(10) NOT NULL DEFAULT 1,
+  `otp` text DEFAULT NULL,
+  `otp_expiry` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`) VALUES
-(1, 'hasendra@skylinetours.lk', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1),
-(4, 'clint@st.lk', '52fbd35f82a73848807154640259deb53f8f4f75', 3, 1),
-(5, 'tvseriesmail4@gmail.com', '32bbc738414b75dc9685218bda9932c520a27afd', 4, 1),
-(6, 'steve@st.lk', 'b8b79503ca8995225bd8763591a462f7a13d2bf3', 5, 1),
-(8, 'tony@st.lk', '951a7754b460aeda0b333899faa93ee009a8c624', 7, 1),
-(9, 'natasha@st.lk', '5b2395136ceda7a531c8737b1693f853065b6aac', 8, 1);
+INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`, `otp`, `otp_expiry`) VALUES
+(1, 'hasendrak', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1, '292623', '2025-04-11 15:33:23'),
+(4, 'clintb', '52fbd35f82a73848807154640259deb53f8f4f75', 3, 1, NULL, NULL),
+(6, 'stever', 'b8b79503ca8995225bd8763591a462f7a13d2bf3', 5, 1, NULL, NULL),
+(8, 'tonys', '52fbd35f82a73848807154640259deb53f8f4f75', 7, 1, NULL, '0000-00-00 00:00:00'),
+(9, 'natashar', '5b2395136ceda7a531c8737b1693f853065b6aac', 8, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -274,12 +283,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
-(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 2, '', 'hasendra@skylinetours.lk', 1),
-(3, 'Clint', 'Barton', '2025-02-12', '999999999V', 8, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
-(4, 'Shevan', 'Fernando', '2025-02-18', '999555777V', 7, '', 'tvseriesmail4@gmail.com', 1),
+(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
+(3, 'Clint', 'Barton', '2025-02-12', '999999999V', 4, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
-(7, 'Tony', 'Stark', '1996-12-15', '963753148V', 7, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
-(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 1);
+(7, 'Tony', 'Stark', '1996-12-15', '863753148V', 7, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
+(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 0);
 
 -- --------------------------------------------------------
 
@@ -299,15 +307,16 @@ CREATE TABLE `user_contact` (
 --
 
 INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `user_id`) VALUES
-(1, 1, '0779530148', 1),
-(2, 2, '0114006319', 1),
-(4, 2, '0112008888', 5),
-(46, 1, '0736415732', 8),
-(47, 2, '0112843951', 8),
-(50, 1, '0796385245', 7),
-(51, 2, '0312243581', 7),
-(52, 1, '0778810839', 3),
-(53, 2, '0112729729', 3);
+(78, 1, '0736415732', 8),
+(79, 2, '0112843951', 8),
+(100, 1, '0772456456', 7),
+(101, 2, '0312243581', 7),
+(102, 1, '0778810839', 3),
+(103, 2, '0112729729', 3),
+(106, 1, '0734351355', 5),
+(107, 2, '0112008888', 5),
+(108, 1, '0779535000', 1),
+(109, 2, '0114006319', 1);
 
 --
 -- Indexes for dumped tables
@@ -377,7 +386,7 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `login_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `login_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `module`
@@ -395,13 +404,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

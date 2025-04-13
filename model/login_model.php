@@ -19,14 +19,24 @@ class Login{
         return $result;
     }
     
-    public function addUserLogin($user_id, $user_email, $nic){
+    public function checkIfUsernameExist($user_name){
+        
+        $con=$GLOBALS["con"];
+
+        $sql="SELECT login_username FROM login WHERE login_username='$user_name'";
+        
+        $result = $con->query($sql) or die($con->error);  
+        return $result;
+    }
+    
+    public function addUserLogin($user_id, $user_name, $nic){
         
         $con=$GLOBALS["con"];
         $pwd = sha1($nic);
         
-        $sql="INSERT INTO login (login_username,login_password,user_id) VALUES ('$user_email','$pwd','$user_id')";
+        $sql="INSERT INTO login (login_username,login_password,user_id) VALUES ('$user_name','$pwd','$user_id')";
         
         $con->query($sql) or die($con->error);  
-        
+
     }
 }

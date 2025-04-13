@@ -14,7 +14,7 @@
         <b><?php echo ucwords($userSession["user_fname"]." ".$userSession["user_lname"]); ?></b>
     </div>
     <div class="col-md-6 col-xs-6 col-sm-6" style="text-align:center;margin-top:5px">
-        <b><?php echo $pageName; ?></b> 
+        <b id="page_name"><?php echo $pageName; ?></b> 
     </div>
     <div class="col-md-1 col-md-offset-2 col-xs-1 col-sm-offset-1 col-sm-1">
         <a href="../controller/login_controller.php?status=logout" class="btn btn-primary">Logout</a>

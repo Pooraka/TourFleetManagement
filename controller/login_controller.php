@@ -16,7 +16,7 @@ $status= $_GET["status"];
 switch ($status)
 {
     case "login";
-        $login_username = $_POST["loginusername"];
+        $login_username = strtolower(trim($_POST["loginusername"]));
         $login_password = $_POST["loginpassword"];
 
         try{

@@ -62,21 +62,29 @@ switch ($status)
 
     case "add_user":
         
-        $fname = $_POST["fname"];
-        $lname = $_POST["lname"];
-        $email = $_POST["email"];
-        $dob = $_POST["dob"];
-        $nic = $_POST["nic"];
-        $mno = $_POST["mno"];
-        $lno = $_POST["lno"];
-        $user_role = $_POST["user_role"];
-        $user_image = $_FILES["user_image"];
-        $user_functions = $_POST["function"];
-        $patnic = "/^[0-9]{9}[VvXx]{1}$/";
-        
-        
         try{
-            
+        
+            $fname = $_POST["fname"];
+            $lname = $_POST["lname"];
+            $email = strtolower(trim($_POST["email"]));
+            $dob = $_POST["dob"];
+            $nic = strtoupper(trim($_POST["nic"]));
+            $mno = $_POST["mno"];
+            $lno = $_POST["lno"];
+            $user_name = strtolower(trim($_POST["username"]));
+            $user_role = $_POST["user_role"];
+            $user_image = $_FILES["user_image"];
+
+            if(isset($_POST["function"]) && !empty($_POST["function"]) ){
+                
+                $user_functions = $_POST["function"];
+            }
+            else{
+                throw new Exception("User functions are not selected");
+            }
+
+            $patnic = "/^[0-9]{9}[VX]{1}$/";
+        
             if($fname==""){
                 throw new Exception("First Name cannot be Empty!!!!");
             }
@@ -101,6 +109,9 @@ switch ($status)
             if($lno==""){
                 throw new Exception("Landline cannot be Empty!!!!");
             }
+            if($user_name==""){
+                throw new Exception("Username cannot be Empty!!!!");
+            }
             if($user_role==""){
                 throw new Exception("User Role cannot be Empty!!!!");
             }
@@ -119,13 +130,36 @@ switch ($status)
                 
             }
             
+            //check for existing emails
+            $existingEmailResult = $userObj->checkIfEmailExist($email);
+            
+            if($existingEmailResult->num_rows>0){
+                
+                throw new Exception("Email already exist");
+            }
+            
+            //check for existing NICs
+            $existingNICResult = $userObj->checkIfNICExist($nic);
+            
+            if($existingNICResult->num_rows>0){
+                
+                throw new Exception("NIC already exist");
+            }
+            
+            //check if username is already taken
+            $existingUsernameResult = $loginObj->checkIfUsernameExist($user_name);
+            
+            if($existingUsernameResult->num_rows>0){
+                throw new Exception("Username already taken");
+            }
+            
             $user_id = $userObj->addUser($fname,$lname,$email,$dob,$nic,$user_role,$file_name);
             
             //creating a login account
             
             if($user_id>0){
                 
-                $loginObj->addUserLogin($user_id,$email,$nic);
+                $loginObj->addUserLogin($user_id,$user_name,$nic);
                 
                 //insert user contact numbers
                 if($mno!=""){
@@ -299,25 +333,27 @@ switch ($status)
     
     case "update_user":
         
-        $user_id = $_POST["user_id"];
-        $fname = $_POST["fname"];
-        $lname = $_POST["lname"];
-        $email = $_POST["email"];
-        $dob = $_POST["dob"];
-        $nic = $_POST["nic"];
-        $mno = $_POST["mno"];
-        $lno = $_POST["lno"];
-        $user_role = $_POST["user_role"];
-        $user_image = $_FILES["user_image"];
-        $patnic = "/^[0-9]{9}[VvXx]{1}$/";
-        
-        if(isset($_POST["function"])){
-            $user_functions = $_POST["function"];
-        }
-        
-        
         try{
-            
+        
+            $user_id = $_POST["user_id"];
+            $fname = $_POST["fname"];
+            $lname = $_POST["lname"];
+            $email = strtolower(trim($_POST["email"]));
+            $dob = $_POST["dob"];
+            $nic = strtoupper(trim($_POST["nic"]));
+            $mno = $_POST["mno"];
+            $lno = $_POST["lno"];
+            $user_role = $_POST["user_role"];
+            $user_image = $_FILES["user_image"];
+            $patnic = "/^[0-9]{9}[VX]{1}$/";
+
+            if (isset($_POST["function"]) && !empty($_POST["function"])) {
+
+                $user_functions = $_POST["function"];
+            } else {
+                throw new Exception("User functions are not selected");
+            }
+
             if($fname==""){
                 throw new Exception("First Name cannot be Empty!!!!");
             }
@@ -346,6 +382,7 @@ switch ($status)
                 throw new Exception("User Role cannot be Empty!!!!");
             }
             
+
             $userResult = $userObj->getUser($user_id);
             $userRow = $userResult->fetch_assoc();
             $prev_image = $userRow["user_image"];
@@ -364,6 +401,27 @@ switch ($status)
             }
             else{
                 $file_name = $prev_image;
+            }
+            
+            if ($email != $userRow["user_email"]) {
+                
+                //check for existing emails
+                $existingEmailResult = $userObj->checkIfEmailExist($email);
+
+                if ($existingEmailResult->num_rows > 0) {
+
+                    throw new Exception("Email already exist");
+                }
+            }
+
+            if ($nic != $userRow["user_nic"]) {
+                //check for existing NICs
+                $existingNICResult = $userObj->checkIfNICExist($nic);
+
+                if ($existingNICResult->num_rows > 0) {
+
+                    throw new Exception("NIC already exist");
+                }
             }
 
             //update user
@@ -405,10 +463,12 @@ switch ($status)
             
             $msg= $e->getMessage();
             $msg= base64_encode($msg);
+            
+            $user_id= base64_encode($user_id);
             ?>
     
             <script>
-                window.location="../view/edit-user.php?msg=<?php echo $msg;?>";
+                window.location="../view/edit-user.php?msg=<?php echo $msg;?>&user_id=<?php echo $user_id;?>";
             </script>
             <?php
         }
