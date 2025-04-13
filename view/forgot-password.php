@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta http-equiv="refresh" content="3"> -->
-    <title>Welcome</title>
+    <title>Forgot Password</title>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
@@ -15,39 +15,24 @@
                 <span><b>Tour Fleet Management System</b></span>
             </div>
             <div id="msg" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2" style="text-align:center;">
-                <?php if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
-                    ?>
-                    <script>
-                        var msgElement = document.getElementById("msg");
-                        msgElement.classList.add("alert", "alert-success");
-                    </script>
-                    <b> 
-                        <p align="center">
-                            <?php
-                            echo base64_decode($_GET["msg"]);
-                            ?>
-                        </p>
-                    </b>
-                    <?php
-                } elseif (isset($_GET["msg"])) {
+                <?php if(isset($_GET["msg"])){
                     ?>
                     <script>
                         var msgElement = document.getElementById("msg");
                         msgElement.classList.add("alert", "alert-danger");
                     </script>
-                    <b> 
-                        <p align="center">
-                            <?php
-                            echo base64_decode($_GET["msg"]);
-                            ?>
-                        </p>
+                    <b> <p align="center">
+                    <?php
+                    echo base64_decode($_GET["msg"]);
+                    ?>
+                    </p>
                     </b>
                     <?php
                 }
                 ?>
             </div>
         </div>
-        <form action="../controller/login_controller.php?status=login" method="post">
+        <form action="../controller/login_controller.php?status=forgot-password" method="post">
             <div class="row" style="height:500px;">
                 <div class="col-md-5 col-md-offset-1 col-sm-7 panel panel-default hidden-xs" 
                 style="height:100%;background-image:url('../images/loginimage.jpg');
@@ -65,7 +50,7 @@
                     </br>
                     <div class="row">
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <label style="font-size:20px">Sign Into Your Account</label>  
+                        <label style="font-size:15px">Enter your username to receive an OTP via email</label>  
                     </div>
                     <div class="row">
                         &nbsp;
@@ -84,13 +69,11 @@
                         &nbsp;
                     </div>
                     <div class="row">
+                        &nbsp;
+                    </div>
+                    <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <span class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-lock"></span>
-                                </span>
-                                <input type="password" id="loginpassword" name="loginpassword" class="form-control" placeholder="Enter password"/>
-                            </span>
+                            <input type="submit" name="submit" class="btn btn-primary btn-block" style="background-color:#0d778a" value="Send OTP"/>
                         </div>
                     </div>
                     <div class="row">
@@ -98,15 +81,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <input type="submit" name="submit" class="btn btn-primary btn-block" style="background-color:#0d778a"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <a href="./forgot-password.php">Forgot your password?</a>
+                            <a href="./login.php">Go back to login page</a>
                         </div>
                     </div>
                 </div>
@@ -115,5 +90,4 @@
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
-<script src="../js/loginValidation.js"></script>
 </html>

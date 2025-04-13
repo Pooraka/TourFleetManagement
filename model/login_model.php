@@ -23,7 +23,7 @@ class Login{
         
         $con=$GLOBALS["con"];
 
-        $sql="SELECT login_username FROM login WHERE login_username='$user_name'";
+        $sql="SELECT login_username, user_id FROM login WHERE login_username='$user_name'";
         
         $result = $con->query($sql) or die($con->error);  
         return $result;
@@ -38,5 +38,45 @@ class Login{
         
         $con->query($sql) or die($con->error);  
 
+    }
+    
+    public function addOTP($otp,$expiry,$user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="UPDATE login SET otp='$otp', otp_expiry='$expiry' WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error); 
+    }
+    
+    public function getOTP($user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="SELECT otp, otp_expiry FROM login WHERE user_id='$user_id'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function removeOTP($user_id) {
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="UPDATE login SET otp='', otp_expiry='' WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error);
+        
+    }
+    
+    public function updatePassword($password, $user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $password = sha1($password);
+        
+        $sql="UPDATE login SET login_password='$password' WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error);
     }
 }

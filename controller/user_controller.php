@@ -17,7 +17,7 @@ $status= $_GET["status"];
 
 switch ($status)
 {
-    case "load_functions";
+    case "load_functions":
     
         $role_id=$_POST["role"];
         
