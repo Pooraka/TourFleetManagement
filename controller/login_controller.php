@@ -43,10 +43,10 @@ switch ($status) {
                 $userSession = $loginResult->fetch_assoc();
 
                 if ($userSession['user_status'] == -1) {
-                    throw new Exception("User Deleted");
+                    throw new Exception("User is deleted");
                 }
                 if ($userSession['user_status'] == 0) {
-                    throw new Exception("User has been deactivated");
+                    throw new Exception("User is deactivated");
                 }
 
                 //assign $userSessionRow to a session
@@ -101,6 +101,17 @@ switch ($status) {
                 
                 $userResult = $userObj->getUser($user_id);
                 $userRow = $userResult->fetch_assoc();
+                
+                if($userRow['user_status']==0){
+                    
+                    throw new Exception("User is deactivated");
+                }
+                
+                if($userRow['user_status']==-1){
+                    
+                    throw new Exception("User is deleted");
+                }
+                
                 $email = $userRow['user_email'];
                 $name = $userRow['user_fname']." ".$userRow['user_lname'];
                 

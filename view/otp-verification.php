@@ -109,6 +109,11 @@ if (!isset($_SESSION['otp_requested_user_id'])) {
                         <div class="row">
                             &nbsp;
                         </div>
+                        <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <a href="./forgot-password.php">Go back to forgot password page</a>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </form>
