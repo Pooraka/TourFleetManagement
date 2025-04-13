@@ -5,11 +5,6 @@ include_once '../model/module_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
-
-$moduleObj = new Module();
-
-$moduleResult = $moduleObj->getAllModules();
-
 ?>
 
 <html lang="en">

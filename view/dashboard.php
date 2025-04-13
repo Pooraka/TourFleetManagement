@@ -8,7 +8,7 @@ $userSession=$_SESSION["user"];
 
 $moduleObj = new Module();
 
-$moduleResult = $moduleObj->getAllModules();
+$moduleResult = $moduleObj->getAllModules($userSession['user_role']);
 ?>
 
 <html lang="en">

@@ -35,6 +35,13 @@ switch ($status)
 
                 //converting $loginResult to an array
                 $userSession = $loginResult->fetch_assoc();
+                
+                if($userSession['user_status']==-1){
+                    throw new Exception("User Deleted");
+                }
+                if($userSession['user_status']==0){
+                    throw new Exception("User has been deactivated");
+                }
 
                 //assign $userSessionRow to a session
                 $_SESSION["user"] = $userSession;

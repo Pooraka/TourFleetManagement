@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2025 at 04:32 PM
+-- Generation Time: Apr 13, 2025 at 05:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -104,38 +104,88 @@ CREATE TABLE `function_user` (
 --
 
 INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
+(1, 1),
 (1, 3),
 (1, 5),
+(2, 1),
 (2, 3),
 (2, 5),
+(3, 1),
 (3, 3),
 (3, 5),
+(4, 1),
 (4, 3),
 (4, 5),
+(5, 1),
 (5, 3),
 (5, 5),
+(6, 1),
 (6, 3),
 (6, 5),
+(7, 1),
 (7, 3),
+(8, 1),
 (8, 3),
+(9, 1),
 (9, 3),
 (9, 5),
+(10, 1),
 (10, 3),
+(11, 1),
 (11, 3),
-(22, 7),
+(12, 1),
+(13, 1),
+(14, 1),
+(15, 1),
+(16, 1),
+(17, 1),
+(18, 1),
+(19, 1),
+(20, 1),
+(21, 1),
+(22, 1),
+(23, 1),
+(24, 1),
 (24, 8),
+(25, 1),
+(26, 1),
+(26, 7),
+(27, 1),
+(27, 7),
+(28, 1),
+(28, 7),
+(29, 1),
+(29, 7),
+(30, 1),
+(30, 7),
+(31, 1),
+(31, 7),
+(32, 7),
+(33, 7),
+(34, 7),
+(35, 1),
+(35, 7),
 (36, 1),
 (36, 3),
 (36, 5),
+(37, 1),
 (37, 3),
 (37, 5),
+(38, 1),
 (38, 3),
 (38, 5),
+(39, 1),
 (39, 3),
 (39, 5),
 (40, 1),
+(41, 1),
+(42, 1),
 (43, 1),
-(46, 1);
+(44, 1),
+(45, 1),
+(46, 1),
+(47, 1),
+(48, 1);
 
 -- --------------------------------------------------------
 
@@ -161,7 +211,7 @@ INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, 
 (1, 'hasendrak', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1, '292623', '2025-04-11 15:33:23'),
 (4, 'clintb', '52fbd35f82a73848807154640259deb53f8f4f75', 3, 1, NULL, NULL),
 (6, 'stever', 'b8b79503ca8995225bd8763591a462f7a13d2bf3', 5, 1, NULL, NULL),
-(8, 'tonys', '52fbd35f82a73848807154640259deb53f8f4f75', 7, 1, NULL, '0000-00-00 00:00:00'),
+(8, 'tonys', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 7, 1, NULL, '0000-00-00 00:00:00'),
 (9, 'natashar', '5b2395136ceda7a531c8737b1693f853065b6aac', 8, 1, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -286,7 +336,7 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic
 (1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
 (3, 'Clint', 'Barton', '2025-02-12', '999999999V', 4, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
-(7, 'Tony', 'Stark', '1996-12-15', '199512347521', 7, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
+(7, 'Tony', 'Stark', '1996-12-15', '199512347521', 5, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
 (8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 0);
 
 -- --------------------------------------------------------
@@ -313,10 +363,10 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (103, 2, '0112729729', 3),
 (106, 1, '0734351355', 5),
 (107, 2, '0112008888', 5),
-(108, 1, '0779535000', 1),
-(109, 2, '0114006319', 1),
-(120, 1, '0772456456', 7),
-(121, 2, '0312243581', 7);
+(122, 1, '0779535000', 1),
+(123, 2, '0114006319', 1),
+(124, 1, '0772456456', 7),
+(125, 2, '0312243581', 7);
 
 --
 -- Indexes for dumped tables
@@ -410,7 +460,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

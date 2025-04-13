@@ -7,10 +7,8 @@ include_once '../model/user_model.php';
 //get user information from session
 $userSession=$_SESSION["user"];
 
-$moduleObj = new Module();
 $userObj = new User();
 
-$moduleResult = $moduleObj->getAllModules();
 $userResult = $userObj->getAllUsers();
 
 ?>
