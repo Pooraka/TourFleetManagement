@@ -83,7 +83,7 @@ switch ($status)
                 throw new Exception("User functions are not selected");
             }
 
-            $patnic = "/^[0-9]{9}[VX]{1}$/";
+            $patnic = "/^([0-9]{9}[VX]{1}|[0-9]{12})$/";
         
             if($fname==""){
                 throw new Exception("First Name cannot be Empty!!!!");
@@ -345,7 +345,7 @@ switch ($status)
             $lno = $_POST["lno"];
             $user_role = $_POST["user_role"];
             $user_image = $_FILES["user_image"];
-            $patnic = "/^[0-9]{9}[VX]{1}$/";
+            $patnic = "/^([0-9]{9}[VX]{1}|[0-9]{12})$/";
 
             if (isset($_POST["function"]) && !empty($_POST["function"])) {
 

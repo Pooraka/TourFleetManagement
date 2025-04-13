@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         var usernameInput = $("#username");
 
-        var patNic = /^[0-9]{9}[VvXx]$/;
+        var patNic = /^([0-9]{9}[VvXx]|[0-9]{12})$/;
         var patMobile = /^07[0-9]{8}$/;
 
         if (fname == "")

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2025 at 04:05 PM
+-- Generation Time: Apr 13, 2025 at 04:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -286,7 +286,7 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic
 (1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
 (3, 'Clint', 'Barton', '2025-02-12', '999999999V', 4, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
-(7, 'Tony', 'Stark', '1996-12-15', '863753148V', 7, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
+(7, 'Tony', 'Stark', '1996-12-15', '199512347521', 7, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
 (8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 0);
 
 -- --------------------------------------------------------
@@ -309,14 +309,14 @@ CREATE TABLE `user_contact` (
 INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `user_id`) VALUES
 (78, 1, '0736415732', 8),
 (79, 2, '0112843951', 8),
-(100, 1, '0772456456', 7),
-(101, 2, '0312243581', 7),
 (102, 1, '0778810839', 3),
 (103, 2, '0112729729', 3),
 (106, 1, '0734351355', 5),
 (107, 2, '0112008888', 5),
 (108, 1, '0779535000', 1),
-(109, 2, '0114006319', 1);
+(109, 2, '0114006319', 1),
+(120, 1, '0772456456', 7),
+(121, 2, '0312243581', 7);
 
 --
 -- Indexes for dumped tables
@@ -410,7 +410,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
