@@ -1,3 +1,3 @@
-<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="../css/custom.css"/>
-<link rel="website icon" type="png" href="../images/pageicon.png"/>
+<link rel="stylesheet" type="text/css" href="/tourfleetmanagement/bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="/tourfleetmanagement/css/custom.css"/>
+<link rel="website icon" type="png" href="/tourfleetmanagement/images/pageicon.png"/>

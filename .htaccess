@@ -1,0 +1,5 @@
+Options -Indexes
+
+# Display Error Pages
+ErrorDocument 403 /tourfleetmanagement/errorpages/403.php
+ErrorDocument 404 /tourfleetmanagement/errorpages/404.php
