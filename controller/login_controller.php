@@ -91,6 +91,12 @@ switch ($status) {
         $login_username = $_POST["loginusername"];
         
         try{
+            
+            if($login_username==""){
+                
+                throw new Exception("Username cannot be empty");
+            }
+            
             $loginResult = $loginObj->checkIfUsernameExist($login_username);
             
             //if matching records found
