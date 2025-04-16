@@ -41,6 +41,12 @@ switch ($status) {
 
                 //converting $loginResult to an array
                 $userSession = $loginResult->fetch_assoc();
+                
+                $user_id = $userSession['user_id'];
+                
+                if($userSession['login_status']==2 && $userSession['otp']!=""){
+                    $loginObj->removeOTP($user_id);
+                }
 
                 if ($userSession['user_status'] == -1) {
                     throw new Exception("User is deleted");
@@ -133,6 +139,8 @@ switch ($status) {
                 
                 if($emailSent){
                     
+                    $loginObj->changeLoginStatusToOtpSent($user_id);
+                    
                     $_SESSION['otp_requested_user_id'] = $user_id;
                     
                     $msg="OTP Sent to your email";
@@ -184,7 +192,7 @@ switch ($status) {
             
             if (!isset($_SESSION['otp_requested_user_id'])) {
 
-                throw new Exception("OTP Expired, Please Request a New OTP");
+                throw new Exception("Invalid OTP"); // OTP Already Used
             }
             
             $user_id = $_SESSION['otp_requested_user_id'];
@@ -194,7 +202,7 @@ switch ($status) {
             
             if ($loginRow['otp'] == null) {
                 
-                throw new Exception("OTP Expired, Please Request a New OTP");
+                throw new Exception("Invalid OTP"); // Does not have a OTP in login table
             }
             
             $loginOtp = $loginRow['otp'];
@@ -205,8 +213,9 @@ switch ($status) {
             $currentDateTime = new DateTime();
             
             if ($currentDateTime > $expiryDateTime) {
-
-                throw new Exception("OTP Expired, Please Request Another OTP");
+                
+                $loginObj->removeOTP($user_id);
+                throw new Exception("Invalid OTP"); //OTP Expired
             }
             
             if ($User_entered_otp != $loginOtp) {

@@ -11,7 +11,7 @@ class Login{
         $con=$GLOBALS["con"];
         $login_password = sha1($login_password);
 
-        $sql = "SELECT u.user_id, u.user_role, r.role_name, u.user_fname, u.user_lname, u.user_status "
+        $sql = "SELECT u.user_id, u.user_role, r.role_name, u.user_fname, u.user_lname, u.user_status, l.login_status, l.otp "
                 . "FROM user u, login l, role r WHERE u.user_id=l.user_id AND r.role_id=u.user_role AND "
                 . "l.login_username='$login_username' AND l.login_password='$login_password'";
         
@@ -63,7 +63,7 @@ class Login{
         
         $con=$GLOBALS["con"];
         
-        $sql="UPDATE login SET otp='', otp_expiry='' WHERE user_id='$user_id'";
+        $sql="UPDATE login SET otp='', otp_expiry='', login_status='1' WHERE user_id='$user_id'";
         
         $con->query($sql) or die($con->error);
         
@@ -76,6 +76,15 @@ class Login{
         $password = sha1($password);
         
         $sql="UPDATE login SET login_password='$password' WHERE user_id='$user_id'";
+        
+        $con->query($sql) or die($con->error);
+    }
+    
+    public function changeLoginStatusToOtpSent($user_id){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="UPDATE login SET login_status='2' WHERE user_id='$user_id'";
         
         $con->query($sql) or die($con->error);
     }
