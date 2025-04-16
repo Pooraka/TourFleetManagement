@@ -191,8 +191,16 @@ switch ($status) {
             }
             
             if (!isset($_SESSION['otp_requested_user_id'])) {
+                
+                http_response_code(403);
 
-                throw new Exception("Invalid OTP"); // OTP Already Used
+                ?>
+                <script>
+                    window.location="/tourfleetmanagement/errorpages/403.php";
+                </script>
+                <?php
+                session_destroy();
+                exit();
             }
             
             $user_id = $_SESSION['otp_requested_user_id'];
@@ -225,9 +233,6 @@ switch ($status) {
             
             $loginObj->removeOTP($user_id);
             $_SESSION['otp_verified'] = true;
-            $_SESSION['user_id_for_reset'] = $user_id;
-            unset($_SESSION['otp_requested_user_id']);
-            session_regenerate_id(true);
             
             ?>
                 <script>
@@ -252,7 +257,7 @@ switch ($status) {
         
         try{
             
-            $user_id = $_SESSION["user_id_for_reset"];
+            $user_id = $_SESSION['otp_requested_user_id'];
             $password = $_POST["new_password"];
             $confirmedPassword = $_POST["confirm_password"];
             
