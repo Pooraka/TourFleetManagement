@@ -3,13 +3,14 @@ include '../commons/session.php';
 
 if (!isset($_SESSION['otp_requested_user_id'])) {
     
-    $msg = "Unauthorized access or session expired. Please start the password reset process again";
-    $msg = base64_encode($msg);
+    http_response_code(403);
     ?>
         <script>
-            window.location ="../view/login.php?msg=<?php echo $msg; ?>";
+            window.location="/tourfleetmanagement/errorpages/403.php";
         </script>
     <?php
+    session_destroy();
+    exit();
 }
 ?>
 

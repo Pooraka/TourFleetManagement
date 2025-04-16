@@ -45,13 +45,26 @@ switch ($status) {
                 $user_id = $userSession['user_id'];
                 
                 if($userSession['login_status']==2 && $userSession['otp']!=""){
+                    
                     $loginObj->removeOTP($user_id);
+                }
+                
+                if (isset($_SESSION['otp_requested_user_id'])) {
+                    
+                    unset($_SESSION['otp_requested_user_id']);
+                }
+                
+                if (isset($_SESSION['otp_verified'])) {
+                    
+                        unset($_SESSION['otp_verified']);
                 }
 
                 if ($userSession['user_status'] == -1) {
+                    
                     throw new Exception("User is deleted");
                 }
                 if ($userSession['user_status'] == 0) {
+                    
                     throw new Exception("User is deactivated");
                 }
 
@@ -183,13 +196,6 @@ switch ($status) {
         
         try{
         
-            $User_entered_otp = $_POST["otp"];
-
-            if ($User_entered_otp == "") {
-
-                throw new Exception("OTP Cannot Be Empty");
-            }
-            
             if (!isset($_SESSION['otp_requested_user_id'])) {
                 
                 http_response_code(403);
@@ -201,6 +207,13 @@ switch ($status) {
                 <?php
                 session_destroy();
                 exit();
+            }
+        
+            $User_entered_otp = $_POST["otp"];
+
+            if ($User_entered_otp == "") {
+
+                throw new Exception("OTP Cannot Be Empty");
             }
             
             $user_id = $_SESSION['otp_requested_user_id'];
@@ -257,21 +270,21 @@ switch ($status) {
         
         try{
             
+            if(!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified']!=true ){
+                
+                http_response_code(403);
+                ?>
+                <script>
+                    window.location="/tourfleetmanagement/errorpages/403.php";
+                </script>
+                <?php
+                session_destroy();
+                exit();
+            }
+            
             $user_id = $_SESSION['otp_requested_user_id'];
             $password = $_POST["new_password"];
             $confirmedPassword = $_POST["confirm_password"];
-            
-            if(!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified']!=true ){
-                
-                session_destroy();
-                $msg = "Unauthorized Access";
-                $msg = base64_encode($msg);
-                ?>
-                    <script>
-                        window.location="../view/login.php?msg=<?php echo $msg;?>";
-                    </script>
-                <?php
-            }
             
             if($password==""){
                 throw new Exception ("New password cannot be empty");
