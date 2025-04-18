@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2025 at 05:11 PM
+-- Generation Time: Apr 18, 2025 at 12:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -114,10 +114,8 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (3, 3),
 (3, 5),
 (4, 1),
-(4, 3),
 (4, 5),
 (5, 1),
-(5, 3),
 (5, 5),
 (6, 1),
 (6, 3),
@@ -125,9 +123,7 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (7, 1),
 (7, 3),
 (8, 1),
-(8, 3),
 (9, 1),
-(9, 3),
 (9, 5),
 (10, 1),
 (10, 3),
@@ -172,7 +168,6 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (37, 3),
 (37, 5),
 (38, 1),
-(38, 3),
 (38, 5),
 (39, 1),
 (39, 3),
@@ -208,11 +203,11 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`, `otp`, `otp_expiry`) VALUES
-(1, 'hasendrak', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 1, 1, '292623', '2025-04-11 15:33:23'),
-(4, 'clintb', '52fbd35f82a73848807154640259deb53f8f4f75', 3, 1, NULL, NULL),
-(6, 'stever', 'b8b79503ca8995225bd8763591a462f7a13d2bf3', 5, 1, NULL, NULL),
-(8, 'tonys', '51eac6b471a284d3341d8c0c63d0f1a286262a18', 7, 1, NULL, '0000-00-00 00:00:00'),
-(9, 'natashar', '5b2395136ceda7a531c8737b1693f853065b6aac', 8, 1, NULL, NULL);
+(1, 'hasendra@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '618788', '2025-04-16 15:45:44'),
+(4, 'clintb@st.lk', '6abed34e62b96bc30d945cdb8cb39c4a4af7fd29', 3, 1, '', '0000-00-00 00:00:00'),
+(6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
+(8, 'tonys@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 7, 1, '', '0000-00-00 00:00:00'),
+(9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -238,7 +233,7 @@ INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `
 (3, 'Tender management', 'tender.png', 'tender.php', 1),
 (4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1),
 (5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1),
-(6, 'Bus management', 'busmanagement.png', 'busmanagement.php', 1),
+(6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1),
 (7, 'Bus maintenance', 'busmaintenance.png', 'busmaintenance.php', 1),
 (8, 'Customer', 'customer.png', 'customer.php', 1),
 (9, 'Finance management', 'finance.png', 'finance.php', 1),
@@ -337,7 +332,7 @@ INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic
 (3, 'Clint', 'Barton', '2025-02-12', '999999999V', 4, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
 (7, 'Tony', 'Stark', '1996-12-15', '199512347521', 5, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
-(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 0);
+(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 1);
 
 -- --------------------------------------------------------
 
@@ -359,14 +354,14 @@ CREATE TABLE `user_contact` (
 INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `user_id`) VALUES
 (78, 1, '0736415732', 8),
 (79, 2, '0112843951', 8),
-(102, 1, '0778810839', 3),
-(103, 2, '0112729729', 3),
 (106, 1, '0734351355', 5),
 (107, 2, '0112008888', 5),
 (122, 1, '0779535000', 1),
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
-(125, 2, '0312243581', 7);
+(125, 2, '0312243581', 7),
+(126, 1, '0778810839', 3),
+(127, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -460,7 +455,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
