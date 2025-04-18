@@ -18,16 +18,16 @@ $userSession=$_SESSION["user"];
         <?php $pageName="Bus Management" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group" style="background-color: transparent;">
-                <a href="" class="list-group-item" style="background-color: #e4eaeb">
+            <ul class="list-group">
+                <a href="add-bus.php" class="list-group-item">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Bus
                 </a>
-                <a href="" class="list-group-item" style="background-color: #e4eaeb">
+                <a href="view-buses.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="" class="list-group-item" style="background-color: #e4eaeb">
+                <a href="generate-bus-reports.php" class="list-group-item">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Generate Bus Reports
                 </a>

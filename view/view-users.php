@@ -67,7 +67,7 @@ $userResult = $userObj->getAllUsers();
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
-                                <th>&nbsp;</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
