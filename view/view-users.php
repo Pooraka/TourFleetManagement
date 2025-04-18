@@ -78,7 +78,7 @@ $userResult = $userObj->getAllUsers();
                                     
                                     if($userRow["user_status"]==0){
                                         
-                                        $status ="Deactive";
+                                        $status ="Deactived";
                                     }
                                     
                                     $img_path="../images/userimages/";
@@ -96,15 +96,10 @@ $userResult = $userObj->getAllUsers();
                                     $user_id = base64_encode($user_id);
                             ?>
                                     <tr
-                                        <?php
-                                                
-                                                if($userRow["user_status"]==1){
-                                            ?>
-                                                    style="background-color:#92bdbf;color: black;"
-                                            <?php
-                                                }elseif($userRow["user_status"]==0){
+                                        <?php 
+                                                if($userRow["user_status"]==0){
                                             ?>        
-                                                    style="background-color:#d8bfd8;color: black;"
+                                                    style="background-color:#d8bfd8;"
                                             <?php
                                                 }
                                             ?>
