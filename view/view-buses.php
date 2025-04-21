@@ -21,7 +21,7 @@ $busResult = $busObj->getAllBuses();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Management" ?>
+        <?php $pageName="Bus Management - View Buses" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -61,11 +61,11 @@ $busResult = $busObj->getAllBuses();
                     <table class="table" id="bustable">
                         <thead>
                             <tr>
-                                <th>Vehicle No</th>
-                                <th>Manufacturer</th>
-                                <th>Model</th>
-                                <th>Year</th>                                
+                                <th>Vehicle</br>No</th>
+                                <th>Make</th>
+                                <th>Model</th>                               
                                 <th>Passenger</br>Capacity</th>
+                                <th>Category</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -76,28 +76,28 @@ $busResult = $busObj->getAllBuses();
                                 while($busRow = $busResult->fetch_assoc()){
                                     
                                     $status = 'Operational';
-                                    $bus_id = $busRow['bus_id'];
-                                    $bus_id = base64_encode($bus_id);
+                                    $busId = $busRow['bus_id'];
+                                    $busId = base64_encode($busId);
                                     
                                 ?>
                             
                                     <tr>
-                                        <td><?php echo $busRow['registration_number'];?></td>
-                                        <td><?php echo $busRow['manufacturer'];?></td>
+                                        <td><?php echo $busRow['vehicle_no'];?></td>
+                                        <td><?php echo $busRow['make'];?></td>
                                         <td><?php echo $busRow['model'];?></td>
-                                        <td><?php echo $busRow['year'];?></td>
                                         <td><?php echo $busRow['capacity'];?></td>
+                                        <td><?php echo $busRow['category_name'];?></td>
                                         <td><?php echo $status;?></td>
                                         <td>
-                                            <a href="view-bus.php?bus_id=<?php echo $bus_id;?>" class="btn btn-info" style="margin:2px">
+                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-info" style="margin:2px">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
                                                 View
                                             </a>
-                                            <a href="edit-bus.php?bus_id=<?php echo $bus_id;?>" class="btn btn-warning" style="margin:2px">
+                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-warning" style="margin:2px">
                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                 Edit
                                             </a>
-                                            <a href="../controller/bus_controller.php?status=remove&bus_id=<?php echo $bus_id; ?>" class="btn btn-danger" style="margin:2px">
+                                            <a href="../controller/bus_controller.php?status=remove&bus_id=<?php echo $busId; ?>" class="btn btn-danger" style="margin:2px">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Remove
                                             </a> 

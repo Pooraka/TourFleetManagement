@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 09:26 PM
+-- Generation Time: Apr 22, 2025 at 12:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,14 +30,15 @@ SET time_zone = "+00:00";
 CREATE TABLE `bus` (
   `bus_id` int(10) NOT NULL,
   `category_id` int(10) NOT NULL,
-  `registration_number` varchar(10) NOT NULL,
-  `manufacturer` varchar(100) NOT NULL,
+  `vehicle_no` varchar(10) NOT NULL,
+  `make` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL,
   `year` year(4) NOT NULL,
   `capacity` int(2) NOT NULL,
   `ac_available` char(1) NOT NULL,
   `service_interval_km` int(6) NOT NULL,
-  `current_milage_km` int(6) NOT NULL,
+  `current_mileage_km` int(6) DEFAULT NULL,
+  `current_mileage_as_at` datetime NOT NULL DEFAULT current_timestamp(),
   `last_service_milage_km` int(6) NOT NULL,
   `service_interval_months` int(2) NOT NULL,
   `last_service_date` date NOT NULL,
@@ -48,21 +49,43 @@ CREATE TABLE `bus` (
 -- Dumping data for table `bus`
 --
 
-INSERT INTO `bus` (`bus_id`, `category_id`, `registration_number`, `manufacturer`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_milage_km`, `last_service_milage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
-(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'Y', 15000, 45000, 38000, 6, '2024-11-15', 1),
-(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, 176500, 6, '2025-01-20', 1),
-(3, 3, '62-9101', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95500, 89000, 12, '2024-09-01', 1),
-(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'Y', 10000, 115000, 108500, 6, '2025-02-10', 1),
-(5, 3, 'CP NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, 241000, 12, '2024-05-01', 1),
-(6, 2, 'SP NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, 55000, 12, '2024-10-05', 1),
-(7, 2, 'NC PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, 201000, 6, '2025-03-01', 1),
-(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 35000, 20000, 12, '2024-10-10', 1),
-(9, 3, 'UP NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, 48000, 12, '2025-02-28', 1),
-(10, 2, 'SG PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, 141000, 6, '2024-12-15', 1),
-(11, 3, 'NW PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, 122000, 12, '2024-08-20', 1),
-(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, 39000, 8, '2024-11-30', 1),
-(13, 1, 'NW PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, 181000, 6, '2025-01-05', 1),
-(14, 2, 'WP NC-1212', 'Lanka Ashok Leyland', 'Viking', '2021', 54, 'Y', 10000, 75000, 68000, 6, '2025-03-15', 1);
+INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_milage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
+(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'Y', 15000, 45000, '2025-04-21 22:57:00', 38000, 6, '2024-11-15', 1),
+(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1),
+(3, 3, '62-9101', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95500, '2025-04-21 22:57:00', 89000, 12, '2024-09-01', 1),
+(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'Y', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1),
+(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, '2025-04-21 22:57:00', 241000, 12, '2024-05-01', 1),
+(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1),
+(7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1),
+(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 35000, '2025-04-21 22:57:00', 20000, 12, '2024-10-10', 1),
+(9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', 1),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', 1),
+(11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1),
+(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, '2025-04-21 22:57:00', 39000, 8, '2024-11-30', 1),
+(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1),
+(14, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2021', 54, 'Y', 10000, 75000, '2025-04-21 22:57:00', 68000, 6, '2025-03-15', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bus_category`
+--
+
+CREATE TABLE `bus_category` (
+  `category_id` int(10) NOT NULL,
+  `category_name` varchar(100) NOT NULL,
+  `category_description` text DEFAULT NULL,
+  `category_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bus_category`
+--
+
+INSERT INTO `bus_category` (`category_id`, `category_name`, `category_description`, `category_status`) VALUES
+(1, 'Luxury', NULL, 1),
+(2, 'Standard', NULL, 1),
+(3, 'Mini Bus', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -417,6 +440,12 @@ ALTER TABLE `bus`
   ADD PRIMARY KEY (`bus_id`);
 
 --
+-- Indexes for table `bus_category`
+--
+ALTER TABLE `bus_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- Indexes for table `function`
 --
 ALTER TABLE `function`
@@ -475,6 +504,12 @@ ALTER TABLE `user_contact`
 --
 ALTER TABLE `bus`
   MODIFY `bus_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `bus_category`
+--
+ALTER TABLE `bus_category`
+  MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `function`
