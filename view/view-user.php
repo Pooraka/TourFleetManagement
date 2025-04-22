@@ -71,7 +71,7 @@ $moduleResult=$userObj->getRoleModules($user_role);
                 <div class="panel panel-default" style="height:auto">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-xs-3 col-md-2">
                                 <img src="
                                      <?php if($userRow['user_image']){
                                      ?>
@@ -84,20 +84,12 @@ $moduleResult=$userObj->getRoleModules($user_role);
                                     }
                                     ?>
                                      
-                                     " alt="User Image" class="img-responsive" style="border-radius: 50%"/>
+                                     " alt="User Image" class="img-responsive" style="border-radius: 50%;max-height: 100%"/>
                             </div>
-                            <div class="col-md-10" >
-                                <div class="row">
-                                    <div class="col-md-offset-1">
-                                        <h3><b><?php echo $userRow['user_fname']." ".$userRow['user_lname'];?></b> </h3>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-offset-1">
-                                        <h4 style="color:grey"><?php echo $userRow['role_name'];?></h4>
-                                        <span>Username : <?php echo $userRow['login_username'];?> </span>
-                                    </div>
-                                </div>
+                            <div class="col-xs-9 col-md-10" >
+                                <h3 style="margin-top: 7px;"><b><?php echo $userRow['user_fname']." ".$userRow['user_lname'];?></b> </h3>
+                                <h4 style="color:grey; margin-top: 0;"><?php echo $userRow['role_name'];?></h4>
+                                <span>Username : <?php echo $userRow['login_username'];?> </span>
                             </div>
                         </div>
                         <hr/><!-- Separate Header Info -->
