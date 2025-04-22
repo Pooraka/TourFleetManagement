@@ -119,6 +119,8 @@ $moduleResult=$userObj->getRoleModules($user_role);
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Date Of Birth :</span>
                                 <span style="font-size: 16px;"><?php echo $userRow['user_dob'];?></span>
+                                </br>
+                                </br>
                             </div>
                             <div class="col-md-6">
                                 <h4><span class="glyphicon glyphicon-phone-alt"></span> &nbsp; Contact Information</h4>
@@ -133,6 +135,8 @@ $moduleResult=$userObj->getRoleModules($user_role);
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Landline :</span>
                                 <span style="font-size: 16px;"><?php if($landlineRow!=null) {echo $landlineRow['contact_number'];}?></span>
+                                </br>
+                                </br>
                             </div>
                         </div>
                         <hr/>
