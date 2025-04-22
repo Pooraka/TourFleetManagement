@@ -43,21 +43,24 @@ $userResult = $userObj->getAllUsers();
             </ul>
         </div>
         <div class="col-md-9">
-            <?php
-            
-                if(isset($_GET["msg"])){
-                    
-                    $msg = base64_decode($_GET["msg"]);
-            ?>
-                    <div class="row">
-                        <div class="alert alert-success" style="text-align:center">
-                            <?php echo $msg; ?>
-                        </div>
-                    </div>
-            <?php
-                }
-            ?>
-            
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <?php
+
+                        if(isset($_GET["msg"])){
+
+                            $msg = base64_decode($_GET["msg"]);
+                    ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <table class="table" id="usertable">
