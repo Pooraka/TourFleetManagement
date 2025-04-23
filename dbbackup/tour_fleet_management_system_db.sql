@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2025 at 12:31 AM
+-- Generation Time: Apr 23, 2025 at 03:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `bus` (
   `service_interval_km` int(6) NOT NULL,
   `current_mileage_km` int(6) DEFAULT NULL,
   `current_mileage_as_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `last_service_milage_km` int(6) NOT NULL,
+  `last_service_mileage_km` int(6) NOT NULL,
   `service_interval_months` int(2) NOT NULL,
   `last_service_date` date NOT NULL,
   `bus_status` int(10) NOT NULL DEFAULT 1
@@ -49,21 +49,22 @@ CREATE TABLE `bus` (
 -- Dumping data for table `bus`
 --
 
-INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_milage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
-(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'Y', 15000, 45000, '2025-04-21 22:57:00', 38000, 6, '2024-11-15', 1),
+INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_mileage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
+(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 44000, '2025-04-22 13:25:04', 38000, 6, '2024-11-15', 1),
 (2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1),
-(3, 3, '62-9101', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95500, '2025-04-21 22:57:00', 89000, 12, '2024-09-01', 1),
-(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'Y', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1),
-(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, '2025-04-21 22:57:00', 241000, 12, '2024-05-01', 1),
+(3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 94000, '2025-04-22 13:26:07', 89000, 5, '2024-09-01', 1),
+(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1),
+(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, '2025-04-21 22:57:00', 241000, 4, '2024-05-01', 1),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1),
-(7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1),
+(7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', -1),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 35000, '2025-04-21 22:57:00', 20000, 12, '2024-10-10', 1),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', 1),
-(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', 1),
-(11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', -1),
+(11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', -1),
 (12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, '2025-04-21 22:57:00', 39000, 8, '2024-11-30', 1),
-(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1),
-(14, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2021', 54, 'Y', 10000, 75000, '2025-04-21 22:57:00', 68000, 6, '2025-03-15', 1);
+(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', -1),
+(16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 37000, '2025-04-22 10:47:01', 35000, 4, '2025-04-01', 1),
+(17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 25000, '2025-04-23 14:07:44', 20000, 3, '2025-04-23', 1);
 
 -- --------------------------------------------------------
 
@@ -269,7 +270,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`, `otp`, `otp_expiry`) VALUES
-(1, 'hasendra@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '618788', '2025-04-16 15:45:44'),
+(1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '618788', '2025-04-16 15:45:44'),
 (4, 'clintb@st.lk', '6abed34e62b96bc30d945cdb8cb39c4a4af7fd29', 3, 2, '545684', '2025-04-18 11:06:27'),
 (6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
 (8, 'tonys@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 7, 1, '', '0000-00-00 00:00:00'),
@@ -503,7 +504,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bus`
 --
 ALTER TABLE `bus`
-  MODIFY `bus_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `bus_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `bus_category`

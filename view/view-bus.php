@@ -96,7 +96,7 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
                                 <h4><span class="fa-solid fa-circle-info"></span> &nbsp; Bus Status</h4>
                             </div>
                             </br>
-                            <div class="col-md-3 col-lg-4">
+                            <div class="col-md-4">
                                 <div class="panel <?php echo $statusClass;?>">
                                     <div class="panel-heading" style="text-align: center;">
                                         <span class="fa-solid fa-gauge-high" style="font-size: 20px; margin-bottom: 10px; display: block;"></span>
@@ -105,7 +105,7 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-lg-4">
+                            <div class="col-md-4">
                                 <div class="panel <?php echo $serviceDueDateClass;?>">
                                     <div class="panel-heading" style="text-align: center;">
                                         <span class="fa-solid fa-clock" style="font-size: 20px; margin-bottom: 10px; display: block;"></span>
@@ -114,7 +114,7 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5 col-lg-4">
+                            <div class="col-md-4">
                                 <div class="panel <?php echo $remainingKmUntilServiceClass;?>">
                                     <div class="panel-heading" style="text-align: center;">
                                         <span class="fa-solid fa-road" style="font-size: 20px; margin-bottom: 10px; display: block;"></span>
