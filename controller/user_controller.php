@@ -84,6 +84,8 @@ switch ($status)
             }
 
             $patnic = "/^([0-9]{9}[VX]{1}|[0-9]{12})$/";
+            $patmno = "/^07[0-9]{8}$/";
+            $patlno = "/^0[0-9]{9}$/";
         
             if($fname==""){
                 throw new Exception("First Name cannot be Empty!!!!");
@@ -106,8 +108,14 @@ switch ($status)
             if($mno==""){
                 throw new Exception("Mobile Number cannot be Empty!!!!");
             }
+            if(!preg_match($patmno, $mno)){
+                 throw new Exception("Invalid Mobile Number");
+            }
             if($lno==""){
                 throw new Exception("Landline cannot be Empty!!!!");
+            }
+            if(!preg_match($patlno, $lno)){
+                 throw new Exception("Invalid Landline");
             }
             if($user_name==""){
                 throw new Exception("Username cannot be Empty!!!!");

@@ -44,6 +44,7 @@ $(document).ready(function () {
 
         var patNic = /^([0-9]{9}[VvXx]|[0-9]{12})$/;
         var patMobile = /^07[0-9]{8}$/;
+        var patLandline = /^0[0-9]{9}/;
 
         if (fname == "")
         {
@@ -96,6 +97,12 @@ $(document).ready(function () {
         if (lno == "")
         {
             $("#msg").html("Landline Cannot Be Empty!");
+            $("#msg").addClass("alert alert-danger");
+            return false;
+        }
+        if (!lno.match(patLandline))
+        {
+            $("#msg").html("Landline is invalid!!!");
             $("#msg").addClass("alert alert-danger");
             return false;
         }
