@@ -119,10 +119,10 @@ $categoryResult = $busObj->getAllBusCategories();
                         <input type="number" class="form-control" name="currentmileage" id="currentmileage" placeholder="Ex: 21000"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="control-label">Last Service Mileage (Km)</label>
+                        <label class="control-label">Service Interval (Months) </label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="lastservicekm" id="lastservicekm" placeholder="Ex: 15000"/>
+                        <input type="number" class="form-control" name="serviceintervalmonths" id="serviceintervalmonths" placeholder="Ex: 3"/>
                     </div>
                 </div>
                 <div class="row">
@@ -132,16 +132,18 @@ $categoryResult = $busObj->getAllBusCategories();
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <label class="control-label">Service Interval (Months) </label>
+                        <label class="control-label">Last Service Mileage (Km)</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="serviceintervalmonths" id="serviceintervalmonths" placeholder="Ex: 3"/>
+                        <input type="number" class="form-control" name="lastservicekm" id="lastservicekm" placeholder="Ex: 15000"/>
+                        <h5>If vehicle is brand new enter 0 Km</h5>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Last Service Date</label>
                     </div>
                     <div class="col-md-3">
                         <input type="date" class="form-control" name="lastservicedate" id="lastservicedate"/>
+                        <h5>If vehicle is brand new enter today's date</h5>
                     </div>
                 </div>
                 <div class="row">
@@ -166,10 +168,10 @@ $categoryResult = $busObj->getAllBusCategories();
                     <div class="col-md-3">
                         <select name="category" id="category" class="form-control" required="required">
                             <option value="">------------</option>
-                            <?php   while($busRow = $categoryResult->fetch_assoc()){
+                            <?php   while($busCategoryRow = $categoryResult->fetch_assoc()){
                                 ?>
-                                    <option value="<?php echo $busRow['category_id'];?>">
-                                        <?php echo $busRow['category_name']; ?>
+                                    <option value="<?php echo $busCategoryRow['category_id'];?>">
+                                        <?php echo $busCategoryRow['category_name']; ?>
                                     </option>
                             <?php
                                     }
@@ -191,5 +193,5 @@ $categoryResult = $busObj->getAllBusCategories();
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
-<!--<script src="../js/busValidation.js"></script>-->
+<script src="../js/busValidation.js"></script>
 </html>

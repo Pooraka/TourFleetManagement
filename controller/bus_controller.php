@@ -127,7 +127,7 @@ switch ($status){
             
             $currentMileageAsAt = date('Y-m-d H:i:s', time());
             
-            $busObj->addBusMileage($busId, $currentMileage, $currentMileageAsAt);
+            $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
             
             $msg = "Bus $vehicleNo Added Successfully";
             $msg = base64_encode($msg);
@@ -154,5 +154,166 @@ switch ($status){
 
         }
         
+    break;
+    
+    
+    case "remove_bus":
         
+        $busId = $_GET['bus_id'];
+        $busId = base64_decode($busId);
+        
+        $busObj->removeBus($busId);
+        
+        $msg = "Bus Removed Successfully";
+        $msg = base64_encode($msg);
+        
+        ?>
+            <script>
+                window.location="../view/view-buses.php?msg=<?php echo $msg;?>";
+            </script>
+        <?php
+        
+    break;
+        
+    case "update_bus":
+        
+        try{
+            
+            $busId = $_POST["bus_id"];
+            $vehicleNo = strtoupper(trim($_POST["vehicleno"]));
+            $make = $_POST["make"];
+            $model = $_POST["model"];
+            $year = $_POST["year"];
+            $capacity = $_POST["capacity"];
+            $serviceIntervalKM = $_POST["serviceintervalkm"];
+            $currentMileage = $_POST["currentmileage"];
+            $lastServiceKM = $_POST["lastservicekm"];
+            $serviceIntervalMonths = $_POST["serviceintervalmonths"];
+            $lastServiceDate = $_POST["lastservicedate"];
+            $ac = $_POST["ac"];
+            $category = $_POST["category"];
+            
+            if($vehicleNo == ""){
+                throw new Exception("Vehicle number cannot be empty");
+            }
+
+            $patternVehicleNo = "/^([A-Z]{3}[-][0-9]{4}|[A-Z]{2}[-][0-9]{4}|[0-9]{3}[-][0-9]{4}|[0-9]{2}[-][0-9]{4})$/";
+
+            if(!preg_match($patternVehicleNo, $vehicleNo)){
+                throw new Exception("Invalid vehicle number format");
+            }
+
+            if($make == ""){
+                throw new Exception("Make cannot be empty");
+            }
+
+            if($model == ""){
+                throw new Exception("Model cannot be empty");
+            }
+
+            if($year == ""){
+                throw new Exception("Year cannot be empty");
+            }
+
+            $patternYear = "/^(19|20)\d{2}$/";
+
+            if(!preg_match($patternYear, $year)){
+                throw new Exception("Invalid year format");
+            }
+
+            if($capacity == ""){
+                throw new Exception("Passenger capacity cannot be empty");
+            }
+
+            if(is_nan($capacity) || $capacity <= 0){
+                throw new Exception("Passenger capacity must be a positive number");
+            }
+
+            if($serviceIntervalKM == ""){
+                throw new Exception("Service interval cannot be empty");
+            }
+
+            if(is_nan($serviceIntervalKM) || $serviceIntervalKM <= 0){
+                throw new Exception("Service interval must be a positive number");
+            }
+
+            if($currentMileage == ""){
+                throw new Exception("Current mileage cannot be empty");
+            }
+
+            if(is_nan($currentMileage) || $currentMileage < 0){
+                throw new Exception("Current mileage must be 0 Km or above");
+            }
+
+            if($lastServiceKM == ""){
+                throw new Exception("Last service mileage cannot be empty");
+            }
+
+            if(is_nan($lastServiceKM) || $lastServiceKM < 0){
+                throw new Exception("Last service mileage must be 0 Km or above");
+            }
+
+            if($serviceIntervalMonths == ""){
+                throw new Exception("Service interval months cannot be empty");
+            }
+
+            if(is_nan($serviceIntervalMonths) || $serviceIntervalMonths <= 0){
+                throw new Exception("Service interval months must be a positive number");
+            }
+
+            if($lastServiceDate == ""){
+                throw new Exception("Last service date cannot be empty");
+            }
+
+            if($ac == ""){
+                throw new Exception("Please select if AC is available or not");
+            }
+
+            if($category == ""){
+                throw new Exception("Please select a category");
+            }
+
+            if($lastServiceKM > $currentMileage){
+                throw new Exception("Last service mileage cannot be greater than current mileage");
+            }
+            
+            $existingBusResult = $busObj->getBus($busId);
+            $existingBusRow = $existingBusResult->fetch_assoc();
+            
+            if($existingBusRow['current_mileage_km']!=$currentMileage){
+                
+                $currentMileageAsAt = date('Y-m-d H:i:s', time());
+                
+                $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
+            }
+            
+            $busObj->updateBus($busId, $category, $vehicleNo, $make, $model, $year, $capacity, $ac, $serviceIntervalKM, $lastServiceKM, $serviceIntervalMonths, $lastServiceDate);
+            
+            $msg = "Bus $vehicleNo Updated Successfully";
+            $msg = base64_encode($msg);
+            
+            ?>
+            
+            <script>
+                window.location="../view/view-buses.php?msg=<?php echo $msg;?>";
+            </script>
+            
+            <?php
+        }
+        
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/edit-bus.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+            
+            
+        }
+        
+    break;
 }

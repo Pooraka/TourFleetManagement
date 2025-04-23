@@ -40,22 +40,24 @@ $busResult = $busObj->getAllBuses();
             </ul>
         </div>
         <div class="col-md-9">
-            
-            <?php
-            
-                if(isset($_GET["msg"])){
-                    
-                    $msg = base64_decode($_GET["msg"]);
-            ?>
-                    <div class="row">
-                        <div class="alert alert-success" style="text-align:center">
-                            <?php echo $msg; ?>
-                        </div>
-                    </div>
-            <?php
-                }
-            ?>
-            
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <?php
+
+                        if(isset($_GET["msg"])){
+
+                            $msg = base64_decode($_GET["msg"]);
+                    ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <table class="table" id="bustable">
@@ -97,7 +99,7 @@ $busResult = $busObj->getAllBuses();
                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                 Edit
                                             </a>
-                                            <a href="../controller/bus_controller.php?status=remove&bus_id=<?php echo $busId; ?>" class="btn btn-danger" style="margin:2px">
+                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" class="btn btn-danger" style="margin:2px">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Remove
                                             </a> 
