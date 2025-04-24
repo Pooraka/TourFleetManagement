@@ -15,7 +15,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Maintenance" ?>
+        <?php $pageName="Bus Maintenance - Initiate Service" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -33,9 +33,25 @@ $userSession=$_SESSION["user"];
                 </a>
             </ul>
         </div>
-        <div class="col-md-9">
-        
-        </div>
+        <form action="../controller/service_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
+            <div class="col-md-9">
+                <div class="row">
+                    <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
+                        <?php if (isset($_GET["msg"])) { ?>
+
+                            <script>
+                                var msgElement = document.getElementById("msg");
+                                msgElement.classList.add("alert", "alert-danger");
+                            </script>
+
+                            <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
