@@ -62,7 +62,7 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Management - Add Bus" ?>
+        <?php $pageName="Bus Management - View Bus" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">

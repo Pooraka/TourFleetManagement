@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2025 at 03:46 PM
+-- Generation Time: Apr 24, 2025 at 02:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -52,7 +52,7 @@ CREATE TABLE `bus` (
 INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_mileage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
 (1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 44000, '2025-04-22 13:25:04', 38000, 6, '2024-11-15', 1),
 (2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1),
-(3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 94000, '2025-04-22 13:26:07', 89000, 5, '2024-09-01', 1),
+(3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 94001, '2025-04-24 11:52:07', 89000, 5, '2024-09-01', 1),
 (4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1),
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, '2025-04-21 22:57:00', 241000, 4, '2024-05-01', 1),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1),
@@ -301,7 +301,7 @@ INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `
 (4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1),
 (5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1),
 (6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1),
-(7, 'Bus maintenance', 'busmaintenance.png', 'busmaintenance.php', 1),
+(7, 'Bus maintenance', 'busmaintenance.png', 'bus-maintenance.php', 1),
 (8, 'Customer', 'customer.png', 'customer.php', 1),
 (9, 'Finance management', 'finance.png', 'finance.php', 1),
 (10, 'User management', 'user.png', 'user.php', 1);
@@ -371,6 +371,50 @@ INSERT INTO `role_module` (`role_id`, `module_id`) VALUES
 (6, 7),
 (7, 5),
 (8, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_station`
+--
+
+CREATE TABLE `service_station` (
+  `service_station_id` int(10) NOT NULL,
+  `service_station_name` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `service_station_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `service_station`
+--
+
+INSERT INTO `service_station` (`service_station_id`, `service_station_name`, `address`, `service_station_status`) VALUES
+(1, 'High Level Auto Servicing', 'No. 123, High Level Road, Pahathgama, Hanwella', 1),
+(2, 'Vinko Auto Repair', 'No. 526, Avissawella Road, Embulgama, Hanwella', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_station_contact`
+--
+
+CREATE TABLE `service_station_contact` (
+  `service_station_contact_id` int(10) NOT NULL,
+  `service_station_contact_number` varchar(10) NOT NULL,
+  `contact_type` int(11) NOT NULL,
+  `service_station_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `service_station_contact`
+--
+
+INSERT INTO `service_station_contact` (`service_station_contact_id`, `service_station_contact_number`, `contact_type`, `service_station_id`) VALUES
+(1, '0751235841', 1, 1),
+(2, '0366532148', 2, 1),
+(9, '0751231247', 1, 2),
+(10, '0366531234', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -484,6 +528,18 @@ ALTER TABLE `role_module`
   ADD PRIMARY KEY (`role_id`,`module_id`);
 
 --
+-- Indexes for table `service_station`
+--
+ALTER TABLE `service_station`
+  ADD PRIMARY KEY (`service_station_id`);
+
+--
+-- Indexes for table `service_station_contact`
+--
+ALTER TABLE `service_station_contact`
+  ADD PRIMARY KEY (`service_station_contact_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -535,6 +591,18 @@ ALTER TABLE `module`
 --
 ALTER TABLE `role`
   MODIFY `role_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `service_station`
+--
+ALTER TABLE `service_station`
+  MODIFY `service_station_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `service_station_contact`
+--
+ALTER TABLE `service_station_contact`
+  MODIFY `service_station_contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user`
