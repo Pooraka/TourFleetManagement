@@ -117,11 +117,11 @@ $busResult = $busObj->getAllBuses();
 </body>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
-     <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
-     <script>
-         $(document).ready(function(){
-             
-             $("#bustable").DataTable();
-         });
-     </script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $("#bustable").DataTable();
+    });
+</script>
 </html>
