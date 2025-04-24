@@ -169,6 +169,7 @@ switch ($status) {
                     
                 }
                 else{
+                    $loginObj->removeOTP($user_id);
                     throw new Exception ("OTP Sending Failed");
                 }
             }
