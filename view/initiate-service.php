@@ -45,7 +45,7 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                 </a>
             </ul>
         </div>
-        <form action="../controller/service_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
+        <form action="../controller/service_detail_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
                     <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">

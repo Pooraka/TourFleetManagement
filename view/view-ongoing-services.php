@@ -1,11 +1,18 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/service_detail_model.php';
+include_once '../model/bus_model.php';
+include_once '../model/service_station_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
 
+$serviceDetailObj = new ServiceDetail();
+$serviceDetailResult = $serviceDetailObj->getOngoingServices();
 
+$busObj = new Bus();
+$serviceStationObj = new ServiceStation();
 ?>
 
 <html lang="en">
@@ -70,53 +77,55 @@ $userSession=$_SESSION["user"];
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="bustable">
+                    <table class="table" id="servicetable">
                         <thead>
                             <tr>
-                                <th>Vehicle</br>No</th>
-                                <th>Make</th>
-                                <th>Model</th>                               
-                                <th>Passenger</br>Capacity</th>
-                                <th>Category</th>
-                                <th>Status</th>
+                                <th>Vehicle</th>
+                                <th>Current Mileage</th>
+                                <th>Service Station</th>
+                                <th>Send to Service On</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
+                            <?php while($serviceDetailRow = $serviceDetailResult->fetch_assoc()){
                                 
-                                while($busRow = $busResult->fetch_assoc()){
-                                    
-                                    $status = 'Operational';
-                                    $busId = $busRow['bus_id'];
-                                    $busId = base64_encode($busId);
-                                    
+                                //get vehicle number
+                                $busId = $serviceDetailRow['bus_id'];
+                                $busResult = $busObj->getBus($busId);
+                                $busRow = $busResult->fetch_assoc();
+                                $vehicleNo = $busRow['vehicle_no'];
+                                
+                                //get service station name
+                                $serviceStationId = $serviceDetailRow['service_station_id'];
+                                $serviceStationResult = $serviceStationObj->getServiceStation($serviceStationId);
+                                $serviceStationRow = $serviceStationResult->fetch_assoc();
+                                $serviceStationName = $serviceStationRow['service_station_name'];
+                                
+                                $serviceId = $serviceDetailRow['service_id'];
+                                $serviceId = base64_encode($serviceId);
                                 ?>
                             
-                                    <tr>
-                                        <td><?php echo $busRow['vehicle_no'];?></td>
-                                        <td><?php echo $busRow['make'];?></td>
-                                        <td><?php echo $busRow['model'];?></td>
-                                        <td><?php echo $busRow['capacity'];?></td>
-                                        <td><?php echo $busRow['category_name'];?></td>
-                                        <td><?php echo $status;?></td>
-                                        <td>
-                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-info" style="margin:2px">
-                                                <span class="glyphicon glyphicon-search"></span>                                                  
-                                                View
-                                            </a>
-                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-warning" style="margin:2px">
-                                                <span class="glyphicon glyphicon-pencil"></span>
-                                                Edit
-                                            </a>
-                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" class="btn btn-danger" style="margin:2px">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                                Remove
-                                            </a> 
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
+                            <tr>
+                                <td><?php echo $vehicleNo;?></td>
+                                <td><?php echo $serviceDetailRow['mileage_at_service'];?>&nbsp;Km</td>
+                                <td><?php echo $serviceStationName;?></td>
+                                <td><?php echo $serviceDetailRow['start_date'];?></td>
+                                <td>
+                                    <a href="complete-service.php?service_id=<?php echo $serviceId; ?>" class="btn btn-success" style="margin:2px">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                        Complete
+                                    </a>
+                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" class="btn btn-danger" style="margin:2px">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                        Cancel
+                                    </a> 
+                                </td>
+                            </tr>
+                            
+                            <?php
+                                
+                            }
                             ?>
                         </tbody>
                     </table>
@@ -131,7 +140,7 @@ $userSession=$_SESSION["user"];
 <script>
     $(document).ready(function(){
 
-        $("#bustable").DataTable();
+        $("#servicetable").DataTable();
     });
 </script>
 </html>

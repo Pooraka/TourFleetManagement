@@ -17,4 +17,14 @@ class ServiceDetail{
         $serviceId=$con->insert_id;
         return $serviceId;
     }
+    
+    public function getOngoingServices(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM service_detail WHERE service_status='1'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }
