@@ -1,9 +1,17 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/bus_model.php';
+include_once '../model/service_station_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$busObj = new Bus();
+$busResult = $busObj->getAllBusesToService();
+
+$serviceStationObj = new ServiceStation();
+$serviceStationResult = $serviceStationObj->getServiceStations();
 ?>
 
 <html lang="en">
@@ -31,6 +39,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-wrench"></span> &nbsp;
                     Initiate Service
                 </a>
+                <a href="view-ongoing-services.php" class="list-group-item">
+                    <span class="fa-solid fa-gear fa-spin"></span> &nbsp;
+                    View Ongoing Services
+                </a>
             </ul>
         </div>
         <form action="../controller/service_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
@@ -48,6 +60,59 @@ $userSession=$_SESSION["user"];
                             <?php
                         }
                         ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="control-label">Vehicle Number</label>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="bus_id" id="bus_id" class="form-control" required="required">
+                            <option value="">Select a Vehicle</option>
+                            <?php   while($busRow = $busResult->fetch_assoc()){ ?>
+                                        
+                            <option value="<?php echo $busRow['bus_id'];?>"><?php echo $busRow['vehicle_no'];?></option>
+                            
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Service Station</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="service_station_id" id="service_station_id" class="form-control" required="required">
+                            <option value="">Select a Service Station</option>
+                            <?php   while($serviceStationRow = $serviceStationResult->fetch_assoc()){ ?>
+                                        
+                            <option value="<?php echo $serviceStationRow['service_station_id'];?>"><?php echo $serviceStationRow['service_station_name'];?></option>
+                            
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label">Current Mileage (Km)</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control" name="currentmileage" id="currentmileage" placeholder="Ex: 21537"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"> &nbsp; </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"> &nbsp; </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                        <input type="reset" class="btn btn-danger" value="Reset"/>
                     </div>
                 </div>
             </div>

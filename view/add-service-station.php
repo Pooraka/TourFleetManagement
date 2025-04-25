@@ -27,9 +27,13 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Service Stations
                 </a>
-                <a href="" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate Reports
+                <a href="initiate-service.php" class="list-group-item">
+                    <span class="fa-solid fa-wrench"></span> &nbsp;
+                    Initiate Service
+                </a>
+                <a href="view-ongoing-services.php" class="list-group-item">
+                    <span class="fa-solid fa-gear fa-spin"></span> &nbsp;
+                    View Ongoing Services
                 </a>
             </ul>
         </div>
