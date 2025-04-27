@@ -81,7 +81,7 @@ $serviceStationObj = new ServiceStation();
                         <thead>
                             <tr>
                                 <th>Vehicle</th>
-                                <th>Current Mileage</th>
+                                <th>Mileage at Service</th>
                                 <th>Service Station</th>
                                 <th>Send to Service On</th>
                                 <th>Actions</th>

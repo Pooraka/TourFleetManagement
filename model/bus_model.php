@@ -115,4 +115,14 @@ class Bus{
         
         $con->query($sql) or die ($con->error);
     }
+    
+    public function updateServicedBus($busId,$lastServiceMileage,$lastServiceDate){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE bus SET bus_status='1', last_service_mileage_km='$lastServiceMileage', "
+                . "last_service_date='$lastServiceDate' WHERE bus_id='$busId'";
+        
+        $con->query($sql) or die ($con->error);
+    }
 }
