@@ -69,7 +69,7 @@ $moduleResult=$userObj->getRoleModules($user_role);
         <form action="../controller/user_controller.php?status=update_user" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="panel panel-default" style="height:auto">
-                    <div class="panel-body">
+                    <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3 col-md-2">
                                 <img src="
@@ -92,7 +92,8 @@ $moduleResult=$userObj->getRoleModules($user_role);
                                 <span>Username : <?php echo $userRow['login_username'];?> </span>
                             </div>
                         </div>
-                        <hr/><!-- Separate Header Info -->
+                    </div>
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <h4><span class="glyphicon glyphicon-user"></span> &nbsp; Personal Information</h4>

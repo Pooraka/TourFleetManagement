@@ -83,14 +83,15 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
         <form action="../controller/bus_controller.php?status=update_bus" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="panel panel-default" style="height:auto">
-                    <div class="panel-body">
+                    <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12" style="text-align:center">
                                 <h2><b><?php echo $busRow['vehicle_no'];?></b></h2>
                                 <h3 style="color:grey"><?php echo $busRow['make']." ".$busRow['model'];?></h3>
                             </div>
                         </div>
-                        <hr/>
+                    </div>
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <h4><span class="fa-solid fa-circle-info"></span> &nbsp; Bus Status</h4>
