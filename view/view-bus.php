@@ -32,7 +32,7 @@ $lastServiceKM = (int) $busRow['last_service_mileage_km'];
 $currentMileage = (int) $busRow['current_mileage_km'];
 $serviceIntervalKM = (int) $busRow['service_interval_km'];
 $serviceDueKm = $lastServiceKM + $serviceIntervalKM;
-$remainingKmUntilService = ($serviceDueKm<=$currentMileage)? "Service is due" : $serviceDueKm-$currentMileage;
+$remainingKmUntilService = ($serviceDueKm<=$currentMileage)? "Service is due" : number_format($serviceDueKm-$currentMileage,0);
 
 $remainingKmUntilServiceClass ="panel-success";
 
@@ -163,7 +163,7 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
                                 <h4><span class="fa-solid fa-wrench"></span> &nbsp; Maintenance Information</h4>
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Current Mileage (Km) :</span>
-                                <span style="font-size: 16px;"><?php echo $currentMileage;?></span>
+                                <span style="font-size: 16px;"><?php echo number_format($currentMileage,0);?></span>
                                 </br>
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Current Mileage As At :</span>
@@ -175,11 +175,11 @@ if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due
                                 </br>
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Last Service Mileage (Km) :</span>
-                                <span style="font-size: 16px;"><?php echo $lastServiceKM;?></span>
+                                <span style="font-size: 16px;"><?php echo number_format($lastServiceKM,0);?></span>
                                 </br>
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Service Interval (Km) :</span>
-                                <span style="font-size: 16px;"><?php echo $serviceIntervalKM;?></span>
+                                <span style="font-size: 16px;"><?php echo number_format($serviceIntervalKM,0);?></span>
                                 </br>
                                 </br>
                                 <span style="color:grey;font-size: 16px;">Service Interval (Months) :</span>
