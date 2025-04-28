@@ -60,11 +60,11 @@ class Bus{
         $con->query($sql) or die ($con->error);
     }
     
-    public function removeBus($busId){
+    public function removeBus($busId,$user_id){
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE bus SET bus_status = '-1' WHERE bus_id = '$busId'";
+        $sql = "UPDATE bus SET bus_status = '-1', removed_by = '$user_id' WHERE bus_id = '$busId'";
         
         $con->query($sql) or die ($con->error);
     }

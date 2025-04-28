@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 12:57 AM
+-- Generation Time: Apr 28, 2025 at 06:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,29 +42,30 @@ CREATE TABLE `bus` (
   `last_service_mileage_km` int(6) NOT NULL,
   `service_interval_months` int(2) NOT NULL,
   `last_service_date` date NOT NULL,
-  `bus_status` int(10) NOT NULL DEFAULT 1
+  `bus_status` int(10) NOT NULL DEFAULT 1,
+  `removed_by` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bus`
 --
 
-INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_mileage_km`, `service_interval_months`, `last_service_date`, `bus_status`) VALUES
-(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 48000, '2025-04-28 00:54:49', 48000, 6, '2025-04-28', 1),
-(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1),
-(3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1),
-(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1),
-(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 250000, '2025-04-21 22:57:00', 241000, 4, '2024-05-01', 1),
-(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1),
-(7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', -1),
-(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 35000, '2025-04-21 22:57:00', 20000, 12, '2024-10-10', 1),
-(9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', -1),
-(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', -1),
-(11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', -1),
-(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, '2025-04-21 22:57:00', 39000, 8, '2024-11-30', 1),
-(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', -1),
-(16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 37000, '2025-04-22 10:47:01', 35000, 4, '2025-04-01', 1),
-(17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 25500, '2025-04-25 14:16:04', 20000, 3, '2025-04-23', 1);
+INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_mileage_km`, `service_interval_months`, `last_service_date`, `bus_status`, `removed_by`) VALUES
+(1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 48000, '2025-04-28 00:54:49', 48000, 6, '2025-04-28', 1, NULL),
+(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1, NULL),
+(3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
+(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1, NULL),
+(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 241000, 4, '2024-05-01', 3, NULL),
+(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1, NULL),
+(7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
+(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 15000, '2025-04-28 15:43:22', 20000, 12, '2024-10-10', 3, NULL),
+(9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', -1, 3),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', 1, NULL),
+(11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
+(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, '2025-04-21 22:57:00', 39000, 8, '2024-11-30', 1, NULL),
+(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1, NULL),
+(16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 37000, '2025-04-22 10:47:01', 35000, 4, '2025-04-01', 1, NULL),
+(17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 25500, '2025-04-25 14:16:04', 20000, 3, '2025-04-23', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -181,8 +182,10 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (3, 3),
 (3, 5),
 (4, 1),
+(4, 3),
 (4, 5),
 (5, 1),
+(5, 3),
 (5, 5),
 (6, 1),
 (6, 3),
@@ -190,43 +193,69 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (7, 1),
 (7, 3),
 (8, 1),
+(8, 3),
 (9, 1),
+(9, 3),
 (9, 5),
 (10, 1),
 (10, 3),
 (11, 1),
 (11, 3),
 (12, 1),
+(12, 3),
 (13, 1),
+(13, 3),
 (14, 1),
+(14, 3),
 (15, 1),
+(15, 3),
 (16, 1),
+(16, 3),
 (17, 1),
+(17, 3),
 (18, 1),
+(18, 3),
 (19, 1),
+(19, 3),
 (20, 1),
+(20, 3),
 (21, 1),
+(21, 3),
 (22, 1),
+(22, 3),
 (23, 1),
+(23, 3),
 (24, 1),
+(24, 3),
 (24, 8),
 (25, 1),
+(25, 3),
 (26, 1),
+(26, 3),
 (26, 7),
 (27, 1),
+(27, 3),
 (27, 7),
 (28, 1),
+(28, 3),
 (28, 7),
 (29, 1),
+(29, 3),
 (29, 7),
 (30, 1),
+(30, 3),
 (30, 7),
 (31, 1),
+(31, 3),
 (31, 7),
+(32, 3),
 (32, 7),
+(33, 3),
 (33, 7),
+(34, 3),
 (34, 7),
 (35, 1),
+(35, 3),
 (35, 7),
 (36, 1),
 (36, 3),
@@ -235,19 +264,29 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (37, 3),
 (37, 5),
 (38, 1),
+(38, 3),
 (38, 5),
 (39, 1),
 (39, 3),
 (39, 5),
 (40, 1),
+(40, 3),
 (41, 1),
+(41, 3),
 (42, 1),
+(42, 3),
 (43, 1),
+(43, 3),
 (44, 1),
+(44, 3),
 (45, 1),
+(45, 3),
 (46, 1),
+(46, 3),
 (47, 1),
-(48, 1);
+(47, 3),
+(48, 1),
+(48, 3);
 
 -- --------------------------------------------------------
 
@@ -388,20 +427,25 @@ CREATE TABLE `service_detail` (
   `mileage_at_service` int(11) NOT NULL,
   `cost` decimal(10,2) DEFAULT NULL,
   `invoice` varchar(255) DEFAULT NULL,
-  `service_status` int(10) NOT NULL DEFAULT 1
+  `service_status` int(10) NOT NULL DEFAULT 1,
+  `initiated_by` int(10) NOT NULL,
+  `cancelled_by` int(10) DEFAULT NULL,
+  `completed_by` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `service_detail`
 --
 
-INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `mileage_at_service`, `cost`, `invoice`, `service_status`) VALUES
-(1, 17, 1, 1, '2025-04-25', NULL, 25500, NULL, NULL, -1),
-(2, 2, 1, 2, '2025-04-25', NULL, 95000, NULL, NULL, -1),
-(3, 1, 1, 1, '2025-04-27', NULL, 45000, NULL, NULL, -1),
-(4, 1, 0, 2, '2025-04-27', NULL, 45000, NULL, NULL, -1),
-(5, 1, 0, 1, '2025-04-27', '2025-04-28', 45000, 42850.75, '1745781675_CAABUS_INVOICE.pdf', 2),
-(6, 1, 0, 1, '2025-04-28', '2025-04-28', 48000, 57253.00, '1745781983_CAABUS_INVOICE.pdf', 2);
+INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `mileage_at_service`, `cost`, `invoice`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
+(1, 17, 1, 1, '2025-04-25', NULL, 25500, NULL, NULL, -1, 1, NULL, NULL),
+(2, 2, 1, 2, '2025-04-25', NULL, 95000, NULL, NULL, -1, 1, NULL, NULL),
+(3, 1, 1, 1, '2025-04-27', NULL, 45000, NULL, NULL, -1, 1, NULL, NULL),
+(4, 1, 0, 2, '2025-04-27', NULL, 45000, NULL, NULL, -1, 1, NULL, NULL),
+(5, 1, 0, 1, '2025-04-27', '2025-04-28', 45000, 42850.75, '1745781675_CAABUS_INVOICE.pdf', 2, 1, NULL, 1),
+(6, 1, 0, 1, '2025-04-28', '2025-04-28', 48000, 57253.00, '1745781983_CAABUS_INVOICE.pdf', 2, 1, NULL, 1),
+(7, 5, 1, 2, '2025-04-28', NULL, 23000, NULL, NULL, 1, 1, NULL, NULL),
+(8, 8, 1, 1, '2025-04-28', NULL, 15000, NULL, NULL, 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -471,7 +515,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
 (1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
-(3, 'Clint', 'Barton', '2025-02-12', '999999999V', 4, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
+(3, 'Clint', 'Barton', '2025-02-12', '999999999V', 1, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
 (7, 'Tony', 'Stark', '1996-12-15', '199512347521', 5, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
 (8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 1);
@@ -502,8 +546,8 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
-(126, 1, '0778810839', 3),
-(127, 2, '0112729729', 3);
+(128, 1, '0778810839', 3),
+(129, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -633,7 +677,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `service_station`
@@ -657,7 +701,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

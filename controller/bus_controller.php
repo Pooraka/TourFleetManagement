@@ -2,6 +2,11 @@
 include '../commons/session.php';
 include '../model/bus_model.php';
 
+
+//get user information from session
+$userSession=$_SESSION["user"];
+$user_id = $userSession['user_id'];
+
 $busObj = new Bus();
 
 if(!isset($_GET["status"])){
@@ -162,7 +167,7 @@ switch ($status){
         $busId = $_GET['bus_id'];
         $busId = base64_decode($busId);
         
-        $busObj->removeBus($busId);
+        $busObj->removeBus($busId,$user_id);
         
         $msg = "Bus Removed Successfully";
         $msg = base64_encode($msg);
