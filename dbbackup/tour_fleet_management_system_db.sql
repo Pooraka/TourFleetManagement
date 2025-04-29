@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 06:35 PM
+-- Generation Time: Apr 29, 2025 at 05:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,12 +55,12 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 185000, '2025-04-21 22:57:00', 176500, 6, '2025-01-20', 1, NULL),
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
 (4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1, NULL),
-(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 241000, 4, '2024-05-01', 3, NULL),
+(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 1, NULL),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
-(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 15000, '2025-04-28 15:43:22', 20000, 12, '2024-10-10', 3, NULL),
+(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 15000, '2025-04-28 15:43:22', 15000, 12, '2025-04-29', 1, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', -1, 3),
-(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 150000, '2025-04-21 22:57:00', 141000, 6, '2024-12-15', 1, NULL),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 12758, '2025-04-29 15:20:28', 12758, 6, '2025-04-29', 1, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
 (12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 48000, '2025-04-21 22:57:00', 39000, 8, '2024-11-30', 1, NULL),
 (13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1, NULL),
@@ -424,6 +424,7 @@ CREATE TABLE `service_detail` (
   `service_station_id` int(10) NOT NULL,
   `start_date` date NOT NULL,
   `completed_date` date DEFAULT NULL,
+  `cancelled_date` date DEFAULT NULL,
   `mileage_at_service` int(11) NOT NULL,
   `cost` decimal(10,2) DEFAULT NULL,
   `invoice` varchar(255) DEFAULT NULL,
@@ -437,15 +438,15 @@ CREATE TABLE `service_detail` (
 -- Dumping data for table `service_detail`
 --
 
-INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `mileage_at_service`, `cost`, `invoice`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
-(1, 17, 1, 1, '2025-04-25', NULL, 25500, NULL, NULL, -1, 1, NULL, NULL),
-(2, 2, 1, 2, '2025-04-25', NULL, 95000, NULL, NULL, -1, 1, NULL, NULL),
-(3, 1, 1, 1, '2025-04-27', NULL, 45000, NULL, NULL, -1, 1, NULL, NULL),
-(4, 1, 0, 2, '2025-04-27', NULL, 45000, NULL, NULL, -1, 1, NULL, NULL),
-(5, 1, 0, 1, '2025-04-27', '2025-04-28', 45000, 42850.75, '1745781675_CAABUS_INVOICE.pdf', 2, 1, NULL, 1),
-(6, 1, 0, 1, '2025-04-28', '2025-04-28', 48000, 57253.00, '1745781983_CAABUS_INVOICE.pdf', 2, 1, NULL, 1),
-(7, 5, 1, 2, '2025-04-28', NULL, 23000, NULL, NULL, 1, 1, NULL, NULL),
-(8, 8, 1, 1, '2025-04-28', NULL, 15000, NULL, NULL, 1, 1, NULL, NULL);
+INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `cancelled_date`, `mileage_at_service`, `cost`, `invoice`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
+(1, 17, 1, 1, '2025-04-25', NULL, '2025-04-28', 25500, NULL, NULL, -1, 1, 3, NULL),
+(2, 2, 1, 2, '2025-04-25', NULL, '2025-04-25', 95000, NULL, NULL, -1, 3, 3, NULL),
+(3, 1, 1, 1, '2025-04-27', NULL, '2025-04-26', 45000, NULL, NULL, -1, 1, 3, NULL),
+(4, 1, 0, 2, '2025-04-27', NULL, '2025-04-27', 45000, NULL, NULL, -1, 1, 3, NULL),
+(6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 2, 1, NULL, 1),
+(7, 5, 1, 2, '2025-04-28', '2025-04-29', NULL, 23000, 130000.00, 'svsinv_6810b6cd7872f.jpg', 2, 1, NULL, 3),
+(8, 8, 1, 1, '2025-04-28', '2025-04-29', NULL, 15000, 99000.00, 'svsinv_68109adcb8ebf.pdf', 2, 1, NULL, 3),
+(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 2, 3, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -677,7 +678,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `service_station`

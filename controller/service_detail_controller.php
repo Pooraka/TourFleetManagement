@@ -3,6 +3,10 @@ include '../commons/session.php';
 include_once '../model/bus_model.php';
 include_once '../model/service_detail_model.php';
 
+//get user information from session
+$userSession=$_SESSION["user"];
+$userId = $userSession['user_id'];
+
 $busObj = new Bus();
 $serviceDetailObj = new ServiceDetail();
 
@@ -43,7 +47,7 @@ switch ($status){
             $startDate = date('Y-m-d');
             $currentMileageAsAt = date('Y-m-d H:i:s', time());
             
-            $serviceDetailObj->initiateService($busId, $serviceStationId, $startDate, $currentMileage,$busRow['bus_status']);
+            $serviceDetailObj->initiateService($busId, $serviceStationId, $startDate, $currentMileage,$busRow['bus_status'],$userId);
             
             $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
             $busObj->changeBusStatus($busId,3);
@@ -78,12 +82,25 @@ switch ($status){
         $serviceDetailResult = $serviceDetailObj->getServiceDetail($serviceId);
         $serviceDetailRow = $serviceDetailResult->fetch_assoc();
         
+        //if someone tries to cancel a service that is not ongoing(by URL) they will be directed to view ongoing services
+        if ($serviceDetailRow['service_status'] != 1) {
+            ?>
+                
+                <script>
+                    window.location="/tourfleetmanagement/view/view-ongoing-services.php";
+                </script>
+            <?php
+            exit();
+        }
+
         $previousBusStatus = $serviceDetailRow['previous_bus_status'];
         $busId = $serviceDetailRow['bus_id'];
         
         $busObj->changeBusStatus($busId, $previousBusStatus);
         
-        $serviceDetailObj->cancelService($serviceId);
+        $cancelledDate = date('Y-m-d');
+        
+        $serviceDetailObj->cancelService($serviceId,$userId,$cancelledDate);
         
         $msg = "Service Cancelled Successfully";
         $msg = base64_encode($msg);
@@ -106,6 +123,7 @@ switch ($status){
             $invoice = $_FILES['invoice'];
             $mileageAtService = $_POST['mileage_at_service'];
             $busId = $_POST['bus_id'];
+            $extension="";
             
             if($cost==""){
                 throw new Exception("Cost Cannot Be Empty");
@@ -116,12 +134,21 @@ switch ($status){
             if($invoice['size'] <= 0){
                 throw new Exception("Invoice Must Be Attached");
             }
+            if($invoice['type']=="image/jpeg"){
+                $extension=".jpg";
+            }elseif ($invoice['type']=="image/png") {
+                $extension=".jpg";
+            }elseif ($invoice['type']=="application/pdf") {
+                $extension=".pdf";
+            }else{
+                throw new Exception("Invoice File Type Not Supported, Please Attach a PDF/PNG/JPEG");
+            }
             
-            $fileName=time()."_".$invoice["name"];
+            $fileName= uniqid('svsinv_').$extension;
             $path="../documents/busserviceinvoices/$fileName";
             move_uploaded_file($invoice["tmp_name"],$path);
             
-            $serviceDetailObj->completeService($serviceId, $completedDate, $cost, $fileName);
+            $serviceDetailObj->completeService($serviceId, $completedDate, $cost, $fileName, $userId);
             $busObj->updateServicedBus($busId, $mileageAtService, $completedDate);
             
             $msg = "Service Completed Successfully";
@@ -142,6 +169,88 @@ switch ($status){
     
             <script>
                 window.location="../view/complete-service.php?msg=<?php echo $msg;?>&service_id='<?php echo $serviceId;?>'";
+            </script>
+            <?php
+        }
+        
+    break;
+    
+    case "update_service":
+        
+        try{
+        
+            $serviceId = $_POST['service_id'];
+            $cost = $_POST['cost'];
+            $invoice = $_FILES['invoice'];
+            $extension="";
+            
+            $serviceDetailResult = $serviceDetailObj->getServiceDetail($serviceId);
+            $serviceDetailRow = $serviceDetailResult->fetch_assoc();
+            
+            $prevInvoice = $serviceDetailRow['invoice'];
+            
+            if($cost==""){
+                throw new Exception("Cost Cannot Be Empty");
+            }
+            if($cost<=0){
+                throw new Exception("Cost Must Be Higher Than 0 LKR");
+            }
+            
+            
+            if($invoice['name']!=""){
+                
+                if($invoice['type']=="image/jpeg"){
+                    
+                $extension=".jpg";
+                
+                }elseif ($invoice['type']=="image/png") {
+                    
+                $extension=".jpg";
+                
+                }elseif ($invoice['type']=="application/pdf") {
+                    
+                $extension=".pdf";
+                
+                }else{
+                    
+                throw new Exception("Invoice File Type Not Supported, Please Attach a PDF/PNG/JPEG");
+                }
+                
+                //Adding new invoice
+                $fileName= uniqid('svsinv_').$extension;
+                $path="../documents/busserviceinvoices/$fileName";
+                move_uploaded_file($invoice["tmp_name"],$path);
+                
+                //remove old invoice
+                unlink("../documents/busserviceinvoices/"."$prevInvoice");
+            }else{
+                
+                $fileName = $prevInvoice;
+            }
+        
+            $serviceDetailObj->updatePastService($serviceId, $cost, $fileName);
+            
+            $msg = "Service Record Updated Successfully";
+            $msg = base64_encode($msg);
+            
+            ?>
+            
+            <script>
+                window.location="../view/service-history.php?msg=<?php echo $msg;?>&success=true";
+            </script>
+            
+            <?php
+        }
+        catch(Exception $e){
+            
+            $serviceId = base64_encode($serviceId);
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/edit-service-record.php?msg=<?php echo $msg;?>&service_id='<?php echo $serviceId;?>'";
             </script>
             <?php
         }

@@ -17,7 +17,7 @@
         <b id="page_name"><?php echo $pageName; ?></b> 
     </div>
     <div class="col-md-1 col-md-offset-2 col-xs-1 col-sm-offset-1 col-sm-1">
-        <a href="../controller/login_controller.php?status=logout" class="btn btn-primary">Logout</a>
+        <a href="../controller/login_controller.php?status=logout" class="btn btn-danger">Logout</a>
     </div>
 </div>
 <hr />

@@ -35,6 +35,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-gear fa-spin"></span> &nbsp;
                     View Ongoing Services
                 </a>
+                <a href="service-history.php" class="list-group-item">
+                    <span class="fa fa-list-alt"></span> &nbsp;
+                    Service History
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

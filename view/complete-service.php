@@ -16,6 +16,16 @@ $serviceDetailObj = new ServiceDetail();
 $serviceDetailResult = $serviceDetailObj->getServiceDetail($serviceId);
 $serviceDetailRow = $serviceDetailResult->fetch_assoc();
 
+//if someone tries to complete a service that is not ongoing (by URL) they will be directed to view ongoing services
+if($serviceDetailRow['service_status']!=1){?>
+    
+    <script>
+        window.location="/tourfleetmanagement/view/view-ongoing-services.php";
+    </script>
+    <?php
+    exit();
+}
+
 $busId = $serviceDetailRow['bus_id'];
 $serviceStationId = $serviceDetailRow['service_station_id'];
 
@@ -40,8 +50,8 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Maintenance - Complete Service" ?>
-        <?php include_once "../includes/header_row_includes.php";?>
+        <?php $pageName = "Bus Maintenance - Complete Service" ?>
+        <?php include_once "../includes/header_row_includes.php"; ?>
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="add-service-station.php" class="list-group-item">
@@ -59,6 +69,10 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                 <a href="view-ongoing-services.php" class="list-group-item">
                     <span class="fa-solid fa-gear fa-spin"></span> &nbsp;
                     View Ongoing Services
+                </a>
+                <a href="service-history.php" class="list-group-item">
+                    <span class="fa fa-list-alt"></span> &nbsp;
+                    Service History
                 </a>
             </ul>
         </div>
@@ -94,19 +108,19 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 style="margin:0px">Vehicle Information</h3>
+                            <h3 style="margin:0px">Service Information</h3>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3" style="margin-bottom: 10px">
                                     <span class="fa-solid fa-bus"></span>&nbsp;<b>Vehicle Number</b>
                                     </br>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $busRow['vehicle_no'];?> </span>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $busRow['vehicle_no']; ?> </span>
                                 </div>
                                 <div class="col-md-3" style="margin-bottom: 10px">
                                     <span class="fa-solid fa-shop"></span>&nbsp;<b>Service Station</b>
                                     </br>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $serviceStationRow['service_station_name'];?></span>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $serviceStationRow['service_station_name']; ?></span>
                                 </div>
                                 <div class="col-md-3" style="margin-bottom: 10px">
                                     <span class="fa-solid fa-calendar-day"></span>&nbsp;<b>Service Start Date</b>
@@ -116,30 +130,31 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                                 <div class="col-md-3" style="margin-bottom: 10px">
                                     <span class="fa-solid fa-road"></span>&nbsp;<b>Mileage At Service</b>
                                     </br>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo number_format($serviceDetailRow['mileage_at_service'],0) ?> Km</span>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo number_format($serviceDetailRow['mileage_at_service'], 0) ?> Km</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="control-label">Service Cost (LKR)</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" name="cost" id="cost" step="0.01" inputmode="decimal"/>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="control-label">Attach Service Invoice</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="file" class="form-control" name="invoice" id="invoice"/>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label">Service Cost (LKR)</label>
                     </div>
-                    <div class="row">
+                    <div class="col-md-2">
+                        <input type="number" class="form-control" name="cost" id="cost" step="0.01" inputmode="decimal"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Attach Service Invoice</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" class="form-control" name="invoice" id="invoice"/>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12"> 
-                        <input type="hidden" name="service_id" value="<?php echo $serviceId;?>"/>
-                        <input type="hidden" name="mileage_at_service" value="<?php echo $serviceDetailRow['mileage_at_service'];?>"/>
-                        <input type="hidden" name="bus_id" value="<?php echo $busId;?>"/>
+                        <input type="hidden" name="service_id" value="<?php echo $serviceId; ?>"/>
+                        <input type="hidden" name="mileage_at_service" value="<?php echo $serviceDetailRow['mileage_at_service']; ?>"/>
+                        <input type="hidden" name="bus_id" value="<?php echo $busId; ?>"/>
                         &nbsp;
                     </div>
                 </div>
@@ -148,7 +163,6 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                         <input type="submit" class="btn btn-success" value="Complete"/>
                         <input type="reset" class="btn btn-danger" value="Reset"/>
                     </div>
-                </div>
                 </div>
             </div>
         </form>
