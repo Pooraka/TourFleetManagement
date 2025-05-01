@@ -40,16 +40,22 @@ if($remainingKmUntilService=="Service is due"){
     $remainingKmUntilServiceClass ="panel-danger";
 }
 
-// Must Implement Correct status after bus maintenance module
-$status = "Operational";
-$statusClass="panel-success";
 
-if($remainingKmUntilService=="Service is due" ||$serviceDueDate=="Service is due"){
+$status = match($busRow['bus_status']){
     
-    $status = "Service is due";
-    $statusClass="panel-danger";
-}
-
+    "-1"=>"Removed",
+    "0"=>"Out of Service",
+    "1"=>"Operational",
+    "2"=>"Service is Due",
+    "3"=>"In Service",
+};
+    
+$statusClass = match($busRow['bus_status']){
+    
+    "-1","0","2"=>"panel-danger",
+    "1"=>"panel-success",
+    "3"=>"panel-warning",
+};
 
 ?>
 

@@ -4,9 +4,11 @@ include_once '../commons/session.php';
 include_once '../model/login_model.php';
 include_once '../model/user_model.php';
 include_once '../services/mailer.php';
+include_once '../model/background_task_model.php';
 
 $loginObj = new Login();
 $userObj = new User();
+$backgroundTaskObj = new BackgroundTask();
 
 if(!isset($_GET["status"])){
     ?>
@@ -70,6 +72,9 @@ switch ($status) {
 
                 //assign $userSessionRow to a session
                 $_SESSION["user"] = $userSession;
+                
+                //run background tasks when logged in
+                $backgroundTaskObj->changeBusStatusToServiceDue();
                 ?>
                     <script>
                         window.location = "../view/dashboard.php";
