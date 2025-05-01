@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2025 at 05:12 PM
+-- Generation Time: May 01, 2025 at 07:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,7 +56,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
 (4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 115000, '2025-04-21 22:57:00', 108500, 6, '2025-02-10', 1, NULL),
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 1, NULL),
-(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 62000, '2025-04-21 22:57:00', 55000, 12, '2024-10-05', 1, NULL),
+(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2400, '2025-05-01 19:01:04', 55000, 12, '2024-10-05', 3, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 15000, '2025-04-28 15:43:22', 15000, 12, '2025-04-29', 1, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', -1, 3),
@@ -88,6 +88,51 @@ INSERT INTO `bus_category` (`category_id`, `category_name`, `category_descriptio
 (1, 'Luxury', NULL, 1),
 (2, 'Standard', NULL, 1),
 (3, 'Mini Bus', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `customer_id` int(10) NOT NULL,
+  `customer_nic` varchar(12) NOT NULL,
+  `customer_fname` varchar(50) NOT NULL,
+  `customer_lname` varchar(50) NOT NULL,
+  `customer_email` varchar(255) NOT NULL,
+  `customer_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `customer_lname`, `customer_email`, `customer_status`) VALUES
+(1, '791253595V', 'Kamal', 'Fernando', 'kamal@mail.com', 1),
+(2, '965325141V', 'Jehan', 'Peter', 'peter@mail.com', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_contact`
+--
+
+CREATE TABLE `customer_contact` (
+  `contact_id` int(10) NOT NULL,
+  `contact_type` int(10) NOT NULL,
+  `contact_number` varchar(10) NOT NULL,
+  `customer_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_contact`
+--
+
+INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, `customer_id`) VALUES
+(12, 1, '0712347582', 1),
+(13, 2, '0114006319', 1),
+(14, 1, '0769542365', 2);
 
 -- --------------------------------------------------------
 
@@ -446,7 +491,8 @@ INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `se
 (6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 2, 1, NULL, 1),
 (7, 5, 1, 2, '2025-04-28', '2025-04-29', NULL, 23000, 130000.00, 'svsinv_6810b6cd7872f.jpg', 2, 1, NULL, 3),
 (8, 8, 1, 1, '2025-04-28', '2025-04-29', NULL, 15000, 99000.00, 'svsinv_68109adcb8ebf.pdf', 2, 1, NULL, 3),
-(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 2, 3, NULL, 3);
+(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 2, 3, NULL, 3),
+(10, 6, 1, 2, '2025-05-01', NULL, NULL, 2400, NULL, NULL, 1, 3, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -567,6 +613,19 @@ ALTER TABLE `bus_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`customer_id`),
+  ADD UNIQUE KEY `customer_nic` (`customer_nic`);
+
+--
+-- Indexes for table `customer_contact`
+--
+ALTER TABLE `customer_contact`
+  ADD PRIMARY KEY (`contact_id`);
+
+--
 -- Indexes for table `function`
 --
 ALTER TABLE `function`
@@ -651,6 +710,18 @@ ALTER TABLE `bus_category`
   MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `customer_contact`
+--
+ALTER TABLE `customer_contact`
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
@@ -678,7 +749,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `service_station`
@@ -696,7 +767,7 @@ ALTER TABLE `service_station_contact`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user_contact`
