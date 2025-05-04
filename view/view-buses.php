@@ -77,7 +77,19 @@ $busResult = $busObj->getAllBuses();
                                 
                                 while($busRow = $busResult->fetch_assoc()){
                                     
-                                    $status = 'Operational';
+                                    $status = match ($busRow['bus_status']) {
+                                                        "0" => "Out of Service",
+                                                        "1" => "Operational",
+                                                        "2" => "Service is Due",
+                                                        "3" => "In Service",
+                                                    };
+                                    $statusClass = match ($busRow['bus_status']) {
+                                                        "0" => "label label-danger",
+                                                        "1" => "label label-success",
+                                                        "2" => "label label-default",
+                                                        "3" => "label label-warning",
+                                                    };                
+                                                    
                                     $busId = $busRow['bus_id'];
                                     $busId = base64_encode($busId);
                                     
@@ -89,17 +101,17 @@ $busResult = $busObj->getAllBuses();
                                         <td><?php echo $busRow['model'];?></td>
                                         <td><?php echo $busRow['capacity'];?></td>
                                         <td><?php echo $busRow['category_name'];?></td>
-                                        <td><?php echo $status;?></td>
+                                        <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
                                         <td>
-                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-info" style="margin:2px">
+                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-info" style="margin:2px">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
                                                 View
                                             </a>
-                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-warning" style="margin:2px">
+                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-warning" style="margin:2px">
                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                 Edit
                                             </a>
-                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" class="btn btn-danger" style="margin:2px">
+                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" class="btn btn-xs btn-danger" style="margin:2px">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Remove
                                             </a> 
