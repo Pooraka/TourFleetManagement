@@ -7,104 +7,32 @@
 }
 
 body {
-    background: linear-gradient(to bottom right, #E8F6F8, #B6DDE0, #74B2C8);
+/*    background: linear-gradient(to bottom right, #E8F6F8, #B6DDE0, #74B2C8);
     height: 100vh;
     margin: 0;
-    background-attachment: fixed;
+    background-attachment: fixed;*/
 
-    /*background-color: #FFFFFF;*/
+    background-color: #F9FAFB;
 }
 
-/*body {
-  background: conic-gradient(from 45deg at 50% 50%, 
-                              #E0F2F7,   Very light blue 
-                              #A5D8E2,   Light desaturated blue-green 
-                              #7BC8C9,   Medium desaturated blue-green 
-                              #A5D8E2,   Light desaturated blue-green 
-                              #E0F2F7);  Very light blue 
 
-  height: 100vh;
-  margin: 0;
-  background-attachment: fixed;
-
-}*/
-
-/*body {
-  background: conic-gradient(from 45deg at 50% 50%,
-                              #F7F7F7,
-                              #DFDFE7,
-                              #B5D0EB,
-                              #99A9B7,
-                              #6AACA4,
-                              #99A9B7,  Back to the grey-blue 
-                              #B5D0EB,  Back to the light blue 
-                              #DFDFE7,  Back to the light grey 
-                              #F7F7F7);  Back to the lightest 
-
-  height: 100vh;
-  margin: 0;
-  background-attachment: fixed;
-
-}*/
-
-/*body {
-  background: conic-gradient(from 45deg at 50% 50%,
-                              #FFFFFF,
-                              #C7DEE3,
-                              #00677A,
-                              #0F798D,
-                              #248A9D,
-                              #4EAABA,
-                              #248A9D,  Back to the teal 
-                              #0F798D,  Back to the darker teal 
-                              #00677A,  Back to the dark blue-green 
-                              #C7DEE3,  Back to the light blue 
-                              #FFFFFF);  Back to the white 
-
-  height: 100vh;
-  margin: 0;
-  background-attachment: fixed;
-}*/
-
-/*body {
-  background: 
-    radial-gradient(circle at 20% 30%, #FFFFFF, #C7DEE3, #00677A),
-    radial-gradient(circle at 70% 10%, #0F798D, #248A9D, #4EAABA),
-    radial-gradient(circle at 10% 80%, #C7DEE3, #00677A, #0F798D),
-    radial-gradient(circle at 90% 60%, #248A9D, #4EAABA, #FFFFFF);
-
-  height: 100vh;
-  margin: 0;
-  background-attachment: fixed;
-}*/
-
-/*body {
-  background: 
-    radial-gradient(circle at 20% 30%, #FFFFFF, rgba(199, 222, 227, 0.7), #C7DEE3, rgba(0, 103, 122, 0.5), #00677A),
-    radial-gradient(circle at 70% 10%, #0F798D, rgba(36, 138, 157, 0.6), #248A9D, rgba(78, 170, 186, 0.4), #4EAABA),
-    radial-gradient(circle at 10% 80%, #C7DEE3, rgba(0, 103, 122, 0.6), #00677A, rgba(15, 121, 141, 0.4), #0F798D),
-    radial-gradient(circle at 90% 60%, #248A9D, rgba(78, 170, 186, 0.5), #4EAABA, rgba(199, 222, 227, 0.3), #FFFFFF);
-
-  height: 100vh;
-  margin: 0;
-  background-attachment: fixed;
-}*/
-
-
-/*input[type="text"], input[type="email"], input[type="date"],input[type="file"],input[type="password"],select{
-    background-color: #e4eaeb !important;
-}*/
 
 .table {
-    background-color:#e3edf7;
+    background-color:#ffffff;
     border-radius: 8px;
     overflow: hidden; 
-    /* overflow: hidden; --->>>Ensures rounded corners apply properly */
+    border:1px solid lightsteelblue;
 }
 
 .table thead {
-    background-color: #076a80;
+    /*background-color: #2563EB;*/
+    background-color: #31708f;
+    /*background-color: #0D9488;*/
     color:white;
+}
+
+.table tbody > tr > td {
+    vertical-align: middle;
 }
 
 

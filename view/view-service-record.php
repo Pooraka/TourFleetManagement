@@ -122,7 +122,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                 </div>
             </div>
             <div class="row">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 style="margin:0px">Service Information</h3>
                     </div>

@@ -88,7 +88,7 @@ $statusClass = match($busRow['bus_status']){
         </div>
         <form action="../controller/bus_controller.php?status=update_bus" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
-                <div class="panel panel-default" style="height:auto">
+                <div class="panel panel-info" style="height:auto">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-12" style="text-align:center">

@@ -25,8 +25,8 @@ $moduleResult = $moduleObj->getAllModules($userSession['user_role']);
         <?php while($moduleRow=$moduleResult->fetch_assoc()){
             ?>
             <div class="col-md-3 col-sm-4">
-                <a href="<?php echo $moduleRow["module_url"]?>" style="text-decoration:none; color:#fff">
-                    <div class="panel" style="height:150px; background-color:#2A7F97">
+                <a href="<?php echo $moduleRow["module_url"]?>" style="text-decoration:none;color:black">
+                    <div class="panel module" style="height:170px;background-color:#ffffff;border:1px solid lightsteelblue">
                         <h1 align="center">
                             <img src="../images/moduleimages/<?php echo $moduleRow["module_icon"]?>" style="height:80px">
                         </h1>
@@ -42,4 +42,12 @@ $moduleResult = $moduleObj->getAllModules($userSession['user_role']);
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.module').on(
+            {mouseenter:function(){$(this).css("background-color", "#e2eafc");},
+            mouseleave: function(){$(this).css("background-color", "#ffffff");}
+        });
+    });
+</script>
 </html>

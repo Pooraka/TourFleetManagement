@@ -68,7 +68,7 @@ $moduleResult=$userObj->getRoleModules($user_role);
         </div>
         <form action="../controller/user_controller.php?status=update_user" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
-                <div class="panel panel-default" style="height:auto">
+                <div class="panel panel-info" style="height:auto">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3 col-md-2">
@@ -88,7 +88,7 @@ $moduleResult=$userObj->getRoleModules($user_role);
                             </div>
                             <div class="col-xs-9 col-md-10" >
                                 <h3 style="margin-top: 7px;"><b><?php echo $userRow['user_fname']." ".$userRow['user_lname'];?></b> </h3>
-                                <h4 style="color:grey; margin-top: 0;"><?php echo $userRow['role_name'];?></h4>
+                                <h4 style="color:black; margin-top: 0;"><?php echo $userRow['role_name'];?></h4>
                                 <span>Username : <?php echo $userRow['login_username'];?> </span>
                             </div>
                         </div>

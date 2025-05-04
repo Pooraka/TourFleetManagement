@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-3 hidden-xs"></div>
 </div>
-<hr />
+<hr style="border:1px solid lightsteelblue"/>
 <div class="row">
     <div class="col-md-3 col-xs-3 col-sm-3" style="vertical-align: middle;margin-top:5px">
         <b><?php echo ucwords($userSession["user_fname"]." ".$userSession["user_lname"]); ?></b>
@@ -20,4 +20,4 @@
         <a href="../controller/login_controller.php?status=logout" class="btn btn-danger">Logout</a>
     </div>
 </div>
-<hr />
+<hr style="border:1px solid lightsteelblue"/>

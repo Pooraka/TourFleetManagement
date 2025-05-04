@@ -78,10 +78,12 @@ $userResult = $userObj->getAllUsers();
                                 while($userRow=$userResult->fetch_assoc()){
                                     
                                     $status = "Active";
+                                    $statusClass = "label label-success";
                                     
                                     if($userRow["user_status"]==0){
                                         
-                                        $status ="Deactived";
+                                        $status ="Deactivated";
+                                        $statusClass = "label label-default";
                                     }
                                     
                                     $img_path="../images/userimages/";
@@ -98,21 +100,13 @@ $userResult = $userObj->getAllUsers();
                                     $user_id = $userRow["user_id"];
                                     $user_id = base64_encode($user_id);
                             ?>
-                                    <tr
-                                        <?php 
-                                                if($userRow["user_status"]==0){
-                                            ?>        
-                                                    style="background-color:#d8bfd8;"
-                                            <?php
-                                                }
-                                            ?>
-                                        >
+                                    <tr>
                                         <td>
                                             <img src="<?php echo $img_path;?>" style="border-radius: 50%" height="60px" width="60px"/>
                                         </td>
                                         <td><?php echo $userRow["user_fname"]." ".$userRow["user_lname"];?></td>
                                         <td><?php echo $userRow["user_email"];?></td>
-                                        <td><?php echo $status;?></td>
+                                        <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
                                         <td>
                                             <a href="view-user.php?user_id=<?php echo $user_id;?>" class="btn btn-info" style="margin:2px">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
@@ -142,7 +136,7 @@ $userResult = $userObj->getAllUsers();
                                             <a href="../controller/user_controller.php?status=delete&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Delete
-                                            </a>   
+                                            </a> 
                                         </td>
                                     </tr>
                             <?php
