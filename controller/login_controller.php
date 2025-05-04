@@ -75,6 +75,7 @@ switch ($status) {
                 
                 //run background tasks when logged in
                 $backgroundTaskObj->changeBusStatusToServiceDue();
+                $backgroundTaskObj->sendServiceDueEmail();
                 ?>
                     <script>
                         window.location = "../view/dashboard.php";

@@ -1,7 +1,10 @@
 <?php
-
+require_once '../vendor/autoload.php';
+include_once '../services/mailer.php';
 include_once '../commons/db_connection.php';
 include_once '../model/bus_model.php';
+include_once '../model/user_model.php';
+include_once '../model/reminder_model.php';
 
 $dbCon= new DbConnection();
 
@@ -37,4 +40,30 @@ class BackgroundTask{
         }
     }
     
+    public function sendServiceDueEmail(){
+        
+        $userObj = new User();
+        $userResult = $userObj->getUsersToSendBusServiceDueEmail();
+        
+        $busObj = new Bus();
+        $busResult = $busObj->getServiceDueBuses();
+        
+        $reminderObj = new Reminder();
+        $reminderResult = $reminderObj->getReminderSentTime(1);
+        $reminderRow = $reminderResult->fetch_assoc();
+        
+        $today = date('Y-m-d',time());
+        
+        if($reminderRow['sent_date']<$today){
+        
+            $mailObj = new Mailer();
+            $emailSent = $mailObj->sendServiceDueBusList($userResult,$busResult);
+            
+            if($emailSent){
+                $reminderObj->updateReminderSent(1, $today);
+            }
+        }
+        
+        return;
+    }
 }

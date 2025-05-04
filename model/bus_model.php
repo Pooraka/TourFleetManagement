@@ -139,4 +139,17 @@ class Bus{
         return $result;
         
     }
+    
+    public function getServiceDueBuses(){
+       
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT b.bus_id, b.category_id, b.vehicle_no, b.make, b.model, b.year, b.capacity, "
+                . "b.ac_available, b.service_interval_km, b.current_mileage_km, b.current_mileage_as_at, b.last_service_mileage_km, "
+                . "b.service_interval_months, b.last_service_date, b.bus_status, c.category_name  "
+                . "FROM bus b, bus_category c WHERE b.category_id = c.category_id AND b.bus_status = '2'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }
