@@ -87,7 +87,7 @@ $serviceStationObj = new ServiceStation();
                                 <th>Vehicle</th>
                                 <th>Mileage at Service</th>
                                 <th>Service Station</th>
-                                <th>Send to Service On</th>
+                                <th>Sent to Service On</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -112,7 +112,7 @@ $serviceStationObj = new ServiceStation();
                             
                             <tr>
                                 <td><?php echo $vehicleNo;?></td>
-                                <td><?php echo $serviceDetailRow['mileage_at_service'];?>&nbsp;Km</td>
+                                <td><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp;Km</td>
                                 <td><?php echo $serviceStationName;?></td>
                                 <td><?php echo $serviceDetailRow['start_date'];?></td>
                                 <td>
@@ -120,7 +120,7 @@ $serviceStationObj = new ServiceStation();
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Complete
                                     </a>
-                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" class="btn btn-danger" style="margin:2px">
+                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" class="btn btn-danger cancel-service" style="margin:2px">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Cancel
                                     </a> 
@@ -145,6 +145,13 @@ $serviceStationObj = new ServiceStation();
     $(document).ready(function(){
 
         $("#servicetable").DataTable();
+        
+        $('.cancel-service').on('click',function(e){
+            
+            if(!confirm("If you are sure and want to cancel the service, Click OK")){
+                e.preventDefault();
+            }
+        });
     });
 </script>
 </html>
