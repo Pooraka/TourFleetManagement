@@ -216,9 +216,9 @@ switch ($status) {
                 exit();
             }
         
-            $User_entered_otp = $_POST["otp"];
+            $userEnteredOTP = $_POST["otp"];
 
-            if ($User_entered_otp == "") {
+            if ($userEnteredOTP == "") {
 
                 throw new Exception("OTP Cannot Be Empty");
             }
@@ -246,7 +246,7 @@ switch ($status) {
                 throw new Exception("Invalid OTP"); //OTP Expired
             }
             
-            if ($User_entered_otp != $loginOtp) {
+            if ($userEnteredOTP != $loginOtp) {
 
                 throw new Exception("Invalid OTP");
             }
