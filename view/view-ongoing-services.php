@@ -120,7 +120,7 @@ $serviceStationObj = new ServiceStation();
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Complete
                                     </a>
-                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" class="btn btn-danger cancel-service" style="margin:2px">
+                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" onclick="return confirm('Are you sure you want to cancel?')" class="btn btn-danger" style="margin:2px">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Cancel
                                     </a> 
@@ -145,13 +145,7 @@ $serviceStationObj = new ServiceStation();
     $(document).ready(function(){
 
         $("#servicetable").DataTable();
-        
-        $('.cancel-service').on('click',function(e){
-            
-            if(!confirm("If you are sure and want to cancel the service, Click OK")){
-                e.preventDefault();
-            }
-        });
+
     });
 </script>
 </html>

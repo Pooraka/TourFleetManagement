@@ -39,17 +39,20 @@ switch ($status){
             if($currentMileage==""){
                 throw new Exception("Enter the Current Mileage");
             }
+            if($currentMileage<0){
+                throw new Exception("Current Mileage Cannot Be Less Than 0 Km");
+            }
 
             
             $busResult = $busObj->getBus($busId);
             $busRow = $busResult->fetch_assoc();
             
             $startDate = date('Y-m-d');
-            $currentMileageAsAt = date('Y-m-d H:i:s', time());
+//            $currentMileageAsAt = date('Y-m-d H:i:s', time());
             
             $serviceDetailObj->initiateService($busId, $serviceStationId, $startDate, $currentMileage,$busRow['bus_status'],$userId);
             
-            $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
+//            $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
             $busObj->changeBusStatus($busId,3);
             
             $msg= $busRow['vehicle_no']." Service Initiated";
@@ -150,6 +153,9 @@ switch ($status){
             
             $serviceDetailObj->completeService($serviceId, $completedDate, $cost, $fileName, $userId);
             $busObj->updateServicedBus($busId, $mileageAtService, $completedDate);
+            
+            $currentMileageAsAt = date('Y-m-d H:i:s', time());
+            $busObj->updateBusMileage($busId, $mileageAtService, $currentMileageAsAt);
             
             $msg = "Service Completed Successfully";
             $msg = base64_encode($msg);

@@ -57,6 +57,14 @@ $statusClass = match($busRow['bus_status']){
     "3"=>"panel-warning",
 };
 
+if($busRow['bus_status']=="3"){
+   
+    $remainingKmUntilService="In Service";
+    $remainingKmUntilServiceClass="panel-warning";
+    $serviceDueDate = "In Service";
+    $serviceDueDateClass = "panel-warning";
+}
+
 ?>
 
 <html lang="en">
