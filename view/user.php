@@ -20,7 +20,7 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-user.php" class="list-group-item">
+                <a href="add-user.php" class="list-group-item" style="display:<?php echo checkPermissions(46); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add User
                 </a>
@@ -28,9 +28,9 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Users
                 </a>
-                <a href="generate-user-reports.php" class="list-group-item">
+                <a href="generate-user-list.php" class="list-group-item">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate User Reports
+                    Generate User List
                 </a>
             </ul>
         </div>

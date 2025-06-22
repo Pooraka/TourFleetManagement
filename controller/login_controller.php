@@ -73,6 +73,18 @@ switch ($status) {
                 //assign $userSessionRow to a session
                 $_SESSION["user"] = $userSession;
                 
+                $userFunctionResult = $userObj->getUserFunctions($user_id);
+                
+                //New Code
+                $UserFunctionArray = array();
+
+                while ($functionRow = $userFunctionResult->fetch_Assoc()) {
+
+                    array_push($UserFunctionArray, $functionRow["function_id"]);
+                }
+                
+                $_SESSION['user_functions'] = $UserFunctionArray;
+
                 //run background tasks when logged in
                 $backgroundTaskObj->changeBusStatusToServiceDue();
                 $backgroundTaskObj->sendServiceDueEmail();

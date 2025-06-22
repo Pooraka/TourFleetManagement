@@ -9,6 +9,7 @@ $userSession=$_SESSION["user"];
 
 $busObj = new Bus();
 $busResult = $busObj->getAllBusesToService();
+$serviceDueBusResult = $busObj->getServiceDueBuses();
 
 $serviceStationObj = new ServiceStation();
 $serviceStationResult = $serviceStationObj->getServiceStations();
@@ -19,6 +20,7 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bus Maintenance</title>
+    <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.min.css"/>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
@@ -117,6 +119,40 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                     <div class="col-md-offset-2 col-md-6">
                         <input type="submit" class="btn btn-primary" value="Submit"/>
                         <input type="reset" class="btn btn-danger" value="Reset"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Service Due Vehicles</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle No</th>
+                                        <th>Last Serviced Date</th>
+                                        <th>Last Serviced Mileage</th>
+                                        <th>Current Mileage (Km)</th>
+                                        <th>Current Mileage As At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while($serviceDueBusRow=$serviceDueBusResult->fetch_assoc()){ ?>
+                                    <tr>
+                                        <td><?php echo $serviceDueBusRow['vehicle_no'];?></td>
+                                        <td><?php echo $serviceDueBusRow['last_service_date'];?></td>
+                                        <td><?php echo number_format($serviceDueBusRow['last_service_mileage_km'],0);?></td>
+                                        <td><?php echo number_format($serviceDueBusRow['current_mileage_km'],0);?></td>
+                                        <td><?php echo $serviceDueBusRow['current_mileage_as_at'];?></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

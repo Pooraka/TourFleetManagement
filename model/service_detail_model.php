@@ -47,12 +47,12 @@ class ServiceDetail{
         return $result;
     }
     
-    public function completeService($serviceId,$completedDate,$cost,$invoice,$userId){
+    public function completeService($serviceId,$completedDate,$cost,$invoice,$userId,$invoiceNumber){
         
         $con = $GLOBALS["con"];
         
         $sql = "UPDATE service_detail SET service_status ='2', completed_date='$completedDate', "
-                . "cost='$cost', invoice='$invoice', completed_by='$userId' WHERE service_id ='$serviceId'";
+                . "cost='$cost', invoice='$invoice', completed_by='$userId', invoice_number='$invoiceNumber' WHERE service_id ='$serviceId'";
         
         $con->query($sql) or die ($con->error);
     }
@@ -67,12 +67,35 @@ class ServiceDetail{
         return $result;
     }
     
-    public function updatePastService($serviceId,$cost,$invoice){
+    public function updatePastService($serviceId,$cost,$invoice,$invoiceNumber){
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE service_detail SET cost='$cost', invoice='$invoice' WHERE service_id ='$serviceId'";
+        $sql = "UPDATE service_detail SET cost='$cost', invoice='$invoice', invoice_number='$invoiceNumber' WHERE service_id ='$serviceId'";
         
         $con->query($sql) or die ($con->error);
+    }
+    
+    public function getPaymentPendingServiceStations(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT s.service_station_name, s.service_station_id, SUM(d.cost) AS total_due, COUNT(d.service_id) AS service_count "
+                . "FROM service_detail d, service_station s "
+                . "WHERE service_status='2' AND s.service_station_id = d.service_station_id GROUP BY service_station_id";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+    
+    public function getPaymentPendingServices($serviceStationId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM service_detail d, bus b, service_station s WHERE "
+                . "d.service_station_id = s.service_station_id AND d.bus_id = b.bus_id AND d.service_station_id = '$serviceStationId'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
     }
 }

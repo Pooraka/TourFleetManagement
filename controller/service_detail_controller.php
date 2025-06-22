@@ -127,7 +127,11 @@ switch ($status){
             $mileageAtService = $_POST['mileage_at_service'];
             $busId = $_POST['bus_id'];
             $extension="";
+            $invoiceNumber = $_POST['invoice_number'];
             
+            if($invoiceNumber==""){
+                throw new Exception("Invoice Number Cannot Be Empty");
+            }
             if($cost==""){
                 throw new Exception("Cost Cannot Be Empty");
             }
@@ -151,7 +155,7 @@ switch ($status){
             $path="../documents/busserviceinvoices/$fileName";
             move_uploaded_file($invoice["tmp_name"],$path);
             
-            $serviceDetailObj->completeService($serviceId, $completedDate, $cost, $fileName, $userId);
+            $serviceDetailObj->completeService($serviceId, $completedDate, $cost, $fileName, $userId,$invoiceNumber);
             $busObj->updateServicedBus($busId, $mileageAtService, $completedDate);
             
             $currentMileageAsAt = date('Y-m-d H:i:s', time());
@@ -187,6 +191,7 @@ switch ($status){
         
             $serviceId = $_POST['service_id'];
             $cost = $_POST['cost'];
+            $invoiceNumber = $_POST['invoice_number'];
             $invoice = $_FILES['invoice'];
             $extension="";
             
@@ -195,6 +200,9 @@ switch ($status){
             
             $prevInvoice = $serviceDetailRow['invoice'];
             
+            if($invoiceNumber==""){
+                throw new Exception("Invoice Number Cannot Be Empty");
+            }
             if($cost==""){
                 throw new Exception("Cost Cannot Be Empty");
             }
@@ -234,7 +242,7 @@ switch ($status){
                 $fileName = $prevInvoice;
             }
         
-            $serviceDetailObj->updatePastService($serviceId, $cost, $fileName);
+            $serviceDetailObj->updatePastService($serviceId, $cost, $fileName,$invoiceNumber);
             
             $msg = "Service Record Updated Successfully";
             $msg = base64_encode($msg);

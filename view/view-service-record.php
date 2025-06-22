@@ -195,6 +195,11 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LKR <?php echo number_format($serviceDetailRow['cost'],2) ?></span>
                             </div>
+                            <div class="col-md-3" style="margin-bottom: 10px">
+                                <span class="fas fa-file-invoice"></span>&nbsp;<b>Invoice Number</b>
+                                </br>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $serviceDetailRow['invoice_number']?></span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3" style="margin-bottom: 10px">

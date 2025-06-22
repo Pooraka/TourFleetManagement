@@ -151,6 +151,19 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label">Invoice Number</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="invoice_number"/>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12"> 
                         <input type="hidden" name="service_id" value="<?php echo $serviceId; ?>"/>
                         <input type="hidden" name="mileage_at_service" value="<?php echo $serviceDetailRow['mileage_at_service']; ?>"/>

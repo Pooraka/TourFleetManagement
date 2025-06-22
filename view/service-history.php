@@ -86,6 +86,7 @@ $busObj = new Bus();
                                     <th>Vehicle</th>
                                     <th>Serviced date</th>
                                     <th>Serviced Mileage</th>
+                                    <th>Invoice</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -118,6 +119,7 @@ $busObj = new Bus();
                                     <td><?php echo $busRow['vehicle_no'];?></td>
                                     <td><?php echo $servicedDate = ($serviceDetailRow['completed_date']=="")?"Not Applicable":$serviceDetailRow['completed_date'];?> </td>
                                     <td><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp; Km </td>
+                                    <td><?php echo $serviceDetailRow['invoice_number'];?></td>
                                     <td><span class="<?php echo $statusDisplayClass;?>"><?php echo $statusDisplay;?></span> </td>
                                     <td>
                                         <a href="view-service-record.php?service_id=<?php echo $serviceId; ?>" class="btn btn-info" style="margin:2px">

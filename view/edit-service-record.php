@@ -228,6 +228,20 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Invoice Number</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" value ="<?php echo $serviceDetailRow['invoice_number']; ?>"class="form-control" name="invoice_number" id="invoice_number"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    <input type="hidden" name="service_id" value="<?php echo $serviceId; ?>"/>
+                    &nbsp;
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-offset-3 col-md-6">
                     <input type="submit" class="btn btn-primary" value="Submit"/>
                     <input type="reset" class="btn btn-danger" value="Reset"/>
