@@ -93,9 +93,19 @@ class ServiceDetail{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT * FROM service_detail d, bus b, service_station s WHERE "
-                . "d.service_station_id = s.service_station_id AND d.bus_id = b.bus_id AND d.service_station_id = '$serviceStationId'";
+                . "d.service_station_id = s.service_station_id AND d.bus_id = b.bus_id AND d.service_station_id = '$serviceStationId' AND d.service_status='2'";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
+    }
+    
+    public function updatePaidService($serviceId,$paymentId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE service_detail SET payment_id='$paymentId', service_status='3' WHERE service_id ='$serviceId'";
+        
+        $con->query($sql) or die ($con->error);
+        
     }
 }

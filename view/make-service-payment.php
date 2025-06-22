@@ -72,8 +72,9 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                 </div>
             </div>
             <div class="row">
+                <form action="../controller/finance_controller.php?status=make_service_payment" method="post" enctype="multipart/form-data"> 
                 <div class="panel panel-info">
-                    <div class="panel-heading"><?php echo $serviceStationRow['service_station_name']." Payments";?> </div>
+                    <div class="panel-heading"><?php echo "<b>".$serviceStationRow['service_station_name']."</b>"." Payments";?> </div>
                     <div class="panel-body">
                         <table class="table">
                             <thead>
@@ -106,9 +107,58 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                     </div>
                     <div class="panel-heading">Process Payment</div>
                     <div class="panel-footer">
-                        <h4><span>Total Amount (LKR):</span><span id="total"></span></h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4><b>Total Amount (LKR):<span id="total"></span></b></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4>Payment type</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>
+                                    <input type="radio" name="payment_method" value="cheque"/>
+                                    <label>Cheque</label>
+                                    &nbsp;&nbsp;
+                                    <input type="radio" name="payment_method" value="transfer"/>
+                                    <label>Funds Transfer</label>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">&nbsp;</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><span>Cheque Number or Funds Transfer reference</span></h4>
+                            </div>
+                            <div class="col-md-6">
+                                 <input type="text" class="form-control" name="reference" placeholder="FT125485 or 254785"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><span>Attach payment document</span></h4>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" class="form-control" name="payment_document"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" name="service_station_id" value="<?php echo $serviceStationId; ?>"/>
+                            <input type="hidden" id="totalpaymenttosubmit" name="totalpayment" value=""/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-success" value="Payment Made"/>
+                                <input type="reset" class="btn btn-danger" value="Reset" style="width:130px"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -125,6 +175,8 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                 
                 
                 total += parseFloat(String($(this).data('amount')));
+                
+                $('input[name="totalpayment"]').val(total);
             });
             
             total = total.toLocaleString('en-US', {
