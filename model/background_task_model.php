@@ -48,6 +48,11 @@ class BackgroundTask{
         $busObj = new Bus();
         $busResult = $busObj->getServiceDueBuses();
         
+        if($busResult->num_rows==0){
+            return;
+        }
+
+        
         $reminderObj = new Reminder();
         $reminderResult = $reminderObj->getReminderSentTime(1);
         $reminderRow = $reminderResult->fetch_assoc();
