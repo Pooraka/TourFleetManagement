@@ -73,9 +73,9 @@ switch ($status) {
                 //assign $userSessionRow to a session
                 $_SESSION["user"] = $userSession;
                 
+                //New Code
                 $userFunctionResult = $userObj->getUserFunctions($user_id);
                 
-                //New Code
                 $UserFunctionArray = array();
 
                 while ($functionRow = $userFunctionResult->fetch_Assoc()) {

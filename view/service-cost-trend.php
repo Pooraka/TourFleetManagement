@@ -13,7 +13,18 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
     $startMonth = $_GET['start_month'];
     $endMonth = $_GET['end_month'];
     
+    $serviceDetailObj = new ServiceDetail();
     $serviceCostTrendResult = $serviceDetailObj->getMonthlyServiceCostTrend($startMonth, $endMonth);
+    
+    $months =array();
+    $costs =array();
+    
+    while($serviceCostTrendRow =$serviceCostTrendResult->fetch_assoc()){
+        array_push($months,$serviceCostTrendRow['month']);
+        array_push($costs,$serviceCostTrendRow['total_cost']);
+    }
+    
+    $chartDataJson = json_encode(['months' => $months, 'costs' => $costs]);
 }
 
 ?>
@@ -113,36 +124,38 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
 <script src="../js/jquery-3.7.1.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
-    var months = ['2025-04', '2025-05', '2025-06'];
-    var totalCosts = [12000.00, 24112.25, 79346.76];
     
-    var data = {
-        x:months,
-        y:totalCosts,
-        mode: 'lines+markers',  
-        type: 'scatter',
-        name: 'Maintenance Cost',
-        line: { color: '#17A2B8', width: 3 },
-        marker: { color: '#17A2B8', size: 8 },
-        hovertemplate:'<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
-    };
+    var chartData = <?php if(isset($chartDataJson)){echo $chartDataJson;} ?>;
     
-    var layout = {
-            title: { text:'Monthly Maintenance Cost Trend'},
-            xaxis: {
-                title: { text:'Month'},
-                type:'category' // put this to force to get the x axis the way author want
-            },
-            yaxis: {
-                title: {text:'Total Cost (LKR)'},
-                // Add a 'LKR ' prefix to the y-axis ticks
-                // tickprefix: 'LKR ',
-                separatethousands: true,
-                rangemode:'tozero'
-            },
-            margin: { t: 50, b: 100, l: 80, r: 40 } // Adjust margins to prevent labels from being cut off
-    };
-    
-    Plotly.newPlot('trend', [data], layout);
+    if(chartData && chartData.months && chartData.months.length > 0){
+        var data = {
+            x:chartData.months,
+            y:chartData.costs,
+            mode: 'lines+markers',  
+            type: 'scatter',
+            name: 'Maintenance Cost',
+            line: { color: '#17A2B8', width: 3 },
+            marker: { color: '#17A2B8', size: 8 },
+            hovertemplate:'<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
+        };
+
+        var layout = {
+                title: { text:'Monthly Maintenance Cost Trend'},
+                xaxis: {
+                    title: { text:'Month'},
+                    type:'category' // put this to force to get the x axis the way author want
+                },
+                yaxis: {
+                    title: {text:'Total Cost (LKR)'},
+                    // Add a 'LKR ' prefix to the y-axis ticks
+                    // tickprefix: 'LKR ',
+                    separatethousands: true,
+                    rangemode:'tozero'
+                },
+                margin: { t: 50, b: 100, l: 80, r: 40 } // Adjust margins to prevent labels from being cut off
+        };
+
+        Plotly.newPlot('trend', [data], layout);
+    }
 </script>
 </html>

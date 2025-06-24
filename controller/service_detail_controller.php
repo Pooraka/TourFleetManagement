@@ -284,10 +284,14 @@ switch ($status){
                 throw new Exception("End month should be selected");
             }
             
+            if($startMonth>$endMonth){
+                throw new Exception("End month should be greater than start month");
+            }
+            
             ?>
             
             <script>
-                window.location="../view/service-cost-trend.php?start_month='<?php echo $startMonth;?>'&end_month='<?php echo $endMonth;?>' ";
+                window.location="../view/service-cost-trend.php?start_month=<?php echo $startMonth;?>&end_month=<?php echo $endMonth;?>";
             </script>
             
             <?php
