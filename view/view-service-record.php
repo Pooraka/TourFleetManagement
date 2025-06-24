@@ -36,6 +36,7 @@ $statusDisplay = match ($serviceStatus) {
     '-1' => 'Cancelled',
     '1' => 'Ongoing',
     '2' => 'Completed',
+    '3' => 'Completed & Paid',
 };
 
 $userObj = new User();
@@ -46,7 +47,7 @@ $initiatorResult = $userObj->getUser($initiatorUserId);
 $initiatorRow = $initiatorResult->fetch_assoc();
 
 //Get the details who finalized
-if($serviceStatus==2){
+if($serviceStatus==2 || $serviceStatus==3 ){
     $finalizedByUserId = $serviceDetailRow['completed_by'];
 }elseif ($serviceStatus==-1){
     $finalizedByUserId = $serviceDetailRow['cancelled_by'];
@@ -67,7 +68,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Maintenance - Complete Service" ?>
+        <?php $pageName="Bus Maintenance - View Service Record" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -156,7 +157,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                         </div>
                         <div class="row">
                             <div class="col-md-3" style="margin-bottom: 10px">
-                                <?php if($serviceStatus=='2'){?>
+                                <?php if($serviceStatus=='2' || $serviceStatus=='3'){?>
                                 <span class="fa fa-user"></span>&nbsp;<b>Completed By</b>
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $finalizedByUserRow['user_fname']." ".$finalizedByUserRow['user_lname'] ?></span>
@@ -167,7 +168,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                                 <?php } ?>
                             </div>
                             <div class="col-md-3" style="margin-bottom: 10px">
-                                <?php if($serviceStatus=='2'){?>
+                                <?php if($serviceStatus=='2' || $serviceStatus=='3'){?>
                                 <span class="fa-solid fa-calendar-day"></span>&nbsp;<b>Service Completed Date</b>
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $serviceDetailRow['completed_date'] ?></span>
@@ -188,7 +189,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $serviceStationRow['service_station_name'] ?></span>
                             </div>
                         </div>
-                        <?php if($serviceStatus=='2'){?>
+                        <?php if($serviceStatus=='2' || $serviceStatus=='3'){?>
                         <div class="row">
                             <div class="col-md-3" style="margin-bottom: 10px">
                                 <span class="fas fa-coins"></span>&nbsp;<b>Service Cost</b>

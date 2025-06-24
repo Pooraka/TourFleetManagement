@@ -28,7 +28,7 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Users
                 </a>
-                <a href="generate-user-list.php" class="list-group-item">
+                <a href="user-list-report.php" target="_blank" class="list-group-item">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Generate User List
                 </a>

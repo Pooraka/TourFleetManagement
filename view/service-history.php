@@ -84,7 +84,7 @@ $busObj = new Bus();
                             <thead>
                                 <tr>
                                     <th>Vehicle</th>
-                                    <th>Serviced date</th>
+                                    <th>Serviced Date</th>
                                     <th>Serviced Mileage</th>
                                     <th>Invoice</th>
                                     <th>Status</th>

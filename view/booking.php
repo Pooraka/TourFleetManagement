@@ -24,6 +24,14 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Generate Quotation
                 </a>
+                <a href="pending-quotations.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pending Quotations
+                </a>
+                <a href="pending-customer-invoices.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pending Invoice
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

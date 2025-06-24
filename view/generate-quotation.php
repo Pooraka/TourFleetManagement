@@ -16,7 +16,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Generate Quotation" ?>
+        <?php $pageName="Booking Management - Generate Quotation" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">

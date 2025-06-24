@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2025 at 10:04 AM
+-- Generation Time: Jun 24, 2025 at 01:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,7 +60,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 17000, '2025-06-23 02:12:33', 17000, 3, '2025-06-23', 1, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', 1, NULL),
-(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 12758, '2025-04-29 15:20:28', 12758, 6, '2025-04-29', 1, NULL),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 1, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
 (12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40052, '2025-06-19 13:26:00', 40052, 1, '2025-06-19', -1, 3),
 (13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1, NULL),
@@ -92,6 +92,17 @@ INSERT INTO `bus_category` (`category_id`, `category_name`, `category_descriptio
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bus_tour`
+--
+
+CREATE TABLE `bus_tour` (
+  `bus_id` int(10) NOT NULL,
+  `tour_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -110,7 +121,9 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `customer_lname`, `customer_email`, `customer_status`) VALUES
 (1, '791253595V', 'Kamal', 'Fernando', 'kamal@mail.com', 1),
-(2, '965325141V', 'Jehan', 'Peter', 'peter@mail.com', 1);
+(2, '965325141V', 'Jehan', 'Peter', 'peter@mail.com', 1),
+(3, '942150889V', 'Nimal', 'Silva', 'nimal.s@email.com', 1),
+(4, '199865401234', 'Fathima', 'Rizwan', 'fathima.r@email.com', 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +145,63 @@ CREATE TABLE `customer_contact` (
 INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, `customer_id`) VALUES
 (12, 1, '0712347582', 1),
 (13, 2, '0114006319', 1),
-(14, 1, '0769542365', 2);
+(14, 1, '0769542365', 2),
+(15, 1, '0771234567', 3),
+(16, 2, '0112589632', 3),
+(17, 1, '0718956234', 4),
+(18, 2, '0112258632', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_invoice`
+--
+
+CREATE TABLE `customer_invoice` (
+  `invoice_id` int(10) NOT NULL,
+  `invoice_number` varchar(100) NOT NULL,
+  `quotation_id` int(10) NOT NULL,
+  `invoice_date` date NOT NULL,
+  `invoice_amount` decimal(10,2) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `invoice_status` int(11) NOT NULL DEFAULT 1,
+  `invoice_description` text DEFAULT NULL,
+  `tour_start_date` date NOT NULL,
+  `tour_end_date` date NOT NULL,
+  `pickup_location` varchar(255) NOT NULL,
+  `dropoff_location` varchar(255) NOT NULL,
+  `round_trip_mileage` int(4) NOT NULL,
+  `actual_fare` decimal(10,2) DEFAULT NULL,
+  `actual_mileage` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_invoice`
+--
+
+INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
+(1, 'inv1', 1, '2025-06-01', 75000.00, 1, 1, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 240, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_invoice_item`
+--
+
+CREATE TABLE `customer_invoice_item` (
+  `item_id` int(10) NOT NULL,
+  `invoice_id` int(10) NOT NULL,
+  `category_id` int(10) NOT NULL,
+  `quantity` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_invoice_item`
+--
+
+INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `quantity`) VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -376,7 +445,7 @@ CREATE TABLE `module` (
 
 INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`) VALUES
 (1, 'Booking management', 'booking.png', 'booking.php', 1),
-(2, 'Tours and tracking', 'tours.png', 'tours.php', 1),
+(2, 'Tours and tracking', 'tours.png', 'tour-management.php', 1),
 (3, 'Tender management', 'tender.png', 'tender.php', 1),
 (4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1),
 (5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1),
@@ -422,12 +491,14 @@ INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_met
 
 CREATE TABLE `quotation` (
   `quotation_id` int(10) NOT NULL,
+  `issued_date` date NOT NULL,
   `customer_id` int(10) NOT NULL,
   `tour_start_date` date NOT NULL,
   `tour_end_date` date NOT NULL,
   `pickup_location` varchar(255) NOT NULL,
   `dropoff_location` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `round_trip_mileage` int(4) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
   `quotation_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -436,8 +507,9 @@ CREATE TABLE `quotation` (
 -- Dumping data for table `quotation`
 --
 
-INSERT INTO `quotation` (`quotation_id`, `customer_id`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `description`, `total_amount`, `quotation_status`) VALUES
-(1, 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 'One day trip from Athurugiriya to Galle and back', 75000.00, 1);
+INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `description`, `round_trip_mileage`, `total_amount`, `quotation_status`) VALUES
+(1, '2025-06-01', 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 'One day trip from Athurugiriya to Galle and back', 240, 75000.00, 2),
+(2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, 1);
 
 -- --------------------------------------------------------
 
@@ -580,7 +652,8 @@ INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `se
 (12, 17, 2, 2, '2025-05-07', '2025-05-07', NULL, 15748, 24112.25, 'svsinv_681b09afde3ba.pdf', '2222', 1, 3, 3, NULL, 3),
 (18, 2, 1, 2, '2025-06-19', '2025-06-19', NULL, 186000, 25432.25, 'svsinv_68541ff971466.jpg', 'hujsn', 3, 3, 1, NULL, 1),
 (19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, 3, 3, NULL, 3),
-(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 3);
+(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 3),
+(21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -625,6 +698,35 @@ INSERT INTO `service_station_contact` (`service_station_contact_id`, `service_st
 (2, '0366532148', 2, 1),
 (9, '0751231247', 1, 2),
 (10, '0366531234', 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `supplier_id` int(10) NOT NULL,
+  `supplier_name` varchar(255) NOT NULL,
+  `supplier_contact` varchar(10) NOT NULL,
+  `supplier_email` int(11) NOT NULL,
+  `supplier_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tour`
+--
+
+CREATE TABLE `tour` (
+  `tour_id` int(10) NOT NULL,
+  `invoice_id` int(10) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `destination` varchar(255) NOT NULL,
+  `tour_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -721,6 +823,12 @@ ALTER TABLE `bus_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `bus_tour`
+--
+ALTER TABLE `bus_tour`
+  ADD PRIMARY KEY (`bus_id`,`tour_id`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -732,6 +840,19 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `customer_contact`
   ADD PRIMARY KEY (`contact_id`);
+
+--
+-- Indexes for table `customer_invoice`
+--
+ALTER TABLE `customer_invoice`
+  ADD PRIMARY KEY (`invoice_id`),
+  ADD UNIQUE KEY `invoice_number` (`invoice_number`);
+
+--
+-- Indexes for table `customer_invoice_item`
+--
+ALTER TABLE `customer_invoice_item`
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Indexes for table `function`
@@ -813,6 +934,18 @@ ALTER TABLE `service_station_contact`
   ADD PRIMARY KEY (`service_station_contact_id`);
 
 --
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`supplier_id`);
+
+--
+-- Indexes for table `tour`
+--
+ALTER TABLE `tour`
+  ADD PRIMARY KEY (`tour_id`);
+
+--
 -- Indexes for table `transaction_category`
 --
 ALTER TABLE `transaction_category`
@@ -851,13 +984,25 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `customer_invoice`
+--
+ALTER TABLE `customer_invoice`
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `customer_invoice_item`
+--
+ALTER TABLE `customer_invoice_item`
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `function`
@@ -887,7 +1032,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
@@ -911,7 +1056,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `service_station`
@@ -924,6 +1069,12 @@ ALTER TABLE `service_station`
 --
 ALTER TABLE `service_station_contact`
   MODIFY `service_station_contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `tour`
+--
+ALTER TABLE `tour`
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`

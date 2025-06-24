@@ -149,6 +149,7 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                         <div class="row">
                             <input type="hidden" name="service_station_id" value="<?php echo $serviceStationId; ?>"/>
                             <input type="hidden" id="totalpaymenttosubmit" name="totalpayment" value=""/>
+                            &nbsp;
                         </div>
                         <div class="row">
                             <div class="col-md-6">
