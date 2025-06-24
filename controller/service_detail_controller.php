@@ -268,4 +268,43 @@ switch ($status){
             </script>
             <?php
         }
+    break;
+    
+    case "service_cost_trend":
+        
+        try{
+        
+            $startMonth =  $_POST['start_month'];
+            $endMonth =  $_POST['end_month'];
+            
+            if($startMonth==""){
+                throw new Exception("Start month should be selected");
+            }
+            if($endMonth==""){
+                throw new Exception("End month should be selected");
+            }
+            
+            ?>
+            
+            <script>
+                window.location="../view/service-cost-trend.php?start_month='<?php echo $startMonth;?>'&end_month='<?php echo $endMonth;?>' ";
+            </script>
+            
+            <?php
+        
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/service-cost-trend.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+            
+        }
+    
+    break;
 }

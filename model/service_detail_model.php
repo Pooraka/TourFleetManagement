@@ -108,4 +108,20 @@ class ServiceDetail{
         $con->query($sql) or die ($con->error);
         
     }
+    
+    public function getMonthlyServiceCostTrend($startMonth, $endMonth){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT DATE_FORMAT(completed_date,'%Y-%m') AS month, SUM(cost) AS total_cost "
+                . "FROM service_detail "
+                . "WHERE service_status = 3 "
+                . "AND DATE_FORMAT(completed_date, '%Y-%m') >= '$startMonth' "
+                . "AND DATE_FORMAT(completed_date, '%Y-%m') <= '$endMonth' "
+                . "GROUP BY month ORDER BY month ASC";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+        
+    }
 }

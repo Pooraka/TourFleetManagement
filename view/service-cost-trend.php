@@ -1,9 +1,21 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/service_detail_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$serviceDetailObj = new ServiceDetail();
+
+if(isset($_GET['start_month']) && isset($_GET['end_month'])){
+    
+    $startMonth = $_GET['start_month'];
+    $endMonth = $_GET['end_month'];
+    
+    $serviceCostTrendResult = $serviceDetailObj->getMonthlyServiceCostTrend($startMonth, $endMonth);
+}
+
 ?>
 
 <html lang="en">
@@ -45,6 +57,7 @@ $userSession=$_SESSION["user"];
                 </a>
             </ul>
         </div>
+        <form action="../controller/service_detail_controller.php?status=service_cost_trend" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
                 <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
@@ -62,40 +75,39 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label class="control-label">Start Month</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="month" class="form-control" name="start_month" id="start_month"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="control-label">End Month</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="month" class="form-control" name="end_month" id="end_month"/>
-                    </div>
+                <div class="col-md-3">
+                    <label class="control-label">Start Month</label>
                 </div>
-                <div class="row">
-                    &nbsp;
+                <div class="col-md-3">
+                    <input type="month" class="form-control" name="start_month" id="start_month"/>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-3">
-                        <input type="submit" onclick="generate()" value="Generate" class="btn btn-success"/>
-                    </div>
+                <div class="col-md-3">
+                    <label class="control-label">End Month</label>
                 </div>
-                <div class="row">
-                    &nbsp;
+                <div class="col-md-3">
+                    <input type="month" class="form-control" name="end_month" id="end_month"/>
                 </div>
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
-                        <div id="trend">
-                            
-                        </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-3">
+                    <input type="submit" value="Generate" class="btn btn-success"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div id="trend">
+
                     </div>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
