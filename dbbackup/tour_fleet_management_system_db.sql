@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2025 at 01:48 AM
+-- Generation Time: Jun 25, 2025 at 12:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,11 +59,11 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2400, '2025-05-01 19:01:04', 2400, 12, '2025-05-07', 1, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 17000, '2025-06-23 02:12:33', 17000, 3, '2025-06-23', 1, NULL),
-(9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55000, '2025-04-21 22:57:00', 48000, 12, '2025-02-28', 1, NULL),
+(9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
 (10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 1, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
 (12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40052, '2025-06-19 13:26:00', 40052, 1, '2025-06-19', -1, 3),
-(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 6, '2025-01-05', 1, NULL),
+(13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 3, '2025-01-05', 2, NULL),
 (16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 38000, '2025-05-18 01:50:58', 35000, 4, '2025-04-01', 1, NULL),
 (17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 15748, '2025-05-07 12:49:36', 15748, 3, '2025-05-07', 1, NULL);
 
@@ -549,7 +549,7 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-06-22');
+(1, 'ServiceDueBuses', '2025-06-24');
 
 -- --------------------------------------------------------
 
@@ -709,9 +709,20 @@ CREATE TABLE `supplier` (
   `supplier_id` int(10) NOT NULL,
   `supplier_name` varchar(255) NOT NULL,
   `supplier_contact` varchar(10) NOT NULL,
-  `supplier_email` int(11) NOT NULL,
+  `supplier_email` varchar(255) NOT NULL,
   `supplier_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `supplier_email`, `supplier_status`) VALUES
+(1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 1),
+(2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 1),
+(3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 1),
+(4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
+(5, 'General Auto Traders', '0332255889', 'gat@email.com', 1);
 
 -- --------------------------------------------------------
 

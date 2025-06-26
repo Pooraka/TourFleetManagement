@@ -1,5 +1,5 @@
 <?php
-include '../commons/session.php';
+include_once '../commons/session.php';
 include_once '../model/customer_model.php';
 
 $customerObj = new Customer();

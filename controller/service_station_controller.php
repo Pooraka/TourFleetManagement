@@ -1,6 +1,6 @@
 <?php
-include '../commons/session.php';
-include '../model/service_station_model.php';
+include_once '../commons/session.php';
+include_once '../model/service_station_model.php';
 
 $serviceStationObj = new ServiceStation();
 

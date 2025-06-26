@@ -152,4 +152,35 @@ class Bus{
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }
+    
+    public function getBusAvailableForTour($startDate,$endDate){
+        
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT b.* FROM bus b WHERE b.bus_id NOT IN"
+                . " ( SELECT DISTINCT bt.bus_id FROM bus_tour bt JOIN tour t ON bt.tour_id = t.tour_id "
+                . "WHERE '$startDate' < t.end_date AND '$endDate' > t.start_date  "
+                . "OR '$startDate' = t.start_date OR '$startDate' = t.end_date  "
+                . "OR '$endDate' = t.start_date OR '$endDate' = t.end_date )  "
+                . "AND b.bus_status = '1'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+    
+    public function getBusCategoryAvailableForTour($startDate,$endDate){
+        
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT b.category_id, c.category_name, COUNT(b.bus_id) AS count "
+                . "FROM bus b, bus_category c WHERE b.bus_id NOT IN"
+                . " ( SELECT DISTINCT bt.bus_id FROM bus_tour bt JOIN tour t ON bt.tour_id = t.tour_id "
+                . "WHERE '$startDate' < t.end_date AND '$endDate' > t.start_date  "
+                . "OR '$startDate' = t.start_date OR '$startDate' = t.end_date  "
+                . "OR '$endDate' = t.start_date OR '$endDate' = t.end_date )  "
+                . "AND c.category_id = b.category_id AND b.bus_status = '1' GROUP BY category_id";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }

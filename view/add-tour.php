@@ -130,45 +130,50 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                         <thead>
                             <tr>
                                 <th>Select</th>
+                                <th>Category</th>
                                 <th>Vehicle No</th>
                                 <th>Make</th>
                                 <th>Model</th>
                                 <th>Passengers</th>
-                                <th>Category</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><input type="checkbox"/></td>
+                                <td>Mini Bus</td>
                                 <td>62-9102</td>
                                 <td>Toyota</td>
                                 <td>Coaster</td>
                                 <td>29</td>
-                                <td>Mini Bus</td>
+                                
                             </tr>
                             <tr>
                                 <td><input type="checkbox"/></td>
+                                <td>Luxury</td>
                                 <td>CAA-1234</td>
                                 <td>Yutong</td>
                                 <td>ZK6938HQ</td>
                                 <td>40</td>
-                                <td>Luxury</td>
+                                
                             </tr>
                             <tr>
                                 <td><input type="checkbox"/></td>
+                                <td>Mini Bus</td>
                                 <td>NA-4567</td>
                                 <td>Mitsubishi</td>
                                 <td>Fuso Rosa</td>
                                 <td>25</td>
-                                <td>Mini Bus</td>
+                                
                             </tr>
                             <tr>
                                 <td><input type="checkbox"/></td>
+                                <td>Standard</td>
                                 <td>NB-5678</td>
                                 <td>Lanka Ashok Leyland</td>
                                 <td>Viking</td>
                                 <td>54</td>
-                                <td>Standard</td>
+                                
                             </tr>
                         </tbody>
                     </table>

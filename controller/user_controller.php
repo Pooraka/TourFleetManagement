@@ -1,7 +1,7 @@
 <?php
-include '../commons/session.php';
-include '../model/user_model.php';
-include '../model/login_model.php';
+include_once '../commons/session.php';
+include_once '../model/user_model.php';
+include_once '../model/login_model.php';
 $userObj = new User();
 $loginObj = new Login();
 

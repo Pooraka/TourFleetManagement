@@ -1,5 +1,5 @@
 <?php
-include '../commons/session.php';
+include_once '../commons/session.php';
 include_once '../model/finance_model.php';
 include_once '../model/service_detail_model.php';
 

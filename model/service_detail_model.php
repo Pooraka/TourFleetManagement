@@ -18,7 +18,7 @@ class ServiceDetail{
         return $serviceId;
     }
     
-    public function getOngoingServices(){
+    public function getOngoingServices(){ 
         
         $con = $GLOBALS["con"];
         

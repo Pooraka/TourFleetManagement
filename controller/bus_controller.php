@@ -1,6 +1,6 @@
 <?php
-include '../commons/session.php';
-include '../model/bus_model.php';
+include_once '../commons/session.php';
+include_once '../model/bus_model.php';
 
 
 //get user information from session
@@ -320,5 +320,49 @@ switch ($status){
             
         }
         
+    break;
+    
+    case "categories_available_for_tour":
+        
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+        
+        if($startDate>$endDate){
+            echo "<center><b style='color:red;'>Start date cannot be greater than end date</b></center>";
+        }else{
+        
+            $busCategoryResult = $busObj->getBusCategoryAvailableForTour($startDate, $endDate);
+            ?>  
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bus Category</th>
+                        <th>Available Count</th>
+                        <th>Requested Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                            <?php
+            /*This loop is used to get bus categories needed at quotation generate feature
+             *Further associative array is set to be created using input[@type=number]
+             * element with category_id dynamically
+             */                 
+            while($busCategoryRow = $busCategoryResult->fetch_assoc()){?>
+
+                    <tr>
+                        <td><?php echo $busCategoryRow['category_name'];?></td>
+                        <td><?php echo $busCategoryRow['count'];?></td>
+                        <td><input type="number" name="request_count[<?php echo $busCategoryRow['category_id']; ?>]" 
+                                   class="form-control" 
+                                   placeholder="Enter count" 
+                                   min="0" 
+                                   max="<?php echo $busCategoryRow['count'];?>"
+                                   ></td>
+                    </tr>
+            <?php } ?>
+                </tbody>
+            </table>
+                <?php
+        }
     break;
 }
