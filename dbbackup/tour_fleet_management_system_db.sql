@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2025 at 11:49 PM
+-- Generation Time: Jun 29, 2025 at 12:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -850,6 +850,7 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 --
 ALTER TABLE `bus`
   ADD PRIMARY KEY (`bus_id`),
+  ADD UNIQUE KEY `vehicle_no` (`vehicle_no`),
   ADD KEY `fk_bus_bus_category` (`category_id`),
   ADD KEY `fk_bus_removed_by_user` (`removed_by`);
 
@@ -931,7 +932,8 @@ ALTER TABLE `module`
 ALTER TABLE `payment`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_transaction_category` (`category_id`),
-  ADD KEY `fk_payment_paid_by_user` (`paid_by`);
+  ADD KEY `fk_payment_paid_by_user` (`paid_by`),
+  ADD KEY `date` (`date`);
 
 --
 -- Indexes for table `quotation`
@@ -1016,6 +1018,8 @@ ALTER TABLE `transaction_category`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `user_nic` (`user_nic`),
+  ADD UNIQUE KEY `user_email` (`user_email`),
   ADD KEY `fk_user_role` (`user_role`);
 
 --
