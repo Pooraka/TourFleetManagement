@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2025 at 12:59 AM
+-- Generation Time: Jun 28, 2025 at 10:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,18 +54,20 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 50000, '2025-06-19 12:50:46', 50000, 6, '2025-06-19', 1, NULL),
 (2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 186000, '2025-06-19 20:04:33', 186000, 6, '2025-06-19', 1, NULL),
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
-(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 116000, '2025-06-23 02:15:00', 116000, 6, '2025-06-23', 1, NULL),
-(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 1, NULL),
+(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 116000, '2025-06-23 02:15:00', 116000, 6, '2025-06-23', 3, NULL),
+(5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 3, NULL),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2400, '2025-05-01 19:01:04', 2400, 12, '2025-05-07', 1, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
-(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 17000, '2025-06-23 02:12:33', 17000, 3, '2025-06-23', 1, NULL),
+(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 18245, '2025-06-25 18:23:45', 18245, 1, '2025-06-25', 1, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
 (10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 1, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
-(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40052, '2025-06-19 13:26:00', 40052, 1, '2025-06-19', -1, 3),
+(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40052, '2025-06-19 13:26:00', 40052, 1, '2025-06-19', 1, NULL),
 (13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 3, '2025-01-05', 2, NULL),
-(16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 38000, '2025-05-18 01:50:58', 35000, 4, '2025-04-01', 1, NULL),
-(17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 15748, '2025-05-07 12:49:36', 15748, 3, '2025-05-07', 1, NULL);
+(16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 38000, '2025-05-18 01:50:58', 35000, 1, '2025-04-01', 2, NULL),
+(17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 15748, '2025-05-07 12:49:36', 15748, 3, '2025-05-07', 1, NULL),
+(18, 3, 'QEW-7514', 'Toyota', 'Coaster', '2019', 32, 'Y', 4500, 0, '2025-06-27 00:34:43', 0, 3, '2025-06-27', 1, NULL),
+(19, 3, 'BAI-2435', 'Toyota', 'Coaster', '2013', 33, 'Y', 3600, 3241, '2025-06-28 09:13:30', 3241, 3, '2025-06-28', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -100,6 +102,14 @@ CREATE TABLE `bus_tour` (
   `tour_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bus_tour`
+--
+
+INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
+(1, 1),
+(4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -123,7 +133,8 @@ INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `custom
 (1, '791253595V', 'Kamal', 'Fernando', 'kamal@mail.com', 1),
 (2, '965325141V', 'Jehan', 'Peter', 'peter@mail.com', 1),
 (3, '942150889V', 'Nimal', 'Silva', 'nimal.s@email.com', 1),
-(4, '199865401234', 'Fathima', 'Rizwan', 'fathima.r@email.com', 1);
+(4, '199865401234', 'Fathima', 'Rizwan', 'fathima.r@email.com', 1),
+(5, '953254147V', 'Dilshan', 'Gamage', 'dilshang@ymail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -149,7 +160,9 @@ INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, 
 (15, 1, '0771234567', 3),
 (16, 2, '0112589632', 3),
 (17, 1, '0718956234', 4),
-(18, 2, '0112258632', 4);
+(18, 2, '0112258632', 4),
+(19, 1, '0714525851', 5),
+(20, 2, '0114006319', 5);
 
 -- --------------------------------------------------------
 
@@ -422,7 +435,7 @@ INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, 
 (1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
 (4, 'clintb@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 3, 1, '', '0000-00-00 00:00:00'),
 (6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
-(8, 'tonys@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 7, 1, '', '0000-00-00 00:00:00'),
+(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 1, '', '0000-00-00 00:00:00'),
 (9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -508,7 +521,7 @@ CREATE TABLE `quotation` (
 --
 
 INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `description`, `round_trip_mileage`, `total_amount`, `quotation_status`) VALUES
-(1, '2025-06-01', 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 'One day trip from Athurugiriya to Galle and back', 240, 75000.00, 2),
+(1, '2025-06-01', 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 'One night trip from Athurugiriya to Galle and back', 240, 75000.00, 2),
 (2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, 1);
 
 -- --------------------------------------------------------
@@ -549,7 +562,7 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-06-24');
+(1, 'ServiceDueBuses', '2025-06-26');
 
 -- --------------------------------------------------------
 
@@ -648,12 +661,16 @@ CREATE TABLE `service_detail` (
 
 INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `cancelled_date`, `mileage_at_service`, `cost`, `invoice`, `invoice_number`, `payment_id`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
 (6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 'gbfb33', 2, 3, 1, NULL, 1),
-(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, 3, 3, NULL, 3),
+(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, 3, 3, NULL, 1),
 (12, 17, 2, 2, '2025-05-07', '2025-05-07', NULL, 15748, 24112.25, 'svsinv_681b09afde3ba.pdf', '2222', 1, 3, 3, NULL, 3),
 (18, 2, 1, 2, '2025-06-19', '2025-06-19', NULL, 186000, 25432.25, 'svsinv_68541ff971466.jpg', 'hujsn', 3, 3, 1, NULL, 1),
 (19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, 3, 3, NULL, 3),
-(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 3),
-(21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 3);
+(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 1),
+(21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 1),
+(22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', NULL, 2, 3, NULL, 1),
+(23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
+(24, 4, 1, 2, '2025-06-27', NULL, NULL, 117520, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
+(25, 19, 1, 2, '2025-06-28', '2025-06-28', NULL, 3241, 7053.78, 'svsinv_685f64e2cd0c6.pdf', '458IL4', NULL, 2, 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -738,6 +755,13 @@ CREATE TABLE `tour` (
   `destination` varchar(255) NOT NULL,
   `tour_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tour`
+--
+
+INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destination`, `tour_status`) VALUES
+(1, 1, '2025-06-12', '2025-06-13', 'Galle', 1);
 
 -- --------------------------------------------------------
 
@@ -837,7 +861,8 @@ ALTER TABLE `bus_category`
 -- Indexes for table `bus_tour`
 --
 ALTER TABLE `bus_tour`
-  ADD PRIMARY KEY (`bus_id`,`tour_id`);
+  ADD PRIMARY KEY (`bus_id`,`tour_id`),
+  ADD KEY `tour_id` (`tour_id`);
 
 --
 -- Indexes for table `customer`
@@ -930,7 +955,8 @@ ALTER TABLE `role_module`
 -- Indexes for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  ADD PRIMARY KEY (`service_id`);
+  ADD PRIMARY KEY (`service_id`),
+  ADD KEY `service_station_id` (`service_station_id`);
 
 --
 -- Indexes for table `service_station`
@@ -983,7 +1009,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bus`
 --
 ALTER TABLE `bus`
-  MODIFY `bus_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `bus_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `bus_category`
@@ -995,13 +1021,13 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice`
@@ -1067,7 +1093,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `service_detail`
 --
 ALTER TABLE `service_detail`
-  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `service_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `service_station`
@@ -1085,7 +1111,7 @@ ALTER TABLE `service_station_contact`
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
@@ -1104,6 +1130,28 @@ ALTER TABLE `user`
 --
 ALTER TABLE `user_contact`
   MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bus_tour`
+--
+ALTER TABLE `bus_tour`
+  ADD CONSTRAINT `bus_tour_ibfk_1` FOREIGN KEY (`tour_id`) REFERENCES `tour` (`tour_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `function_user`
+--
+ALTER TABLE `function_user`
+  ADD CONSTRAINT `function_user_ibfk_1` FOREIGN KEY (`function_id`) REFERENCES `function` (`function_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_contact`
+--
+ALTER TABLE `user_contact`
+  ADD CONSTRAINT `user_contact_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
