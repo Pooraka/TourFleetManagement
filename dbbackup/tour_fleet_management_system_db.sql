@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2025 at 10:05 PM
+-- Generation Time: Jun 28, 2025 at 11:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -435,7 +435,7 @@ INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, 
 (1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
 (4, 'clintb@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 3, 1, '', '0000-00-00 00:00:00'),
 (6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
-(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 1, '', '0000-00-00 00:00:00'),
+(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 2, '327005', '2025-06-28 17:27:51'),
 (9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -849,7 +849,9 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 -- Indexes for table `bus`
 --
 ALTER TABLE `bus`
-  ADD PRIMARY KEY (`bus_id`);
+  ADD PRIMARY KEY (`bus_id`),
+  ADD KEY `fk_bus_bus_category` (`category_id`),
+  ADD KEY `fk_bus_removed_by_user` (`removed_by`);
 
 --
 -- Indexes for table `bus_category`
@@ -875,39 +877,47 @@ ALTER TABLE `customer`
 -- Indexes for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  ADD PRIMARY KEY (`contact_id`);
+  ADD PRIMARY KEY (`contact_id`),
+  ADD KEY `fk_customer_contact_customer` (`customer_id`);
 
 --
 -- Indexes for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
   ADD PRIMARY KEY (`invoice_id`),
-  ADD UNIQUE KEY `invoice_number` (`invoice_number`);
+  ADD UNIQUE KEY `invoice_number` (`invoice_number`),
+  ADD KEY `fk_invoice_quotation` (`quotation_id`),
+  ADD KEY `fk_invoice_customer` (`customer_id`);
 
 --
 -- Indexes for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  ADD PRIMARY KEY (`item_id`);
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `fk_invoice_item_invoice` (`invoice_id`),
+  ADD KEY `fk_invoice_item_bus_category` (`category_id`);
 
 --
 -- Indexes for table `function`
 --
 ALTER TABLE `function`
-  ADD PRIMARY KEY (`function_id`);
+  ADD PRIMARY KEY (`function_id`),
+  ADD KEY `fk_function_module` (`module_id`);
 
 --
 -- Indexes for table `function_user`
 --
 ALTER TABLE `function_user`
-  ADD PRIMARY KEY (`function_id`,`user_id`);
+  ADD PRIMARY KEY (`function_id`,`user_id`),
+  ADD KEY `fk_function_user_user` (`user_id`);
 
 --
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
   ADD PRIMARY KEY (`login_id`),
-  ADD UNIQUE KEY `login_username` (`login_username`);
+  ADD UNIQUE KEY `login_username` (`login_username`),
+  ADD KEY `fk_login_user` (`user_id`);
 
 --
 -- Indexes for table `module`
@@ -919,19 +929,24 @@ ALTER TABLE `module`
 -- Indexes for table `payment`
 --
 ALTER TABLE `payment`
-  ADD PRIMARY KEY (`payment_id`);
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `fk_payment_transaction_category` (`category_id`),
+  ADD KEY `fk_payment_paid_by_user` (`paid_by`);
 
 --
 -- Indexes for table `quotation`
 --
 ALTER TABLE `quotation`
-  ADD PRIMARY KEY (`quotation_id`);
+  ADD PRIMARY KEY (`quotation_id`),
+  ADD KEY `fk_quotation_customer` (`customer_id`);
 
 --
 -- Indexes for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  ADD PRIMARY KEY (`item_id`);
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `fk_quotation_item_quotation` (`quotation_id`),
+  ADD KEY `fk_quotation_item_bus_category` (`category_id`);
 
 --
 -- Indexes for table `reminder`
@@ -949,14 +964,20 @@ ALTER TABLE `role`
 -- Indexes for table `role_module`
 --
 ALTER TABLE `role_module`
-  ADD PRIMARY KEY (`role_id`,`module_id`);
+  ADD PRIMARY KEY (`role_id`,`module_id`),
+  ADD KEY `fk_role_module_module` (`module_id`);
 
 --
 -- Indexes for table `service_detail`
 --
 ALTER TABLE `service_detail`
   ADD PRIMARY KEY (`service_id`),
-  ADD KEY `service_station_id` (`service_station_id`);
+  ADD KEY `fk_service_detail_bus` (`bus_id`),
+  ADD KEY `fk_service_detail_station` (`service_station_id`),
+  ADD KEY `fk_service_detail_initiated_by` (`initiated_by`),
+  ADD KEY `fk_service_detail_completed_by` (`completed_by`),
+  ADD KEY `fk_service_detail_cancelled_by` (`cancelled_by`),
+  ADD KEY `fk_service_detail_payment` (`payment_id`);
 
 --
 -- Indexes for table `service_station`
@@ -968,7 +989,8 @@ ALTER TABLE `service_station`
 -- Indexes for table `service_station_contact`
 --
 ALTER TABLE `service_station_contact`
-  ADD PRIMARY KEY (`service_station_contact_id`);
+  ADD PRIMARY KEY (`service_station_contact_id`),
+  ADD KEY `fk_ss_contact_station` (`service_station_id`);
 
 --
 -- Indexes for table `supplier`
@@ -980,7 +1002,8 @@ ALTER TABLE `supplier`
 -- Indexes for table `tour`
 --
 ALTER TABLE `tour`
-  ADD PRIMARY KEY (`tour_id`);
+  ADD PRIMARY KEY (`tour_id`),
+  ADD KEY `fk_tour_invoice` (`invoice_id`);
 
 --
 -- Indexes for table `transaction_category`
@@ -992,7 +1015,8 @@ ALTER TABLE `transaction_category`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD KEY `fk_user_role` (`user_role`);
 
 --
 -- Indexes for table `user_contact`
@@ -1136,16 +1160,113 @@ ALTER TABLE `user_contact`
 --
 
 --
+-- Constraints for table `bus`
+--
+ALTER TABLE `bus`
+  ADD CONSTRAINT `fk_bus_bus_category` FOREIGN KEY (`category_id`) REFERENCES `bus_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bus_removed_by_user` FOREIGN KEY (`removed_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `bus_tour`
 --
 ALTER TABLE `bus_tour`
-  ADD CONSTRAINT `bus_tour_ibfk_1` FOREIGN KEY (`tour_id`) REFERENCES `tour` (`tour_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bus_tour_ibfk_1` FOREIGN KEY (`tour_id`) REFERENCES `tour` (`tour_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bus_tour_bus` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`bus_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer_contact`
+--
+ALTER TABLE `customer_contact`
+  ADD CONSTRAINT `fk_customer_contact_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer_invoice`
+--
+ALTER TABLE `customer_invoice`
+  ADD CONSTRAINT `fk_invoice_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_invoice_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`quotation_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer_invoice_item`
+--
+ALTER TABLE `customer_invoice_item`
+  ADD CONSTRAINT `fk_invoice_item_bus_category` FOREIGN KEY (`category_id`) REFERENCES `bus_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_invoice_item_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `customer_invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `function`
+--
+ALTER TABLE `function`
+  ADD CONSTRAINT `fk_function_module` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `function_user`
 --
 ALTER TABLE `function_user`
+  ADD CONSTRAINT `fk_function_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `function_user_ibfk_1` FOREIGN KEY (`function_id`) REFERENCES `function` (`function_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `login`
+--
+ALTER TABLE `login`
+  ADD CONSTRAINT `fk_login_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `fk_payment_paid_by_user` FOREIGN KEY (`paid_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_payment_transaction_category` FOREIGN KEY (`category_id`) REFERENCES `transaction_category` (`category_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `quotation`
+--
+ALTER TABLE `quotation`
+  ADD CONSTRAINT `fk_quotation_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `quotation_item`
+--
+ALTER TABLE `quotation_item`
+  ADD CONSTRAINT `fk_quotation_item_bus_category` FOREIGN KEY (`category_id`) REFERENCES `bus_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_quotation_item_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`quotation_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `role_module`
+--
+ALTER TABLE `role_module`
+  ADD CONSTRAINT `fk_role_module_module` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_role_module_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `service_detail`
+--
+ALTER TABLE `service_detail`
+  ADD CONSTRAINT `fk_service_detail_bus` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`bus_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_service_detail_cancelled_by` FOREIGN KEY (`cancelled_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_service_detail_completed_by` FOREIGN KEY (`completed_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_service_detail_initiated_by` FOREIGN KEY (`initiated_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_service_detail_payment` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`payment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_service_detail_station` FOREIGN KEY (`service_station_id`) REFERENCES `service_station` (`service_station_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `service_station_contact`
+--
+ALTER TABLE `service_station_contact`
+  ADD CONSTRAINT `fk_ss_contact_station` FOREIGN KEY (`service_station_id`) REFERENCES `service_station` (`service_station_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tour`
+--
+ALTER TABLE `tour`
+  ADD CONSTRAINT `fk_tour_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `customer_invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `fk_user_role` FOREIGN KEY (`user_role`) REFERENCES `role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_contact`
