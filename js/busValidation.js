@@ -136,7 +136,7 @@ $(document).ready(function () {
             return false;
         }
 
-        if(lastServiceKM > currentMileage){
+        if(parseInt(lastServiceKM,10) > parseInt(currentMileage,10)){
             $("#msg").html("Last Service Mileage cannot be greater than Current Mileage!");
             $("#msg").addClass("alert alert-danger");
             return false;
