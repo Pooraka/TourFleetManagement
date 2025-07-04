@@ -11,8 +11,17 @@ $invoiceId = $_GET['invoice_id'];
 $invoiceId = base64_decode($invoiceId);
 
 $customerInvoiceObj = new CustomerInvoice();
-$invoiceResult = $customerInvoiceObj->getInvoiceInformation($invoiceId);
+$invoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
 $invoiceRow = $invoiceResult->fetch_assoc();
+
+$invoiceStatus = match((int)$invoiceRow['invoice_status']){
+    
+    -1=>"Cancelled",
+    1=>"Tour to be assigned",
+    2=>"Tour assigned",
+    3=>"Payment Pending",
+    4=>"Paid",
+};
 
 $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
 ?>
@@ -45,7 +54,7 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                 </a>
             </ul>
         </div>
-        <form action="../controller/booking_controller.php" method="post" enctype="multipart/form-data">
+        <form action="../controller/customer_invoice_controller.php?status=accept_payment&invoice_id=<?php echo base64_encode($invoiceId);?>" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -119,16 +128,26 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $invoiceRow['pickup_location']; ?></span>
                             </div>
                             <div class="col-md-3" style="margin-bottom: 10px">
-                                <span class="fa-solid fa-flag-checkered"></span>&nbsp;<b>Drop At</b>
+                                <span class="fa-solid fa-map-marker-alt"></span>&nbsp;<b>Drop At</b>
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $invoiceRow['dropoff_location']; ?></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3" style="margin-bottom: 10px">
+                                <span class="fa-solid fa-flag-checkered"></span>&nbsp;<b>Destination</b>
+                                </br>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $invoiceRow['destination'];?> </span>
+                            </div>
+                            <div class="col-md-3" style="margin-bottom: 10px">
                                 <span class="fa-solid fa-road"></span>&nbsp;<b>Total Mileage</b>
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "Km ".number_format($invoiceRow['round_trip_mileage'],0);?> </span>
+                            </div>
+                            <div class="col-md-3" style="margin-bottom: 10px">
+                                <span class="fas fa-tags"></span>&nbsp;<b>Invoice Status</b>
+                                </br>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $invoiceStatus;?> </span>
                             </div>
                         </div>
                         <div class="row">
@@ -193,7 +212,7 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="submit" class="btn btn-success" value="Accept Payment"/>
+                                <input type="submit" class="btn btn-success" value="Complete" style="width:130px"/>
                                 <input type="reset" class="btn btn-danger" value="Reset" style="width:130px"/>
                             </div>
                         </div>

@@ -121,10 +121,10 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                                 ?>
                                 
                                 <tr>
-                                    <td><?php echo $serviceStationRow['service_station_name'];?></td>
-                                    <td><?php echo $serviceStationRow['address'];?></td>
-                                    <td><?php echo $mobile; ?></td>
-                                    <td><?php echo $landline; ?></td>
+                                    <td><?php echo htmlspecialchars($serviceStationRow['service_station_name']);?></td>
+                                    <td><?php echo htmlspecialchars($serviceStationRow['address']);?></td>
+                                    <td><?php echo $mobile; //No need to sanitize as data submitted to a restricted format?></td>
+                                    <td><?php echo $landline; //No need to sanitize as data submitted to a restricted format?></td>
                                     <td>
                                         <a href="edit-service-station.php?station_id=<?php echo $serviceStationId; ?>" class="btn btn-warning" style="margin:2px">
                                             <span class="glyphicon glyphicon-pencil"></span>

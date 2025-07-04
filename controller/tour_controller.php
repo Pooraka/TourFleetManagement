@@ -1,6 +1,8 @@
 <?php
 include_once '../commons/session.php';
 include_once '../model/tour_model.php';
+include_once '../model/bus_model.php';
+include_once '../model/customer_invoice_model.php';
 
 
 //get user information from session
@@ -8,6 +10,8 @@ $userSession=$_SESSION["user"];
 $user_id = $userSession['user_id'];
 
 $tourObj = new Tour();
+$customerInvoiceObj = new CustomerInvoice();
+$busObj = new Bus();
 
 if(!isset($_GET["status"])){
     ?>
@@ -20,6 +24,370 @@ if(!isset($_GET["status"])){
 $status= $_GET["status"];
 
 switch ($status){
+    
+    case "get_data_to_add_tour":
+        
+        $invoiceId = $_POST['invoiceId'];
+        
+        $customerInvoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
+        $customerInvoiceRow = $customerInvoiceResult->fetch_assoc();
+        
+        $customerInvoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
+        
+        $startDate = $customerInvoiceRow['tour_start_date'];
+        $endDate = $customerInvoiceRow['tour_end_date'];
+        $destination = $customerInvoiceRow["destination"];
+        
+        $categoryIdArray = array();
+        
+        ?>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Start Date</label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label"><?php echo $startDate;?></label>
+                    <input type="hidden" name="start_date" value="<?php echo $startDate;?>"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">End Date</label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label"><?php echo $endDate;?></label>
+                    <input type="hidden" name="end_date" value="<?php echo $endDate;?>"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label><b>Requested Bus Types & Quantity</b></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Bus Category</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($customerInvoiceItemRow = $customerInvoiceItemResult->fetch_assoc()){ ?>
+                            <tr>
+                                <td><?php echo $customerInvoiceItemRow['category_name'];?></td>
+                                <td><?php echo $customerInvoiceItemRow['quantity'];?></td>
+                            </tr>
+                            <?php
+                            
+                                array_push($categoryIdArray,$customerInvoiceItemRow['category_id']);
+                            } 
+                            
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Destination</label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label"><?php echo $destination;?></label>
+                    <input type="hidden" name="destination" value="<?php echo $destination;?>"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <?php 
+            
+//              $busResult = $busObj->getBusAvailableForTour($startDate, $endDate, $categoryIdArray);
+                $busResult = $busObj->getBusAvailableForTour($startDate, $endDate);
+            
+            ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <label><b>Select The Desired Buses To Allocate To The Tour</b></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Category</th>
+                                <th>Vehicle No</th>
+                                <th>Make</th>
+                                <th>Model</th>
+                                <th>Passengers</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($busRow = $busResult->fetch_assoc()){ ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="bus[]" value="<?php echo $busRow['bus_id'];?>"/>
+                                </td>
+                                <td><?php echo $busRow['category_name'];?></td>
+                                <td><?php echo $busRow['vehicle_no'];?></td>
+                                <td><?php echo $busRow['make'];?></td>
+                                <td><?php echo $busRow['model'];?></td>
+                                <td><?php echo $busRow['capacity'];?></td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        <?php
+        
+    break;
+    
+    case "add_tour":
+        
+        try{
+            
+            $invoiceId = $_POST["invoice_id"];
+            
+            if($invoiceId==""){
+                throw new Exception("Select An Invoice");
+            }
+            
+            $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
+            
+            $startDate = $_POST['start_date'];
+            $endDate = $_POST['end_date'];
+            $destination = $_POST['destination'];
+            
+            if(empty($_POST["bus"])){
+                throw new Exception("Please Select The Bus(es) To Assign");
+            }
+            
+            $busArray = $_POST["bus"];
+            
+            $busCategoryResult = $busObj->getCategorieCountByBuses($busArray);
+            
+            
+            
+            //From Line 176 to 243 two cycles of two foreach loops used to check invoiceitems vs selected buses && selected buses vs invoiceitems
+            $matchWithInvoiceItems = true;
+            
+            //Put invoice items into an array
+            $invoiceItems = array();
+            while ($invoiceItemRow = $invoiceItemResult->fetch_assoc()) {
+                array_push($invoiceItems, $invoiceItemRow);
+            }
+            
+            //Put bus categories into an array
+            $busCategories = array();
+            while ($busCategoryRow = $busCategoryResult->fetch_assoc()) {
+                array_push($busCategories,$busCategoryRow);
+            }
+            
+            //check If all invoice items are included in selected items
+            foreach ($invoiceItems as $invoiceItemRow) {
+                
+                $categoryId = $invoiceItemRow['category_id'];
+                $quantity = $invoiceItemRow['quantity'];
+
+                $foundMatch = false;
+                
+                foreach ($busCategories as $busCategoryRow) {
+                    
+                    if($busCategoryRow['category_id'] == $categoryId && $busCategoryRow['quantity'] == $quantity){
+                        
+                        $foundMatch = true;
+                        //break inner loop
+                        break;
+                    }
+                }
+                
+                // If we didn’t find a match, set to false
+                if (!$foundMatch) {
+                    $matchWithInvoiceItems = false;
+                    break;
+                }
+            }
+            
+            //check if all selected items are in invoice items
+            foreach($busCategories as $busCategoryRow){
+                
+                $categoryId = $busCategoryRow['category_id'];
+                $quantity = $busCategoryRow['quantity'];
+
+                $foundMatch = false;
+                
+                foreach($invoiceItems as $invoiceItemRow){
+                    
+                    if($invoiceItemRow['category_id'] == $categoryId && $invoiceItemRow['quantity'] == $quantity){
+                        
+                        $foundMatch = true;
+                        //break inner loop
+                        break;
+                    }
+                }
+                
+                // If we didn’t find a match, set to false
+                if (!$foundMatch) {
+                    $matchWithInvoiceItems = false;
+                    break;
+                }
+                
+            }
+            
+            if(!$matchWithInvoiceItems){
+                throw new Exception ("Please Select Buses As Requested By Invoice");
+            }
+            
+            $tourId = $tourObj->addTour($invoiceId, $startDate, $endDate, $destination);
+            
+            foreach($busArray as $busId){
+                
+                $tourObj->addBusToTour($tourId, $busId);
+            }
+            
+            $customerInvoiceObj->changeInvoiceStatus($invoiceId,2);
+            
+            $msg = "Tour Assigned Successfully";
+            $msg = base64_encode($msg);
+
+            ?>
+
+            <script>
+                window.location="../view/pending-tours.php?msg=<?php echo $msg;?>";
+            </script>
+
+            <?php
+            
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/add-tour.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+        }
+        
+    break;
+    
+    
+    case "cancel_tour":
+        
+        $tourId = base64_decode($_GET["tour_id"]);
+        
+        $tourResult = $tourObj->getTour($tourId);
+        $tourRow = $tourResult->fetch_assoc();
+        
+        $invoiceId = $tourRow["invoice_id"];
+        
+        $tourObj->changeTourStatus($tourId,-1);
+        
+        $customerInvoiceObj->changeInvoiceStatus($invoiceId,-1);
+        
+        $msg = "Tour Cancelled Successfully";
+        $msg = base64_encode($msg);
+
+        ?>
+
+        <script>
+            window.location="../view/pending-tours.php?msg=<?php echo $msg;?>&success=true";
+        </script>
+
+        <?php
+        
+    break;
+
+    case "load_tour":
+        
+        $tourId = $_POST['tourId'];
+        
+        ?>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Enter Tour's Actual Mileage (Km)</label>
+                </div>
+                <div class="col-md-6">
+                    <label>
+                        <input type="number" name="actual_mileage" class="form-control" min="0" required/>
+                        <input type="hidden" name="tour_id" value="<?php echo $tourId;?>"/>
+                    </label>
+                </div>
+            </div>
+        
+        <?php
+        
+    break;
+
+    case "complete_tour":
+    
+        try{
+            $tourId = $_POST["tour_id"];
+            $actualMilage = $_POST["actual_mileage"];
+
+            if($actualMilage=="" || $actualMilage<=0){
+                throw new Exception ("Enter Tour's Actual Mileage To Complete The Tour");
+            }
+            
+            $tourResult = $tourObj->getTour($tourId);
+            $tourRow = $tourResult->fetch_assoc();
+            
+            $invoiceId = $tourRow["invoice_id"];
+            
+            $customerInvoiceObj->addActualTourMileage($invoiceId, $actualMileage);
+            $customerInvoiceObj->changeInvoiceStatus($invoiceId,3);
+            
+            $busResult = $tourObj->getBusListOfATour($tourId);
+            
+            while($busRow=$busResult->fetch_assoc()){
+                
+                $busId = $busRow['bus_id'];
+                $currentMileage = $busRow['current_mileage_km'];
+                
+                $newMileage = (int)$currentMileage + (int)$actualMilage;
+                
+                $newMileageAsAt = date('Y-m-d H:i:s', time());
+                
+                $busObj->updateBusMileage($busId, $newMileage, $newMileageAsAt);
+            }
+            
+            $tourObj->changeTourStatus($tourId,3);
+            
+            $msg = "Tour Completed Successfully";
+            $msg = base64_encode($msg);
+
+            ?>
+
+            <script>
+                window.location="../view/pending-tours.php?msg=<?php echo $msg;?>&success=true";
+            </script>
+
+            <?php
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/pending-tours.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+            
+        }
+        
+    break;
     
     
 

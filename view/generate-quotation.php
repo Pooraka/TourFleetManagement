@@ -94,7 +94,7 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9" id="bus_availability">
+                <div class="col-md-6 col-md-offset-3" id="bus_availability">
                     
                 </div>
             </div>
@@ -127,13 +127,13 @@ $userSession=$_SESSION["user"];
                     <label class="control-label">Round Trip Mileage (Km)</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="number" class="form-control" name="pickup" step="1"/>
+                    <input type="number" class="form-control" name="round_trip" step="1"/>
                 </div>
                 <div class="col-md-3">
                     <label class="control-label">Amount (LKR)</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="number" class="form-control" name="dropoff" step="0.01"/>
+                    <input type="number" class="form-control" name="amount" step="0.01"/>
                 </div>
             </div>
             <div class="row">
@@ -142,6 +142,12 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Destination</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="destination"/>
+                </div>
                 <div class="col-md-3">
                     <label class="control-label">Description</label>
                 </div>
@@ -174,7 +180,7 @@ $userSession=$_SESSION["user"];
     function getCustomer(){
         var nic = $('#nic').val();
         
-        var url = "../controller/quotation_controller.php?status=get_customer";
+        var url = "../controller/customer_controller.php?status=get_customer";
         
         $.post(url, {nic: nic}, function (data) {
 

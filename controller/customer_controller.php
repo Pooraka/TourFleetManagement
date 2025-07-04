@@ -199,4 +199,29 @@ switch ($status)
             </script>
             <?php
         }
+        
+    break;
+    
+    case "get_customer":
+        
+        $nic=strtoupper($_POST["nic"]);
+        
+        if($nic==""){
+            echo '<b style="color:red">Enter NIC</b>';
+        }
+        else{
+            
+            $customerResult = $customerObj->checkIfCustomerExist($nic);
+            
+            if($customerResult->num_rows==0){
+                echo '<b style="color:red">Customer Does Not Exist</b>';
+            }
+            else{
+                $customerRow = $customerResult->fetch_assoc();
+                $customerName = $customerRow['customer_fname']." ".$customerRow['customer_lname'];
+                echo "<b>".$customerName."</b>";
+            }
+        }
+        
+    break;
 }

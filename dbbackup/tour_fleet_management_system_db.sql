@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2025 at 12:02 AM
+-- Generation Time: Jul 04, 2025 at 09:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `tour_fleet_management_system_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bid`
+--
+
+CREATE TABLE `bid` (
+  `bid_id` int(10) NOT NULL,
+  `tender_id` int(10) NOT NULL,
+  `supplier_id` int(10) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL COMMENT 'The price offered per single unit of the part',
+  `bid_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The date and time the bid was submitted',
+  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Submitted, 2: Awarded, 3: Rejected'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bid`
+--
+
+INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date`, `status`) VALUES
+(1, 1, 3, 3500.00, '2025-04-08 11:30:00', 3),
+(2, 1, 4, 3450.00, '2025-04-10 14:00:00', 2),
+(3, 2, 2, 8900.00, '2025-06-05 10:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -42,7 +66,7 @@ CREATE TABLE `bus` (
   `last_service_mileage_km` int(6) NOT NULL,
   `service_interval_months` int(2) NOT NULL,
   `last_service_date` date NOT NULL,
-  `bus_status` int(10) NOT NULL DEFAULT 1,
+  `bus_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1 = Removed,\r\n0 = Out of Service,\r\n1 = Operational,\r\n2 = Service Due,\r\n3 = In Service,\r\n4 = Broken Down',
   `removed_by` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -54,7 +78,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 50000, '2025-06-19 12:50:46', 50000, 6, '2025-06-19', 1, NULL),
 (2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 186000, '2025-06-19 20:04:33', 186000, 6, '2025-06-19', 1, NULL),
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
-(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 116000, '2025-06-23 02:15:00', 116000, 6, '2025-06-23', 3, NULL),
+(4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 117520, '2025-07-02 10:51:00', 117520, 6, '2025-07-02', 1, NULL),
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 3, NULL),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2400, '2025-05-01 19:01:04', 2400, 12, '2025-05-07', 1, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
@@ -108,7 +132,39 @@ CREATE TABLE `bus_tour` (
 
 INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (1, 1),
+(1, 2),
 (4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `checklist_item`
+--
+
+CREATE TABLE `checklist_item` (
+  `item_id` int(10) NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `item_description` text DEFAULT NULL,
+  `item_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Active, 0: Inactive'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `checklist_item`
+--
+
+INSERT INTO `checklist_item` (`item_id`, `item_name`, `item_description`, `item_status`) VALUES
+(1, 'Check engine oil level', 'Ensure oil is between the minimum and maximum marks on the dipstick.', 1),
+(2, 'Check coolant level', 'Verify coolant level in the reservoir.', 1),
+(3, 'Inspect tire pressure and condition', 'Check for correct inflation and look for any visible damage or excessive wear.', 1),
+(4, 'Test all exterior lights', 'Includes headlights (high/low beams), tail lights, brake lights, and turn signals.', 1),
+(5, 'Check horn operation', 'Ensure the horn is audible.', 1),
+(6, 'Inspect brake system', 'Visual check for leaks and listen for unusual noises.', 1),
+(7, 'Verify first aid kit presence and contents', 'Ensure the kit is present and fully stocked.', 1),
+(8, 'Check fire extinguisher', 'Ensure it is present, charged, and within its expiry date.', 1),
+(9, 'Inspect interior cleanliness', 'Check seats, floors, and windows for cleanliness.', 1),
+(10, 'Test air conditioning (A/C) unit', 'For applicable buses, ensure A/C blows cold air effectively.', 1),
+(11, 'Check passenger seat belts', 'Inspect for proper function and any visible damage.', 1),
+(12, 'Verify onboard entertainment system', 'For luxury buses, check if TVs and audio systems are working.', 1);
 
 -- --------------------------------------------------------
 
@@ -134,7 +190,8 @@ INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `custom
 (2, '965325141V', 'Jehan', 'Peter', 'peter@mail.com', 1),
 (3, '942150889V', 'Nimal', 'Silva', 'nimal.s@email.com', 1),
 (4, '199865401234', 'Fathima', 'Rizwan', 'fathima.r@email.com', 1),
-(5, '953254147V', 'Dilshan', 'Gamage', 'dilshang@ymail.com', 1);
+(5, '953254147V', 'Dilshan', 'Gamage', 'dilshang@ymail.com', 1),
+(6, '901234567V', 'Sunil', 'Perera', 'sunil.perera@example.com', 1);
 
 -- --------------------------------------------------------
 
@@ -162,7 +219,9 @@ INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, 
 (17, 1, '0718956234', 4),
 (18, 2, '0112258632', 4),
 (19, 1, '0714525851', 5),
-(20, 2, '0114006319', 5);
+(20, 2, '0114006319', 5),
+(21, 1, '0771234567', 6),
+(22, 2, '0112345678', 6);
 
 -- --------------------------------------------------------
 
@@ -177,11 +236,12 @@ CREATE TABLE `customer_invoice` (
   `invoice_date` date NOT NULL,
   `invoice_amount` decimal(10,2) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `invoice_status` int(11) NOT NULL DEFAULT 1,
+  `invoice_status` int(11) NOT NULL DEFAULT 1 COMMENT '-1=Invoice Cancelled,\r\n1=Initial Invoice & waiting for tour assignment,\r\n2=Tour assigned,\r\n3=Tour completed and payment pending,\r\n4=Paid',
   `invoice_description` text DEFAULT NULL,
-  `tour_start_date` date NOT NULL,
-  `tour_end_date` date NOT NULL,
+  `tour_start_date` date NOT NULL COMMENT 'The tour start date as billed/quoted to the customer.',
+  `tour_end_date` date NOT NULL COMMENT 'The tour end date as billed/quoted to the customer.',
   `pickup_location` varchar(255) NOT NULL,
+  `destination` varchar(255) NOT NULL,
   `dropoff_location` varchar(255) NOT NULL,
   `round_trip_mileage` int(4) NOT NULL,
   `actual_fare` decimal(10,2) DEFAULT NULL,
@@ -192,8 +252,10 @@ CREATE TABLE `customer_invoice` (
 -- Dumping data for table `customer_invoice`
 --
 
-INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
-(1, 'inv1', 1, '2025-06-01', 75000.00, 1, 1, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 240, NULL, NULL);
+INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
+(1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 3, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, NULL, NULL),
+(2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 1, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, NULL, NULL),
+(3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -214,7 +276,9 @@ CREATE TABLE `customer_invoice_item` (
 
 INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `quantity`) VALUES
 (1, 1, 1, 1),
-(2, 1, 2, 1);
+(2, 1, 2, 1),
+(3, 2, 2, 1),
+(4, 3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -414,6 +478,153 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `grn`
+--
+
+CREATE TABLE `grn` (
+  `grn_id` int(10) NOT NULL,
+  `grn_number` varchar(50) DEFAULT NULL COMMENT 'Optional number from the physical GRN document',
+  `po_id` int(10) NOT NULL COMMENT 'The PO this delivery is for',
+  `quantity_received` int(10) NOT NULL COMMENT 'The quantity of the part received in this specific delivery',
+  `received_date` date NOT NULL,
+  `inspected_by` int(10) NOT NULL COMMENT 'User who received and inspected the goods',
+  `notes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `grn`
+--
+
+INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `quantity_received`, `received_date`, `inspected_by`, `notes`) VALUES
+(1, NULL, 1, 20, '2025-05-02', 8, NULL),
+(2, NULL, 2, 15, '2025-06-20', 8, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inspection`
+--
+
+CREATE TABLE `inspection` (
+  `inspection_id` int(10) NOT NULL,
+  `bus_id` int(10) NOT NULL,
+  `inspection_date` date NOT NULL,
+  `inspection_result` int(10) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `inspected_by` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection`
+--
+
+INSERT INTO `inspection` (`inspection_id`, `bus_id`, `inspection_date`, `inspection_result`, `comment`, `inspected_by`) VALUES
+(1, 8, '2025-06-29', 0, 'A/C unit requires service. See checklist for details.', 7),
+(2, 2, '2025-06-29', 1, 'All checks passed.', 7),
+(3, 3, '2025-06-05', 1, 'Bus is ready for tour.', 7),
+(4, 6, '2025-06-10', 1, 'All checks passed, ready for deployment.', 7),
+(5, 13, '2025-06-15', 0, 'Brake system requires immediate attention.', 7),
+(6, 9, '2025-06-22', 1, 'All checks passed.', 7),
+(7, 12, '2025-06-28', 0, 'Front-left tire shows excessive wear. Recommend replacement.', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inspection_checklist_response`
+--
+
+CREATE TABLE `inspection_checklist_response` (
+  `response_id` int(10) NOT NULL,
+  `inspection_id` int(10) NOT NULL,
+  `item_id` int(10) NOT NULL,
+  `response_value` int(10) NOT NULL COMMENT 'e.g., ''1-Pass'', ''0-Fail'', ''2-OK'', ',
+  `comments` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection_checklist_response`
+--
+
+INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `item_id`, `response_value`, `comments`) VALUES
+(1, 1, 1, 1, ''),
+(2, 1, 2, 1, 'Level is OK'),
+(3, 1, 3, 1, ''),
+(4, 1, 4, 1, ''),
+(5, 1, 6, 1, ''),
+(6, 1, 9, 1, 'Interior cleaned and sanitized.'),
+(7, 1, 10, 0, 'A/C is not blowing cold air. Possible refrigerant leak.'),
+(8, 1, 11, 1, ''),
+(9, 1, 12, 1, 'TV and audio system functioning correctly.'),
+(10, 2, 1, 1, ''),
+(11, 2, 3, 1, 'All tires at correct PSI.'),
+(12, 2, 4, 1, ''),
+(13, 2, 5, 1, ''),
+(14, 2, 7, 1, ''),
+(15, 2, 8, 1, 'Checked and in place.'),
+(16, 3, 1, 1, ''),
+(17, 3, 2, 1, ''),
+(18, 3, 3, 1, 'Tire pressure adjusted.'),
+(19, 3, 4, 1, ''),
+(20, 3, 6, 1, ''),
+(21, 3, 9, 1, ''),
+(22, 3, 10, 1, 'A/C is working well.'),
+(23, 3, 11, 1, ''),
+(24, 4, 1, 1, ''),
+(25, 4, 3, 1, ''),
+(26, 4, 4, 1, ''),
+(27, 4, 5, 1, ''),
+(28, 4, 7, 1, 'First aid kit restocked.'),
+(29, 4, 8, 1, ''),
+(30, 5, 1, 1, ''),
+(31, 5, 2, 1, ''),
+(32, 5, 3, 1, ''),
+(33, 5, 4, 1, ''),
+(34, 5, 6, 0, 'Squeaking noise from rear brakes during test. Needs mechanical check.'),
+(35, 5, 9, 1, ''),
+(36, 5, 10, 1, ''),
+(37, 5, 11, 1, ''),
+(38, 5, 12, 1, ''),
+(39, 6, 1, 1, ''),
+(40, 6, 2, 1, ''),
+(41, 6, 3, 1, ''),
+(42, 6, 4, 1, ''),
+(43, 6, 6, 1, ''),
+(44, 6, 9, 1, 'Interior is immaculate.'),
+(45, 6, 10, 1, ''),
+(46, 6, 11, 1, ''),
+(47, 7, 1, 1, 'Oil level OK.'),
+(48, 7, 3, 0, 'Front-left tire tread is below minimum safe level.'),
+(49, 7, 4, 1, ''),
+(50, 7, 5, 1, ''),
+(51, 7, 7, 1, ''),
+(52, 7, 8, 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inspection_checklist_template`
+--
+
+CREATE TABLE `inspection_checklist_template` (
+  `template_id` int(10) NOT NULL,
+  `template_name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `category_id` int(10) NOT NULL,
+  `template_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Active, 0: Inactive'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection_checklist_template`
+--
+
+INSERT INTO `inspection_checklist_template` (`template_id`, `template_name`, `description`, `category_id`, `template_status`) VALUES
+(1, 'Luxury Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Luxury buses.', 1, 1),
+(2, 'Standard Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Standard category buses.', 2, 1),
+(3, 'Mini Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Mini Buses.', 3, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `login`
 --
 
@@ -435,7 +646,7 @@ INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, 
 (1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
 (4, 'clintb@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 3, 1, '', '0000-00-00 00:00:00'),
 (6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
-(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 2, '327005', '2025-06-28 17:27:51'),
+(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 1, '', '0000-00-00 00:00:00'),
 (9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -471,6 +682,38 @@ INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `part_transaction`
+--
+
+CREATE TABLE `part_transaction` (
+  `transaction_id` int(10) NOT NULL,
+  `part_id` int(10) NOT NULL,
+  `transaction_type` int(10) NOT NULL COMMENT '1: Purchase, 2: Issue to Bus, 3: Remove from Warehouse',
+  `quantity` int(10) NOT NULL COMMENT 'The absolute quantity for this transaction (e.g., 5)',
+  `bus_id` int(10) DEFAULT NULL COMMENT 'The bus involved, if applicable (for Issue to Bus)',
+  `grn_id` int(10) DEFAULT NULL COMMENT 'The GRN involved, if applicable (for Purchases)',
+  `notes` text DEFAULT NULL COMMENT 'Reason for removal, serial number, etc.',
+  `transacted_by` int(10) NOT NULL,
+  `transacted_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `part_transaction`
+--
+
+INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`, `quantity`, `bus_id`, `grn_id`, `notes`, `transacted_by`, `transacted_at`) VALUES
+(1, 1, 1, 10, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
+(2, 2, 1, 4, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
+(3, 3, 1, 15, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
+(4, 4, 1, 20, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
+(5, 2, 1, 20, NULL, 1, NULL, 8, '2025-05-02 10:00:00'),
+(6, 1, 1, 15, NULL, 2, NULL, 8, '2025-06-20 14:00:00'),
+(7, 3, 2, 1, 9, NULL, 'Routine service replacement', 8, '2025-06-25 11:00:00'),
+(8, 4, 3, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment`
 --
 
@@ -480,7 +723,8 @@ CREATE TABLE `payment` (
   `amount` decimal(10,2) NOT NULL,
   `reference` varchar(255) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `category_id` int(10) NOT NULL,
+  `po_id` int(10) DEFAULT NULL,
   `payment_document` varchar(255) NOT NULL,
   `paid_by` int(10) NOT NULL,
   `payment_status` int(10) NOT NULL DEFAULT 1
@@ -490,11 +734,42 @@ CREATE TABLE `payment` (
 -- Dumping data for table `payment`
 --
 
-INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_method`, `category_id`, `payment_document`, `paid_by`, `payment_status`) VALUES
-(1, '2025-06-23', 24112.25, '562584', 'cheque', 1, 'svspmt_6858676d5f02a.pdf', 3, 1),
-(2, '2025-06-23', 24452.00, 'TRF522114', 'transfer', 1, 'svspmt_685868f8dcb64.pdf', 3, 1),
-(3, '2025-06-23', 25432.25, '254745', 'cheque', 1, 'svspmt_68586a67a651c.pdf', 3, 1),
-(4, '2025-06-23', 53914.51, 'dfhdh', 'transfer', 1, 'svspmt_68586b9a5f020.pdf', 3, 1);
+INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_method`, `category_id`, `po_id`, `payment_document`, `paid_by`, `payment_status`) VALUES
+(1, '2025-06-23', 24112.25, '562584', 'cheque', 1, NULL, 'svspmt_6858676d5f02a.pdf', 3, 1),
+(2, '2025-06-23', 24452.00, 'TRF522114', 'transfer', 1, NULL, 'svspmt_685868f8dcb64.pdf', 3, 1),
+(3, '2025-06-23', 25432.25, '254745', 'cheque', 1, NULL, 'svspmt_68586a67a651c.pdf', 3, 1),
+(4, '2025-06-23', 53914.51, 'dfhdh', 'transfer', 1, NULL, 'svspmt_68586b9a5f020.pdf', 3, 1),
+(5, '2025-05-20', 69000.00, 'CHQ-554321', 'cheque', 2, 1, 'svspmt_68586b9a5f020.pdf', 3, 1),
+(6, '2025-06-28', 133500.00, 'TRF-AX-8891', 'transfer', 2, 2, 'svspmt_68586b9a5f020.pdf', 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase_order`
+--
+
+CREATE TABLE `purchase_order` (
+  `po_id` int(10) NOT NULL,
+  `po_number` varchar(50) NOT NULL COMMENT 'A unique number for business reference (e.g., PO-2025-001)',
+  `bid_id` int(10) NOT NULL COMMENT 'The winning bid that authorized this PO',
+  `part_id` int(10) NOT NULL COMMENT 'The part being ordered',
+  `quantity_ordered` int(10) NOT NULL,
+  `quantity_received` int(10) NOT NULL DEFAULT 0 COMMENT 'Total quantity received so far for this PO',
+  `unit_price` decimal(10,2) NOT NULL COMMENT 'The price per unit, captured from the winning bid',
+  `total_amount` decimal(12,2) NOT NULL COMMENT 'quantity_ordered * unit_price',
+  `order_date` date NOT NULL DEFAULT curdate() COMMENT 'Defaults to the current date of PO creation',
+  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Issued, 2: Partially Received, 3: Completed, 4: Paid',
+  `created_by` int(10) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The exact date and time the PO was generated'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `purchase_order`
+--
+
+INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`) VALUES
+(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 4, 1, '2025-06-29 10:29:07'),
+(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 4, 1, '2025-06-29 10:33:12');
 
 -- --------------------------------------------------------
 
@@ -509,20 +784,23 @@ CREATE TABLE `quotation` (
   `tour_start_date` date NOT NULL,
   `tour_end_date` date NOT NULL,
   `pickup_location` varchar(255) NOT NULL,
-  `dropoff_location` varchar(255) DEFAULT NULL,
+  `destination` varchar(255) DEFAULT NULL,
+  `dropoff_location` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `round_trip_mileage` int(4) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
-  `quotation_status` int(10) NOT NULL DEFAULT 1
+  `quotation_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Removed,\r\n1= pending approval to generate invoice,\r\n2 = approved and invoice generated.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `quotation`
 --
 
-INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_start_date`, `tour_end_date`, `pickup_location`, `dropoff_location`, `description`, `round_trip_mileage`, `total_amount`, `quotation_status`) VALUES
-(1, '2025-06-01', 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Athurugiriya', 'One night trip from Athurugiriya to Galle and back', 240, 75000.00, 2),
-(2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, 1);
+INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `description`, `round_trip_mileage`, `total_amount`, `quotation_status`) VALUES
+(1, '2025-06-01', 1, '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 'One night trip from Athurugiriya to Galle and back', 240, 75000.00, 2),
+(2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Nuwara Eliya', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, -1),
+(3, '2025-06-29', 6, '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 'Two-day trip to Kandy', 200, 95000.00, 2),
+(4, '2025-07-03', 4, '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 'Two Days, One Night Trip to Ella and Back', 420, 235145.36, 2);
 
 -- --------------------------------------------------------
 
@@ -543,7 +821,9 @@ CREATE TABLE `quotation_item` (
 
 INSERT INTO `quotation_item` (`item_id`, `quotation_id`, `category_id`, `quantity`) VALUES
 (1, 1, 1, 1),
-(2, 1, 2, 1);
+(2, 1, 2, 1),
+(3, 3, 2, 1),
+(6, 4, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -562,7 +842,7 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-06-26');
+(1, 'ServiceDueBuses', '2025-06-29');
 
 -- --------------------------------------------------------
 
@@ -649,7 +929,7 @@ CREATE TABLE `service_detail` (
   `invoice` varchar(255) DEFAULT NULL,
   `invoice_number` varchar(255) DEFAULT NULL,
   `payment_id` int(10) DEFAULT NULL,
-  `service_status` int(10) NOT NULL DEFAULT 1,
+  `service_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled,1=Ongoing,2=Completed,3=Completed & Paid',
   `initiated_by` int(10) NOT NULL,
   `cancelled_by` int(10) DEFAULT NULL,
   `completed_by` int(10) DEFAULT NULL
@@ -669,7 +949,7 @@ INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `se
 (21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 1),
 (22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', NULL, 2, 3, NULL, 1),
 (23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
-(24, 4, 1, 2, '2025-06-27', NULL, NULL, 117520, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
+(24, 4, 1, 2, '2025-06-27', '2025-07-02', NULL, 117520, 32363.65, 'svsinv_6864c1bc631bf.pdf', 'OKL55422', NULL, 2, 3, NULL, 3),
 (25, 19, 1, 2, '2025-06-28', '2025-06-28', NULL, 3241, 7053.78, 'svsinv_685f64e2cd0c6.pdf', '458IL4', NULL, 2, 3, NULL, 1);
 
 -- --------------------------------------------------------
@@ -719,6 +999,32 @@ INSERT INTO `service_station_contact` (`service_station_contact_id`, `service_st
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `spare_part`
+--
+
+CREATE TABLE `spare_part` (
+  `part_id` int(10) NOT NULL,
+  `part_number` varchar(100) NOT NULL COMMENT 'Manufacturer or internal part number (Required)',
+  `part_name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `quantity_on_hand` int(10) NOT NULL DEFAULT 0,
+  `reorder_level` int(10) NOT NULL,
+  `part_status` int(10) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `spare_part`
+--
+
+INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
+(1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 25, 5, 1),
+(2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 24, 5, 1),
+(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 14, 10, 1),
+(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 19, 15, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `supplier`
 --
 
@@ -744,6 +1050,73 @@ INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `sup
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `template_item_link`
+--
+
+CREATE TABLE `template_item_link` (
+  `template_id` int(10) NOT NULL,
+  `item_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `template_item_link`
+--
+
+INSERT INTO `template_item_link` (`template_id`, `item_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 6),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(2, 1),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 7),
+(2, 8),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 4),
+(3, 6),
+(3, 9),
+(3, 10),
+(3, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tender`
+--
+
+CREATE TABLE `tender` (
+  `tender_id` int(10) NOT NULL,
+  `part_id` int(10) NOT NULL,
+  `quantity_required` int(10) NOT NULL COMMENT 'The quantity of the part required.',
+  `description` text DEFAULT NULL,
+  `advertisement_file` varchar(255) DEFAULT NULL COMMENT 'Filename of the scanned newspaper ad or document',
+  `open_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Defaults to the creation date',
+  `close_date` datetime DEFAULT NULL COMMENT 'Optional, can be NULL',
+  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Open, 2: Closed, 3: Awarded, 0: Cancelled',
+  `created_by` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tender`
+--
+
+INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `description`, `advertisement_file`, `open_date`, `close_date`, `status`, `created_by`, `created_at`) VALUES
+(1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05 09:00:00', '2025-04-15 17:00:00', 3, 1, '2025-06-29 04:58:51'),
+(2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01 09:00:00', '2025-06-10 17:00:00', 3, 1, '2025-06-29 05:02:27');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tour`
 --
 
@@ -753,7 +1126,7 @@ CREATE TABLE `tour` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `destination` varchar(255) NOT NULL,
-  `tour_status` int(10) NOT NULL DEFAULT 1
+  `tour_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled, 1=Assigned, 2=Ongoing, 3=Completed, Completed & Paid'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -761,7 +1134,26 @@ CREATE TABLE `tour` (
 --
 
 INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destination`, `tour_status`) VALUES
-(1, 1, '2025-06-12', '2025-06-13', 'Galle', 1);
+(1, 1, '2025-06-12', '2025-06-13', 'Galle', 3),
+(2, 3, '2025-07-10', '2025-07-12', 'Ella', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tour_income`
+--
+
+CREATE TABLE `tour_income` (
+  `tour_income_id` int(10) NOT NULL,
+  `invoice_id` int(10) NOT NULL COMMENT 'The customer invoice this payment is for',
+  `payment_date` date NOT NULL,
+  `paid_amount` decimal(10,2) NOT NULL,
+  `payment_method` varchar(50) NOT NULL COMMENT 'e.g., ''Cash'', ''Funds Transfer''',
+  `reference` varchar(255) DEFAULT NULL COMMENT 'Optional reference like a transaction ID',
+  `payment_proof` varchar(255) DEFAULT NULL COMMENT 'Filename of the uploaded proof',
+  `received_by` int(10) NOT NULL COMMENT 'The user who accepted and recorded the payment',
+  `payment_status` int(10) NOT NULL DEFAULT 1 COMMENT 'e.g., 1: Received, 2: Verified'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -781,7 +1173,8 @@ CREATE TABLE `transaction_category` (
 --
 
 INSERT INTO `transaction_category` (`category_id`, `category`, `debit_credit_flag`, `category_status`) VALUES
-(1, 'Service Payment', 'd', 1);
+(1, 'Service Payment', 'd', 1),
+(2, 'Supplier Payment', 'd', 1);
 
 -- --------------------------------------------------------
 
@@ -806,7 +1199,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
-(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
+(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 0),
 (3, 'Clint', 'Barton', '2025-02-12', '999999999V', 1, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
 (7, 'Tony', 'Stark', '1996-12-15', '199512347521', 5, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
@@ -846,6 +1239,14 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 --
 
 --
+-- Indexes for table `bid`
+--
+ALTER TABLE `bid`
+  ADD PRIMARY KEY (`bid_id`),
+  ADD KEY `fk_bid_tender` (`tender_id`),
+  ADD KEY `fk_bid_supplier` (`supplier_id`);
+
+--
 -- Indexes for table `bus`
 --
 ALTER TABLE `bus`
@@ -866,6 +1267,13 @@ ALTER TABLE `bus_category`
 ALTER TABLE `bus_tour`
   ADD PRIMARY KEY (`bus_id`,`tour_id`),
   ADD KEY `tour_id` (`tour_id`);
+
+--
+-- Indexes for table `checklist_item`
+--
+ALTER TABLE `checklist_item`
+  ADD PRIMARY KEY (`item_id`),
+  ADD UNIQUE KEY `item_name` (`item_name`);
 
 --
 -- Indexes for table `customer`
@@ -913,6 +1321,38 @@ ALTER TABLE `function_user`
   ADD KEY `fk_function_user_user` (`user_id`);
 
 --
+-- Indexes for table `grn`
+--
+ALTER TABLE `grn`
+  ADD PRIMARY KEY (`grn_id`),
+  ADD UNIQUE KEY `grn_number` (`grn_number`),
+  ADD KEY `fk_grn_po` (`po_id`),
+  ADD KEY `fk_grn_user` (`inspected_by`);
+
+--
+-- Indexes for table `inspection`
+--
+ALTER TABLE `inspection`
+  ADD PRIMARY KEY (`inspection_id`),
+  ADD KEY `fk_inspection_bus` (`bus_id`),
+  ADD KEY `fk_inspection_user` (`inspected_by`);
+
+--
+-- Indexes for table `inspection_checklist_response`
+--
+ALTER TABLE `inspection_checklist_response`
+  ADD PRIMARY KEY (`response_id`),
+  ADD KEY `fk_response_item` (`item_id`),
+  ADD KEY `idx_inspection_id` (`inspection_id`);
+
+--
+-- Indexes for table `inspection_checklist_template`
+--
+ALTER TABLE `inspection_checklist_template`
+  ADD PRIMARY KEY (`template_id`),
+  ADD KEY `fk_template_bus_category` (`category_id`);
+
+--
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
@@ -927,13 +1367,34 @@ ALTER TABLE `module`
   ADD PRIMARY KEY (`module_id`);
 
 --
+-- Indexes for table `part_transaction`
+--
+ALTER TABLE `part_transaction`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `fk_pt_part` (`part_id`),
+  ADD KEY `fk_pt_bus` (`bus_id`),
+  ADD KEY `fk_pt_grn` (`grn_id`),
+  ADD KEY `fk_pt_user` (`transacted_by`);
+
+--
 -- Indexes for table `payment`
 --
 ALTER TABLE `payment`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_transaction_category` (`category_id`),
   ADD KEY `fk_payment_paid_by_user` (`paid_by`),
-  ADD KEY `date` (`date`);
+  ADD KEY `date` (`date`),
+  ADD KEY `fk_payment_po` (`po_id`);
+
+--
+-- Indexes for table `purchase_order`
+--
+ALTER TABLE `purchase_order`
+  ADD PRIMARY KEY (`po_id`),
+  ADD UNIQUE KEY `po_number` (`po_number`),
+  ADD KEY `fk_po_bid` (`bid_id`),
+  ADD KEY `fk_po_part` (`part_id`),
+  ADD KEY `fk_po_user` (`created_by`);
 
 --
 -- Indexes for table `quotation`
@@ -995,10 +1456,32 @@ ALTER TABLE `service_station_contact`
   ADD KEY `fk_ss_contact_station` (`service_station_id`);
 
 --
+-- Indexes for table `spare_part`
+--
+ALTER TABLE `spare_part`
+  ADD PRIMARY KEY (`part_id`),
+  ADD UNIQUE KEY `part_number` (`part_number`);
+
+--
 -- Indexes for table `supplier`
 --
 ALTER TABLE `supplier`
   ADD PRIMARY KEY (`supplier_id`);
+
+--
+-- Indexes for table `template_item_link`
+--
+ALTER TABLE `template_item_link`
+  ADD PRIMARY KEY (`template_id`,`item_id`),
+  ADD KEY `fk_link_item` (`item_id`);
+
+--
+-- Indexes for table `tender`
+--
+ALTER TABLE `tender`
+  ADD PRIMARY KEY (`tender_id`),
+  ADD KEY `fk_tender_user` (`created_by`),
+  ADD KEY `fk_tender_part` (`part_id`);
 
 --
 -- Indexes for table `tour`
@@ -1006,6 +1489,14 @@ ALTER TABLE `supplier`
 ALTER TABLE `tour`
   ADD PRIMARY KEY (`tour_id`),
   ADD KEY `fk_tour_invoice` (`invoice_id`);
+
+--
+-- Indexes for table `tour_income`
+--
+ALTER TABLE `tour_income`
+  ADD PRIMARY KEY (`tour_income_id`),
+  ADD UNIQUE KEY `unique_invoice_payment` (`invoice_id`),
+  ADD KEY `fk_ti_user` (`received_by`);
 
 --
 -- Indexes for table `transaction_category`
@@ -1034,6 +1525,12 @@ ALTER TABLE `user_contact`
 --
 
 --
+-- AUTO_INCREMENT for table `bid`
+--
+ALTER TABLE `bid`
+  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `bus`
 --
 ALTER TABLE `bus`
@@ -1046,34 +1543,64 @@ ALTER TABLE `bus_category`
   MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `checklist_item`
+--
+ALTER TABLE `checklist_item`
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
   MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `grn`
+--
+ALTER TABLE `grn`
+  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `inspection`
+--
+ALTER TABLE `inspection`
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `inspection_checklist_response`
+--
+ALTER TABLE `inspection_checklist_response`
+  MODIFY `response_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT for table `inspection_checklist_template`
+--
+ALTER TABLE `inspection_checklist_template`
+  MODIFY `template_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `login`
@@ -1088,22 +1615,34 @@ ALTER TABLE `module`
   MODIFY `module_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `part_transaction`
+--
+ALTER TABLE `part_transaction`
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `purchase_order`
+--
+ALTER TABLE `purchase_order`
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -1136,16 +1675,34 @@ ALTER TABLE `service_station_contact`
   MODIFY `service_station_contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `spare_part`
+--
+ALTER TABLE `spare_part`
+  MODIFY `part_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tender`
+--
+ALTER TABLE `tender`
+  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tour_income`
+--
+ALTER TABLE `tour_income`
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
 --
 ALTER TABLE `transaction_category`
-  MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -1162,6 +1719,13 @@ ALTER TABLE `user_contact`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `bid`
+--
+ALTER TABLE `bid`
+  ADD CONSTRAINT `fk_bid_supplier` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`supplier_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bid_tender` FOREIGN KEY (`tender_id`) REFERENCES `tender` (`tender_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `bus`
@@ -1211,17 +1775,62 @@ ALTER TABLE `function_user`
   ADD CONSTRAINT `function_user_ibfk_1` FOREIGN KEY (`function_id`) REFERENCES `function` (`function_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `grn`
+--
+ALTER TABLE `grn`
+  ADD CONSTRAINT `fk_grn_po` FOREIGN KEY (`po_id`) REFERENCES `purchase_order` (`po_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_grn_user` FOREIGN KEY (`inspected_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inspection`
+--
+ALTER TABLE `inspection`
+  ADD CONSTRAINT `fk_inspection_bus` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`bus_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_inspection_user` FOREIGN KEY (`inspected_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inspection_checklist_response`
+--
+ALTER TABLE `inspection_checklist_response`
+  ADD CONSTRAINT `fk_response_inspection` FOREIGN KEY (`inspection_id`) REFERENCES `inspection` (`inspection_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_response_item` FOREIGN KEY (`item_id`) REFERENCES `checklist_item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inspection_checklist_template`
+--
+ALTER TABLE `inspection_checklist_template`
+  ADD CONSTRAINT `fk_template_bus_category` FOREIGN KEY (`category_id`) REFERENCES `bus_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `login`
 --
 ALTER TABLE `login`
   ADD CONSTRAINT `fk_login_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `part_transaction`
+--
+ALTER TABLE `part_transaction`
+  ADD CONSTRAINT `fk_pt_bus` FOREIGN KEY (`bus_id`) REFERENCES `bus` (`bus_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pt_grn` FOREIGN KEY (`grn_id`) REFERENCES `grn` (`grn_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pt_part` FOREIGN KEY (`part_id`) REFERENCES `spare_part` (`part_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pt_user` FOREIGN KEY (`transacted_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `payment`
 --
 ALTER TABLE `payment`
   ADD CONSTRAINT `fk_payment_paid_by_user` FOREIGN KEY (`paid_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_payment_po` FOREIGN KEY (`po_id`) REFERENCES `purchase_order` (`po_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_payment_transaction_category` FOREIGN KEY (`category_id`) REFERENCES `transaction_category` (`category_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `purchase_order`
+--
+ALTER TABLE `purchase_order`
+  ADD CONSTRAINT `fk_po_bid` FOREIGN KEY (`bid_id`) REFERENCES `bid` (`bid_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_po_part` FOREIGN KEY (`part_id`) REFERENCES `spare_part` (`part_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_po_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `quotation`
@@ -1261,10 +1870,31 @@ ALTER TABLE `service_station_contact`
   ADD CONSTRAINT `fk_ss_contact_station` FOREIGN KEY (`service_station_id`) REFERENCES `service_station` (`service_station_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `template_item_link`
+--
+ALTER TABLE `template_item_link`
+  ADD CONSTRAINT `fk_link_item` FOREIGN KEY (`item_id`) REFERENCES `checklist_item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_link_template` FOREIGN KEY (`template_id`) REFERENCES `inspection_checklist_template` (`template_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tender`
+--
+ALTER TABLE `tender`
+  ADD CONSTRAINT `fk_tender_part` FOREIGN KEY (`part_id`) REFERENCES `spare_part` (`part_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tender_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `tour`
 --
 ALTER TABLE `tour`
   ADD CONSTRAINT `fk_tour_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `customer_invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tour_income`
+--
+ALTER TABLE `tour_income`
+  ADD CONSTRAINT `fk_ti_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `customer_invoice` (`invoice_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ti_user` FOREIGN KEY (`received_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`

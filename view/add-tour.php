@@ -8,7 +8,7 @@ include_once '../model/customer_invoice_model.php';
 $userSession=$_SESSION["user"];
 
 $customerInvoiceObj = new CustomerInvoice();
-$pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
+$pendingInvoiceResult = $customerInvoiceObj->getInvoicesToAssignTours();
 ?>
 
 <html lang="en">
@@ -29,8 +29,13 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Tour
                 </a>
+                <a href="pending-tours.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pending Tours
+                </a>
             </ul>
         </div>
+        <form action="../controller/tour_controller.php?status=add_tour" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
                 <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
@@ -52,14 +57,12 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                     <label class="control-label">Invoice No</label>
                 </div>
                 <div class="col-md-3">
-                    <select name="invoice_id" id="invoice_id" class="form-control" required="required">
+                    <select name="invoice_id" id="invoice_id" class="form-control" required="required" onchange="tourData()">
                         <option value="">------------------</option>
                             <?php
                                 while($pendingInvoiceRow=$pendingInvoiceResult->fetch_assoc()){
                                     ?>
-                            <option value="<?php echo $pendingInvoiceRow['invoice_id'];?>" 
-                                    data-start-date="<?php echo htmlspecialchars($pendingInvoiceRow['tour_start_date']); ?>" 
-                                    data-end-date="<?php echo htmlspecialchars($pendingInvoiceRow['tour_end_date']); ?>">
+                            <option value="<?php echo $pendingInvoiceRow['invoice_id'];?>" >
                                 <?php echo htmlspecialchars($pendingInvoiceRow['invoice_number']);?>
                             </option>
                             <?php
@@ -67,117 +70,9 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                                 ?>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <label class="control-label">Destination</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="destination" id="destination"/>
-                </div>
             </div>
-            <div class="row">
-                &nbsp;
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="control-label">Start Date</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" class="form-control" name="start_date" id="start_date" value=""/>
-                </div>
-                <div class="col-md-3">
-                    <label class="control-label">End Date</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" class="form-control" name="end_date" id="end_date" value=""/>
-                </div>
-            </div>
-            <div class="row">
-                &nbsp;
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label><b>Requested Bus Types & Quantity</b></label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Bus Category</th>
-                                <th>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Standard</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Mini Bus</td>
-                                <td>1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                &nbsp;
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Category</th>
-                                <th>Vehicle No</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>Passengers</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>Mini Bus</td>
-                                <td>62-9102</td>
-                                <td>Toyota</td>
-                                <td>Coaster</td>
-                                <td>29</td>
-                                
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>Luxury</td>
-                                <td>CAA-1234</td>
-                                <td>Yutong</td>
-                                <td>ZK6938HQ</td>
-                                <td>40</td>
-                                
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>Mini Bus</td>
-                                <td>NA-4567</td>
-                                <td>Mitsubishi</td>
-                                <td>Fuso Rosa</td>
-                                <td>25</td>
-                                
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>Standard</td>
-                                <td>NB-5678</td>
-                                <td>Lanka Ashok Leyland</td>
-                                <td>Viking</td>
-                                <td>54</td>
-                                
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div id="dynamic_tour_data">
+
             </div>
             <div class="row">
                 &nbsp;
@@ -189,32 +84,21 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
 <script>
-        $(document).ready(function(){
+    function tourData(){
+        var invoiceId = $('#invoice_id').val();
         
-        $('#invoice_id').on('change',function(){
-            
-            var selectedInvoice = $(this).find('option:selected');
-            
-            var startDate = selectedInvoice.data('start-date');
-            var endDate = selectedInvoice.data('end-date');
-            
-            
-            if($(this).val()===""){
-                
-                $('#start_date').val('');
-                $('#end_date').val('');
-            }
-            else {
-                
-                $('#start_date').val(startDate);
-                $('#end_date').val(endDate);
-            }
-            
+        var url = "../controller/tour_controller.php?status=get_data_to_add_tour";
+        
+        $.post(url, {invoiceId: invoiceId}, function (data) {
+
+            $("#dynamic_tour_data").html(data);
+
         });
-    });
+    }
 </script>
 </html>

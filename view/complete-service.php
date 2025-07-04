@@ -83,7 +83,7 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                            $msg = base64_decode($_GET["msg"]);
+                            $msg = base64_decode($_GET["msg"]); //Success message is decoded from base64
                             ?>
                             <div class="row">
                                 <div class="alert alert-success" style="text-align:center">
@@ -93,7 +93,7 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                             <?php
                         } elseif (isset($_GET["msg"])) {
 
-                            $msg = base64_decode($_GET["msg"]);
+                            $msg = base64_decode($_GET["msg"]); //Error message is decoded from base64
                             ?>
                             <div class="row">
                                 <div class="alert alert-danger" style="text-align:center">

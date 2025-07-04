@@ -6,28 +6,67 @@ $dbCon= new DbConnection();
 
 class CustomerInvoice{
     
+    public function generateCustomerInvoice($invoiceNumber,$quotationId,$invoiceDate,$invoiceAmount,$customerId,$invoiceDescription,
+            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO customer_invoice (invoice_number,quotation_id,invoice_date,invoice_amount,customer_id, "
+                . "invoice_description,tour_start_date,tour_end_date,pickup_location,destination,dropoff_location,round_trip_mileage) "
+                . "VALUES ('$invoiceNumber','$quotationId','$invoiceDate','$invoiceAmount','$customerId','$invoiceDescription',"
+                . "'$tourStartDate','$tourEndDate','$pickup','$destination','$dropoff','$roundTripMileage')";
+        
+        $con->query($sql) or die ($con->error);
+        $invoiceId=$con->insert_id;
+        return $invoiceId;
+    }
+    
+    public function addInvoiceItems($invoiceId,$categoryId,$quantity){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO customer_invoice_item (invoice_id,category_id,quantity) VALUES "
+                . "('$invoiceId','$categoryId','$quantity')";
+        
+        $con->query($sql) or die ($con->error);
+    }
+    
     public function getPendingCustomerInvoices(){
         
         $con = $GLOBALS["con"];
 
         $sql = "SELECT i.invoice_id, i.invoice_number, i.quotation_id, i.invoice_date, i.invoice_amount, "
                 . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
-                . "i.pickup_location, i.dropoff_location, i.round_trip_mileage, i.actual_fare, c.customer_fname, "
-                . "c.customer_lname FROM customer_invoice i, customer c "
+                . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
+                . "c.customer_fname, c.customer_lname FROM customer_invoice i, customer c "
+                . "WHERE c.customer_id = i.customer_id AND i.invoice_status IN('1','2','3')";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+    
+    public function getInvoicesToAssignTours(){
+        
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT i.invoice_id, i.invoice_number, i.quotation_id, i.invoice_date, i.invoice_amount, "
+                . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
+                . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
+                . "c.customer_fname, c.customer_lname FROM customer_invoice i, customer c "
                 . "WHERE c.customer_id = i.customer_id AND i.invoice_status='1'";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }
     
-    public function getInvoiceInformation($invoiceId){
+    public function getInvoice($invoiceId){
         
         $con = $GLOBALS["con"];
 
         $sql = "SELECT i.invoice_id, i.invoice_number, i.quotation_id, i.invoice_date, i.invoice_amount, "
                 . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
-                . "i.pickup_location, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, c.customer_fname, "
-                . "c.customer_lname FROM customer_invoice i, customer c "
+                . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
+                . "c.customer_fname, c.customer_lname, c.customer_email FROM customer_invoice i, customer c "
                 . "WHERE c.customer_id = i.customer_id AND i.invoice_id='$invoiceId'";
         
         $result = $con->query($sql) or die ($con->error);
@@ -44,5 +83,24 @@ class CustomerInvoice{
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
+    }
+    
+    public function changeInvoiceStatus($invoiceId,$status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET invoice_status='$status' WHERE invoice_id='$invoiceId'";
+        
+        $con->query($sql) or die ($con->error);
+    }
+    
+    public function addActualTourMileage($invoiceId,$actualMileage){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET actual_mileage='$actualMileage' WHERE invoice_id='$invoiceId'";
+        
+        $con->query($sql) or die ($con->error);
+        
     }
 }

@@ -8,46 +8,159 @@ include_once '../model/customer_model.php';
 $userSession=$_SESSION["user"];
 $user_id = $userSession['user_id'];
 
-$customerObj = new Customer();
-$quotationObj = new Quotation();
+
 
 if(!isset($_GET["status"])){
     ?>
     <script>
-        window.location= "../view/login.php";
+        window.location= "../errorpages/403.php";
     </script>
     <?php
 }
+
+$customerObj = new Customer();
+$quotationObj = new Quotation();
 
 $status= $_GET["status"];
 
 switch ($status){
     
-    case "get_customer":
+    case "generate_quotation":
         
-        $nic=strtoupper($_POST["nic"]);
+        try{
         
-        if($nic==""){
-            echo '<b style="color:red">Enter NIC</b>';
-        }
-        else{
+            $nic = $_POST["nic"];
             
-            $customerResult = $customerObj->checkIfCustomerExist($nic);
-            
-            if($customerResult->num_rows==0){
-                echo '<b style="color:red">Customer Does Not Exist</b>';
+            if($nic==""){
+                throw new Exception ("NIC cannot be empty");
             }
-            else{
+            if($nic!=""){
+                
+                $customerResult = $customerObj->checkIfCustomerExist($nic);
+                
+                if($customerResult->num_rows!=1){
+                    throw new Exception ("Customer Does Not Exist");
+                }
+                
                 $customerRow = $customerResult->fetch_assoc();
-                $customerName = $customerRow['customer_fname']." ".$customerRow['customer_lname'];
-                echo "<b>".$customerName."</b>";
+                $customerId = $customerRow["customer_id"];
             }
+            
+            $startDate = $_POST["start_date"];
+            
+            if($startDate==""){
+                throw new Exception ("Start Date Cannot Be Empty");
+            }
+            
+            $endDate = $_POST["end_date"];
+            
+            if($endDate==""){
+                throw new Exception ("End Date Cannot Be Empty");
+            }
+            
+            if($startDate>$endDate){
+                throw new Exception("Start Date Cannot Be Greater Than End Date");
+            }
+            
+            $pickup = $_POST["pickup"];
+            
+            if($pickup==""){
+                throw new Exception("Pickup Location Cannot Be Empty");
+            }
+            
+            $dropoff = $_POST["dropoff"];
+            
+            if($dropoff==""){
+                throw new Exception("Dropoff Location Cannot Be Empty");
+            }
+            
+            $roundTripMileage = $_POST["round_trip"];
+            
+            if($roundTripMileage==0){
+                throw new Exception("Round Trip Mileage Cannot Be Empty");
+            }
+            if($roundTripMileage<0){
+                throw new Exception ("Round Trip Mileage Cannot Be Less Than 0");
+            }
+            
+            $amount = $_POST["amount"];
+            
+            if($amount==0){
+                throw new Exception("Amount Cannot Be Empty");
+            }
+            if($amount<0){
+                throw new Exception ("Amount Cannot Be Less Than 0");
+            }
+            
+            $destination = $_POST["destination"];
+            
+            if($destination==""){
+                throw new Exception("Destination Cannot Be Empty");
+            }
+            
+            $description = $_POST["description"];
+            
+            if($description==""){
+                throw new Exception("Description Cannot Be Empty");
+            }
+            
+            if(!isset($_POST["request_count"]) || array_sum($_POST["request_count"])==0){
+                throw new Exception ("Please enter a count for at least one bus category");
+            }
+            
+            $busCategoryArray = $_POST["request_count"];
+            
+            $quotationId = $quotationObj->generateQuotation($customerId, $startDate, $endDate, $pickup, 
+                    $destination, $dropoff, $description, $roundTripMileage, $amount);
+            
+            foreach($busCategoryArray as $categoryId=>$quantity){
+                
+                if($quantity){
+                    $quotationObj->addQuotationItems($quotationId, $categoryId, $quantity);
+                }
+            }
+            
+            $msg = "Quotation No: ".$quotationId." Generated Successfully";
+            $msg = base64_encode($msg);
+            
+            ?>
+            
+            <script>
+                window.location="../view/pending-quotations.php?msg=<?php echo $msg;?>&success=true";
+            </script>
+            
+            <?php
         }
-        
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/generate-quotation.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+
+        }
+              
     break;
     
-    
-    case "generate_quotation":
-              
+    case "cancel_quotation":
+        
+        $quotationId = base64_decode($_GET['quotation_id']);
+        
+        $quotationObj->changeQuotationStatus($quotationId, -1);
+        
+        $msg = "Quotation No: " . $quotationId . " Cancelled Successfully";
+        $msg = base64_encode($msg);
+        ?>
+                    
+            <script>
+                window.location="../view/pending-quotations.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+                    
+        <?php
+        
     break;
 }

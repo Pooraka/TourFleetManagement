@@ -122,10 +122,11 @@ switch ($status){
                 throw new Exception("Last service mileage cannot be greater than current mileage");
             }
             
+            //Check if the user entered vehicle number already exists in the database
             $busResult = $busObj->checkIfBusIsAlreadyExist($vehicleNo);
             
             if($busResult->num_rows>0){
-                throw new Exception ("Bus has been already added to the fleet");
+                throw new Exception ("Vehicle Number Already Exist");
             }
             
             $busId = $busObj->addBus($category, $vehicleNo, $make, $model, $year, $capacity, $ac, $serviceIntervalKM, $lastServiceKM, $serviceIntervalMonths, $lastServiceDate);

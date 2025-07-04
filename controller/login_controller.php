@@ -35,13 +35,15 @@ switch ($status) {
             if ($login_password == "") {
                 throw new Exception("Password cannot be empty !");
             }
-
+            
+            /* In validateUser function password entered by the user is hashed
+             * and compared with the password (hashed) stored in database*/
             $loginResult = $loginObj->validateUser($login_username, $login_password);
 
             //if matching records found
             if ($loginResult->num_rows > 0) {
 
-                //converting $loginResult to an array
+                //converting $loginResult to an associative array
                 $userSession = $loginResult->fetch_assoc();
                 
                 $user_id = $userSession['user_id'];
@@ -73,7 +75,7 @@ switch ($status) {
                 //assign $userSessionRow to a session
                 $_SESSION["user"] = $userSession;
                 
-                //New Code
+                //Used to check permission 
                 $userFunctionResult = $userObj->getUserFunctions($user_id);
                 
                 $UserFunctionArray = array();
@@ -85,7 +87,10 @@ switch ($status) {
                 
                 $_SESSION['user_functions'] = $UserFunctionArray;
 
-                //run background tasks when logged in
+                /**
+                 * From this section onward background tasks to
+                 * be executed.
+                 */
                 $backgroundTaskObj->changeBusStatusToServiceDue();
                 $backgroundTaskObj->sendServiceDueEmail();
                 ?>

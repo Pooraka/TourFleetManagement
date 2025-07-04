@@ -52,9 +52,15 @@ class Customer{
         
         $con=$GLOBALS["con"];
 
-        $sql="SELECT * FROM customer_contact WHERE customer_id ='$customerId' AND contact_type='$contactType'";
+        $sql="SELECT * FROM customer_contact WHERE customer_id =? AND contact_type=?";
         
-        $result = $con->query($sql) or die($con->error);  
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("ii",$customerId,$contactType);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result(); 
         return $result;
     }
     

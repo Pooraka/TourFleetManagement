@@ -11,12 +11,12 @@ $userSession=$_SESSION["user"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tender</title>
+    <title>Purchasing</title>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management" ?>
+        <?php $pageName="Purchasing" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">

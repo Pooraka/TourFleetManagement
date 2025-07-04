@@ -48,11 +48,15 @@ switch ($status){
             $busRow = $busResult->fetch_assoc();
             
             $startDate = date('Y-m-d');
-//            $currentMileageAsAt = date('Y-m-d H:i:s', time());
+/**            $currentMileageAsAt = date('Y-m-d H:i:s', time());
+ *              $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
+ * 
+ *  This is commented as now when services are initiated bus mileage is not needed to updated until
+ * service is completed
+ */
             
             $serviceDetailObj->initiateService($busId, $serviceStationId, $startDate, $currentMileage,$busRow['bus_status'],$userId);
-            
-//            $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);
+
             $busObj->changeBusStatus($busId,3);
             
             $msg= $busRow['vehicle_no']." Service Initiated";

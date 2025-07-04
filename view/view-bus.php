@@ -43,21 +43,21 @@ if($remainingKmUntilService=="Service is due"){
 
 $status = match($busRow['bus_status']){
     
-    "-1"=>"Removed",
-    "0"=>"Out of Service",
-    "1"=>"Operational",
-    "2"=>"Service is Due",
-    "3"=>"In Service",
+    -1=>"Removed",
+    0=>"Out of Service",
+    1=>"Operational",
+    2=>"Service is Due",
+    3=>"In Service",
 };
     
 $statusClass = match($busRow['bus_status']){
     
-    "-1","0","2"=>"panel-danger",
-    "1"=>"panel-success",
-    "3"=>"panel-warning",
+    -1,0,2=>"panel-danger",
+    1=>"panel-success",
+    3=>"panel-warning",
 };
 
-if($busRow['bus_status']=="3"){
+if($busRow['bus_status']==3){
    
     $remainingKmUntilService="In Service";
     $remainingKmUntilServiceClass="panel-warning";

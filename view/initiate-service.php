@@ -9,6 +9,23 @@ $userSession=$_SESSION["user"];
 
 $busObj = new Bus();
 $busResult = $busObj->getAllBusesToService();
+
+/*This queue is being created to show the bus pickup 
+ * dropdown sorted based on priority */
+$busPriorityQueue = new SplPriorityQueue();
+
+while($busRow = $busResult->fetch_assoc()){
+    
+    $priority = match ((int) $busRow['bus_status']) {
+        1 => 1, //Low priority (1) for operational buses
+        2 => 9, //Service due priority level 9
+        3 => 10, //Highest priority (10) for broken buses
+    };
+    
+    //Insert bus array to a queue with a priority
+    $busPriorityQueue->insert($busRow, $priority);
+}
+
 $serviceDueBusResult = $busObj->getServiceDueBuses();
 
 $serviceStationObj = new ServiceStation();
@@ -75,11 +92,22 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                     <div class="col-md-3">
                         <select name="bus_id" id="bus_id" class="form-control" required="required">
                             <option value="">Select a Vehicle</option>
-                            <?php   while($busRow = $busResult->fetch_assoc()){ ?>
-                                        
-                            <option value="<?php echo $busRow['bus_id'];?>"><?php echo $busRow['vehicle_no'];?></option>
+                            <?php foreach($busPriorityQueue as $bus){ 
+                                
+                                $displayText = $bus['vehicle_no'];
+                                
+                                if($bus['bus_status']==2){
+                                    $displayText.=" (Service Due)";
+                                }elseif($bus['bus_status']==4) {
+                                    $displayText.=" (Broken)";
+                                }
+                            ?>
                             
-                            <?php } ?>
+                            <option value="<?php echo $bus['bus_id'];?>"><?php echo $displayText;?></option>
+                            
+                            <?php
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="col-md-3">

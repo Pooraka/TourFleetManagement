@@ -41,9 +41,15 @@ class ServiceDetail{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM service_detail WHERE service_id='$serviceId'";
+        $sql = "SELECT * FROM service_detail WHERE service_id=?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $serviceId); // Bind the serviceId parameter as an integer
+
+        $stmt->execute(); // Execute the statement
+
+        $result = $stmt->get_result(); // Get the result object
         return $result;
     }
     
@@ -109,16 +115,27 @@ class ServiceDetail{
         
     }
     
+    
     public function getMonthlyServiceCostTrend($startMonth, $endMonth){
         
         $con = $GLOBALS["con"];
         
+        $serviceStatus = '3';
+        
         $sql = "SELECT DATE_FORMAT(completed_date,'%Y-%m') AS month, SUM(cost) AS total_cost "
                 . "FROM service_detail "
-                . "WHERE service_status = '3' AND DATE_FORMAT(completed_date, '%Y-%m') >= '" . $startMonth . "' AND DATE_FORMAT(completed_date, '%Y-%m') <= '" . $endMonth . "' "
+                . "WHERE service_status = ? AND DATE_FORMAT(completed_date, '%Y-%m') >= ? AND DATE_FORMAT(completed_date, '%Y-%m') <= ? "
                 . "GROUP BY month ORDER BY month ASC";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql); // Prepare the statement
+
+        $stmt->bind_param("sss", $serviceStatus, $startMonth, $endMonth); // Bind parameters: all three are strings ('s')
+
+        $stmt->execute(); // Execute and get the result object
+
+        $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
         
     }

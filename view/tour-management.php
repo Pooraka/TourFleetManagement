@@ -24,7 +24,7 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Tour
                 </a>
-                <a href="add-tour.php" class="list-group-item">
+                <a href="pending-tours.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Tours
                 </a>
