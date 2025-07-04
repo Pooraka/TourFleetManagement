@@ -140,9 +140,14 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $invoiceRow['destination'];?> </span>
                             </div>
                             <div class="col-md-3" style="margin-bottom: 10px">
-                                <span class="fa-solid fa-road"></span>&nbsp;<b>Total Mileage</b>
+                                <span class="fa-solid fa-road"></span>&nbsp;<b>Expected Mileage</b>
                                 </br>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "Km ".number_format($invoiceRow['round_trip_mileage'],0);?> </span>
+                            </div>
+                            <div class="col-md-3" style="margin-bottom: 10px">
+                                <span class="fa-solid fa-road"></span>&nbsp;<b>Actual Mileage</b>
+                                </br>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "Km ".number_format($invoiceRow['actual_mileage'],0);?> </span>
                             </div>
                             <div class="col-md-3" style="margin-bottom: 10px">
                                 <span class="fas fa-tags"></span>&nbsp;<b>Invoice Status</b>
@@ -177,13 +182,7 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                                 <label class="control-label">Actual Fare</label>
                             </div>
                             <div class="col-md-3">
-                                <input type="number" class="form-control" name="actual_fair" id="actual_fair" step="0.01" inputmode="decimal"/>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="control-label">Actual Mileage</label>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" class="form-control" name="actual_mileage" id="actual_mileage" step="1"/>
+                                <input type="number" class="form-control" name="actual_fair" id="actual_fair" step="0.01" inputmode="decimal" min="0"/>
                             </div>
                         </div>
                         <div class="row">

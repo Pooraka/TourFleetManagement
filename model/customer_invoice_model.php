@@ -103,4 +103,14 @@ class CustomerInvoice{
         $con->query($sql) or die ($con->error);
         
     }
+    
+    public function addActualFair($invoiceId,$actualFair){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET actual_fare='$actualFair' WHERE invoice_id='$invoiceId'";
+        
+        $con->query($sql) or die ($con->error);
+        
+    }
 }
