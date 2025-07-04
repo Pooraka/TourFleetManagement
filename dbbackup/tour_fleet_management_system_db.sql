@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 01:31 PM
+-- Generation Time: Jul 04, 2025 at 02:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -688,7 +688,7 @@ INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `
 CREATE TABLE `part_transaction` (
   `transaction_id` int(10) NOT NULL,
   `part_id` int(10) NOT NULL,
-  `transaction_type` int(10) NOT NULL COMMENT '1: Purchase, 2: Issue to Bus, 3: Remove from Warehouse',
+  `transaction_type` int(10) NOT NULL COMMENT '1: Initial Stock Load,2: Purchase, 3: Issue to Bus, 4: Remove from Warehouse',
   `quantity` int(10) NOT NULL COMMENT 'The absolute quantity for this transaction (e.g., 5)',
   `bus_id` int(10) DEFAULT NULL COMMENT 'The bus involved, if applicable (for Issue to Bus)',
   `grn_id` int(10) DEFAULT NULL COMMENT 'The GRN involved, if applicable (for Purchases)',
@@ -708,8 +708,8 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (4, 4, 1, 20, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
 (5, 2, 1, 20, NULL, 1, NULL, 8, '2025-05-02 10:00:00'),
 (6, 1, 1, 15, NULL, 2, NULL, 8, '2025-06-20 14:00:00'),
-(7, 3, 2, 1, 9, NULL, 'Routine service replacement', 8, '2025-06-25 11:00:00'),
-(8, 4, 3, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00');
+(7, 3, 3, 1, 9, NULL, 'Routine service replacement', 8, '2025-06-25 11:00:00'),
+(8, 4, 4, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00');
 
 -- --------------------------------------------------------
 

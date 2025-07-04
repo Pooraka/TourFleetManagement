@@ -19,9 +19,13 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-service-station.php" class="list-group-item">
+                <a href="register-spareparts.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Spare Parts
+                    Register Spare Parts
+                </a>
+                <a href="spare-part-types.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    View Spare Part Types
                 </a>
             </ul>
         </div>
