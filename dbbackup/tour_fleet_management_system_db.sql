@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 05:16 PM
+-- Generation Time: Jul 04, 2025 at 08:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1041,11 +1041,11 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `supplier_email`, `supplier_status`) VALUES
-(1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 1),
+(1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 0),
 (2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 1),
 (3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 0),
 (4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
-(5, 'General Auto Traders', '0332255889', 'gat@email.com', 1);
+(5, 'General Auto Traders', '0332255889', 'gat@email.com', 0);
 
 -- --------------------------------------------------------
 
@@ -1097,22 +1097,24 @@ CREATE TABLE `tender` (
   `tender_id` int(10) NOT NULL,
   `part_id` int(10) NOT NULL,
   `quantity_required` int(10) NOT NULL COMMENT 'The quantity of the part required.',
-  `description` text DEFAULT NULL,
-  `advertisement_file` varchar(255) DEFAULT NULL COMMENT 'Filename of the scanned newspaper ad or document',
-  `open_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Defaults to the creation date',
-  `close_date` datetime DEFAULT NULL COMMENT 'Optional, can be NULL',
-  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Open, 2: Closed, 3: Awarded, 0: Cancelled',
+  `tender_description` text DEFAULT NULL,
+  `advertisement_file_name` varchar(255) DEFAULT NULL COMMENT 'Filename of the scanned newspaper ad or document',
+  `open_date` date NOT NULL,
+  `close_date` date NOT NULL,
+  `tender_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Cancelled,1: Open, 2: Closed, 3: Awarded',
   `created_by` int(10) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `awarded_bid` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tender`
 --
 
-INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `description`, `advertisement_file`, `open_date`, `close_date`, `status`, `created_by`, `created_at`) VALUES
-(1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05 09:00:00', '2025-04-15 17:00:00', 3, 1, '2025-06-29 04:58:51'),
-(2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01 09:00:00', '2025-06-10 17:00:00', 3, 1, '2025-06-29 05:02:27');
+INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_description`, `advertisement_file_name`, `open_date`, `close_date`, `tender_status`, `created_by`, `created_at`, `awarded_bid`) VALUES
+(1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', NULL),
+(2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01', '2025-06-10', 3, 1, '2025-06-29 05:02:27', NULL),
+(3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 1, 3, '2025-07-04 14:22:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -1487,7 +1489,8 @@ ALTER TABLE `template_item_link`
 ALTER TABLE `tender`
   ADD PRIMARY KEY (`tender_id`),
   ADD KEY `fk_tender_user` (`created_by`),
-  ADD KEY `fk_tender_part` (`part_id`);
+  ADD KEY `fk_tender_part` (`part_id`),
+  ADD KEY `fk_tender_awarded_bid` (`awarded_bid`);
 
 --
 -- Indexes for table `tour`
@@ -1690,7 +1693,7 @@ ALTER TABLE `spare_part`
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
-  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tour`
@@ -1886,6 +1889,7 @@ ALTER TABLE `template_item_link`
 -- Constraints for table `tender`
 --
 ALTER TABLE `tender`
+  ADD CONSTRAINT `fk_tender_awarded_bid` FOREIGN KEY (`awarded_bid`) REFERENCES `bid` (`bid_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tender_part` FOREIGN KEY (`part_id`) REFERENCES `spare_part` (`part_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tender_user` FOREIGN KEY (`created_by`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE;
 
