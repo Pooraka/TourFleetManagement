@@ -1,10 +1,14 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/supplier_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$supplierObj = new Supplier();
+$supplierResult = $supplierObj->getSuppliers();
 ?>
 
 <html lang="en">
@@ -16,7 +20,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management" ?>
+        <?php $pageName="Tender Management - View Suppliers" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -34,18 +38,27 @@ $userSession=$_SESSION["user"];
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <?php
+                    if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                        if(isset($_GET["msg"])){
-
-                            $msg = base64_decode($_GET["msg"]);
-                    ?>
-                            <div class="row">
-                                <div class="alert alert-success" style="text-align:center">
-                                    <?php echo $msg; ?>
-                                </div>
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-success" style="text-align:center">
+                                <?php echo $msg; ?>
                             </div>
-                    <?php
-                        }
+                        </div>
+                        <?php
+                    } elseif (isset($_GET["msg"])) {
+
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-danger" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
                     ?>
                 </div>
             </div>
@@ -62,36 +75,45 @@ $userSession=$_SESSION["user"];
                             </tr>
                         </thead>
                         <tbody>
+                            <?php while($supplierRow = $supplierResult->fetch_assoc()){ 
+                                
+                                $supplierStatus = match((int)$supplierRow['supplier_status']){
+                                    
+                                    -1=>"Removed",
+                                    0=>"Deactivated",
+                                    1=>"Active",
+                                };
+                                
+                                ?>
+                                
                             <tr>
-                                <td>United Motors Lanka</td>
-                                <td>0112448112</td>
-                                <td>info@unitedmotors.lk</td>
-                                <td>Active</td>
+                                <td><?php echo $supplierRow['supplier_name'];?></td>
+                                <td><?php echo $supplierRow['supplier_contact'];?></td>
+                                <td><?php echo $supplierRow['supplier_email'];?></td>
+                                <td><?php echo $supplierStatus;?></td>
                                 <td>
-                                    <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    <a href="edit-supplier.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-warning" style="margin:2px">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        Edit
+                                    </a>
+                                    <?php if($supplierRow['supplier_status']==1){?>
+                                    <a href="../controller/supplier_controller.php?status=deactivate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                        Deactivate
+                                    </a>
+                                    <?php } elseif($supplierRow['supplier_status']==0){ ?>
+                                    <a href="../controller/supplier_controller.php?status=activate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                        Activate
+                                    </a>
+                                    <?php } ?>
+                                    <a href="../controller/supplier_controller.php?status=remove_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        Remove
+                                    </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Lanka Ashok Leyland PLC - Spare Parts</td>
-                                <td>0112867435</td>
-                                <td>parts@lal.lk</td>
-                                <td>Active</td>
-                                <td>
-                                    <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Japan Auto Parts Colombo</td>
-                                <td>0777321654</td>
-                                <td>sales@japanautoparts.lk</td>
-                                <td>Active</td>
-                                <td>
-                                    <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</button>
-                                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                </td>
-                            </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>

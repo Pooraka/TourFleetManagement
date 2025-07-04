@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 02:18 PM
+-- Generation Time: Jul 04, 2025 at 05:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1033,7 +1033,7 @@ CREATE TABLE `supplier` (
   `supplier_name` varchar(255) NOT NULL,
   `supplier_contact` varchar(10) NOT NULL,
   `supplier_email` varchar(255) NOT NULL,
-  `supplier_status` int(10) NOT NULL DEFAULT 1
+  `supplier_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=removed,0=deactivated, 1=Active '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1043,7 +1043,7 @@ CREATE TABLE `supplier` (
 INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `supplier_email`, `supplier_status`) VALUES
 (1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 1),
 (2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 1),
-(3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 1),
+(3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 0),
 (4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
 (5, 'General Auto Traders', '0332255889', 'gat@email.com', 1);
 
@@ -1205,11 +1205,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
-(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 0),
+(1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
 (3, 'Clint', 'Barton', '2025-02-12', '999999999V', 1, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 3, '', 'steve@st.lk', 1),
 (7, 'Tony', 'Stark', '1996-12-15', '199512347521', 5, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
-(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 0);
+(8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 7, '1742135511_userimage4w.jpg', 'natasha@st.lk', 1);
 
 -- --------------------------------------------------------
 

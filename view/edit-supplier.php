@@ -1,10 +1,17 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/supplier_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$supplierId = base64_decode($_GET["supplier_id"]);
+
+$supplierObj = new Supplier();
+$supplierResult = $supplierObj->getSupplier($supplierId);
+$supplierRow = $supplierResult->fetch_assoc();
 ?>
 
 <html lang="en">
@@ -16,7 +23,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management - Add Supplier" ?>
+        <?php $pageName="Tender Management - Edit Supplier" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -26,7 +33,7 @@ $userSession=$_SESSION["user"];
                 </a>
             </ul>
         </div>
-        <form action="../controller/supplier_controller.php?status=add_supplier" method="post" enctype="multipart/form-data">
+        <form action="../controller/supplier_controller.php?status=edit_supplier" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
                     <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
@@ -48,13 +55,14 @@ $userSession=$_SESSION["user"];
                         <label class="control-label">Name</label>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="name" id="name"/>
+                        <input type="text" class="form-control" name="name" id="name" value="<?php echo $supplierRow['supplier_name'];?>"/>
+                        <input type="hidden" name="supplier_id" value="<?php echo $supplierRow['supplier_id']?>"/>
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Contact</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="contact" id="contact"/>
+                        <input type="text" class="form-control" name="contact" id="contact" value="<?php echo $supplierRow['supplier_contact'];?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -67,7 +75,7 @@ $userSession=$_SESSION["user"];
                         <label class="control-label">Email</label>
                     </div>
                     <div class="col-md-4">
-                        <input type="email" class="form-control" name="email" id="email"/>
+                        <input type="email" class="form-control" name="email" id="email" value="<?php echo $supplierRow['supplier_email'];?>"/>
                     </div>
                 </div>
                 <div class="row">
