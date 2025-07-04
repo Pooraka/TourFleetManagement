@@ -40,7 +40,7 @@ switch ($status){
         
         $quotationItemResult = $quotationObj->getQuotationItems($quotationId);
         
-        $invoiceNumber = "SKT-" . date('Ymd') . "-" . $quotationId;
+        $invoiceNumber = "ST-I-" . date('Ymd') . "-" . $quotationId;
         
         $invoiceDate = date('Y-m-d');
         
@@ -137,9 +137,9 @@ switch ($status){
         
             $invoiceId = base64_decode($_GET['invoice_id']);
 
-            $actualFair = $_POST["actual_fair"];
+            $actualFare = $_POST["actual_fare"];
 
-            if($actualFair<=0){
+            if($actualFare<=0){
                 throw new Exception ("Actual Fair Cannot Be LKR 0.00 or Below");
             }
             
@@ -159,11 +159,11 @@ switch ($status){
 
             $paymentMethod = $_POST['payment_method'];
             
-            $customerInvoiceObj->addActualFair($invoiceId, $actualFair);
+            $customerInvoiceObj->addActualFare($invoiceId, $actualFare);
             
             $paymentDate = date('Y-m-d');
             
-            $financeObj->acceptCustomerPayment($invoiceId, $paymentDate, $actualFair, $paymentMethod, $paymentProof, $user_id);
+            $financeObj->acceptCustomerPayment($invoiceId, $paymentDate, $actualFare, $paymentMethod, $paymentProof, $user_id);
             
             $customerInvoiceObj->changeInvoiceStatus($invoiceId,4);
             

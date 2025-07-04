@@ -32,6 +32,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Invoice
                 </a>
+                <a href="customer-receipts.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Customer Receipts
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

@@ -31,4 +31,24 @@ class Finance{
         
         $stmt->execute();
     }
+    
+    public function getTourIncomeRecord($invoiceId){
+        
+        $con=$GLOBALS["con"];
+
+        $sql = "SELECT * FROM tour_income WHERE invoice_id='$invoiceId'";
+            
+        $result = $con->query($sql) or die($con->error); 
+        return $result;
+    }
+    
+    public function getTourIncomeRecords(){
+        
+        $con=$GLOBALS["con"];
+
+        $sql = "SELECT * FROM tour_income";
+            
+        $result = $con->query($sql) or die($con->error); 
+        return $result;
+    }
 }

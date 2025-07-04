@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 09:50 AM
+-- Generation Time: Jul 04, 2025 at 01:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -253,7 +253,7 @@ CREATE TABLE `customer_invoice` (
 --
 
 INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
-(1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 3, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, NULL, NULL),
+(1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 4, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, 78350.00, 258),
 (2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 1, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, NULL, NULL),
 (3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL);
 
@@ -1126,7 +1126,7 @@ CREATE TABLE `tour` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `destination` varchar(255) NOT NULL,
-  `tour_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled, 1=Assigned, 2=Ongoing, 3=Completed, Completed & Paid'
+  `tour_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled, 1=Assigned, 2=Ongoing, 3=Completed'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1149,11 +1149,17 @@ CREATE TABLE `tour_income` (
   `payment_date` date NOT NULL,
   `paid_amount` decimal(10,2) NOT NULL,
   `payment_method` varchar(50) NOT NULL COMMENT 'e.g., ''Cash'', ''Funds Transfer''',
-  `reference` varchar(255) DEFAULT NULL COMMENT 'Optional reference like a transaction ID',
   `payment_proof` varchar(255) DEFAULT NULL COMMENT 'Filename of the uploaded proof',
   `received_by` int(10) NOT NULL COMMENT 'The user who accepted and recorded the payment',
   `payment_status` int(10) NOT NULL DEFAULT 1 COMMENT 'e.g., 1: Received, 2: Verified'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tour_income`
+--
+
+INSERT INTO `tour_income` (`tour_income_id`, `invoice_id`, `payment_date`, `paid_amount`, `payment_method`, `payment_proof`, `received_by`, `payment_status`) VALUES
+(1, 1, '2025-07-04', 78350.00, 'cash', '1751610219_Test PDF.pdf', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1696,7 +1702,7 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`

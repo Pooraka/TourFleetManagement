@@ -59,7 +59,7 @@ $pdf->SetXY(140,$topY);
 
 //Billing Details
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(60,6,'Billed To:',0,2,'R');
+$pdf->Cell(60,6,'Quotated To:',0,2,'R');
 $pdf->SetFont("Arial", "", 10);
 $pdf->MultiCell(60, 6, $quotationRow['customer_fname'].' '.$quotationRow['customer_lname'], 0,'R','');
 $pdf->setX(140);

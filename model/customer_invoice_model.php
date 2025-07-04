@@ -104,7 +104,7 @@ class CustomerInvoice{
         
     }
     
-    public function addActualFair($invoiceId,$actualFair){
+    public function addActualFare($invoiceId,$actualFair){
         
         $con = $GLOBALS["con"];
         
@@ -112,5 +112,15 @@ class CustomerInvoice{
         
         $con->query($sql) or die ($con->error);
         
+    }
+    
+    public function getPaidInvoices(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT ci.*,c.* FROM customer_invoice ci, customer c WHERE ci.customer_id = c.customer_id AND ci.invoice_status='4'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
     }
 }
