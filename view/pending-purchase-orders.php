@@ -126,7 +126,7 @@ $supplierObj = new Supplier();
                                     <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">
                                     View
                                     </a>
-                                    <a href="" class="btn btn-xs btn-primary" style="margin:2px">
+                                    <a href="#" data-toggle="modal" onclick="getSupplierInvoice(<?php echo $poRow['po_id'];?>)" data-target="#add_supplier_po" class="btn btn-xs btn-primary" style="margin:2px">
                                     Add Supplier Invoice
                                     </a>
                                     <?php } ?>
@@ -140,13 +140,39 @@ $supplierObj = new Supplier();
         </div>
     </div>
 </body>
+<div class="modal fade" id="add_supplier_po" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="../controller/purchase_order_controller.php?status=add_supplier_invoice" method="post" enctype="multipart/form-data">
+                <div class="modal-header"><b><h4>Add Supplier Invoice</h4></b></div>
+            <div class="modal-body">
+                <div id="display_data">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success" value="Submit"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#pending_po").DataTable();
     });
+    
+    function getSupplierInvoice(poId){
+        var url ="../controller/purchase_order_controller.php?status=get_supplier_invoice";
+
+        $.post(url,{poId:poId},function(data){
+            $("#display_data").html(data).show();
+        });
+    }
 </script>
 </html>

@@ -44,11 +44,6 @@ switch ($status){
         $totalAmount = (int)$quantityOrdered * (float)$poUnitPrice;
         $createdBy = $userId;
         
-        print_r($totalAmount);
-        
-        
-        die();
-        
         $poObj->generatePurchaseOrder($poNumber, $awardedBidId, $partId, $quantityOrdered, $poUnitPrice, $totalAmount, $createdBy);
         
         $bidObj->changeBidStatus($awardedBidId,3);
@@ -144,6 +139,88 @@ switch ($status){
                 window.location="../view/pending-purchase-orders.php?msg=<?php echo $msg;?>";
             </script>
             <?php
+        }
+        
+    break;
+
+    case "get_supplier_invoice":
+        
+        $poId = $_POST['poId'];
+        
+        ?>
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Attach Invoice</label>
+                </div>
+                <div class="col-md-5">
+                    <label>
+                        <input type="file" name="supplier_invoice" class="form-control"/>
+                        <input type="hidden" name="po_id" value="<?php echo $poId;?>"/>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label>Invoice Number</label>
+                </div>
+                <div class="col-md-3">
+                    <label>
+                        <input type="text" name="supplier_invoice_number" class="form-control"/>
+                    </label>
+                </div>
+            </div> 
+        <?php
+        
+        
+        
+    break;
+
+    case "add_supplier_invoice":
+        
+        try{
+            
+            $poId = $_POST['po_id'];
+            
+            $supplierInvoiceNumber = $_POST['supplier_invoice_number'];
+            
+            if($supplierInvoiceNumber==""){
+                throw new Exception("Enter Invoice Number");
+            }
+            
+            if (!isset($_FILES["supplier_invoice"]) || $_FILES["supplier_invoice"]['error'] == UPLOAD_ERR_NO_FILE) {
+                throw new Exception("Attach The Invoice");
+            }
+            
+            $supplierInvoiceFile = $_FILES["supplier_invoice"];
+            
+            $supplierInvoiceFileName = time()."_".$supplierInvoiceFile["name"];
+            $path="../documents/supplierinvoices/$supplierInvoiceFileName";
+            move_uploaded_file($supplierInvoiceFile["tmp_name"],$path);
+            
+            $poObj->addSupplierInvoice($poId,$supplierInvoiceFileName,$supplierInvoiceNumber);
+            
+            $poObj->changePOStatus($poId,3);
+            
+            $msg = "Supplier Invoice Attached Successfully";
+            $msg = base64_encode($msg);
+            ?>
+
+                <script>
+                    window.location="../view/pending-purchase-orders.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+
+            <?php
+        
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/pending-purchase-orders.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+            
         }
         
     break;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2025 at 02:42 PM
+-- Generation Time: Jul 05, 2025 at 07:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,8 @@ INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date
 (2, 1, 4, 3450.00, '2025-04-10', 2),
 (3, 2, 2, 8900.00, '2025-06-05', 2),
 (4, 3, 3, 4750.00, '2025-07-05', 3),
-(5, 3, 4, 4560.25, '2025-07-05', 1);
+(5, 3, 4, 4560.25, '2025-07-05', 1),
+(6, 4, 5, 2375.00, '2025-07-05', 3);
 
 -- --------------------------------------------------------
 
@@ -760,21 +761,24 @@ CREATE TABLE `purchase_order` (
   `po_unit_price` decimal(10,2) NOT NULL COMMENT 'The price per unit, captured from the winning bid',
   `total_amount` decimal(12,2) NOT NULL COMMENT 'quantity_ordered * unit_price',
   `order_date` date NOT NULL DEFAULT curdate() COMMENT 'Defaults to the current date of PO creation',
-  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Rejected, 1: Generated, 2:Approved, 3: Partially Received, 4: Completed, 5: Paid',
+  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Rejected, 1: Generated, 2:Approved,3:Supplier Invoice Attached, 4: Partially Received, 5: Completed, 6: Paid',
   `created_by` int(10) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The exact date and time the PO was generated',
   `approved_by` int(10) DEFAULT NULL,
-  `rejected_by` int(10) DEFAULT NULL
+  `rejected_by` int(10) DEFAULT NULL,
+  `supplier_invoice` varchar(255) DEFAULT NULL,
+  `supplier_invoice_number` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `purchase_order`
 --
 
-INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`) VALUES
-(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 5, 1, '2025-06-29 10:29:07', NULL, NULL),
-(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 5, 1, '2025-06-29 10:33:12', NULL, NULL),
-(3, 'ST-PO-20250705-3', 4, 3, 10, 0, 4750.00, 47500.00, '2025-07-05', 2, 3, '2025-07-05 13:06:05', 3, NULL);
+INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`) VALUES
+(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL),
+(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL),
+(3, 'ST-PO-9AF1-3', 4, 3, 10, 0, 4750.00, 47500.00, '2025-07-05', 3, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss'),
+(4, 'ST-PO-63B4-4', 6, 4, 25, 0, 2375.00, 59375.00, '2025-07-05', 3, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652');
 
 -- --------------------------------------------------------
 
@@ -1120,7 +1124,7 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', 2),
 (2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01', '2025-06-10', 3, 1, '2025-06-29 05:02:27', NULL),
 (3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 3, 3, '2025-07-04 14:22:36', 4),
-(4, 4, 25, '25 Generic Wiper Blades are needed to stock.', '1751694412_Test PDF.pdf', '2025-07-05', '2025-07-08', 1, 3, '2025-07-05 05:46:52', NULL);
+(4, 4, 25, '25 Generic Wiper Blades are needed to stock.', '1751694412_Test PDF.pdf', '2025-07-05', '2025-07-08', 3, 3, '2025-07-05 05:46:52', 6);
 
 -- --------------------------------------------------------
 
@@ -1543,7 +1547,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bid`
 --
 ALTER TABLE `bid`
-  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `bus`
@@ -1645,7 +1649,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `quotation`

@@ -10,7 +10,7 @@ class PurchaseOrder{
         
         $con = $GLOBALS["con"];
         
-        $sql ="INSERT INTO purchase_order (po_number,bid_id,part_id,quantity_ordered,unit_price,total_amount,created_by) "
+        $sql ="INSERT INTO purchase_order (po_number,bid_id,part_id,quantity_ordered,po_unit_price,total_amount,created_by) "
                 . "VALUES (?,?,?,?,?,?,?)";
         
         $stmt = $con->prepare($sql);
@@ -70,5 +70,18 @@ class PurchaseOrder{
         $sql = "UPDATE purchase_order SET po_status='-1', rejected_by='$rejectedBy' WHERE po_id='$poId'";
         
         $con->query($sql) or die($con->error);
+    }
+    
+    public function addSupplierInvoice($poId,$supplierInvoice,$supplierInvoiceNumber){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE purchase_order SET supplier_invoice=?,supplier_invoice_number=? WHERE po_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("ssi",$supplierInvoice,$supplierInvoiceNumber,$poId);
+        
+        $stmt->execute();
     }
 }
