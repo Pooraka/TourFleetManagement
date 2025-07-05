@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2025 at 11:05 AM
+-- Generation Time: Jul 05, 2025 at 02:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `bid` (
   `supplier_id` int(10) NOT NULL,
   `unit_price` decimal(10,2) NOT NULL COMMENT 'The price offered per single unit of the part',
   `bid_date` date NOT NULL DEFAULT current_timestamp() COMMENT 'Bid submitted date',
-  `bid_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed,\r\n1: Submitted, 2: Awarded, '
+  `bid_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed,\r\n1: Submitted, 2: Awarded, 3:PO Generated'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44,8 +44,8 @@ INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date
 (1, 1, 3, 3500.00, '2025-04-08', -1),
 (2, 1, 4, 3450.00, '2025-04-10', 2),
 (3, 2, 2, 8900.00, '2025-06-05', 2),
-(4, 3, 3, 4750.00, '2025-07-05', 1),
-(5, 3, 4, 4560.25, '2025-07-05', 2);
+(4, 3, 3, 4750.00, '2025-07-05', 3),
+(5, 3, 4, 4560.25, '2025-07-05', 1);
 
 -- --------------------------------------------------------
 
@@ -498,8 +498,8 @@ CREATE TABLE `grn` (
 --
 
 INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `quantity_received`, `received_date`, `inspected_by`, `notes`) VALUES
-(1, NULL, 1, 20, '2025-05-02', 8, NULL),
-(2, NULL, 2, 15, '2025-06-20', 8, NULL);
+(1, 'Test-1', 1, 20, '2025-05-02', 8, NULL),
+(2, 'Test-2', 2, 15, '2025-06-20', 8, NULL);
 
 -- --------------------------------------------------------
 
@@ -752,26 +752,29 @@ INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_met
 
 CREATE TABLE `purchase_order` (
   `po_id` int(10) NOT NULL,
-  `po_number` varchar(50) NOT NULL COMMENT 'A unique number for business reference (e.g., PO-2025-001)',
+  `po_number` varchar(50) NOT NULL COMMENT 'A unique number for business reference ',
   `bid_id` int(10) NOT NULL COMMENT 'The winning bid that authorized this PO',
   `part_id` int(10) NOT NULL COMMENT 'The part being ordered',
   `quantity_ordered` int(10) NOT NULL,
   `quantity_received` int(10) NOT NULL DEFAULT 0 COMMENT 'Total quantity received so far for this PO',
-  `unit_price` decimal(10,2) NOT NULL COMMENT 'The price per unit, captured from the winning bid',
+  `po_unit_price` decimal(10,2) NOT NULL COMMENT 'The price per unit, captured from the winning bid',
   `total_amount` decimal(12,2) NOT NULL COMMENT 'quantity_ordered * unit_price',
   `order_date` date NOT NULL DEFAULT curdate() COMMENT 'Defaults to the current date of PO creation',
-  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Generated, 2:Approved, 3: Partially Received, 4: Completed, 5: Paid',
+  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Rejected, 1: Generated, 2:Approved, 3: Partially Received, 4: Completed, 5: Paid',
   `created_by` int(10) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The exact date and time the PO was generated'
+  `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The exact date and time the PO was generated',
+  `approved_by` int(10) DEFAULT NULL,
+  `rejected_by` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `purchase_order`
 --
 
-INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`) VALUES
-(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 5, 1, '2025-06-29 10:29:07'),
-(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 5, 1, '2025-06-29 10:33:12');
+INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`) VALUES
+(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 5, 1, '2025-06-29 10:29:07', NULL, NULL),
+(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 5, 1, '2025-06-29 10:33:12', NULL, NULL),
+(3, 'ST-PO-20250705-3', 4, 3, 10, 0, 4750.00, 47500.00, '2025-07-05', 2, 3, '2025-07-05 13:06:05', 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -1114,9 +1117,10 @@ CREATE TABLE `tender` (
 --
 
 INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_description`, `advertisement_file_name`, `open_date`, `close_date`, `tender_status`, `created_by`, `created_at`, `awarded_bid`) VALUES
-(1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', NULL),
+(1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', 2),
 (2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01', '2025-06-10', 3, 1, '2025-06-29 05:02:27', NULL),
-(3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 3, 3, '2025-07-04 14:22:36', 5);
+(3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 3, 3, '2025-07-04 14:22:36', 4),
+(4, 4, 25, '25 Generic Wiper Blades are needed to stock.', '1751694412_Test PDF.pdf', '2025-07-05', '2025-07-08', 1, 3, '2025-07-05 05:46:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -1641,7 +1645,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `quotation`
@@ -1695,7 +1699,7 @@ ALTER TABLE `spare_part`
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
-  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tour`

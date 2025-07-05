@@ -73,6 +73,7 @@ $pdf->Line(10, $y, 200, $y);
 //go down by 2 xs
 $pdf->Ln(2);
 
+//Tour Details Heading
 $pdf->SetFont("Arial", "B", 12);
 $pdf->Cell(60,6,'Tour Details',0,1,'');
 $pdf->Ln(2);
@@ -169,7 +170,7 @@ $pdf->Ln(2);
 $pdf->SetFont("Arial", "", 11);
 $pdf->MultiCell(190, 6,'1) This document confirms your booking. No payment is required at this time.', 0, '', false);
 $pdf->MultiCell(190, 6,'2) Final fair is subject to change once the tour is completed.', 0, '', false);
-$pdf->MultiCell(190, 6,'3) Payments to be made within 2 days after tour completion.', 0, '', false);
+$pdf->MultiCell(190, 6,'3) Payments to be made on the day of the tour.', 0, '', false);
 $pdf->MultiCell(190, 6,'5) Any damages to the bus caused by passengers will be borne by the customer.', 0, '', false);
 
 $pdf->Ln(10);

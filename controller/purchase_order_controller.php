@@ -37,7 +37,7 @@ switch ($status){
         $bidResult = $bidObj->getBid($awardedBidId);
         $bidRow = $bidResult->fetch_assoc();
         
-        $poNumber = "ST-PO-". date('Ymd')."-".$tenderId;
+        $poNumber = "ST-PO-". strtoupper(bin2hex(random_bytes(2)))."-".$tenderId;
         $partId = $tenderRow['part_id'];
         $quantityOrdered = $tenderRow['quantity_required'];
         $poUnitPrice = $bidRow['unit_price'];

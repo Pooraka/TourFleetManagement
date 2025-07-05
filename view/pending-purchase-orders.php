@@ -107,8 +107,8 @@ $supplierObj = new Supplier();
                                 ?>
                             
                             <tr>
-                                <td><?php echo $poRow['po_number'];?></td>
-                                <td><?php echo $sparePartRow['part_number'];?></td>
+                                <td style="white-space: nowrap;font-size:13px;font-weight: bold"><?php echo $poRow['po_number'];?></td>
+                                <td style="white-space: nowrap;font-size:13px;font-weight: bold"><?php echo $sparePartRow['part_number'];?></td>
                                 <td><?php echo $poRow['quantity_ordered'];?></td>
                                 <td><?php echo "LKR ".number_format($poRow['po_unit_price'],2);?></td>
                                 <td><?php echo "LKR ".number_format($poRow['total_amount'],2);?></td>
@@ -123,7 +123,7 @@ $supplierObj = new Supplier();
                                     Reject
                                     </a>
                                     <?php } elseif($poRow['po_status']==2){?>
-                                    <a href="" class="btn btn-xs btn-info" style="margin:2px">
+                                    <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">
                                     View
                                     </a>
                                     <a href="" class="btn btn-xs btn-primary" style="margin:2px">
