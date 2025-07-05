@@ -24,6 +24,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Awarded Bids
                 </a>
+                <a href="pending-purchase-orders.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    Pending PO
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

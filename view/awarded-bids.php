@@ -25,7 +25,7 @@ $tenderObj = new Tender();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Purchasing - Awarded - Bids" ?>
+        <?php $pageName="Purchasing - Awarded Bids" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -91,6 +91,10 @@ $tenderObj = new Tender();
                                 <td><?php echo number_format($bidRow['unit_price'],2);?></td>
                                 <td><?php echo $bidRow['supplier_name'];?></td>
                                 <td>
+                                    <a href="../controller/purchase_order_controller.php?status=generate_po&tender_id=<?php echo base64_encode($tenderId);?>" class="btn btn-xs btn-success" style="margin:2px">                                                 
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                        Generate PO
+                                    </a>
                                     <a href="../controller/bid_controller.php?status=revoke_award&tender_id=<?php echo base64_encode($tenderId);?>&bid_id=<?php echo base64_encode($bidRow['bid_id']) ?>" class="btn btn-xs btn-danger" style="margin:2px">                                                 
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Revoke Award
