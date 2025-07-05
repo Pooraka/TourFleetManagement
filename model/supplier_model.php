@@ -64,4 +64,15 @@ class Supplier{
         $con->query($sql) or die($con->error);
         
     }
+    
+    public function getActiveSuppliers(){
+    
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM supplier WHERE supplier_status='1'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+        
+    }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 08:20 PM
+-- Generation Time: Jul 05, 2025 at 09:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,18 +32,18 @@ CREATE TABLE `bid` (
   `tender_id` int(10) NOT NULL,
   `supplier_id` int(10) NOT NULL,
   `unit_price` decimal(10,2) NOT NULL COMMENT 'The price offered per single unit of the part',
-  `bid_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The date and time the bid was submitted',
-  `status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Submitted, 2: Awarded, 3: Rejected'
+  `bid_date` date NOT NULL DEFAULT current_timestamp() COMMENT 'Bid submitted date',
+  `bid_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed,\r\n1: Submitted, 2: Awarded, '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bid`
 --
 
-INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date`, `status`) VALUES
-(1, 1, 3, 3500.00, '2025-04-08 11:30:00', 3),
-(2, 1, 4, 3450.00, '2025-04-10 14:00:00', 2),
-(3, 2, 2, 8900.00, '2025-06-05 10:00:00', 2);
+INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date`, `bid_status`) VALUES
+(1, 1, 3, 3500.00, '2025-04-08', -1),
+(2, 1, 4, 3450.00, '2025-04-10', 2),
+(3, 2, 2, 8900.00, '2025-06-05', 2);
 
 -- --------------------------------------------------------
 
@@ -1041,11 +1041,11 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `supplier_email`, `supplier_status`) VALUES
-(1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 0),
+(1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 1),
 (2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 1),
-(3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 0),
+(3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 1),
 (4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
-(5, 'General Auto Traders', '0332255889', 'gat@email.com', 0);
+(5, 'General Auto Traders', '0332255889', 'gat@email.com', 1);
 
 -- --------------------------------------------------------
 

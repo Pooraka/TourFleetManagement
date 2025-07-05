@@ -147,17 +147,17 @@ switch ($status){
                 throw new Exception("Attach The Payment Proof To Accept The Payment");
             }
             
-            $proofFile = $_FILES["proof"];
-            
-            $paymentProof = time()."_".$proofFile["name"];
-            $path="../documents/customerpaymentproofs/$paymentProof";
-            move_uploaded_file($proofFile["tmp_name"],$path);
-            
             if (!isset($_POST['payment_method'])) {
                 throw new Exception("Select A Payment Method");
             }
 
             $paymentMethod = $_POST['payment_method'];
+            
+            $proofFile = $_FILES["proof"];
+            
+            $paymentProof = time()."_".$proofFile["name"];
+            $path="../documents/customerpaymentproofs/$paymentProof";
+            move_uploaded_file($proofFile["tmp_name"],$path);
             
             $customerInvoiceObj->addActualFare($invoiceId, $actualFare);
             

@@ -1,10 +1,15 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/tender_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$tenderObj = new Tender();
+
+$tenderResult = $tenderObj->getOpenTenders();
 ?>
 
 <html lang="en">
@@ -17,7 +22,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management - View Tenders" ?>
+        <?php $pageName="Tender Management - Open Tenders" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -40,41 +45,76 @@ $userSession=$_SESSION["user"];
             </ul>
         </div>
         <div class="col-md-9">
-            <table class="table" id="test">
-                <thead>
-                    <tr>
-                        <th>Tender ID</th>
-                        <th>Spare Part</th>
-                        <th>Quantity</th>
-                        <th>Open Date</th>
-                        <th>Close Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>215</td>
-                        <td>Yutong ZK6938HQ Oil Filter</td>
-                        <td>25</td>
-                        <td>2025-06-20</td>
-                        <td>2025-06-30</td>
-                        <td>
-                            <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $user_id; ?>" class="btn btn-success" style="margin:2px">
-                                <span class="glyphicon glyphicon-plus"></span>
-                                Add Bids
-                            </a>
-                            <a  class="btn btn-primary" style="margin:2px">
-                                <span class="glyphicon glyphicon-search"></span>
-                                View Bids
-                            </a>
-                            <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                Remove
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <?php
+                    if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
+
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-success" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    } elseif (isset($_GET["msg"])) {
+
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-danger" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table" id="open_tenders">
+                        <thead>
+                            <tr>
+                                <th style="white-space: wrap">Tender ID</th>
+                                <th>Spare Part</th>
+                                <th>Quantity</th>
+                                <th>Description</th>
+                                <th>Open Date</th>
+                                <th>Close Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($tenderRow = $tenderResult->fetch_assoc()){ ?>
+                            <tr>
+                                <td style="white-space: wrap"><?php echo $tenderRow["tender_id"];?></td>
+                                <td style="white-space: nowrap"><?php echo $tenderRow["part_number"];?></td>
+                                <td><?php echo $tenderRow["quantity_required"];?></td>
+                                <td><?php echo $tenderRow["tender_description"];?></td>
+                                <td style="white-space: nowrap"><?php echo $tenderRow["open_date"];?></td>
+                                <td style="white-space: nowrap"><?php echo $tenderRow["close_date"];?></td>
+                                <td>
+                                    <a href="../documents/tenderadvertisements/<?php echo $tenderRow["advertisement_file_name"];?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">                                                 
+                                        Advertisement
+                                    </a>
+                                    <a href="add-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                        Add Bids
+                                    </a>
+                                    <a href="view-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-primary" style="margin:2px">
+                                        View Bids
+                                    </a>
+                                    <a href="../controller/tender_controller.php?status=cancel_tender&tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-danger" style="margin:2px">                                                 
+                                        Cancel
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -84,7 +124,7 @@ $userSession=$_SESSION["user"];
 <script>
     $(document).ready(function(){
 
-        $("#test").DataTable();
+        $("#open_tenders").DataTable();
     });
 </script>
 </html>
