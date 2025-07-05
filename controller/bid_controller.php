@@ -111,4 +111,29 @@ switch ($status){
         <?php
         
     break;
+
+    case "revoke_award":
+        
+        $tenderId = base64_decode($_GET['tender_id']);
+        
+        $bidId = base64_decode($_GET['bid_id']);
+        
+        
+        $tenderObj->revokeBidFromTender($tenderId);
+        
+        $bidObj->changeBidStatus($bidId,1);
+        
+        $tenderObj->changeTenderStatus($tenderId,1);
+        
+        $msg = "Bid ID $bidId Revoked Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/awarded-bids.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+
+        <?php
+        
+    break;
 }

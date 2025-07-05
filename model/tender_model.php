@@ -63,4 +63,14 @@ class Tender{
         $con->query($sql) or die($con->error);
         
     }
+    
+    public function revokeBidFromTender($tenderId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE tender SET awarded_bid=null WHERE tender_id='$tenderId'";
+        
+        $con->query($sql) or die($con->error);
+        
+    }
 }

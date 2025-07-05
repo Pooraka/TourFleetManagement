@@ -41,5 +41,16 @@ class Bid{
         
         $con->query($sql) or die($con->error);
     }
+    
+    public function getAwardedBids(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT b.*, t.*, s.* FROM bid b, tender t, supplier s WHERE b.tender_id=t.tender_id AND b.supplier_id=s.supplier_id "
+                . "AND b.bid_status='2'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 
 }
