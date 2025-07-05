@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2025 at 09:44 AM
+-- Generation Time: Jul 05, 2025 at 11:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,9 @@ CREATE TABLE `bid` (
 INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date`, `bid_status`) VALUES
 (1, 1, 3, 3500.00, '2025-04-08', -1),
 (2, 1, 4, 3450.00, '2025-04-10', 2),
-(3, 2, 2, 8900.00, '2025-06-05', 2);
+(3, 2, 2, 8900.00, '2025-06-05', 2),
+(4, 3, 3, 4750.00, '2025-07-05', 1),
+(5, 3, 4, 4560.25, '2025-07-05', 2);
 
 -- --------------------------------------------------------
 
@@ -758,7 +760,7 @@ CREATE TABLE `purchase_order` (
   `unit_price` decimal(10,2) NOT NULL COMMENT 'The price per unit, captured from the winning bid',
   `total_amount` decimal(12,2) NOT NULL COMMENT 'quantity_ordered * unit_price',
   `order_date` date NOT NULL DEFAULT curdate() COMMENT 'Defaults to the current date of PO creation',
-  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Issued, 2: Partially Received, 3: Completed, 4: Paid',
+  `po_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Generated, 2:Approved, 3: Partially Received, 4: Completed, 5: Paid',
   `created_by` int(10) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'The exact date and time the PO was generated'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -768,8 +770,8 @@ CREATE TABLE `purchase_order` (
 --
 
 INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`) VALUES
-(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 4, 1, '2025-06-29 10:29:07'),
-(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 4, 1, '2025-06-29 10:33:12');
+(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 5, 1, '2025-06-29 10:29:07'),
+(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 5, 1, '2025-06-29 10:33:12');
 
 -- --------------------------------------------------------
 
@@ -1114,7 +1116,7 @@ CREATE TABLE `tender` (
 INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_description`, `advertisement_file_name`, `open_date`, `close_date`, `tender_status`, `created_by`, `created_at`, `awarded_bid`) VALUES
 (1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', NULL),
 (2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01', '2025-06-10', 3, 1, '2025-06-29 05:02:27', NULL),
-(3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 1, 3, '2025-07-04 14:22:36', NULL);
+(3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 3, 3, '2025-07-04 14:22:36', 5);
 
 -- --------------------------------------------------------
 
@@ -1537,7 +1539,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bid`
 --
 ALTER TABLE `bid`
-  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `bus`

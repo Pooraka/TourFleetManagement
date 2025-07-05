@@ -32,5 +32,14 @@ class Bid{
         $bidId = $con->insert_id;
         return $bidId;
     }
+    
+    public function changeBidStatus($bidId,$status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE bid SET bid_status='$status' WHERE bid_id='$bidId'";
+        
+        $con->query($sql) or die($con->error);
+    }
 
 }

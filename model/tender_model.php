@@ -53,4 +53,14 @@ class Tender{
         return $result;
         
     }
+    
+    public function addAwardedBidToTender($tenderId,$bidId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE tender SET awarded_bid='$bidId' WHERE tender_id='$tenderId'";
+        
+        $con->query($sql) or die($con->error);
+        
+    }
 }

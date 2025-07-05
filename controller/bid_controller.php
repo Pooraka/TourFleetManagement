@@ -67,4 +67,48 @@ switch ($status){
         }
     
     break;
+    
+    case "remove_bid":
+        
+        $tenderId = base64_decode($_GET['tender_id']);
+        
+        $bidId = base64_decode($_GET['bid_id']);
+        
+        $bidObj->changeBidStatus($bidId,-1);
+        
+        $msg = "Bid ID $bidId Removed Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/view-bids.php?msg=<?php echo $msg; ?>&success=true&tender_id=<?php echo base64_encode($tenderId) ;?>";
+            </script>
+
+        <?php
+        
+    break;
+
+    case "award_bid";
+    
+        $tenderId = base64_decode($_GET['tender_id']);
+        
+        $bidId = base64_decode($_GET['bid_id']);
+        
+        $bidObj->changeBidStatus($bidId,2);
+        
+        $tenderObj->addAwardedBidToTender($tenderId, $bidId);
+        
+        $tenderObj->changeTenderStatus($tenderId,3);
+        
+        $msg = "Bid ID $bidId Awared to Tender $tenderId Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/open-tenders.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+
+        <?php
+        
+    break;
 }
