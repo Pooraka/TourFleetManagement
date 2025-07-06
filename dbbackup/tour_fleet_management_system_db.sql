@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 09:12 PM
+-- Generation Time: Jul 06, 2025 at 11:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -148,17 +148,17 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 --
 
 CREATE TABLE `checklist_item` (
-  `item_id` int(10) NOT NULL,
-  `item_name` varchar(255) NOT NULL,
-  `item_description` text DEFAULT NULL,
-  `item_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Active, 0: Inactive'
+  `checklist_item_id` int(10) NOT NULL,
+  `checklist_item_name` varchar(255) NOT NULL,
+  `checklist_item_description` text DEFAULT NULL,
+  `checklist_item_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed, 1: Active, 0: Inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `checklist_item`
 --
 
-INSERT INTO `checklist_item` (`item_id`, `item_name`, `item_description`, `item_status`) VALUES
+INSERT INTO `checklist_item` (`checklist_item_id`, `checklist_item_name`, `checklist_item_description`, `checklist_item_status`) VALUES
 (1, 'Check engine oil level', 'Ensure oil is between the minimum and maximum marks on the dipstick.', 1),
 (2, 'Check coolant level', 'Verify coolant level in the reservoir.', 1),
 (3, 'Inspect tire pressure and condition', 'Check for correct inflation and look for any visible damage or excessive wear.', 1),
@@ -552,7 +552,7 @@ INSERT INTO `inspection` (`inspection_id`, `bus_id`, `inspection_date`, `inspect
 CREATE TABLE `inspection_checklist_response` (
   `response_id` int(10) NOT NULL,
   `inspection_id` int(10) NOT NULL,
-  `item_id` int(10) NOT NULL,
+  `checklist_item_id` int(10) NOT NULL,
   `response_value` int(10) NOT NULL COMMENT 'e.g., ''1-Pass'', ''0-Fail'', ''2-OK'', ',
   `comments` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -561,7 +561,7 @@ CREATE TABLE `inspection_checklist_response` (
 -- Dumping data for table `inspection_checklist_response`
 --
 
-INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `item_id`, `response_value`, `comments`) VALUES
+INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `checklist_item_id`, `response_value`, `comments`) VALUES
 (1, 1, 1, 1, ''),
 (2, 1, 2, 1, 'Level is OK'),
 (3, 1, 3, 1, ''),
@@ -1095,14 +1095,14 @@ INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `sup
 
 CREATE TABLE `template_item_link` (
   `template_id` int(10) NOT NULL,
-  `item_id` int(10) NOT NULL
+  `checklist_item_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `template_item_link`
 --
 
-INSERT INTO `template_item_link` (`template_id`, `item_id`) VALUES
+INSERT INTO `template_item_link` (`template_id`, `checklist_item_id`) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
@@ -1328,8 +1328,8 @@ ALTER TABLE `bus_tour`
 -- Indexes for table `checklist_item`
 --
 ALTER TABLE `checklist_item`
-  ADD PRIMARY KEY (`item_id`),
-  ADD UNIQUE KEY `item_name` (`item_name`);
+  ADD PRIMARY KEY (`checklist_item_id`),
+  ADD UNIQUE KEY `item_name` (`checklist_item_name`);
 
 --
 -- Indexes for table `customer`
@@ -1398,7 +1398,7 @@ ALTER TABLE `inspection`
 --
 ALTER TABLE `inspection_checklist_response`
   ADD PRIMARY KEY (`response_id`),
-  ADD KEY `fk_response_item` (`item_id`),
+  ADD KEY `fk_response_item` (`checklist_item_id`),
   ADD KEY `idx_inspection_id` (`inspection_id`);
 
 --
@@ -1528,8 +1528,8 @@ ALTER TABLE `supplier`
 -- Indexes for table `template_item_link`
 --
 ALTER TABLE `template_item_link`
-  ADD PRIMARY KEY (`template_id`,`item_id`),
-  ADD KEY `fk_link_item` (`item_id`);
+  ADD PRIMARY KEY (`template_id`,`checklist_item_id`),
+  ADD KEY `fk_link_item` (`checklist_item_id`);
 
 --
 -- Indexes for table `tender`
@@ -1603,7 +1603,7 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `checklist_item`
 --
 ALTER TABLE `checklist_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `checklist_item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -1850,7 +1850,7 @@ ALTER TABLE `inspection`
 --
 ALTER TABLE `inspection_checklist_response`
   ADD CONSTRAINT `fk_response_inspection` FOREIGN KEY (`inspection_id`) REFERENCES `inspection` (`inspection_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_response_item` FOREIGN KEY (`item_id`) REFERENCES `checklist_item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_response_item` FOREIGN KEY (`checklist_item_id`) REFERENCES `checklist_item` (`checklist_item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `inspection_checklist_template`
@@ -1930,7 +1930,7 @@ ALTER TABLE `service_station_contact`
 -- Constraints for table `template_item_link`
 --
 ALTER TABLE `template_item_link`
-  ADD CONSTRAINT `fk_link_item` FOREIGN KEY (`item_id`) REFERENCES `checklist_item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_link_item` FOREIGN KEY (`checklist_item_id`) REFERENCES `checklist_item` (`checklist_item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_link_template` FOREIGN KEY (`template_id`) REFERENCES `inspection_checklist_template` (`template_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
