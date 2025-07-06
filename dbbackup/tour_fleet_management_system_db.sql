@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2025 at 07:03 PM
+-- Generation Time: Jul 06, 2025 at 08:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -488,19 +488,20 @@ CREATE TABLE `grn` (
   `grn_id` int(10) NOT NULL,
   `grn_number` varchar(50) DEFAULT NULL COMMENT 'Optional number from the physical GRN document',
   `po_id` int(10) NOT NULL COMMENT 'The PO this delivery is for',
-  `quantity_received` int(10) NOT NULL COMMENT 'The quantity of the part received in this specific delivery',
-  `received_date` date NOT NULL,
+  `grn_quantity_received` int(10) NOT NULL COMMENT 'The quantity of the part received in this specific delivery',
+  `grn_received_date` date NOT NULL DEFAULT curdate(),
   `inspected_by` int(10) NOT NULL COMMENT 'User who received and inspected the goods',
-  `notes` text DEFAULT NULL
+  `grn_notes` text DEFAULT NULL COMMENT 'Optional',
+  `grn_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `grn`
 --
 
-INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `quantity_received`, `received_date`, `inspected_by`, `notes`) VALUES
-(1, 'Test-1', 1, 20, '2025-05-02', 8, NULL),
-(2, 'Test-2', 2, 15, '2025-06-20', 8, NULL);
+INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `grn_received_date`, `inspected_by`, `grn_notes`, `grn_status`) VALUES
+(1, 'Test-1', 1, 20, '2025-05-02', 8, NULL, 1),
+(2, 'Test-2', 2, 15, '2025-06-20', 8, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -695,7 +696,7 @@ CREATE TABLE `part_transaction` (
   `quantity` int(10) NOT NULL COMMENT 'The absolute quantity for this transaction (e.g., 5)',
   `bus_id` int(10) DEFAULT NULL COMMENT 'The bus involved, if applicable (for Issue to Bus)',
   `grn_id` int(10) DEFAULT NULL COMMENT 'The GRN involved, if applicable (for Purchases)',
-  `notes` text DEFAULT NULL COMMENT 'Reason for removal, serial number, etc.',
+  `part_transaction_notes` text DEFAULT NULL COMMENT 'Reason for removal, serial number, etc.',
   `transacted_by` int(10) NOT NULL,
   `transacted_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -704,7 +705,7 @@ CREATE TABLE `part_transaction` (
 -- Dumping data for table `part_transaction`
 --
 
-INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`, `quantity`, `bus_id`, `grn_id`, `notes`, `transacted_by`, `transacted_at`) VALUES
+INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`, `quantity`, `bus_id`, `grn_id`, `part_transaction_notes`, `transacted_by`, `transacted_at`) VALUES
 (1, 1, 1, 10, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
 (2, 2, 1, 4, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
 (3, 3, 1, 15, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),

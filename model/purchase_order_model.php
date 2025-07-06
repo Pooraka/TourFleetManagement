@@ -84,4 +84,33 @@ class PurchaseOrder{
         
         $stmt->execute();
     }
+    
+    public function getPOToAddSpareParts(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT po.*, b.*, sp.* FROM purchase_order po, bid b, spare_part sp WHERE po.bid_id=b.bid_id AND po.part_id=sp.part_id "
+                . "AND po.po_status IN (3,4)";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    
+    /**
+     * 
+     * This function is used to update the PO when a GRN is created
+     * 
+     * @param int $poId
+     * @param int $quantityReceived
+     * @param int $poStatus
+     */
+    public function updatePOWhenGRNCreated($poId,$quantityReceived,$poStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE purchase_order SET quantity_received='$quantityReceived', po_status='$poStatus' WHERE po_id='$poId'";
+        
+        $con->query($sql) or die($con->error);
+    }
 }

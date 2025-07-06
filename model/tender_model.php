@@ -6,7 +6,7 @@ $dbCon= new DbConnection();
 
 class Tender{
     
-    public function addTender($partId,$quantityRequired,$tenderDescription,$advertisementFileName,$openDate,$closeDate,$createdBy){
+    public function createTender($partId,$quantityRequired,$tenderDescription,$advertisementFileName,$openDate,$closeDate,$createdBy){
         
         $con = $GLOBALS["con"];
         

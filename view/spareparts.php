@@ -27,6 +27,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Spare Part Types
                 </a>
+                <a href="add-spare-parts.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Add Spare Parts
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

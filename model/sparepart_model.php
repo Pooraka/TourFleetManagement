@@ -28,14 +28,14 @@ class SparePart{
         $con = $GLOBALS["con"];
         
         $transaction_type = 1;
-        $notes = "Initial Spare Part Registration";
+        $partTransactionNotes = "Initial Spare Part Registration";
         
-        $sql = "INSERT INTO part_transaction (part_id,transaction_type,quantity,notes,transacted_by) "
+        $sql = "INSERT INTO part_transaction (part_id,transaction_type,quantity,part_transaction_notes,transacted_by) "
                 . "VALUES(?,?,?,?,?);";
         
         $stmt = $con->prepare($sql);
         
-        $stmt->bind_param("iiisi",$partId,$transaction_type,$quantity,$notes,$transactedBy);
+        $stmt->bind_param("iiisi",$partId,$transaction_type,$quantity,$partTransactionNotes,$transactedBy);
         
         $stmt->execute();
         
@@ -44,6 +44,17 @@ class SparePart{
         
     }
     
+    /**
+     * 
+     * This can register spare part types, however a stock is needed to register
+     * 
+     * @param String $partNumber
+     * @param String $partName
+     * @param String $description
+     * @param int $quantityOnHand
+     * @param int $reorderLevel
+     * @return int returns partId
+     */
     public function registerSparePart($partNumber,$partName,$description,$quantityOnHand,$reorderLevel){
         
         $con = $GLOBALS["con"];
@@ -116,5 +127,39 @@ class SparePart{
         $stmt->bind_param("ssisi",$partNumber,$partName,$reorderLevel,$description,$partId);
         
         $stmt->execute();
+    }
+    
+    public function sparePartAddTransaction($partId,$transactionType,$quantity,$grnId,$partTransactionNotes,$transactedBy){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO part_transaction (part_id,transaction_type,quantity,grn_id,part_transaction_notes,transacted_by) "
+                . "VALUES(?,?,?,?,?,?)";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("iiiisi",$partId,$transactionType,$quantity,$grnId,$partTransactionNotes,$transactedBy);
+        
+        $stmt->execute();
+        
+        $transactionId = $con->insert_id;
+        return $transactionId;
+    }
+    
+    /**
+     * 
+     * This function can be used to update spare part's quantity on hand
+     * when receiving spare parts
+     * 
+     * @param int $partId
+     * @param int $quantityOnHand
+     */
+    public function addSpareParts($partId,$quantityOnHand){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
+        
+        $con->query($sql) or die($con->error);    
     }
 }

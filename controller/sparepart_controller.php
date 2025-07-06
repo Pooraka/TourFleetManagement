@@ -1,6 +1,7 @@
 <?php
 include_once '../commons/session.php';
 include_once '../model/sparepart_model.php';
+include_once '../model/purchase_order_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
@@ -16,6 +17,7 @@ if(!isset($_GET["status"])){
 }
 
 $sparePartObj = new SparePart();
+$poObj = new PurchaseOrder();
 
 $status= $_GET["status"];
 

@@ -3,6 +3,7 @@ include_once '../commons/session.php';
 include_once '../model/purchase_order_model.php';
 include_once '../model/tender_model.php';
 include_once '../model/bid_model.php';
+include_once '../model/sparepart_model.php';
 
 
 //get user information from session
@@ -12,6 +13,7 @@ $userId = $userSession['user_id'];
 $tenderObj = new Tender();
 $bidObj = new Bid();
 $poObj = new PurchaseOrder();
+$sparePartObj = new SparePart();
 
 if(!isset($_GET["status"])){
     ?>
@@ -222,6 +224,58 @@ switch ($status){
             <?php
             
         }
+        
+    break;
+    
+    case "load_purchase_order_add_sparepart_page":
+        
+        $poId = $_POST['poId'];
+        
+        $poResult = $poObj->getPO($poId);
+        $poRow = $poResult->fetch_assoc();
+        
+        $bidId = $poRow['bid_id'];
+        $bidResult = $bidObj->getBid($bidId);
+        $bidRow = $bidResult->fetch_assoc();
+        
+        $supplierName = $bidRow['supplier_name'];
+        
+        $partId = $poRow['part_id'];
+        $sparePartResult = $sparePartObj->getSparePart($partId);
+        $sparePartRow = $sparePartResult->fetch_assoc();
+        
+        ?>
+            <div class="row">
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Supplier Name</b>
+                    </br>
+                    <span><?php echo $supplierName; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Part Number</b>
+                    </br>
+                    <span><?php echo $sparePartRow['part_number']; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Part Number</b>
+                    </br>
+                    <span><?php echo $sparePartRow['part_name']; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Quantity Ordered</b>
+                    </br>
+                    <span><?php echo number_format($poRow['quantity_ordered'],0); ?> </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom: 10px">
+                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Quantity Received Already</b>
+                    </br>
+                    <span><?php echo number_format($poRow['quantity_received'],0); ?> </span>
+                </div>
+            </div>
+            
+        <?php
         
     break;
 }

@@ -65,7 +65,7 @@ switch ($status){
             $path="../documents/tenderadvertisements/$advertisementFileName";
             move_uploaded_file($advertisementFile["tmp_name"],$path);
             
-            $tenderObj->addTender($partId, $quantityRequired, $tenderDescription, $advertisementFileName, $openDate, $closeDate,$userId);
+            $tenderObj->createTender($partId, $quantityRequired, $tenderDescription, $advertisementFileName, $openDate, $closeDate,$userId);
             
             $msg = "Tender Created Successfully";
             $msg = base64_encode($msg);
