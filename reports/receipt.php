@@ -3,6 +3,7 @@ require_once '../commons/ReportPDF.php';
 include_once '../model/customer_invoice_model.php';
 include_once '../model/customer_model.php';
 include_once '../model/finance_model.php';
+include_once '../model/user_model.php';
 
 if(!isset($_GET['invoice_id'])){?>
     <script>
@@ -27,10 +28,18 @@ $customerContactRow = $customerContactResult->fetch_assoc();
 
 //get tour_income transaction
 $financeObj = new Finance();
-$tourIncomeResult = $financeObj->getTourIncomeRecord($invoiceId);
+$tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceId($invoiceId);
 $tourIncomeRow = $tourIncomeResult->fetch_assoc();
 
-$receiptNo = "ST-R-".$tourIncomeRow['tour_income_id'];
+//Accepted User Info
+$receivedBy = $tourIncomeRow['received_by'];
+$userObj = new User();
+$userResult = $userObj->getUser($receivedBy);
+$userRow = $userResult->fetch_assoc();
+$userName = $userRow['user_fname']." ".$userRow['user_lname'];
+
+
+$receiptNo = $tourIncomeRow['receipt_number'];
 
 $pdf = new ReportPDF();
 $pdf->AliasNbPages(); // Enable page numbers
@@ -188,6 +197,10 @@ $pdf->SetFont("Arial", "B", 10);
 $pdf->Cell(30,6,'Payment Method:',0,0,'');
 $pdf->SetFont("Arial", "", 10);
 $pdf->Cell(25, 6,$tourIncomeRow['payment_method'],0,1,'R');
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(30,6,'Received By:',0,0,'');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(25, 6,$userName,0,1,'R');
 
 $pdf->Ln(15);
 $pdf->SetFont("Arial", "B", 20);

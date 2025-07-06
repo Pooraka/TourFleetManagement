@@ -54,7 +54,7 @@ $invoiceItemResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
                 </a>
             </ul>
         </div>
-        <form action="../controller/customer_invoice_controller.php?status=accept_payment&invoice_id=<?php echo base64_encode($invoiceId);?>" method="post" enctype="multipart/form-data">
+        <form action="../controller/finance_controller.php?status=accept_payment&invoice_id=<?php echo base64_encode($invoiceId);?>" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">

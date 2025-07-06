@@ -40,7 +40,7 @@ switch ($status){
         
         $quotationItemResult = $quotationObj->getQuotationItems($quotationId);
         
-        $invoiceNumber = "ST-I-" . date('Ymd') . "-" . $quotationId;
+        $invoiceNumber = "ST-IN-" .strtoupper(bin2hex(random_bytes(2))). "-" . $quotationId;
         
         $invoiceDate = date('Y-m-d');
         
@@ -131,65 +131,5 @@ switch ($status){
         
     break;
     
-    case "accept_payment":
-        
-        try{
-        
-            $invoiceId = base64_decode($_GET['invoice_id']);
-
-            $actualFare = $_POST["actual_fare"];
-
-            if($actualFare<=0){
-                throw new Exception ("Actual Fair Cannot Be LKR 0.00 or Below");
-            }
-            
-            if (!isset($_FILES["proof"]) || $_FILES["proof"]['error'] == UPLOAD_ERR_NO_FILE) {
-                throw new Exception("Attach The Payment Proof To Accept The Payment");
-            }
-            
-            if (!isset($_POST['payment_method'])) {
-                throw new Exception("Select A Payment Method");
-            }
-
-            $paymentMethod = $_POST['payment_method'];
-            
-            $proofFile = $_FILES["proof"];
-            
-            $paymentProof = time()."_".$proofFile["name"];
-            $path="../documents/customerpaymentproofs/$paymentProof";
-            move_uploaded_file($proofFile["tmp_name"],$path);
-            
-            $customerInvoiceObj->addActualFare($invoiceId, $actualFare);
-            
-            $paymentDate = date('Y-m-d');
-            
-            $financeObj->acceptCustomerPayment($invoiceId, $paymentDate, $actualFare, $paymentMethod, $paymentProof, $user_id);
-            
-            $customerInvoiceObj->changeInvoiceStatus($invoiceId,4);
-            
-            $msg = "Payment Accepted Successfully";
-            $msg = base64_encode($msg);
-            ?>
-
-                <script>
-                    window.location="../view/pending-customer-invoices.php?msg=<?php echo $msg; ?>&success=true";
-                </script>
-
-            <?php
-
-        }
-        catch(Exception $e){
-            
-            $msg= $e->getMessage();
-            $msg= base64_encode($msg);
-            
-            $invoiceId = base64_encode($invoiceId);
-            ?>
     
-            <script>
-                window.location="../view/accept-customer-payment.php?msg=<?php echo $msg;?>&invoice_id=<?php echo $invoiceId?>";
-            </script>
-            <?php
-        }
-    break;
 }

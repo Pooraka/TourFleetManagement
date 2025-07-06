@@ -27,6 +27,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
+                <a href="verify-customer-income.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Verify Customer Income
+                </a>
                 <a href="supplier-payment-monthly-chart.php" class="list-group-item">
                     <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
                     Generate Reports

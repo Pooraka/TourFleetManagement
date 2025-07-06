@@ -114,13 +114,36 @@ class CustomerInvoice{
         
     }
     
+
     public function getPaidInvoices(){
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT ci.*,c.* FROM customer_invoice ci, customer c WHERE ci.customer_id = c.customer_id AND ci.invoice_status='4'";
+        $sql = "SELECT ci.*,c.*,ti.* FROM customer_invoice ci, customer c, tour_income ti WHERE ti.invoice_id=ci.invoice_id "
+                . "AND ci.customer_id = c.customer_id AND ci.invoice_status='4' AND ti.payment_status!='-1'";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
+    }
+
+    
+    public function getPaidInvoicesToVerify(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT ci.*, c.*, ti.* FROM customer_invoice ci, customer c, tour_income ti WHERE c.customer_id=ci.customer_id "
+                . "AND ti.invoice_id=ci.invoice_id AND ci.invoice_status='4' AND ti.payment_status NOT IN (-1,2)";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+    
+    public function setCustomerInvoiceActualFareToNull($invoiceId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET actual_fare=null WHERE invoice_id='$invoiceId'";
+        
+        $con->query($sql) or die ($con->error);
     }
 }

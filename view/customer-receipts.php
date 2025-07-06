@@ -88,7 +88,7 @@ $financeObj = new Finance();
                         <tbody>
                             <?php while($paidInvoiceRow = $paidInvoiceResult->fetch_assoc()){
                                 
-                                $tourIncomeResult = $financeObj->getTourIncomeRecord($paidInvoiceRow['invoice_id']);
+                                $tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceId($paidInvoiceRow['invoice_id']);
                                 $tourIncomeRow = $tourIncomeResult->fetch_assoc();
                                 
                                 $receiptNo = "ST-R-".$tourIncomeRow['tour_income_id'];
