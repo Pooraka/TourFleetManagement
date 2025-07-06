@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 12:43 PM
+-- Generation Time: Jul 06, 2025 at 03:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -720,7 +720,9 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (8, 4, 4, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00'),
 (9, 3, 2, 2, NULL, 3, '2 of the ordered air filters received. Appears in good condition.', 3, '2025-07-06 09:30:35'),
 (10, 3, 2, 5, NULL, 4, 'Appeares in good condition', 3, '2025-07-06 09:31:20'),
-(11, 3, 2, 3, NULL, 5, 'All Received', 3, '2025-07-06 09:31:35');
+(11, 3, 2, 3, NULL, 5, 'All Received', 3, '2025-07-06 09:31:35'),
+(12, 4, 3, 1, 3, NULL, '1 Wiper Blade Issued', 3, '2025-07-06 14:33:32'),
+(13, 4, 4, 8, NULL, NULL, 'Defects Blades Found', 3, '2025-07-06 15:07:11');
 
 -- --------------------------------------------------------
 
@@ -1038,7 +1040,7 @@ INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, 
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 25, 5, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 24, 5, 1),
 (3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 24, 10, 1),
-(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 19, 15, 1);
+(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 10, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -1646,7 +1648,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `payment`
