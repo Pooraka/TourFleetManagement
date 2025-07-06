@@ -64,9 +64,10 @@ switch ($status){
             }
             
             $grnNumber = "GRN-".date('md').strtoupper(bin2hex(random_bytes(2)))."-".$poId;
+            $quantityYetToReceive = $quantityOrdered-($quantityReceivedAlready+$quantityReceived);
             
             //create GRN
-            $grnId = $grnObj->createGRN($grnNumber, $poId, $quantityReceived, $inspectedBy, $grnNotes);
+            $grnId = $grnObj->createGRN($grnNumber, $poId, $quantityReceived,$inspectedBy,$grnNotes,$quantityYetToReceive);
             
             //Create a part_transaction record
             $partId = $poRow['part_id'];

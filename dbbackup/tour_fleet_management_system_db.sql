@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 08:12 AM
+-- Generation Time: Jul 06, 2025 at 10:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -489,6 +489,7 @@ CREATE TABLE `grn` (
   `grn_number` varchar(50) DEFAULT NULL COMMENT 'Optional number from the physical GRN document',
   `po_id` int(10) NOT NULL COMMENT 'The PO this delivery is for',
   `grn_quantity_received` int(10) NOT NULL COMMENT 'The quantity of the part received in this specific delivery',
+  `yet_to_receive` int(10) NOT NULL COMMENT 'Quantity Yet To Receive',
   `grn_received_date` date NOT NULL DEFAULT curdate(),
   `inspected_by` int(10) NOT NULL COMMENT 'User who received and inspected the goods',
   `grn_notes` text DEFAULT NULL COMMENT 'Optional',
@@ -499,9 +500,12 @@ CREATE TABLE `grn` (
 -- Dumping data for table `grn`
 --
 
-INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `grn_received_date`, `inspected_by`, `grn_notes`, `grn_status`) VALUES
-(1, 'Test-1', 1, 20, '2025-05-02', 8, NULL, 1),
-(2, 'Test-2', 2, 15, '2025-06-20', 8, NULL, 1);
+INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `yet_to_receive`, `grn_received_date`, `inspected_by`, `grn_notes`, `grn_status`) VALUES
+(1, 'Test-1', 1, 20, 0, '2025-05-02', 8, NULL, 1),
+(2, 'Test-2', 2, 15, 0, '2025-06-20', 8, NULL, 1),
+(3, 'GRN-0706762F-3', 3, 2, 8, '2025-07-06', 3, '2 of the ordered air filters received. Appears in good condition.', 1),
+(4, 'GRN-0706B414-3', 3, 5, 3, '2025-07-06', 3, 'Appeares in good condition', 1),
+(5, 'GRN-0706BD32-3', 3, 3, 0, '2025-07-06', 3, 'All Received', 1);
 
 -- --------------------------------------------------------
 
@@ -713,7 +717,10 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (5, 2, 1, 20, NULL, 1, NULL, 8, '2025-05-02 10:00:00'),
 (6, 1, 1, 15, NULL, 2, NULL, 8, '2025-06-20 14:00:00'),
 (7, 3, 3, 1, 9, NULL, 'Routine service replacement', 8, '2025-06-25 11:00:00'),
-(8, 4, 4, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00');
+(8, 4, 4, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00'),
+(9, 3, 2, 2, NULL, 3, '2 of the ordered air filters received. Appears in good condition.', 3, '2025-07-06 09:30:35'),
+(10, 3, 2, 5, NULL, 4, 'Appeares in good condition', 3, '2025-07-06 09:31:20'),
+(11, 3, 2, 3, NULL, 5, 'All Received', 3, '2025-07-06 09:31:35');
 
 -- --------------------------------------------------------
 
@@ -778,7 +785,7 @@ CREATE TABLE `purchase_order` (
 INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`) VALUES
 (1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL),
 (2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL),
-(3, 'ST-PO-9AF1-3', 4, 3, 10, 0, 4750.00, 47500.00, '2025-07-05', 3, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss'),
+(3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss'),
 (4, 'ST-PO-63B4-4', 6, 4, 25, 0, 2375.00, 59375.00, '2025-07-05', 3, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652');
 
 -- --------------------------------------------------------
@@ -1029,7 +1036,7 @@ CREATE TABLE `spare_part` (
 INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 25, 5, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 24, 5, 1),
-(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 14, 10, 1),
+(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 24, 10, 1),
 (4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 19, 15, 1);
 
 -- --------------------------------------------------------
@@ -1602,7 +1609,7 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `grn`
 --
 ALTER TABLE `grn`
-  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `inspection`
@@ -1638,7 +1645,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `payment`

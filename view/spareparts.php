@@ -31,6 +31,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Add Spare Parts
                 </a>
+                <a href="view-grns.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    View GRNs
+                </a>
             </ul>
         </div>
         <div class="col-md-9">
