@@ -76,7 +76,7 @@ class SparePart{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM spare_part";
+        $sql = "SELECT * FROM spare_part WHERE 	part_status!=-1";
         
         $result = $con->query($sql) or die($con->error);  
         return $result;
@@ -129,6 +129,18 @@ class SparePart{
         $stmt->execute();
     }
     
+    /**
+     * 
+     * This function is being used to add spare parts to warehouse (For Transaction Records)
+     * 
+     * @param int $partId
+     * @param int $transactionType
+     * @param int $quantity
+     * @param int $grnId
+     * @param String $partTransactionNotes
+     * @param int $transactedBy
+     * @return int
+     */
     public function sparePartAddTransaction($partId,$transactionType,$quantity,$grnId,$partTransactionNotes,$transactedBy){
         
         $con = $GLOBALS["con"];
@@ -149,12 +161,87 @@ class SparePart{
     /**
      * 
      * This function can be used to update spare part's quantity on hand
-     * when receiving spare parts
+     * when receiving spare parts (For Transaction Recording)
      * 
      * @param int $partId
      * @param int $quantityOnHand
      */
     public function addSpareParts($partId,$quantityOnHand){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
+        
+        $con->query($sql) or die($con->error);    
+    }
+    
+    /**
+     * 
+     * This function is being used to issue spare parts to buses (Transaction Recording)
+     * 
+     * @param int $partId
+     * @param int $transactionType
+     * @param int $quantity
+     * @param int $busId
+     * @param String $partTransactionNotes
+     * @param int $transactedBy
+     * @return int
+     */
+    public function sparePartIssueTransaction($partId,$transactionType,$quantity,$busId,$partTransactionNotes,$transactedBy){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO part_transaction (part_id,transaction_type,quantity,bus_id,part_transaction_notes,transacted_by) "
+                . "VALUES(?,?,?,?,?,?)";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("iiiisi",$partId,$transactionType,$quantity,$busId,$partTransactionNotes,$transactedBy);
+        
+        $stmt->execute();
+        
+        $transactionId = $con->insert_id;
+        return $transactionId;
+    }
+    
+    public function issueSpareParts($partId,$quantityOnHand){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
+        
+        $con->query($sql) or die($con->error);    
+    }
+    
+    /**
+     * 
+     * This function being used to remove spare parts (Transaction Recording)
+     * 
+     * @param int $partId
+     * @param int $transactionType
+     * @param int $quantity
+     * @param String $partTransactionNotes
+     * @param int $transactedBy
+     * @return int
+     */
+    public function sparePartRemoveTransaction($partId,$transactionType,$quantity,$partTransactionNotes,$transactedBy){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO part_transaction (part_id,transaction_type,quantity,part_transaction_notes,transacted_by) "
+                . "VALUES(?,?,?,?,?)";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("iiisi",$partId,$transactionType,$quantity,$partTransactionNotes,$transactedBy);
+        
+        $stmt->execute();
+        
+        $transactionId = $con->insert_id;
+        return $transactionId;
+    }
+    
+    public function removeSpareParts($partId,$quantityOnHand){
         
         $con = $GLOBALS["con"];
         

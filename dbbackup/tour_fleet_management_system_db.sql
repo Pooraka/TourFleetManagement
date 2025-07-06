@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 10:03 AM
+-- Generation Time: Jul 06, 2025 at 12:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `bid` (
 
 INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date`, `bid_status`) VALUES
 (1, 1, 3, 3500.00, '2025-04-08', -1),
-(2, 1, 4, 3450.00, '2025-04-10', 2),
+(2, 1, 4, 3450.00, '2025-04-10', 3),
 (3, 2, 2, 8900.00, '2025-06-05', 2),
 (4, 3, 3, 4750.00, '2025-07-05', 3),
 (5, 3, 4, 4560.25, '2025-07-05', 1),
@@ -786,7 +786,8 @@ INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quanti
 (1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL),
 (2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL),
 (3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss'),
-(4, 'ST-PO-63B4-4', 6, 4, 25, 0, 2375.00, 59375.00, '2025-07-05', 3, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652');
+(4, 'ST-PO-63B4-4', 6, 4, 25, 0, 2375.00, 59375.00, '2025-07-05', 3, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652'),
+(5, 'ST-PO-E420-1', 2, 2, 20, 0, 3450.00, 69000.00, '2025-07-06', 2, 3, '2025-07-06 11:07:05', 3, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1657,7 +1658,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `quotation`
