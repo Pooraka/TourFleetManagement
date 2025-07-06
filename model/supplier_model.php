@@ -75,4 +75,16 @@ class Supplier{
         return $result;
         
     }
+    
+    public function getPaymentPendingSuppliers(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT s.supplier_id, s.supplier_name, COUNT(p.po_id) AS po_count, SUM(p.total_amount) AS total_due FROM "
+                . "supplier s, purchase_order p, bid b WHERE p.bid_id=b.bid_id AND b.supplier_id=s.supplier_id "
+                . "AND p.po_status='5' GROUP BY s.supplier_id";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

@@ -2,6 +2,7 @@
 include_once '../commons/session.php';
 include_once '../model/finance_model.php';
 include_once '../model/service_detail_model.php';
+include_once '../model/purchase_order_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
@@ -19,6 +20,7 @@ if(!isset($_GET["status"])){
 
 $financeObj = new Finance();
 $serviceDetailObj = new ServiceDetail();
+$poObj = new PurchaseOrder();
 
 $status= $_GET["status"];
 
@@ -72,7 +74,7 @@ switch ($status){
             
             $totalPayment = $_POST['totalpayment'];
             
-            $paymentId = $financeObj->makeSupplierPayment($date, $totalPayment, $reference, $paymentMethod,'1', $fileName, $userId);
+            $paymentId = $financeObj->makeServiceStationPayment($date, $totalPayment, $reference, $paymentMethod,'1', $fileName, $userId);
             
             foreach($serviceIdArray as $serviceId){
                 
@@ -103,5 +105,86 @@ switch ($status){
             <?php
             
         }
-    break;   
+    break; 
+    
+    case "make_supplier_payment":
+        
+        try{
+        
+            $supplierId = $_POST['supplier_id'];
+            
+            if(!empty($_POST['invoice'])){
+                $poIdArray = $_POST['invoice'];
+            }
+            else{
+                throw new Exception("Select at least 1 Invoice");
+            }
+            
+            if(!empty($_POST['payment_method'])){
+                $paymentMethod = $_POST['payment_method'];
+            }
+            else{
+                throw new Exception("Select the payment type");
+            }
+            
+            $reference = $_POST['reference'];
+            
+            if($reference==""){
+                throw new Exception("Please enter cheque number or funds transfer reference");
+            }
+            
+            $paymentDocument = $_FILES['payment_document'];
+            $extension="";
+            
+            if($paymentDocument['size'] <= 0){
+                throw new Exception("Payment document Must Be Attached");
+            }
+            if($paymentDocument['type']=="image/jpeg"){
+                $extension=".jpg";
+            }elseif ($paymentDocument['type']=="image/png") {
+                $extension=".jpg";
+            }elseif ($paymentDocument['type']=="application/pdf") {
+                $extension=".pdf";
+            }else{
+                throw new Exception("Payment document File Type Not Supported, Please Attach a PDF/PNG/JPEG");
+            }
+            
+            $fileName= uniqid('svspmt_').$extension;
+            $path="../documents/servicepayments/$fileName";
+            move_uploaded_file($paymentDocument["tmp_name"],$path);
+            
+            $totalPayment = $_POST['totalpayment'];
+            
+            $paymentId = $financeObj->makeSupplierPayment($date,$totalPayment,$reference,$paymentMethod,2,$fileName,$userId);
+            
+            foreach($poIdArray as $poId){
+                
+                $poObj->updatePaidPOs($poId, $paymentId);
+            }
+            
+            $msg = "Payment Updated Successfully";
+            $msg = base64_encode($msg);
+            ?>
+                <script>
+                    window.location="../view/pending-supplier-payments.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+            <?php
+        
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            
+            $supplierId = base64_encode($supplierId);
+            ?>
+    
+            <script>
+                window.location="../view/make-supplier-payment.php?supplier_id=<?php echo $supplierId;?>&msg=<?php echo $msg;?>";
+            </script>
+            <?php
+            
+        }
+        
+    break;
 }

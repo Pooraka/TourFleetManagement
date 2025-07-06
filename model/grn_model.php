@@ -11,7 +11,7 @@ class GRN{
         $con = $GLOBALS["con"];
         
         $sql = "INSERT INTO grn (grn_number,po_id,grn_quantity_received,inspected_by,grn_notes,yet_to_receive) "
-                . "VALUES(?,?,?,?,?)";
+                . "VALUES(?,?,?,?,?,?)";
         
         $stmt = $con->prepare($sql);
         

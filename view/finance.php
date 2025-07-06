@@ -23,7 +23,7 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Service Payments
                 </a>
-                <a href="pending-service-payments.php" class="list-group-item">
+                <a href="pending-supplier-payments.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Supplier Payments
                 </a>

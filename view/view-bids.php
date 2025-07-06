@@ -95,6 +95,8 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                             &nbsp;
                         </div>
                         <div class="row">
+                            <div class="col-md-2"><label class="control-label">Part Name:</label></div>
+                            <div class="col-md-2"><?php echo $tenderRow['part_name'];?></div>
                             <div class="col-md-2"><label class="control-label">Open Date:</label></div>
                             <div class="col-md-2"><?php echo $tenderRow['open_date'];?></div>
                             <div class="col-md-2"><label class="control-label">Close Date:</label></div>

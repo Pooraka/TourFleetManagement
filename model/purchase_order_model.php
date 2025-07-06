@@ -113,4 +113,25 @@ class PurchaseOrder{
         
         $con->query($sql) or die($con->error);
     }
+    
+    public function getPaymentPendingInvoices($supplierId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT p.* FROM purchase_order p, supplier s, bid b "
+                . "WHERE p.bid_id=b.bid_id AND b.supplier_id=s.supplier_id AND s.supplier_id='$supplierId' AND p.po_status='5'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function updatePaidPOs($poId,$paymentId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE purchase_order SET po_payment_id='$paymentId', po_status='6' WHERE po_id='$poId'";
+        
+        $con->query($sql) or die ($con->error);
+        
+    }
 }

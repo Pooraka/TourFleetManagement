@@ -1,13 +1,13 @@
 <?php
 
 include_once '../commons/session.php';
-include_once '../model/service_detail_model.php';
+include_once '../model/supplier_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
 
-$serviceDetailObj = new ServiceDetail();
-$serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
+$supplierObj = new Supplier();
+$supplierResult = $supplierObj->getPaymentPendingSuppliers();
 ?>
 
 <html lang="en">
@@ -20,13 +20,21 @@ $serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Finance Management - Pending Service Payments" ?>
+        <?php $pageName="Finance Management - Pending Supplier Payments" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="pending-service-payments.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Service Payments
+                </a>
+                <a href="pending-supplier-payments.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pending Supplier Payments
+                </a>
+                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
+                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    Generate Reports
                 </a>
             </ul>
         </div>
@@ -60,31 +68,29 @@ $serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="pendingservicetable">
+                    <table class="table" id="payment_pending_suppliers">
                         <thead>
                             <tr>
-                                <th>Service Station</th>
-                                <th>Number of Services</th>
+                                <th>Supplier</th>
+                                <th>Number Of Invoices</th>
                                 <th>Total Due</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while($serviceDetailRow = $serviceDetailResult->fetch_assoc()){ ?>
+                            <?php while($supplierRow=$supplierResult->fetch_assoc()){ ?>
                             <tr>
-                                <td><?php echo $serviceDetailRow['service_station_name'];?></td>
-                                <td><?php echo $serviceDetailRow['service_count'];?></td>
-                                <td><?php echo number_format($serviceDetailRow['total_due'],2);?></td>
+                                <td><?php echo $supplierRow['supplier_name'];?> </td>
+                                <td><?php echo $supplierRow['po_count'];?> </td>
+                                <td><?php echo "LKR ".number_format($supplierRow['total_due'],2);?> </td>
                                 <td>
-                                    <a href="make-service-payment.php?service_station_id=<?php echo base64_encode($serviceDetailRow['service_station_id']) ?>" class="btn btn-success" style="margin:2px">
+                                    <a href="make-supplier-payment.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']) ?>" class="btn btn-success" style="margin:2px">
                                         <span class="fas fa-dollar-sign"></span>
                                         Pay
                                     </a>
                                 </td>
                             </tr>
-                            <?php 
-                            } 
-                            ?>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -98,7 +104,7 @@ $serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
 <script>
     $(document).ready(function(){
 
-        $("#pendingservicetable").DataTable();
+        $("#payment_pending_suppliers").DataTable();
 
     });
 </script>

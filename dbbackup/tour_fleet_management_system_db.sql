@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 03:09 PM
+-- Generation Time: Jul 06, 2025 at 05:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,9 @@ INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date
 (3, 2, 2, 8900.00, '2025-06-05', 2),
 (4, 3, 3, 4750.00, '2025-07-05', 3),
 (5, 3, 4, 4560.25, '2025-07-05', 1),
-(6, 4, 5, 2375.00, '2025-07-05', 3);
+(6, 4, 5, 2375.00, '2025-07-05', 3),
+(7, 5, 5, 2850.00, '2025-07-06', 3),
+(8, 6, 5, 2230.00, '2025-07-06', 3);
 
 -- --------------------------------------------------------
 
@@ -505,7 +507,12 @@ INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `ye
 (2, 'Test-2', 2, 15, 0, '2025-06-20', 8, NULL, 1),
 (3, 'GRN-0706762F-3', 3, 2, 8, '2025-07-06', 3, '2 of the ordered air filters received. Appears in good condition.', 1),
 (4, 'GRN-0706B414-3', 3, 5, 3, '2025-07-06', 3, 'Appeares in good condition', 1),
-(5, 'GRN-0706BD32-3', 3, 3, 0, '2025-07-06', 3, 'All Received', 1);
+(5, 'GRN-0706BD32-3', 3, 3, 0, '2025-07-06', 3, 'All Received', 1),
+(6, 'GRN-07065744-6', 6, 5, 0, '2025-07-06', 3, 'All received', 1),
+(7, 'GRN-07065590-4', 4, 20, 5, '2025-07-06', 3, '20 Items received', 1),
+(8, 'GRN-0706F784-4', 4, 5, 0, '2025-07-06', 3, 'All done', 1),
+(9, 'GRN-0706AEDA-7', 7, 7, 0, '2025-07-06', 3, 'All received', 1),
+(10, 'GRN-0706A649-5', 5, 20, 0, '2025-07-06', 3, 'No Defects', 1);
 
 -- --------------------------------------------------------
 
@@ -722,7 +729,12 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (10, 3, 2, 5, NULL, 4, 'Appeares in good condition', 3, '2025-07-06 09:31:20'),
 (11, 3, 2, 3, NULL, 5, 'All Received', 3, '2025-07-06 09:31:35'),
 (12, 4, 3, 1, 3, NULL, '1 Wiper Blade Issued', 3, '2025-07-06 14:33:32'),
-(13, 4, 4, 8, NULL, NULL, 'Defects Blades Found', 3, '2025-07-06 15:07:11');
+(13, 4, 4, 8, NULL, NULL, 'Defects Blades Found', 3, '2025-07-06 15:07:11'),
+(14, 4, 2, 5, NULL, 6, 'All received', 3, '2025-07-06 15:26:56'),
+(15, 4, 2, 20, NULL, 7, '20 Items received', 3, '2025-07-06 15:29:22'),
+(16, 4, 2, 5, NULL, 8, 'All done', 3, '2025-07-06 15:29:32'),
+(17, 4, 2, 7, NULL, 9, 'All received', 3, '2025-07-06 15:29:40'),
+(18, 2, 2, 20, NULL, 10, 'No Defects', 3, '2025-07-06 15:29:49');
 
 -- --------------------------------------------------------
 
@@ -777,19 +789,22 @@ CREATE TABLE `purchase_order` (
   `approved_by` int(10) DEFAULT NULL,
   `rejected_by` int(10) DEFAULT NULL,
   `supplier_invoice` varchar(255) DEFAULT NULL,
-  `supplier_invoice_number` varchar(255) DEFAULT NULL
+  `supplier_invoice_number` varchar(255) DEFAULT NULL,
+  `po_payment_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `purchase_order`
 --
 
-INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`) VALUES
-(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL),
-(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL),
-(3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss'),
-(4, 'ST-PO-63B4-4', 6, 4, 25, 0, 2375.00, 59375.00, '2025-07-05', 3, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652'),
-(5, 'ST-PO-E420-1', 2, 2, 20, 0, 3450.00, 69000.00, '2025-07-06', 2, 3, '2025-07-06 11:07:05', 3, NULL, NULL, NULL);
+INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`, `po_payment_id`) VALUES
+(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL, 5),
+(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL, 6),
+(3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss', NULL),
+(4, 'ST-PO-63B4-4', 6, 4, 25, 25, 2375.00, 59375.00, '2025-07-05', 5, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652', NULL),
+(5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 5, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', NULL),
+(6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 5, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'Ijkn3', NULL),
+(7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'c32v', NULL);
 
 -- --------------------------------------------------------
 
@@ -1038,9 +1053,9 @@ CREATE TABLE `spare_part` (
 
 INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 25, 5, 1),
-(2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 24, 5, 1),
+(2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 44, 5, 1),
 (3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 24, 10, 1),
-(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 10, 15, 1);
+(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 47, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -1135,7 +1150,9 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (1, 2, 20, 'Procurement of Yutong ZK6938HQ Oil Filters', NULL, '2025-04-05', '2025-04-15', 3, 1, '2025-06-29 04:58:51', 2),
 (2, 1, 15, 'Urgent need for LAL Viking Brake Pads', NULL, '2025-06-01', '2025-06-10', 3, 1, '2025-06-29 05:02:27', NULL),
 (3, 3, 10, '10 Toyota Coaster Air Filters are required urgently', '1751638956_Test PDF.pdf', '2025-07-04', '2025-07-07', 3, 3, '2025-07-04 14:22:36', 4),
-(4, 4, 25, '25 Generic Wiper Blades are needed to stock.', '1751694412_Test PDF.pdf', '2025-07-05', '2025-07-08', 3, 3, '2025-07-05 05:46:52', 6);
+(4, 4, 25, '25 Generic Wiper Blades are needed to stock.', '1751694412_Test PDF.pdf', '2025-07-05', '2025-07-08', 3, 3, '2025-07-05 05:46:52', 6),
+(5, 4, 5, 'WB 5 Needed', '1751795211_Test PDF.pdf', '2025-07-06', '2025-07-06', 3, 3, '2025-07-06 09:46:51', 7),
+(6, 4, 7, '7WB Needed', '1751795869_Test PDF.pdf', '2025-07-06', '2025-07-06', 3, 3, '2025-07-06 09:57:49', 8);
 
 -- --------------------------------------------------------
 
@@ -1412,8 +1429,7 @@ ALTER TABLE `payment`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `fk_payment_transaction_category` (`category_id`),
   ADD KEY `fk_payment_paid_by_user` (`paid_by`),
-  ADD KEY `date` (`date`),
-  ADD KEY `fk_payment_po` (`po_id`);
+  ADD KEY `date` (`date`);
 
 --
 -- Indexes for table `purchase_order`
@@ -1558,7 +1574,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bid`
 --
 ALTER TABLE `bid`
-  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `bus`
@@ -1612,7 +1628,7 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `grn`
 --
 ALTER TABLE `grn`
-  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `inspection`
@@ -1648,7 +1664,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -1660,7 +1676,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `quotation`
@@ -1714,7 +1730,7 @@ ALTER TABLE `spare_part`
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
-  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tour`
