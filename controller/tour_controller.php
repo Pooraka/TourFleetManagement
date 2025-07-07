@@ -389,6 +389,44 @@ switch ($status){
         
     break;
     
-    
+    case "load_tour_bus_list":
+        
+        $tourId = $_POST['tourId'];
+        
+        $busResult = $tourObj->getBusListOfATour($tourId);
+        
+        ?>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table" id="tour_bus_list_table">
+                        <thead>
+                            <tr>
+                                <th>Vehicle No</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php while($busRow = $busResult->fetch_assoc()){
+                            
+                                $categoryId = $busRow['category_id'];
+                                
+                                $categoryResult = $busObj->getBusCategory($categoryId);
+                                $categoryRow = $categoryResult->fetch_assoc();
+                            ?>
+                            
+                            <tr>
+                                <td><?php echo $busRow['vehicle_no']?></td>
+                                <td><?php echo $categoryRow['category_name']?></td>
+                            </tr>
+                        <?php }?>    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+        <?php
+        
+    break;
 
 }

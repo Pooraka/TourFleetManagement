@@ -90,6 +90,10 @@ $tourResult = $tourObj->getOngoingTours();
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Complete
                                     </a>
+                                    <a href="#" data-toggle="modal" onclick="loadTourBusList(<?php echo $tourRow['tour_id'];?>)" data-target="#bus_list" class="btn btn-xs btn-info" style="margin:2px">
+                                        <span class="glyphicon glyphicon-ok"></span>                                                  
+                                        View Assigned Buses
+                                    </a>
                                     <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel
@@ -121,6 +125,20 @@ $tourResult = $tourObj->getOngoingTours();
         </div>
     </div>
 </div>
+<div class="modal fade" id="bus_list" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header"><b><h4>Bus List</h4></b></div>
+            <div class="modal-body">
+                <div id="display_bus_list">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
@@ -136,6 +154,16 @@ $tourResult = $tourObj->getOngoingTours();
 
         $.post(url,{tourId:tourId},function(data){
             $("#display_data").html(data).show();
+        });
+    }
+    
+    function loadTourBusList(tourId){
+        var url ="../controller/tour_controller.php?status=load_tour_bus_list";
+
+        $.post(url,{tourId:tourId},function(data){
+            $("#display_bus_list").html(data).show();
+            
+            $("#tour_bus_list_table").DataTable();
         });
     }
 </script>
