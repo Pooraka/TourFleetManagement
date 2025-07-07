@@ -197,4 +197,14 @@ class User{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getUsersToSendPendingInspections(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql="SELECT user_fname, user_lname, user_email FROM user WHERE user_role IN ('1','3','4','5','6') AND user_status='1'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

@@ -128,16 +128,40 @@ class Inspection{
         $stmt->execute();
     }
     
-    public function scheduleInspection($busId){
+    public function scheduleInspection($busId,$tourId){
         
         $con = $GLOBALS["con"];
         
-        $sql = "INSERT INTO inspection (bus_id) VALUES (?)";
+        $sql = "INSERT INTO inspection (bus_id,tour_id) VALUES (?,?)";
         
         $stmt = $con->prepare($sql);
 
-        $stmt->bind_param("i",$busId);
+        $stmt->bind_param("ii",$busId,$tourId);
 
         $stmt->execute();
+    }
+    
+    /**
+     * 
+     * This function is used to check if inspections exists before scheduling inspections pre-tour
+     * 
+     * @param int $tourId
+     * @return Boolean 
+     */
+    public function checkIfInspectionExistsForTour($tourId) {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection WHERE tour_id=? AND inspection_status IN (1,2)";
+
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i", $tourId);
+        
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return ($result->num_rows > 0);
     }
 }

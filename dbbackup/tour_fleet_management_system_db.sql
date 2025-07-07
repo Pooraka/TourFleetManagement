@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2025 at 12:08 PM
+-- Generation Time: Jul 07, 2025 at 01:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -523,25 +523,13 @@ INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `ye
 CREATE TABLE `inspection` (
   `inspection_id` int(10) NOT NULL,
   `bus_id` int(10) NOT NULL,
-  `inspection_date` date NOT NULL,
+  `tour_id` int(10) NOT NULL,
+  `inspection_date` date DEFAULT NULL,
   `inspection_result` int(10) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
-  `inspected_by` int(10) NOT NULL,
-  `inspection_status` int(10) NOT NULL DEFAULT 1
+  `inspected_by` int(10) DEFAULT NULL,
+  `inspection_status` int(10) NOT NULL DEFAULT 1 COMMENT '1:Scheduled, 2:Completed'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `inspection`
---
-
-INSERT INTO `inspection` (`inspection_id`, `bus_id`, `inspection_date`, `inspection_result`, `comment`, `inspected_by`, `inspection_status`) VALUES
-(1, 8, '2025-06-29', 0, 'A/C unit requires service. See checklist for details.', 7, 2),
-(2, 2, '2025-06-29', 1, 'All checks passed.', 7, 2),
-(3, 3, '2025-06-05', 1, 'Bus is ready for tour.', 7, 2),
-(4, 6, '2025-06-10', 1, 'All checks passed, ready for deployment.', 7, 2),
-(5, 13, '2025-06-15', 0, 'Brake system requires immediate attention.', 7, 2),
-(6, 9, '2025-06-22', 1, 'All checks passed.', 7, 2),
-(7, 12, '2025-06-28', 0, 'Front-left tire shows excessive wear. Recommend replacement.', 7, 2);
 
 -- --------------------------------------------------------
 
@@ -556,60 +544,6 @@ CREATE TABLE `inspection_checklist_response` (
   `response_value` int(10) NOT NULL COMMENT 'e.g., ''1-Pass'', ''0-Fail'', ''2-OK'', ',
   `comments` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `inspection_checklist_response`
---
-
-INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `checklist_item_id`, `response_value`, `comments`) VALUES
-(1, 1, 1, 1, ''),
-(2, 1, 2, 1, 'Level is OK'),
-(3, 1, 3, 1, ''),
-(4, 1, 4, 1, ''),
-(5, 1, 6, 1, ''),
-(6, 1, 9, 1, 'Interior cleaned and sanitized.'),
-(8, 1, 11, 1, ''),
-(9, 1, 12, 1, 'TV and audio system functioning correctly.'),
-(10, 2, 1, 1, ''),
-(11, 2, 3, 1, 'All tires at correct PSI.'),
-(12, 2, 4, 1, ''),
-(13, 2, 5, 1, ''),
-(14, 2, 7, 1, ''),
-(15, 2, 8, 1, 'Checked and in place.'),
-(16, 3, 1, 1, ''),
-(17, 3, 2, 1, ''),
-(18, 3, 3, 1, 'Tire pressure adjusted.'),
-(19, 3, 4, 1, ''),
-(20, 3, 6, 1, ''),
-(21, 3, 9, 1, ''),
-(23, 3, 11, 1, ''),
-(24, 4, 1, 1, ''),
-(25, 4, 3, 1, ''),
-(26, 4, 4, 1, ''),
-(27, 4, 5, 1, ''),
-(28, 4, 7, 1, 'First aid kit restocked.'),
-(29, 4, 8, 1, ''),
-(30, 5, 1, 1, ''),
-(31, 5, 2, 1, ''),
-(32, 5, 3, 1, ''),
-(33, 5, 4, 1, ''),
-(34, 5, 6, 0, 'Squeaking noise from rear brakes during test. Needs mechanical check.'),
-(35, 5, 9, 1, ''),
-(37, 5, 11, 1, ''),
-(38, 5, 12, 1, ''),
-(39, 6, 1, 1, ''),
-(40, 6, 2, 1, ''),
-(41, 6, 3, 1, ''),
-(42, 6, 4, 1, ''),
-(43, 6, 6, 1, ''),
-(44, 6, 9, 1, 'Interior is immaculate.'),
-(46, 6, 11, 1, ''),
-(47, 7, 1, 1, 'Oil level OK.'),
-(48, 7, 3, 0, 'Front-left tire tread is below minimum safe level.'),
-(49, 7, 4, 1, ''),
-(50, 7, 5, 1, ''),
-(51, 7, 7, 1, ''),
-(52, 7, 8, 1, '');
 
 -- --------------------------------------------------------
 

@@ -79,27 +79,25 @@ class BackgroundTask{
         $tourObj = new Tour();
         $inspectionObj = new Inspection();
         
-        $busIdArray = array();
-        
         $tomorrowTourIdsResult = $tourObj->getToursForTomorow();
         
         while($tomorrowTourIdRow = $tomorrowTourIdsResult->fetch_assoc()){
         
             $tourId = $tomorrowTourIdRow['tour_id'];
             
-            $busIdsResult = $tourObj->getBusListOfATour($tourId);
+            $inspectionExists = $inspectionObj->checkIfInspectionExistsForTour($tourId);
             
-            while($busIdRow = $busIdsResult->fetch_assoc()){
+            if(!$inspectionExists){
                 
-                $busId = $busIdRow["bus_id"];
-                array_push($busIdArray,$busId);
-            }  
-        }
-              
-        foreach($busIdArray as $busId){
-            
-            $inspectionObj->scheduleInspection($busId);
-        }
-        
+                $busIdsResult = $tourObj->getBusListOfATour($tourId);
+                
+                while($busIdRow = $busIdsResult->fetch_assoc()){
+                    
+                    $busId = $busIdRow["bus_id"];
+                    
+                    $inspectionObj->scheduleInspection($busId, $tourId);
+                }
+            }
+        }   
     }
 }
