@@ -5,6 +5,8 @@ include_once '../commons/db_connection.php';
 include_once '../model/bus_model.php';
 include_once '../model/user_model.php';
 include_once '../model/reminder_model.php';
+include_once '../model/tour_model.php';
+include_once '../model/inspection_model.php';
 
 $dbCon= new DbConnection();
 
@@ -54,7 +56,7 @@ class BackgroundTask{
 
         
         $reminderObj = new Reminder();
-        $reminderResult = $reminderObj->getReminderSentTime(1);
+        $reminderResult = $reminderObj->getReminder(1);
         $reminderRow = $reminderResult->fetch_assoc();
         
         $today = date('Y-m-d',time());
@@ -70,5 +72,34 @@ class BackgroundTask{
         }
         
         return;
+    }
+    
+    public function scheduleBusInspectionsPreTour(){
+        
+        $tourObj = new Tour();
+        $inspectionObj = new Inspection();
+        
+        $busIdArray = array();
+        
+        $tomorrowTourIdsResult = $tourObj->getToursForTomorow();
+        
+        while($tomorrowTourIdRow = $tomorrowTourIdsResult->fetch_assoc()){
+        
+            $tourId = $tomorrowTourIdRow['tour_id'];
+            
+            $busIdsResult = $tourObj->getBusListOfATour($tourId);
+            
+            while($busIdRow = $busIdsResult->fetch_assoc()){
+                
+                $busId = $busIdRow["bus_id"];
+                array_push($busIdArray,$busId);
+            }  
+        }
+              
+        foreach($busIdArray as $busId){
+            
+            $inspectionObj->scheduleInspection($busId);
+        }
+        
     }
 }

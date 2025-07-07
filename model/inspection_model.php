@@ -127,4 +127,17 @@ class Inspection{
 
         $stmt->execute();
     }
+    
+    public function scheduleInspection($busId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "INSERT INTO inspection (bus_id) VALUES (?)";
+        
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i",$busId);
+
+        $stmt->execute();
+    }
 }

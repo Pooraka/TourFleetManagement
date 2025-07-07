@@ -15,7 +15,7 @@ class Reminder{
         $con->query($sql) or die ($con->error);
     }
     
-    public function getReminderSentTime($reminderId){
+    public function getReminder($reminderId){
         
         $con = $GLOBALS["con"];
         

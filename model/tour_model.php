@@ -81,4 +81,22 @@ class Tour{
         return $result;
         
     }
+    
+    public function getToursForTomorow(){
+        
+        $con = $GLOBALS["con"];
+        
+        $tomorrow = date("Y-m-d", strtotime("+1 day"));
+        
+        $sql = "SELECT tour_id FROM tour WHERE start_date = ?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("s", $tomorrow);
+
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        return $result;
+    }
 }
