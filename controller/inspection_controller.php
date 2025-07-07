@@ -137,4 +137,191 @@ switch ($status){
         }
         
     break;
+    
+    case "deactivate_checklist_item":
+        
+        $checklistItemId = base64_decode($_GET["checklist_item_id"]);
+        
+        $inspectionObj->changeChecklistItemStatus($checklistItemId,0);
+        
+        $msg = "Checklist Item Deactivated Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/manage-checklist-items.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+
+        <?php
+        
+    break;
+
+    case "activate_checklist_item":
+        
+        $checklistItemId = base64_decode($_GET["checklist_item_id"]);
+        
+        $inspectionObj->changeChecklistItemStatus($checklistItemId,1);
+        
+        $msg = "Checklist Item Activated Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/manage-checklist-items.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+
+        <?php
+        
+    break;
+
+    case "remove_checklist_item":
+        
+        $checklistItemId = base64_decode($_GET["checklist_item_id"]);
+        
+        $inspectionObj->changeChecklistItemStatus($checklistItemId,-1);
+        
+        $msg = "Checklist Item Activated Successfully";
+        $msg = base64_encode($msg);
+        ?>
+
+            <script>
+                window.location="../view/manage-checklist-items.php?msg=<?php echo $msg; ?>&success=true";
+            </script>
+
+        <?php
+        
+    break;
+
+    case "load_template_and_checklist":
+        
+        $templateId = $_POST['templateId'];
+        
+        $templateResult = $inspectionObj->getInspectionChecklistTemplate($templateId);
+        $templateRow = $templateResult->fetch_assoc();
+        
+        $allChecklistItemsResult = $inspectionObj->getAllChecklistItems();
+        
+        //This is used to get already selected items and tick the check boxes
+        $checklistItemsAlreadyInTemplateResult = $inspectionObj->getChecklistItemsInATemplate($templateId);
+        
+        $checklistItemArray = array();
+        
+        while($checklistItemsAlreadyInTemplateRow = $checklistItemsAlreadyInTemplateResult->fetch_assoc()){
+            
+            array_push($checklistItemArray,$checklistItemsAlreadyInTemplateRow['checklist_item_id']);
+        }
+        
+        ?>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Description</label>
+                </div>
+                <div class="col-md-9">
+                    <span><?php echo $templateRow['template_description'];?></span>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <label class="control-label">Once Desired Items Are Selected Click On "Update" Button</label>
+                </div>
+                <div class="col-md-3 text-right">
+                    <input type="submit" class="btn btn-success" value="Update"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" id="select_all_btn" class="btn btn-sm btn-info" onclick="selectAllItems()" style="width:100px">Select All</button>
+                    <button type="button" id="select_none_btn" class="btn btn-sm btn-warning" onclick="selectNoneItems()" style="width:100px">Select None</button>
+                    <button type="button" id="reset_btn" class="btn btn-sm btn-danger" onclick="resetItems()" style="width:100px">Reset</button>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <table class="table" id="checklist_items">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Item Description</th>
+                            <th>Select To Include</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($allChecklistItemsRow=$allChecklistItemsResult->fetch_assoc()){ ?>
+                        <tr>
+                            <td><?php echo $allChecklistItemsRow['checklist_item_name'];?></td>
+                            <td><?php echo $allChecklistItemsRow['checklist_item_description'];?></td>
+                            <td><input type="checkbox" name="checklist_item[]" value="<?php echo $allChecklistItemsRow['checklist_item_id'];?>"
+                                       
+                            <?php if(in_array($allChecklistItemsRow["checklist_item_id"],$checklistItemArray)){?>
+                                       
+                                       checked
+                            <?php } ?>
+                                       
+                            /></td>
+                        </tr>
+                        <?php }?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <input type="hidden" name="template_id" value="<?php echo $templateId;?>"/>
+            </div>
+            
+        <?php
+        
+    break;
+    
+    case "update_template":
+        
+        try{
+            $templateId = $_POST["template_id"];
+
+            $checklistItems = $_POST["checklist_item"];
+
+            if(empty($checklistItems)){
+                throw new Exception("Select At Least 1 Item");
+            }
+            
+            $inspectionObj->removeAllChecklistItemsFromTemplate($templateId);
+            
+            foreach($checklistItems as $itemId){
+                $inspectionObj->addChecklistItemsToTemplate($templateId,$itemId);
+            }
+            
+            $msg = "Template Updated Successfully";
+            $msg = base64_encode($msg);
+            ?>
+
+                <script>
+                    window.location="../view/manage-checklist-template.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+
+            <?php
+
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/manage-checklist-template.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
+        }
+        
+        
+    break;
 }

@@ -47,6 +47,10 @@ $userSession=$_SESSION["user"];
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Manage Checklist Items
                 </a>
+                <a href="manage-checklist-template.php" class="list-group-item">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Manage Checklist Template
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

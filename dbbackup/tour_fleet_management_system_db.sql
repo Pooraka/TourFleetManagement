@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2025 at 11:21 PM
+-- Generation Time: Jul 07, 2025 at 12:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -151,7 +151,7 @@ CREATE TABLE `checklist_item` (
   `checklist_item_id` int(10) NOT NULL,
   `checklist_item_name` varchar(255) NOT NULL,
   `checklist_item_description` text DEFAULT NULL,
-  `checklist_item_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed, 1: Active, 0: Inactive'
+  `checklist_item_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1:Removed,0:deactivated ,1: Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -160,7 +160,7 @@ CREATE TABLE `checklist_item` (
 
 INSERT INTO `checklist_item` (`checklist_item_id`, `checklist_item_name`, `checklist_item_description`, `checklist_item_status`) VALUES
 (1, 'Check engine oil level', 'Ensure oil is between the minimum and maximum marks on the dipstick.', 1),
-(2, 'Check coolant level', 'Verify coolant level in the reservoir.', 1),
+(2, 'Check coolant level', 'Verify coolant level', 1),
 (3, 'Inspect tire pressure and condition', 'Check for correct inflation and look for any visible damage or excessive wear.', 1),
 (4, 'Test all exterior lights', 'Includes headlights (high/low beams), tail lights, brake lights, and turn signals.', 1),
 (5, 'Check horn operation', 'Ensure the horn is audible.', 1),
@@ -168,7 +168,6 @@ INSERT INTO `checklist_item` (`checklist_item_id`, `checklist_item_name`, `check
 (7, 'Verify first aid kit presence and contents', 'Ensure the kit is present and fully stocked.', 1),
 (8, 'Check fire extinguisher', 'Ensure it is present, charged, and within its expiry date.', 1),
 (9, 'Inspect interior cleanliness', 'Check seats, floors, and windows for cleanliness.', 1),
-(10, 'Test air conditioning (A/C) unit', 'For applicable buses, ensure A/C blows cold air effectively.', 1),
 (11, 'Check passenger seat belts', 'Inspect for proper function and any visible damage.', 1),
 (12, 'Verify onboard entertainment system', 'For luxury buses, check if TVs and audio systems are working.', 1);
 
@@ -527,21 +526,22 @@ CREATE TABLE `inspection` (
   `inspection_date` date NOT NULL,
   `inspection_result` int(10) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
-  `inspected_by` int(10) NOT NULL
+  `inspected_by` int(10) NOT NULL,
+  `inspection_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inspection`
 --
 
-INSERT INTO `inspection` (`inspection_id`, `bus_id`, `inspection_date`, `inspection_result`, `comment`, `inspected_by`) VALUES
-(1, 8, '2025-06-29', 0, 'A/C unit requires service. See checklist for details.', 7),
-(2, 2, '2025-06-29', 1, 'All checks passed.', 7),
-(3, 3, '2025-06-05', 1, 'Bus is ready for tour.', 7),
-(4, 6, '2025-06-10', 1, 'All checks passed, ready for deployment.', 7),
-(5, 13, '2025-06-15', 0, 'Brake system requires immediate attention.', 7),
-(6, 9, '2025-06-22', 1, 'All checks passed.', 7),
-(7, 12, '2025-06-28', 0, 'Front-left tire shows excessive wear. Recommend replacement.', 7);
+INSERT INTO `inspection` (`inspection_id`, `bus_id`, `inspection_date`, `inspection_result`, `comment`, `inspected_by`, `inspection_status`) VALUES
+(1, 8, '2025-06-29', 0, 'A/C unit requires service. See checklist for details.', 7, 2),
+(2, 2, '2025-06-29', 1, 'All checks passed.', 7, 2),
+(3, 3, '2025-06-05', 1, 'Bus is ready for tour.', 7, 2),
+(4, 6, '2025-06-10', 1, 'All checks passed, ready for deployment.', 7, 2),
+(5, 13, '2025-06-15', 0, 'Brake system requires immediate attention.', 7, 2),
+(6, 9, '2025-06-22', 1, 'All checks passed.', 7, 2),
+(7, 12, '2025-06-28', 0, 'Front-left tire shows excessive wear. Recommend replacement.', 7, 2);
 
 -- --------------------------------------------------------
 
@@ -568,7 +568,6 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 (4, 1, 4, 1, ''),
 (5, 1, 6, 1, ''),
 (6, 1, 9, 1, 'Interior cleaned and sanitized.'),
-(7, 1, 10, 0, 'A/C is not blowing cold air. Possible refrigerant leak.'),
 (8, 1, 11, 1, ''),
 (9, 1, 12, 1, 'TV and audio system functioning correctly.'),
 (10, 2, 1, 1, ''),
@@ -583,7 +582,6 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 (19, 3, 4, 1, ''),
 (20, 3, 6, 1, ''),
 (21, 3, 9, 1, ''),
-(22, 3, 10, 1, 'A/C is working well.'),
 (23, 3, 11, 1, ''),
 (24, 4, 1, 1, ''),
 (25, 4, 3, 1, ''),
@@ -597,7 +595,6 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 (33, 5, 4, 1, ''),
 (34, 5, 6, 0, 'Squeaking noise from rear brakes during test. Needs mechanical check.'),
 (35, 5, 9, 1, ''),
-(36, 5, 10, 1, ''),
 (37, 5, 11, 1, ''),
 (38, 5, 12, 1, ''),
 (39, 6, 1, 1, ''),
@@ -606,7 +603,6 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 (42, 6, 4, 1, ''),
 (43, 6, 6, 1, ''),
 (44, 6, 9, 1, 'Interior is immaculate.'),
-(45, 6, 10, 1, ''),
 (46, 6, 11, 1, ''),
 (47, 7, 1, 1, 'Oil level OK.'),
 (48, 7, 3, 0, 'Front-left tire tread is below minimum safe level.'),
@@ -624,7 +620,7 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 CREATE TABLE `inspection_checklist_template` (
   `template_id` int(10) NOT NULL,
   `template_name` varchar(100) NOT NULL,
-  `description` text DEFAULT NULL,
+  `template_description` text DEFAULT NULL,
   `category_id` int(10) NOT NULL,
   `template_status` int(10) NOT NULL DEFAULT 1 COMMENT '1: Active, 0: Inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -633,7 +629,7 @@ CREATE TABLE `inspection_checklist_template` (
 -- Dumping data for table `inspection_checklist_template`
 --
 
-INSERT INTO `inspection_checklist_template` (`template_id`, `template_name`, `description`, `category_id`, `template_status`) VALUES
+INSERT INTO `inspection_checklist_template` (`template_id`, `template_name`, `template_description`, `category_id`, `template_status`) VALUES
 (1, 'Luxury Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Luxury buses.', 1, 1),
 (2, 'Standard Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Standard category buses.', 2, 1),
 (3, 'Mini Bus Pre-Tour Checklist', 'Standard pre-tour inspection checklist for all Mini Buses.', 3, 1);
@@ -1103,28 +1099,28 @@ CREATE TABLE `template_item_link` (
 --
 
 INSERT INTO `template_item_link` (`template_id`, `checklist_item_id`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
 (1, 4),
+(1, 5),
 (1, 6),
-(1, 9),
-(1, 10),
+(1, 7),
+(1, 8),
 (1, 11),
 (1, 12),
-(2, 1),
+(2, 2),
 (2, 3),
 (2, 4),
 (2, 5),
 (2, 7),
 (2, 8),
+(2, 11),
 (3, 1),
 (3, 2),
 (3, 3),
 (3, 4),
 (3, 6),
+(3, 7),
+(3, 8),
 (3, 9),
-(3, 10),
 (3, 11);
 
 -- --------------------------------------------------------
