@@ -28,6 +28,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Tours
                 </a>
+                <a href="inspection-failed.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pre-Tour Failed Inspections
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

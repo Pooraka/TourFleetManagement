@@ -182,8 +182,8 @@ class Inspection{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT i.inspection_id,b.*,t.* FROM inspection i, bus b, tour t "
-                . "WHERE i.bus_id=b.bus_id AND i.tour_id=t.tour_id AND i.inspection_id=?";
+        $sql = "SELECT i.*,b.*,t.* FROM inspection i JOIN tour t ON t.tour_id = i.tour_id JOIN bus b ON b.bus_id = i.bus_id WHERE "
+                . "inspection_id=?";
         
         $stmt = $con->prepare($sql);
         
@@ -273,20 +273,20 @@ class Inspection{
     * @param int $inspectedBy
     * @param int $inspectionStatus
     */
-   public function performInspection($inspectionId,$busId,$tourId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
+   public function performInspection($inspectionId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
        
        $con = $GLOBALS["con"];
        
        $date = date('Y-m-d');
        
-       $sql = "UPDATE inspection SET bus_id=?, tour_id=?, inspection_date=?, inspection_result=?, "
+       $sql = "UPDATE inspection SET inspection_date=?, inspection_result=?, "
                . "final_comments=?, inspected_by=?, inspection_status=? WHERE inspection_id=?";
        
        $stmt = $con->prepare($sql);
        
-       $parameterTypes = "iisisiii";
+       $parameterTypes = "sisiii";
        
-       $stmt->bind_param($parameterTypes,$busId,$tourId,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
+       $stmt->bind_param($parameterTypes,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
        
        $stmt->execute();
    }
@@ -305,5 +305,16 @@ class Inspection{
        
        $result = $stmt->get_result();
        return $result;
+   }
+   
+   public function getFailedInspectionsToAssignNewBus(){
+       
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT i.*,t.*,b.* FROM inspection i JOIN tour t ON t.tour_id = i.tour_id JOIN bus b ON b.bus_id = i.bus_id "
+                . "WHERE i.inspection_status='3'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
    }
 }

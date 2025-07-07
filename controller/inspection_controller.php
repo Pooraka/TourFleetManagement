@@ -342,7 +342,9 @@ switch ($status){
                 $inspectionObj->addInspectionChecklistResponses($inspectionId,$itemId,$status,$itemComment);
             }
             
-            $inspectionObj->performInspection($inspectionId,$busId, $tourId,$overallResult,$finalComments,$inspectedBy,2);
+            $inspectionStatus = ($overallResult==1)? 2:3;
+            
+            $inspectionObj->performInspection($inspectionId,$overallResult,$finalComments,$inspectedBy,$inspectionStatus);
             
             $msg = "Inspection Completed Successfully";
             $msg = base64_encode($msg);

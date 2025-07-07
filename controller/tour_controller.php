@@ -429,11 +429,11 @@ switch ($status){
                                         
                                         $inspectionStatusDisplay = "Inspection Assigned";
                                     }
-                                    elseif($inspectionRow["inspection_status"]==2&&$inspectionRow["inspection_result"]==1){
+                                    elseif($inspectionRow["inspection_status"]==2){
                                         
                                         $inspectionStatusDisplay = "Inspection Passed";
                                         
-                                    }elseif($inspectionRow["inspection_status"]==2&&$inspectionRow["inspection_result"]==0){
+                                    }elseif($inspectionRow["inspection_status"]==3){
                                         
                                         $inspectionStatusDisplay = "Inspection Failed";
                                     }
@@ -457,6 +457,34 @@ switch ($status){
             </div>
         
         <?php
+        
+    break;
+    
+    case "reassign_bus_to_tour":
+        
+        try{
+            
+            $inspectionId = $_POST["inspection_id"];
+            
+            $busId = $_POST["bus_id"];
+            
+            if($busId==""){
+                throw new Exception("Select The New Bus");
+            }
+        }
+        catch(Exception $e){
+            
+            $inspectionId = base64_encode($inspectionId);
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/reassign-bus.php?msg=<?php echo $msg;?>&inspection_id=<?php echo $inspectionId;?>";
+            </script>
+            <?php
+        }
         
     break;
 
