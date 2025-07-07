@@ -171,7 +171,7 @@ switch ($status){
             
             $busArray = $_POST["bus"];
             
-            $busCategoryResult = $busObj->getCategorieCountByBuses($busArray);
+            $busCategoryResult = $busObj->getCategoryCountByBuses($busArray);
             
             
             
@@ -260,7 +260,7 @@ switch ($status){
             ?>
 
             <script>
-                window.location="../view/pending-tours.php?msg=<?php echo $msg;?>";
+                window.location="../view/add-tour.php?msg=<?php echo $msg;?>&success=true";
             </script>
 
             <?php

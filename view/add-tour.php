@@ -38,15 +38,27 @@ $pendingInvoiceResult = $customerInvoiceObj->getInvoicesToAssignTours();
         <form action="../controller/tour_controller.php?status=add_tour" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
-                <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
-                    <?php if (isset($_GET["msg"])) { ?>
+                <div class="col-md-6 col-md-offset-3">
+                    <?php
+                    if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                        <script>
-                            var msgElement = document.getElementById("msg");
-                            msgElement.classList.add("alert", "alert-danger");
-                        </script>
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-success" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    } elseif (isset($_GET["msg"])) {
 
-                        <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-danger" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
                         <?php
                     }
                     ?>

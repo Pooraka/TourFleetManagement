@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2025 at 01:38 PM
+-- Generation Time: Jul 07, 2025 at 05:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -139,7 +139,8 @@ CREATE TABLE `bus_tour` (
 INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (1, 1),
 (1, 2),
-(4, 1);
+(4, 1),
+(18, 3);
 
 -- --------------------------------------------------------
 
@@ -260,7 +261,8 @@ CREATE TABLE `customer_invoice` (
 INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
 (1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 4, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, 76999.31, 258),
 (2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 1, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, NULL, NULL),
-(3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL);
+(3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL),
+(4, 'ST-IN-C6EE-6', 6, '2025-07-07', 67250.00, 6, 2, 'One Day Trip', '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 278, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -283,7 +285,8 @@ INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `qu
 (1, 1, 1, 1),
 (2, 1, 2, 1),
 (3, 2, 2, 1),
-(4, 3, 1, 1);
+(4, 3, 1, 1),
+(5, 4, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -526,10 +529,17 @@ CREATE TABLE `inspection` (
   `tour_id` int(10) NOT NULL,
   `inspection_date` date DEFAULT NULL,
   `inspection_result` int(10) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL,
+  `final_comments` varchar(255) DEFAULT NULL,
   `inspected_by` int(10) DEFAULT NULL,
   `inspection_status` int(10) NOT NULL DEFAULT 1 COMMENT '1:Scheduled, 2:Completed'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection`
+--
+
+INSERT INTO `inspection` (`inspection_id`, `bus_id`, `tour_id`, `inspection_date`, `inspection_result`, `final_comments`, `inspected_by`, `inspection_status`) VALUES
+(8, 18, 3, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -541,8 +551,8 @@ CREATE TABLE `inspection_checklist_response` (
   `response_id` int(10) NOT NULL,
   `inspection_id` int(10) NOT NULL,
   `checklist_item_id` int(10) NOT NULL,
-  `response_value` int(10) NOT NULL COMMENT 'e.g., ''1-Pass'', ''0-Fail'', ''2-OK'', ',
-  `comments` text DEFAULT NULL
+  `response_value` int(10) NOT NULL COMMENT 'e.g., ''1-Pass'', ''0-Fail''',
+  `item_comment` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -769,7 +779,8 @@ INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_sta
 (2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Nuwara Eliya', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, -1),
 (3, '2025-06-29', 6, '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 'Two-day trip to Kandy', 200, 95000.00, 2),
 (4, '2025-07-03', 4, '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 'Two Days, One Night Trip to Ella and Back', 420, 235145.36, 2),
-(5, '2025-07-06', 3, '2025-07-06', '2025-07-07', 'Fort', 'Galle', 'Fort', 'Two Day Trip, One Night. Travel on Highway', 240, 72525.00, 1);
+(5, '2025-07-06', 3, '2025-07-06', '2025-07-07', 'Fort', 'Galle', 'Fort', 'Two Day Trip, One Night. Travel on Highway', 240, 72525.00, 1),
+(6, '2025-07-07', 6, '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 'One Day Trip', 278, 67250.00, 2);
 
 -- --------------------------------------------------------
 
@@ -793,7 +804,8 @@ INSERT INTO `quotation_item` (`item_id`, `quotation_id`, `category_id`, `quantit
 (2, 1, 2, 1),
 (3, 3, 2, 1),
 (6, 4, 1, 1),
-(9, 5, 2, 1);
+(9, 5, 2, 1),
+(10, 6, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1048,14 +1060,7 @@ INSERT INTO `template_item_link` (`template_id`, `checklist_item_id`) VALUES
 (2, 8),
 (2, 11),
 (3, 1),
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 6),
-(3, 7),
-(3, 8),
-(3, 9),
-(3, 11);
+(3, 2);
 
 -- --------------------------------------------------------
 
@@ -1111,7 +1116,8 @@ CREATE TABLE `tour` (
 
 INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destination`, `tour_status`) VALUES
 (1, 1, '2025-06-12', '2025-06-13', 'Galle', 3),
-(2, 3, '2025-07-10', '2025-07-12', 'Ella', 1);
+(2, 3, '2025-07-10', '2025-07-12', 'Ella', 1),
+(3, 4, '2025-07-08', '2025-07-08', 'Kandy', 1);
 
 -- --------------------------------------------------------
 
@@ -1551,13 +1557,13 @@ ALTER TABLE `customer_contact`
 -- AUTO_INCREMENT for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `function`
@@ -1575,7 +1581,7 @@ ALTER TABLE `grn`
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_response`
@@ -1623,13 +1629,13 @@ ALTER TABLE `purchase_order`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -1677,7 +1683,7 @@ ALTER TABLE `tender`
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tour_income`

@@ -51,6 +51,10 @@ $userSession=$_SESSION["user"];
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Manage Checklist Template
                 </a>
+                <a href="pending-inspections.php" class="list-group-item">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Pending Inspections
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

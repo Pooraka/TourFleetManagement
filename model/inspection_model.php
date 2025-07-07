@@ -164,4 +164,127 @@ class Inspection{
 
         return ($result->num_rows > 0);
     }
+    
+    public function getPendingInspections(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT i.inspection_id,b.*,t.* FROM inspection i, bus b, tour t WHERE i.bus_id=b.bus_id AND i.tour_id=t.tour_id AND i.inspection_status='1'";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    
+    public function getInspection($inspectionId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT i.inspection_id,b.*,t.* FROM inspection i, bus b, tour t "
+                . "WHERE i.bus_id=b.bus_id AND i.tour_id=t.tour_id AND i.inspection_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$inspectionId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        return $result;
+    }
+    
+    public function getInspectionChecklistTemplateByBusCategoryId($categoryId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection_checklist_template WHERE category_id=? AND template_status='1'";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$categoryId);
+        
+        $stmt->execute();
+        
+        $result= $stmt->get_result();
+        return $result;
+    }
+    
+    /**
+    * Counts the number of checklist items in a given template. 
+    * This was used to check if a user submitted items matches with the template count in an inspection
+    * @param int $templateId The ID of the template.
+    * @return int The total number of items.
+    */
+   public function countChecklistItemsInTemplate($templateId) {
+       
+       $con = $GLOBALS["con"];
+       
+       $sql = "SELECT COUNT(*) AS item_count FROM template_item_link WHERE template_id=?";
+
+       $stmt = $con->prepare($sql);
+       
+       $stmt->bind_param("i", $templateId);
+       
+       $stmt->execute();
+
+       $result = $stmt->get_result()->fetch_assoc();
+       
+       return (int)$result['item_count'];
+   }
+   
+   /**
+    * 
+    * This function used after an inspection is performed to add checklist items responses
+    * 
+    * @param int $inspectionId
+    * @param int $checklistItemId
+    * @param int $responseValue
+    * @param String $itemComment
+    */
+   public function addInspectionChecklistResponses($inspectionId,$checklistItemId,$responseValue,$itemComment){
+       
+       $con = $GLOBALS["con"];
+       
+       $sql = "INSERT INTO inspection_checklist_response(inspection_id,checklist_item_id,response_value,item_comment) "
+               . "VALUES(?,?,?,?)";
+       
+       $stmt = $con->prepare($sql);
+       
+       $stmt->bind_param("iiis",$inspectionId,$checklistItemId,$responseValue,$itemComment);
+       
+       $stmt->execute();
+       
+       $responseId = $con->insert_id;
+       return $responseId;
+   }
+   
+   /**
+    * 
+    * This function updates final results after an inspection
+    * 
+    * @param int $inspectionId
+    * @param int $busId
+    * @param int $tourId
+    * @param int $inspectionResult
+    * @param String $finalComments
+    * @param int $inspectedBy
+    * @param int $inspectionStatus
+    */
+   public function performInspection($inspectionId,$busId,$tourId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
+       
+       $con = $GLOBALS["con"];
+       
+       $date = date('Y-m-d');
+       
+       $sql = "UPDATE inspection SET bus_id=?, tour_id=?, inspection_date=?, inspection_result=?, "
+               . "final_comments=?, inspected_by=?, inspection_status=? WHERE inspection_id=?";
+       
+       $stmt = $con->prepare($sql);
+       
+       $parameterTypes = "iisisiii";
+       
+       $stmt->bind_param($parameterTypes,$busId,$tourId,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
+       
+       $stmt->execute();
+   }
 }

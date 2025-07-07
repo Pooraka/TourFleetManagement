@@ -268,7 +268,7 @@ class Bus{
         return $result;
     }
     
-    public function getCategorieCountByBuses($busArray){
+    public function getCategoryCountByBuses($busArray){
         
         $busIdString = implode(',', $busArray);
         
@@ -278,5 +278,21 @@ class Bus{
         
         $result = $con->query($sql) or die ($con->error);
         return $result;     
+    }
+    
+    public function getBusCategory($categoryId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM bus_category WHERE category_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$categoryId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        return $result;
     }
 }
