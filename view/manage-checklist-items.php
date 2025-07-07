@@ -119,7 +119,7 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <label class="control-label"><h4>Edit, Activate, De-activate, Remove Checklist Items</h4></label>
+                    <label class="control-label"><h4>Edit & Remove Checklist Items</h4></label>
                 </div>
             </div>
             <div class="row">
@@ -141,7 +141,6 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                             $status = match((int)$inspectionRow['checklist_item_status']){
                                 
                                 -1=>"Removed",
-                                0=>"De-activated",
                                 1=>"Active",
                                 
                             };
@@ -156,17 +155,6 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                                     <span class="glyphicon glyphicon-pencil"></span>
                                     Edit
                                 </a>
-                                <?php if($inspectionRow['checklist_item_status']==0){ ?>
-                                <a href="../controller/inspection_controller.php?status=activate_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" class="btn btn-xs btn-success" style="margin:2px">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                    Activate
-                                </a>
-                                <?php } elseif($inspectionRow['checklist_item_status']==1){?>
-                                <a href="../controller/inspection_controller.php?status=deactivate_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" class="btn btn-xs btn-danger" style="margin:2px">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                    De-Activate
-                                </a>
-                                <?php } ?>
                                 <a href="../controller/inspection_controller.php?status=remove_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" class="btn btn-xs btn-danger" style="margin:2px">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     Remove

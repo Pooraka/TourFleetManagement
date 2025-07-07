@@ -3,6 +3,7 @@ include_once '../commons/session.php';
 include_once '../model/tour_model.php';
 include_once '../model/bus_model.php';
 include_once '../model/customer_invoice_model.php';
+include_once '../model/inspection_model.php';
 
 
 //get user information from session
@@ -12,6 +13,7 @@ $user_id = $userSession['user_id'];
 $tourObj = new Tour();
 $customerInvoiceObj = new CustomerInvoice();
 $busObj = new Bus();
+$inspectionObj = new Inspection();
 
 if(!isset($_GET["status"])){
     ?>
@@ -404,13 +406,41 @@ switch ($status){
                             <tr>
                                 <th>Vehicle No</th>
                                 <th>Category</th>
+                                <th>Inspection Status</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php while($busRow = $busResult->fetch_assoc()){
-                            
-                                $categoryId = $busRow['category_id'];
                                 
+                                //Bus Information
+                                $busId = $busRow['bus_id'];
+                                
+                                $inspectionData = $inspectionObj->getInspectionResultOfABusAssignedToATour($tourId,$busId);
+                                
+                                if($inspectionData->num_rows==0){
+                                    
+                                    $inspectionStatusDisplay = "Inspection Not Assigned Yet";
+                                    
+                                }elseif($inspectionData->num_rows==1){
+                                    
+                                    $inspectionRow = $inspectionData->fetch_assoc();
+                                    
+                                    if($inspectionRow["inspection_status"]==1){
+                                        
+                                        $inspectionStatusDisplay = "Inspection Assigned";
+                                    }
+                                    elseif($inspectionRow["inspection_status"]==2&&$inspectionRow["inspection_result"]==1){
+                                        
+                                        $inspectionStatusDisplay = "Inspection Passed";
+                                        
+                                    }elseif($inspectionRow["inspection_status"]==2&&$inspectionRow["inspection_result"]==0){
+                                        
+                                        $inspectionStatusDisplay = "Inspection Failed";
+                                    }
+                                }
+                            
+                                //Category Information
+                                $categoryId = $busRow['category_id'];
                                 $categoryResult = $busObj->getBusCategory($categoryId);
                                 $categoryRow = $categoryResult->fetch_assoc();
                             ?>
@@ -418,6 +448,7 @@ switch ($status){
                             <tr>
                                 <td><?php echo $busRow['vehicle_no']?></td>
                                 <td><?php echo $categoryRow['category_name']?></td>
+                                <td><?php echo $inspectionStatusDisplay;?></td>
                             </tr>
                         <?php }?>    
                         </tbody>

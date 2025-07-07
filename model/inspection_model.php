@@ -95,7 +95,9 @@ class Inspection{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM template_item_link WHERE template_id='$templateId'";
+        $sql = "SELECT t.template_id, c.checklist_item_id, c.checklist_item_name, c.checklist_item_description "
+                . "FROM template_item_link t, checklist_item c WHERE t.checklist_item_id=c.checklist_item_id "
+                . "AND c.checklist_item_status='1' AND template_id='$templateId'";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
@@ -219,7 +221,8 @@ class Inspection{
        
        $con = $GLOBALS["con"];
        
-       $sql = "SELECT COUNT(*) AS item_count FROM template_item_link WHERE template_id=?";
+       $sql = "SELECT COUNT(*) AS item_count FROM template_item_link ti, checklist_item c WHERE ti.checklist_item_id = c.checklist_item_id AND "
+               . "c.checklist_item_status='1' AND ti.template_id=?";
 
        $stmt = $con->prepare($sql);
        
@@ -286,5 +289,21 @@ class Inspection{
        $stmt->bind_param($parameterTypes,$busId,$tourId,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
        
        $stmt->execute();
+   }
+   
+   public function getInspectionResultOfABusAssignedToATour($tourId,$busId){
+    
+       $con = $GLOBALS["con"];
+       
+       $sql = "SELECT * FROM inspection WHERE tour_id=? AND bus_id=?";
+       
+       $stmt = $con->prepare($sql);
+       
+       $stmt->bind_param("ii",$tourId,$busId);
+       
+       $stmt->execute();
+       
+       $result = $stmt->get_result();
+       return $result;
    }
 }

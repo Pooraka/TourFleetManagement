@@ -137,42 +137,6 @@ switch ($status){
         }
         
     break;
-    
-    case "deactivate_checklist_item":
-        
-        $checklistItemId = base64_decode($_GET["checklist_item_id"]);
-        
-        $inspectionObj->changeChecklistItemStatus($checklistItemId,0);
-        
-        $msg = "Checklist Item Deactivated Successfully";
-        $msg = base64_encode($msg);
-        ?>
-
-            <script>
-                window.location="../view/manage-checklist-items.php?msg=<?php echo $msg; ?>&success=true";
-            </script>
-
-        <?php
-        
-    break;
-
-    case "activate_checklist_item":
-        
-        $checklistItemId = base64_decode($_GET["checklist_item_id"]);
-        
-        $inspectionObj->changeChecklistItemStatus($checklistItemId,1);
-        
-        $msg = "Checklist Item Activated Successfully";
-        $msg = base64_encode($msg);
-        ?>
-
-            <script>
-                window.location="../view/manage-checklist-items.php?msg=<?php echo $msg; ?>&success=true";
-            </script>
-
-        <?php
-        
-    break;
 
     case "remove_checklist_item":
         
