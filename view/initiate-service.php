@@ -17,9 +17,9 @@ $busPriorityQueue = new SplPriorityQueue();
 while($busRow = $busResult->fetch_assoc()){
     
     $priority = match ((int) $busRow['bus_status']) {
-        1 => 1, //Low priority (1) for operational buses
-        2 => 9, //Service due priority level 9
-        3 => 10, //Highest priority (10) for broken buses
+        1,0=> 1, //Low priority (1) for operational buses
+        2=> 9, //Service due priority level 9
+        4=> 10, //Highest priority (10) for broken buses
     };
     
     //Insert bus array to a queue with a priority
@@ -99,7 +99,7 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                                 if($bus['bus_status']==2){
                                     $displayText.=" (Service Due)";
                                 }elseif($bus['bus_status']==4) {
-                                    $displayText.=" (Broken)";
+                                    $displayText.=" (Inspection Failed)";
                                 }
                             ?>
                             

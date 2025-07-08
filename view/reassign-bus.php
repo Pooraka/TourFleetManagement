@@ -34,6 +34,9 @@ $userName = $userRow["user_fname"]." ".$userRow["user_lname"];
 $tourStartDate = $inspectionRow["start_date"];
 $tourEndDate = $inspectionRow["end_date"];
 $busResult = $busObj->getBusAvailableForTour($tourStartDate,$tourEndDate);
+
+//Get Old Bus Details to replace in bus_tour table
+$OldBusId = $inspectionRow["bus_id"];
 ?>
 
 <html lang="en">
@@ -173,6 +176,7 @@ $busResult = $busObj->getBusAvailableForTour($tourStartDate,$tourEndDate);
                 <div class="row">
                     <input type="hidden" name="inspection_id" value="<?php echo $inspectionId;?>"/>
                     <input type="hidden" name="tour_id" value="<?php echo $inspectionRow["tour_id"];?>"/>
+                    <input type="hidden" name="old_bus_id" value="<?php echo $OldBusId;?>"/>
                 </div>
                 <div class="row">
                     <div class="col-md-offset-2 col-md-6">

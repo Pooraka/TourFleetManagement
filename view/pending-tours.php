@@ -81,10 +81,10 @@ $tourResult = $tourObj->getOngoingTours();
                             <?php while($tourRow = $tourResult->fetch_assoc()){ ?>
                             <tr>
                                 <td><?php echo $tourRow['customer_fname']." ".$tourRow['customer_lname'];?></td>
-                                <td><?php echo $tourRow['start_date'];?></td>
-                                <td><?php echo $tourRow['end_date'];?></td>
+                                <td style="white-space: nowrap"><?php echo $tourRow['start_date'];?></td>
+                                <td style="white-space: nowrap"><?php echo $tourRow['end_date'];?></td>
                                 <td><?php echo $tourRow['destination'];?></td>
-                                <td><?php echo $tourRow['invoice_number'];?></td>
+                                <td style="white-space: nowrap"><?php echo $tourRow['invoice_number'];?></td>
                                 <td>
                                     <a href="#" data-toggle="modal" onclick="loadTour(<?php echo $tourRow['tour_id'];?>)" data-target="#completeTourModal" class="btn btn-xs btn-success" style="margin:2px">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  

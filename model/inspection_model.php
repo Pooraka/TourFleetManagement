@@ -154,7 +154,7 @@ class Inspection{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM inspection WHERE tour_id=? AND inspection_status IN (1,2)";
+        $sql = "SELECT * FROM inspection WHERE tour_id=? AND inspection_status IN (1,2,3,4)";
 
         $stmt = $con->prepare($sql);
         
@@ -217,7 +217,7 @@ class Inspection{
     * @param int $templateId The ID of the template.
     * @return int The total number of items.
     */
-   public function countChecklistItemsInTemplate($templateId) {
+    public function countChecklistItemsInTemplate($templateId) {
        
        $con = $GLOBALS["con"];
        
@@ -233,18 +233,18 @@ class Inspection{
        $result = $stmt->get_result()->fetch_assoc();
        
        return (int)$result['item_count'];
-   }
+    }
    
-   /**
-    * 
-    * This function used after an inspection is performed to add checklist items responses
-    * 
-    * @param int $inspectionId
-    * @param int $checklistItemId
-    * @param int $responseValue
-    * @param String $itemComment
-    */
-   public function addInspectionChecklistResponses($inspectionId,$checklistItemId,$responseValue,$itemComment){
+    /**
+     * 
+     * This function used after an inspection is performed to add checklist items responses
+     * 
+     * @param int $inspectionId
+     * @param int $checklistItemId
+     * @param int $responseValue
+     * @param String $itemComment
+     */
+    public function addInspectionChecklistResponses($inspectionId,$checklistItemId,$responseValue,$itemComment){
        
        $con = $GLOBALS["con"];
        
@@ -259,21 +259,21 @@ class Inspection{
        
        $responseId = $con->insert_id;
        return $responseId;
-   }
+    }
    
-   /**
-    * 
-    * This function updates final results after an inspection
-    * 
-    * @param int $inspectionId
-    * @param int $busId
-    * @param int $tourId
-    * @param int $inspectionResult
-    * @param String $finalComments
-    * @param int $inspectedBy
-    * @param int $inspectionStatus
-    */
-   public function performInspection($inspectionId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
+    /**
+     * 
+     * This function updates final results after an inspection
+     * 
+     * @param int $inspectionId
+     * @param int $busId
+     * @param int $tourId
+     * @param int $inspectionResult
+     * @param String $finalComments
+     * @param int $inspectedBy
+     * @param int $inspectionStatus
+     */
+    public function performInspection($inspectionId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
        
        $con = $GLOBALS["con"];
        
@@ -289,9 +289,9 @@ class Inspection{
        $stmt->bind_param($parameterTypes,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
        
        $stmt->execute();
-   }
+    }
    
-   public function getInspectionResultOfABusAssignedToATour($tourId,$busId){
+    public function getInspectionResultOfABusAssignedToATour($tourId,$busId){
     
        $con = $GLOBALS["con"];
        
@@ -307,7 +307,7 @@ class Inspection{
        return $result;
    }
    
-   public function getFailedInspectionsToAssignNewBus(){
+    public function getFailedInspectionsToAssignNewBus(){
        
         $con = $GLOBALS["con"];
         
@@ -316,5 +316,18 @@ class Inspection{
         
         $result = $con->query($sql) or die($con->error);
         return $result;
-   }
+    }
+    
+    public function changeInspectionStatus($inspectionId,$status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE inspection SET inspection_status=? WHERE inspection_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("ii",$status,$inspectionId);
+        
+        $stmt->execute();
+    }
 }

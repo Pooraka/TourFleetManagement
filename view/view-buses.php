@@ -77,17 +77,18 @@ $busResult = $busObj->getAllBuses();
                                 
                                 while($busRow = $busResult->fetch_assoc()){
                                     
-                                    $status = match ($busRow['bus_status']) {
-                                                        "0" => "Out of Service",
-                                                        "1" => "Operational",
-                                                        "2" => "Service is Due",
-                                                        "3" => "In Service",
+                                    $status = match ((int)$busRow['bus_status']) {
+                                                        0=> "Out of Service",
+                                                        1=> "Operational",
+                                                        2=> "Service is Due",
+                                                        3=> "In Service",
+                                                        4=> "Inspection Failed",
                                                     };
-                                    $statusClass = match ($busRow['bus_status']) {
-                                                        "0" => "label label-danger",
-                                                        "1" => "label label-success",
-                                                        "2" => "label label-default",
-                                                        "3" => "label label-warning",
+                                    $statusClass = match ((int)$busRow['bus_status']) {
+                                                        0,4=> "label label-danger",
+                                                        1=> "label label-success",
+                                                        2=> "label label-default",
+                                                        3=> "label label-warning",
                                                     };                
                                                     
                                     $busId = $busRow['bus_id'];

@@ -1,6 +1,7 @@
 <?php
 include_once '../commons/session.php';
 include_once '../model/inspection_model.php';
+include_once '../model/bus_model.php';
 
 
 
@@ -19,6 +20,7 @@ if(!isset($_GET["status"])){
 }
 
 $inspectionObj = new Inspection();
+$busObj = new Bus();
 
 $status= $_GET["status"];
 
@@ -345,6 +347,11 @@ switch ($status){
             $inspectionStatus = ($overallResult==1)? 2:3;
             
             $inspectionObj->performInspection($inspectionId,$overallResult,$finalComments,$inspectedBy,$inspectionStatus);
+            
+            //Change Bus Status To Inspection Failed, So This Will Be reflected To Service
+            if($overallResult==0){
+                $busObj->changeBusStatus($busId,4);
+            }
             
             $msg = "Inspection Completed Successfully";
             $msg = base64_encode($msg);

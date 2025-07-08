@@ -99,4 +99,17 @@ class Tour{
         $result = $stmt->get_result();
         return $result;
     }
+    
+    public function reAssignABusForATour($tourId,$oldBusId,$newBusId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE bus_tour SET bus_id=? WHERE tour_id=? AND bus_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("iii",$newBusId,$tourId,$oldBusId);
+        
+        $stmt->execute();
+    }
 }

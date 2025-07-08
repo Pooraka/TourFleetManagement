@@ -465,12 +465,31 @@ switch ($status){
         try{
             
             $inspectionId = $_POST["inspection_id"];
+            $tourId = $_POST["tour_id"];
+            $oldBusId = $_POST["old_bus_id"];
             
             $busId = $_POST["bus_id"];
             
             if($busId==""){
                 throw new Exception("Select The New Bus");
             }
+            
+            $tourObj->reAssignABusForATour($tourId,$oldBusId,$busId);
+            
+            $inspectionObj->changeInspectionStatus($inspectionId,4);
+            
+            $inspectionObj->scheduleInspection($busId,$tourId);
+            
+            $msg = "New Bus Assigned Successfully & Scheduled An Inspection For The New Bus";
+            $msg = base64_encode($msg);
+
+            ?>
+
+            <script>
+                window.location="../view/inspection-failed.php?msg=<?php echo $msg;?>&success=true";
+            </script>
+
+            <?php
         }
         catch(Exception $e){
             
