@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2025 at 11:12 PM
+-- Generation Time: Jul 08, 2025 at 12:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,7 @@ CREATE TABLE `bus` (
   `last_service_mileage_km` int(6) NOT NULL,
   `service_interval_months` int(2) NOT NULL,
   `last_service_date` date NOT NULL,
-  `bus_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1 = Removed,\r\n0 = Out of Service,\r\n1 = Operational,\r\n2 = Service Due,\r\n3 = In Service,\r\n4 = Broken Down',
+  `bus_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1 = Removed,\r\n0 = Out of Service,\r\n1 = Operational,\r\n2 = Service Due,\r\n3 = In Service,\r\n4 = Inspection Failed',
   `removed_by` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,7 +90,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210000, '2025-04-21 22:57:00', 201000, 6, '2025-03-01', 1, NULL),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 18245, '2025-06-25 18:23:45', 18245, 1, '2025-06-25', 1, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
-(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 1, NULL),
+(10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 4, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130000, '2025-04-21 22:57:00', 122000, 12, '2024-08-20', 1, NULL),
 (12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40052, '2025-06-19 13:26:00', 40052, 1, '2025-06-19', 1, NULL),
 (13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 3, '2025-01-05', 2, NULL),
@@ -142,7 +142,7 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (4, 1),
 (6, 4),
 (7, 4),
-(10, 4),
+(12, 4),
 (18, 3);
 
 -- --------------------------------------------------------
@@ -547,7 +547,8 @@ INSERT INTO `inspection` (`inspection_id`, `bus_id`, `tour_id`, `inspection_date
 (8, 18, 3, '2025-07-07', 1, 'Overall ok for the tour', 3, 2),
 (9, 6, 4, NULL, NULL, NULL, NULL, 1),
 (10, 7, 4, NULL, NULL, NULL, NULL, 1),
-(11, 10, 4, '2025-07-07', 0, 'Passenger seats are not properly fixed hence allocating this to a tour is dangerous', 3, 3);
+(11, 10, 4, '2025-07-07', 0, 'Passenger seats are not properly fixed hence allocating this to a tour is dangerous', 3, 4),
+(12, 12, 4, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1606,7 +1607,7 @@ ALTER TABLE `grn`
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_response`
