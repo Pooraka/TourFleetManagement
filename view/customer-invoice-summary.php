@@ -2,7 +2,6 @@
 
 include_once '../commons/session.php';
 
-
 //get user information from session
 $userSession=$_SESSION["user"];
 ?>
@@ -11,34 +10,34 @@ $userSession=$_SESSION["user"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tender</title>
+    <title>Finance Management</title>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management - Tender Status Report" ?>
+        <?php $pageName="Finance Management" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-supplier.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Supplier
-                </a>
-                <a href="view-suppliers.php" class="list-group-item">
+                <a href="pending-service-payments.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Suppliers
+                    Pending Service Payments
                 </a>
-                <a href="add-tender.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Tender
-                </a>
-                <a href="open-tenders.php" class="list-group-item">
+                <a href="pending-supplier-payments.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Open Tenders
+                    Pending Supplier Payments
                 </a>
-                <a href="tender-status-report.php" class="list-group-item">
+                <a href="verify-customer-income.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Tender Status Report
+                    Verify Customer Income
+                </a>
+                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
+                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    Supplier Monthly Pmt Chart
+                </a>
+                <a href="customer-invoice-summary.php" class="list-group-item">
+                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    Customer Invoice Summary
                 </a>
             </ul>
         </div>
@@ -72,7 +71,7 @@ $userSession=$_SESSION["user"];
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    Select The Tender Open Period
+                    Select The Invoice Date Period
                 </div>
             </div>
             <div class="row">
@@ -138,7 +137,7 @@ function generateReport(){
             return false;
         }
     
-    var pdfUrl = "../reports/tender-status-pdf.php?start_date="+startDate+"&end_date="+endDate;
+    var pdfUrl = "../reports/customer-invoice-summary-report-pdf.php?start_date="+startDate+"&end_date="+endDate;
     
     $('#pdfViewer').attr('data', pdfUrl);
     $('#pdfContainer').show();

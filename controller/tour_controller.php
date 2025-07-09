@@ -335,9 +335,9 @@ switch ($status){
     
         try{
             $tourId = $_POST["tour_id"];
-            $actualMilage = $_POST["actual_mileage"];
+            $actualMileage = $_POST["actual_mileage"];
 
-            if($actualMilage=="" || $actualMilage<=0){
+            if($actualMileage=="" || $actualMileage<=0){
                 throw new Exception ("Enter Tour's Actual Mileage To Complete The Tour");
             }
             
@@ -356,7 +356,7 @@ switch ($status){
                 $busId = $busRow['bus_id'];
                 $currentMileage = $busRow['current_mileage_km'];
                 
-                $newMileage = (int)$currentMileage + (int)$actualMilage;
+                $newMileage = (int)$currentMileage + (int)$actualMileage;
                 
                 $newMileageAsAt = date('Y-m-d H:i:s', time());
                 

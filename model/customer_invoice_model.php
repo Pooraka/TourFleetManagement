@@ -146,4 +146,14 @@ class CustomerInvoice{
         
         $con->query($sql) or die ($con->error);
     }
+    
+    public function getAllInvoices(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM customer_invoice";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }

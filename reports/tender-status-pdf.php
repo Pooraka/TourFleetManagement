@@ -5,13 +5,15 @@ if (empty($_GET["start_date"]) || empty($_GET["end_date"])) {
     exit("<b style='color:red'>Enter Start and End Dates </b>");
 }
 
+$startDate = new DateTime($_GET["start_date"]);
+$endDate = new DateTime($_GET["end_date"]);
+
 require_once '../commons/ReportPDF.php';
 include_once '../model/tender_model.php';
 include_once '../model/bid_model.php';
 include_once '../model/sparepart_model.php';
 
-$startDate = new DateTime($_GET["start_date"]);
-$endDate = new DateTime($_GET["end_date"]);
+
 
 $tenderObj = new Tender();
 $tenderResult = $tenderObj->getAllTenders();

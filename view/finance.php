@@ -33,7 +33,11 @@ $userSession=$_SESSION["user"];
                 </a>
                 <a href="supplier-payment-monthly-chart.php" class="list-group-item">
                     <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Generate Reports
+                    Supplier Monthly Pmt Chart
+                </a>
+                <a href="customer-invoice-summary.php" class="list-group-item">
+                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    Customer Invoice Summary
                 </a>
             </ul>
         </div>
