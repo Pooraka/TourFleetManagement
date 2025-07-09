@@ -133,13 +133,13 @@ class Bus{
         
         $sql = "UPDATE bus SET bus_status=? WHERE bus_id=?";
         
-        $stmt = $con->prepare($sql); //Prepare the statement
+        $stmt = $con->prepare($sql); 
         
-        $stmt->bind_param("ii",$status,$busId); //bind parameters (both are integers)
+        $stmt->bind_param("ii",$status,$busId); 
         
-        $stmt->execute(); //execute the statement
+        $stmt->execute(); 
         
-        $stmt->close(); //closing the statement to save resources
+        $stmt->close(); 
     }
     
     public function updateServicedBus($busId,$lastServiceMileage,$lastServiceDate){

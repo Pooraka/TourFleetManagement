@@ -27,9 +27,9 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="generate-bus-reports.php" class="list-group-item">
+                <a href="../reports/bus-fleet-report.php" class="list-group-item" target="_blank">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate Bus Reports
+                    Bus Fleet Details Report
                 </a>
             </ul>
         </div>

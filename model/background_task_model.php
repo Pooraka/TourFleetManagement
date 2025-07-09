@@ -17,29 +17,32 @@ class BackgroundTask{
         $busObj = new Bus();
         $busResult = $busObj->getOperationalBuses();
         
-        while($busRow = $busResult->fetch_assoc()){
+        $today = new DateTime();
+        $today->setTime(0, 0, 0);
+        
+        while ($busRow = $busResult->fetch_assoc()) {
             
-            $busId = $busRow['bus_id'];
-            $lastServiceMileage = (int) $busRow['last_service_mileage_km'];
-            $lastServiceDate = $busRow['last_service_date'];
-            $lastServiceTimestamp = strtotime($lastServiceDate);
+            //Mileage Check
+            $currentMileage = (int)$busRow['current_mileage_km'];
+            $nextServiceMileage = (int)$busRow['last_service_mileage_km'] + (int)$busRow['service_interval_km'];
             
-            $serviceIntervalKM = (int) $busRow['service_interval_km'];
-            $serviceIntervalMonths = (int) $busRow['service_interval_months'];
-            $serviceDueTimestamp = strtotime("+".$serviceIntervalMonths." months",$lastServiceTimestamp);
+            $mileageIsDue = ($currentMileage >= $nextServiceMileage);
+              
+            //Date Check
+            $lastServiceDate = new DateTime($busRow['last_service_date']);
+            $serviceIntervalMonths = (int)$busRow['service_interval_months'];
             
-            $currentMileage = (int) $busRow['current_mileage_km'];
-            $todayTimestamp = strtotime('today');
+            $nextServiceDate = (clone $lastServiceDate)->add(new DateInterval("P".$serviceIntervalMonths."M"));
             
-            if($currentMileage>=$lastServiceMileage+$serviceIntervalKM){
-                
-                $busObj->changeBusStatus($busId, 2);
-                
-            }elseif($todayTimestamp>=$serviceDueTimestamp){
-                
-                $busObj->changeBusStatus($busId, 2);  
+            $serviceDateisDue = ($today >= $nextServiceDate);
+            
+            if ($mileageIsDue || $serviceDateisDue) {
+            
+                $busObj->changeBusStatus($busRow['bus_id'], 2);
             }
+
         }
+        
     }
     
     public function sendServiceDueEmail(){

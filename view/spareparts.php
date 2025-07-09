@@ -39,6 +39,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Spare Parts
                 </a>
+                <a href="../reports/part-inventory-report.php" class="list-group-item" target="_blank">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Spare Part Inventory Report
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

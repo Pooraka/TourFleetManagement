@@ -55,6 +55,10 @@ $userSession=$_SESSION["user"];
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Pending Inspections
                 </a>
+                <a href="../reports/upcoming-services-report.php" class="list-group-item" target="_blank">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Upcoming Services Report
+                </a>
             </ul>
         </div>
         <div class="col-md-9">
