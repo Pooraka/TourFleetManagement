@@ -36,6 +36,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Open Tenders
                 </a>
+                <a href="tender-status-report.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Tender Status Report
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

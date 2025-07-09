@@ -73,4 +73,14 @@ class Tender{
         $con->query($sql) or die($con->error);
         
     }
+    
+    public function getAllTenders(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM tender";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
