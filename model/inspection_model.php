@@ -330,4 +330,14 @@ class Inspection{
         
         $stmt->execute();
     }
+    
+    public function getAllInspections(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

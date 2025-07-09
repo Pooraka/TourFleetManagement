@@ -59,6 +59,10 @@ $userSession=$_SESSION["user"];
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Upcoming Services Report
                 </a>
+                <a href="inspection-status-report.php" class="list-group-item">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Inspection Status Report
+                </a>
             </ul>
         </div>
         <div class="col-md-9">
