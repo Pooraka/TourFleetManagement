@@ -252,6 +252,19 @@ switch ($status){
             foreach($busArray as $busId){
                 
                 $tourObj->addBusToTour($tourId, $busId);
+                
+                //Now if the tour is set to today or tommorrow we need to immediately assign a inspection
+                $today = date('Y-m-d');
+                $tomorrow = date('Y-m-d', strtotime('+1 day'));
+                
+                if ($startDate == $today || $startDate == $tomorrow) {
+        
+                    $inspectionExists = $inspectionObj->checkIfInspectionExistsForTour($tourId);
+
+                    if (!$inspectionExists) {
+                        $inspectionObj->scheduleInspection($busId, $tourId);
+                    }
+                }
             }
             
             $customerInvoiceObj->changeInvoiceStatus($invoiceId,2);

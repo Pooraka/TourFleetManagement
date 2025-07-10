@@ -28,6 +28,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Customers
                 </a>
+                <a href="revenue-by-customers.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Revenue By Customers
+                </a>
             </ul>
         </div>
         <div class="col-md-9">
