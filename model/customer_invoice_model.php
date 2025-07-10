@@ -12,23 +12,36 @@ class CustomerInvoice{
         $con = $GLOBALS["con"];
         
         $sql = "INSERT INTO customer_invoice (invoice_number,quotation_id,invoice_date,invoice_amount,customer_id, "
-                . "invoice_description,tour_start_date,tour_end_date,pickup_location,destination,dropoff_location,round_trip_mileage) "
-                . "VALUES ('$invoiceNumber','$quotationId','$invoiceDate','$invoiceAmount','$customerId','$invoiceDescription',"
-                . "'$tourStartDate','$tourEndDate','$pickup','$destination','$dropoff','$roundTripMileage')";
+            . "invoice_description,tour_start_date,tour_end_date,pickup_location,destination,dropoff_location,round_trip_mileage) "
+            . "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("sisdissssssi", $invoiceNumber,$quotationId,$invoiceDate,$invoiceAmount,$customerId,$invoiceDescription,
+            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage);
+        
+        $stmt->execute();
+    
         $invoiceId=$con->insert_id;
+
+        $stmt->close();
+
         return $invoiceId;
     }
     
     public function addInvoiceItems($invoiceId,$categoryId,$quantity){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "INSERT INTO customer_invoice_item (invoice_id,category_id,quantity) VALUES "
-                . "('$invoiceId','$categoryId','$quantity')";
-        
-        $con->query($sql) or die ($con->error);
+    
+        $sql = "INSERT INTO customer_invoice_item (invoice_id,category_id,quantity) VALUES (?,?,?)";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("iii", $invoiceId, $categoryId, $quantity);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getPendingCustomerInvoices(){
@@ -67,9 +80,17 @@ class CustomerInvoice{
                 . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
                 . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
                 . "c.customer_fname, c.customer_lname, c.customer_email FROM customer_invoice i, customer c "
-                . "WHERE c.customer_id = i.customer_id AND i.invoice_id='$invoiceId'";
+                . "WHERE c.customer_id = i.customer_id AND i.invoice_id=?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$invoiceId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->colse();
         return $result;
         
     }
@@ -79,9 +100,17 @@ class CustomerInvoice{
         $con = $GLOBALS["con"];
 
         $sql = "SELECT i.item_id, i.invoice_id, i.category_id, i.quantity, c.category_name FROM "
-                . "customer_invoice_item i, bus_category c WHERE i.category_id = c.category_id AND i.invoice_id = '$invoiceId' ";
+                . "customer_invoice_item i, bus_category c WHERE i.category_id = c.category_id AND i.invoice_id =? ";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$invoiceId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->colse();
         return $result;
     }
     
@@ -89,18 +118,30 @@ class CustomerInvoice{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE customer_invoice SET invoice_status='$status' WHERE invoice_id='$invoiceId'";
+        $sql = "UPDATE customer_invoice SET invoice_status=? WHERE invoice_id=?";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("ii", $status, $invoiceId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function addActualTourMileage($invoiceId,$actualMileage){
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE customer_invoice SET actual_mileage='$actualMileage' WHERE invoice_id='$invoiceId'";
+        $sql = "UPDATE customer_invoice SET actual_mileage=? WHERE invoice_id=?";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("ii",$actualMileage,$invoiceId);
+        
+        $stmt->execute();
+
+        $stmt->close();
         
     }
     
@@ -108,10 +149,15 @@ class CustomerInvoice{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE customer_invoice SET actual_fare='$actualFair' WHERE invoice_id='$invoiceId'";
+        $sql = "UPDATE customer_invoice SET actual_fare=? WHERE invoice_id=?";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
         
+        $stmt->bind_param("di",$actualFair,$invoiceId);
+        
+        $stmt->execute();
+
+        $stmt->close();
     }
     
 
@@ -142,9 +188,15 @@ class CustomerInvoice{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE customer_invoice SET actual_fare=null WHERE invoice_id='$invoiceId'";
+        $sql = "UPDATE customer_invoice SET actual_fare=null WHERE invoice_id=?";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$invoiceId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function getAllInvoices(){
