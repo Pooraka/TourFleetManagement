@@ -20,6 +20,8 @@ class Finance{
         $stmt->execute();
          
         $paymentId=$con->insert_id;
+        
+        $stmt->close();
         return $paymentId;
     }
     
@@ -41,9 +43,18 @@ class Finance{
         
         $con=$GLOBALS["con"];
 
-        $sql = "SELECT * FROM tour_income WHERE invoice_id='$invoiceId'  AND payment_status!='-1'";
+        $sql = "SELECT * FROM tour_income WHERE invoice_id=? AND payment_status!='-1'";
+        
+        $stmt = $con->prepare($sql);
             
-        $result = $con->query($sql) or die($con->error); 
+        $stmt->bind_param("i", $invoiceId);
+    
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -71,6 +82,8 @@ class Finance{
         $stmt->execute();
          
         $paymentId=$con->insert_id;
+        
+        $stmt->close();
         return $paymentId;
     }
     
@@ -78,28 +91,49 @@ class Finance{
         
         $con=$GLOBALS["con"];
 
-        $sql = "SELECT * FROM tour_income WHERE tour_income_id='$tourIncomeId'";
-            
-        $result = $con->query($sql) or die($con->error); 
+        $sql = "SELECT * FROM tour_income WHERE tour_income_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $tourIncomeId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
     public function changeTourIncomeStatus($tourIncomeId,$status){
         
         $con=$GLOBALS["con"];
-        
-        $sql ="UPDATE tour_income SET payment_status='$status' WHERE tour_income_id='$tourIncomeId'";
-        
-        $con->query($sql) or die($con->error); 
+    
+        $sql ="UPDATE tour_income SET payment_status=? WHERE tour_income_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $status, $tourIncomeId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function verifyAcceptedCustomerPayment($tourIncomeId,$verifiedBy){
         
         $con=$GLOBALS["con"];
         
-        $sql ="UPDATE tour_income SET payment_status='2', verified_by='$verifiedBy' WHERE tour_income_id='$tourIncomeId'";
+        $sql ="UPDATE tour_income SET payment_status='2', verified_by=? WHERE tour_income_id=?";
         
-        $con->query($sql) or die($con->error); 
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $verifiedBy, $tourIncomeId);
+
+        $stmt->execute();
+
+        $stmt->close(); 
     }
     
     public function getMonthlySupplierPayments($startMonth,$endMonth){
@@ -117,6 +151,8 @@ class Finance{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
 }
