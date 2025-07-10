@@ -10,21 +10,36 @@ class Customer{
         
         $con=$GLOBALS["con"];
 
-        $sql="SELECT * FROM customer WHERE customer_nic='$nic'";
+        $sql="SELECT * FROM customer WHERE customer_nic=?";
         
-        $result = $con->query($sql) or die($con->error);  
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("s",$nic);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
     public function addCustomer($nic,$fname,$lname,$email) {
         
         $con = $GLOBALS["con"];
-
-        $sql = "INSERT INTO customer (customer_nic, customer_fname, customer_lname, customer_email) "
-                . "VALUES ('$nic','$fname','$lname','$email')";
         
-        $con->query($sql) or die ($con->error);
+        $sql = "INSERT INTO customer (customer_nic, customer_fname, customer_lname, customer_email) VALUES (?,?,?,?)";
+          
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("ssss", $nic, $fname, $lname, $email);
+
+        $stmt->execute();
+
         $customerId=$con->insert_id;
+
+        $stmt->close();
+
         return $customerId;  
     }
     
@@ -34,7 +49,13 @@ class Customer{
         
         $sql="INSERT INTO customer_contact (contact_type,contact_number,customer_id) VALUES ('$type','$number','$customerId')";
         
-        $con->query($sql) or die ($con->error);
+        $sql="INSERT INTO customer_contact (contact_type,contact_number,customer_id) VALUES (?,?,?)";
+    
+        $stmt->bind_param("isi", $type, $number, $customerId);
+    
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     
@@ -61,6 +82,8 @@ class Customer{
         $stmt->execute();
         
         $result = $stmt->get_result(); 
+        
+        $stmt->close();
         return $result;
     }
     
@@ -68,36 +91,63 @@ class Customer{
         
         $con = $GLOBALS["con"];
         
-        $sql="UPDATE customer SET customer_status='-1' WHERE customer_id='$customerId'";
+        $sql="UPDATE customer SET customer_status='-1' WHERE customer_id=?";
         
-        $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$customerId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function getCustomer($customerId){
         
         $con=$GLOBALS["con"];
-
-        $sql="SELECT * FROM customer WHERE customer_id='$customerId'";
         
-        $result = $con->query($sql) or die($con->error);  
+        $sql="SELECT * FROM customer WHERE customer_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $customerId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
     public function updateCustomer($customerId,$nic,$fname,$lname,$email) {
         
         $con = $GLOBALS["con"];
+
+        $sql="UPDATE customer SET customer_fname=?, customer_lname=?, customer_nic=?, customer_email=? WHERE customer_id=?";
         
-        $sql="UPDATE customer SET customer_fname='$fname', customer_lname='$lname', customer_nic='$nic', customer_email='$email' WHERE customer_id='$customerId'";
+        $stmt = $con->prepare($sql);
         
-        $con->query($sql) or die ($con->error);
+        $stmt->bind_param("ssssi", $fname, $lname, $nic, $email, $customerId); 
+        
+        $stmt->execute();
+    
+        $stmt->close();
     }
     
     public function removeCustomerContact($customerId){
         
         $con=$GLOBALS["con"];
-        
-        $sql="DELETE FROM customer_contact WHERE customer_id='$customerId'";
-        
-        $con->query($sql) or die($con->error);
+    
+        $sql="DELETE FROM customer_contact WHERE customer_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $customerId); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
 }
