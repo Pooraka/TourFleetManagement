@@ -29,6 +29,8 @@ class Inspection{
         $stmt->execute();
 
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -43,6 +45,8 @@ class Inspection{
         $stmt->bind_param("ssi",$checklistItemName,$checklistItemDescription,$checklistItemId);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function registerChecklistItem($checklistItemName,$checklistItemDescription){
@@ -59,16 +63,24 @@ class Inspection{
         $stmt->execute();
         
         $checklistItemId = $con->insert_id;
+        
+        $stmt->close();
         return $checklistItemId;
     }
     
     public function changeChecklistItemStatus($checklistItemId,$status){
         
         $con = $GLOBALS["con"];
+
+        $sql = "UPDATE checklist_item SET checklist_item_status=? WHERE checklist_item_id=?";
         
-        $sql = "UPDATE checklist_item SET checklist_item_status='$status' WHERE checklist_item_id='$checklistItemId'";
+        $stmt = $con->prepare($sql);
         
-        $con->query($sql) or die($con->error);
+        $stmt->bind_param("ii", $status, $checklistItemId); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getInspectionChecklistTemplates(){
@@ -85,9 +97,18 @@ class Inspection{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM inspection_checklist_template WHERE template_id='$templateId'";
+        $sql = "SELECT * FROM inspection_checklist_template WHERE template_id=?";
         
-        $result = $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $templateId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -99,7 +120,20 @@ class Inspection{
                 . "FROM template_item_link t, checklist_item c WHERE t.checklist_item_id=c.checklist_item_id "
                 . "AND c.checklist_item_status='1' AND template_id='$templateId'";
         
-        $result = $con->query($sql) or die($con->error);
+        $sql = "SELECT t.template_id, c.checklist_item_id, c.checklist_item_name, c.checklist_item_description "
+            . "FROM template_item_link t, checklist_item c WHERE t.checklist_item_id=c.checklist_item_id "
+            . "AND c.checklist_item_status='1' AND template_id=?";
+        
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $templateId); 
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
         
     }
@@ -115,6 +149,8 @@ class Inspection{
         $stmt->bind_param("i",$templateId);
 
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function addChecklistItemsToTemplate($templateId,$checklistItemId){
@@ -128,6 +164,8 @@ class Inspection{
         $stmt->bind_param("ii",$templateId,$checklistItemId);
 
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function scheduleInspection($busId,$tourId){
@@ -141,6 +179,8 @@ class Inspection{
         $stmt->bind_param("ii",$busId,$tourId);
 
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     /**
@@ -163,7 +203,8 @@ class Inspection{
         $stmt->execute();
 
         $result = $stmt->get_result();
-
+        
+        $stmt->close();
         return ($result->num_rows > 0);
     }
     
@@ -192,6 +233,8 @@ class Inspection{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -208,6 +251,8 @@ class Inspection{
         $stmt->execute();
         
         $result= $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -231,6 +276,8 @@ class Inspection{
        $stmt->execute();
 
        $result = $stmt->get_result()->fetch_assoc();
+       
+       $stmt->close();
        
        return (int)$result['item_count'];
     }
@@ -258,6 +305,8 @@ class Inspection{
        $stmt->execute();
        
        $responseId = $con->insert_id;
+       
+       $stmt->close();
        return $responseId;
     }
    
@@ -289,6 +338,8 @@ class Inspection{
        $stmt->bind_param($parameterTypes,$date,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
        
        $stmt->execute();
+       
+       $stmt->close();
     }
    
     public function getInspectionResultOfABusAssignedToATour($tourId,$busId){
@@ -304,6 +355,8 @@ class Inspection{
        $stmt->execute();
        
        $result = $stmt->get_result();
+       
+       $stmt->close();
        return $result;
    }
    
@@ -329,6 +382,8 @@ class Inspection{
         $stmt->bind_param("ii",$status,$inspectionId);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function getAllInspections(){
