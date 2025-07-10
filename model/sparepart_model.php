@@ -302,7 +302,7 @@ class SparePart{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id";
+        $sql = "SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id ORDER BY t.transacted_at ASC";
         
         $result = $con->query($sql) or die($con->error);
         return $result;

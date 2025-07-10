@@ -24,25 +24,33 @@ $sparePartResult = $sparePartObj->getSpareParts();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="register-spareparts.php" class="list-group-item">
+                <a href="register-spareparts.php" class="list-group-item" style="display:<?php echo checkPermissions(98); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Register Spare Parts
                 </a>
-                <a href="spare-part-types.php" class="list-group-item">
+                <a href="spare-part-types.php" class="list-group-item" style="display:<?php echo checkPermissions(99); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Spare Part Types
                 </a>
-                <a href="add-spare-parts.php" class="list-group-item">
+                <a href="add-spare-parts.php" class="list-group-item" style="display:<?php echo checkPermissions(101); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Add Spare Parts
                 </a>
-                <a href="view-grns.php" class="list-group-item">
+                <a href="view-grns.php" class="list-group-item" style="display:<?php echo checkPermissions(102); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View GRNs
                 </a>
-                <a href="view-spare-parts.php" class="list-group-item">
+                <a href="view-spare-parts.php" class="list-group-item" style="display:<?php echo checkPermissions(103); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Spare Parts
+                </a>
+                <a href="../reports/part-inventory-report.php" class="list-group-item" target="_blank" style="display:<?php echo checkPermissions(106); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Spare Part Inventory Report
+                </a>
+                <a href="spare-part-transaction-history.php" class="list-group-item" style="display:<?php echo checkPermissions(107); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Spare Part Transactions
                 </a>
             </ul>
         </div>
@@ -96,11 +104,13 @@ $sparePartResult = $sparePartObj->getSpareParts();
                                 <td><?php echo $sparePartRow['quantity_on_hand'];?></td>
                                 <td><?php echo $sparePartRow['reorder_level'];?></td>
                                 <td>
-                                    <a href="issue-spare-parts.php?part_id=<?php echo base64_encode($partId); ?>"  class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="issue-spare-parts.php?part_id=<?php echo base64_encode($partId); ?>"  
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(104); ?>">
                                         <span class="glyphicon glyphicon-plus"></span>
                                         Issue To Bus
                                     </a> 
-                                    <a href="#" data-toggle="modal" onclick="removeSpareParts(<?php echo $partId;?>)" data-target="#add_remove_info" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="#" data-toggle="modal" onclick="removeSpareParts(<?php echo $partId;?>)" data-target="#add_remove_info" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(105); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Remove
                                     </a> 
