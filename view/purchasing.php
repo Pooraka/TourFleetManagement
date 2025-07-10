@@ -28,6 +28,10 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Pending PO
                 </a>
+                <a href="po-status-report.php" class="list-group-item">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    PO Status Report
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

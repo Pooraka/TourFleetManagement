@@ -134,4 +134,14 @@ class PurchaseOrder{
         $con->query($sql) or die ($con->error);
         
     }
+    
+    public function getAllPOs(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM purchase_order";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }
