@@ -39,6 +39,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
                     Customer Invoice Summary
                 </a>
+                <a href="service-cost-trend.php" class="list-group-item">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Service Cost trend
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

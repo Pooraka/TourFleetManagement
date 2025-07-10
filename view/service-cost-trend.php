@@ -38,7 +38,7 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Bus Maintenance - Service Cost Trend" ?>
+        <?php $pageName="Finance - Service Cost Trend" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -86,25 +86,20 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="control-label">Start Month</label>
                 </div>
                 <div class="col-md-3">
                     <input type="month" class="form-control" name="start_month" id="start_month"/>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="control-label">End Month</label>
                 </div>
                 <div class="col-md-3">
                     <input type="month" class="form-control" name="end_month" id="end_month"/>
                 </div>
-            </div>
-            <div class="row">
-                &nbsp;
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-md-offset-3">
-                    <input type="submit" value="Generate" class="btn btn-success"/>
+                <div class="col-md-2">
+                    <input type="submit" value="Generate" class="btn btn-primary"/>
                 </div>
             </div>
             <div class="row">

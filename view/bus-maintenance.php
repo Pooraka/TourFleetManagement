@@ -39,10 +39,6 @@ $userSession=$_SESSION["user"];
                     <span class="fa fa-list-alt"></span> &nbsp;
                     Service History
                 </a>
-                <a href="service-cost-trend.php" class="list-group-item">
-                    <span class="fas fa-chart-line"></span> &nbsp;
-                    Service cost trend
-                </a>
                 <a href="manage-checklist-items.php" class="list-group-item">
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Manage Checklist Items
