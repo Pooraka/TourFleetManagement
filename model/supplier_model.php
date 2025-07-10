@@ -18,7 +18,11 @@ class Supplier{
         $stmt->bind_param("sss",$supplierName,$supplierContact,$supplierEmail);
         
         $stmt->execute();
+        
         $supplierId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $supplierId;
     }
     
@@ -36,9 +40,18 @@ class Supplier{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM supplier WHERE supplier_id='$supplierId'";
-        
-        $result = $con->query($sql) or die($con->error);
+        $sql = "SELECT * FROM supplier WHERE supplier_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $supplierId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -53,15 +66,23 @@ class Supplier{
         $stmt->bind_param("sssi",$supplierName,$supplierContact,$supplierEmail,$supplierId);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function changeSupplierStatus($supplierId,$status){
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE supplier SET supplier_status='$status' WHERE supplier_id='$supplierId'";
-        
-        $con->query($sql) or die($con->error);
+        $sql = "UPDATE supplier SET supplier_status=? WHERE supplier_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $status, $supplierId); 
+
+        $stmt->execute();
+
+        $stmt->close();
         
     }
     
