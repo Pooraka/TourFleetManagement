@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2025 at 04:11 PM
+-- Generation Time: Jul 10, 2025 at 04:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -515,8 +515,6 @@ CREATE TABLE `grn` (
 --
 
 INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `yet_to_receive`, `grn_received_date`, `inspected_by`, `grn_notes`, `grn_status`) VALUES
-(1, 'Test-1', 1, 20, 0, '2025-05-02', 8, NULL, 1),
-(2, 'Test-2', 2, 15, 0, '2025-06-20', 8, NULL, 1),
 (3, 'GRN-0706762F-3', 3, 2, 8, '2025-07-06', 3, '2 of the ordered air filters received. Appears in good condition.', 1),
 (4, 'GRN-0706B414-3', 3, 5, 3, '2025-07-06', 3, 'Appeares in good condition', 1),
 (5, 'GRN-0706BD32-3', 3, 3, 0, '2025-07-06', 3, 'All Received', 1),
@@ -690,8 +688,8 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (2, 2, 1, 4, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
 (3, 3, 1, 15, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
 (4, 4, 1, 20, NULL, NULL, 'Initial stock load', 1, '2025-03-15 10:00:00'),
-(5, 2, 1, 20, NULL, 1, NULL, 8, '2025-05-02 10:00:00'),
-(6, 1, 1, 15, NULL, 2, NULL, 8, '2025-06-20 14:00:00'),
+(5, 2, 1, 20, NULL, NULL, NULL, 8, '2025-05-02 10:00:00'),
+(6, 1, 1, 15, NULL, NULL, NULL, 8, '2025-06-20 14:00:00'),
 (7, 3, 3, 1, 9, NULL, 'Routine service replacement', 8, '2025-06-25 11:00:00'),
 (8, 4, 4, 1, NULL, NULL, 'Scrapped due to factory defect.', 8, '2025-06-26 09:30:00'),
 (9, 3, 2, 2, NULL, 3, '2 of the ordered air filters received. Appears in good condition.', 3, '2025-07-06 09:30:35'),
@@ -769,8 +767,6 @@ CREATE TABLE `purchase_order` (
 --
 
 INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`, `po_payment_id`) VALUES
-(1, 'PO-2025-001', 2, 2, 20, 20, 3450.00, 69000.00, '2025-04-18', 6, 1, '2025-06-29 10:29:07', NULL, NULL, NULL, NULL, 5),
-(2, 'PO-2025-002', 3, 1, 15, 15, 8900.00, 133500.00, '2025-06-12', 6, 1, '2025-06-29 10:33:12', NULL, NULL, NULL, NULL, 6),
 (3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss', NULL),
 (4, 'ST-PO-63B4-4', 6, 4, 25, 25, 2375.00, 59375.00, '2025-07-05', 6, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652', 8),
 (5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', 7),
@@ -857,7 +853,7 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-07-09');
+(1, 'ServiceDueBuses', '2025-07-10');
 
 -- --------------------------------------------------------
 
@@ -997,8 +993,8 @@ INSERT INTO `service_station` (`service_station_id`, `service_station_name`, `ad
 CREATE TABLE `service_station_contact` (
   `service_station_contact_id` int(10) NOT NULL,
   `service_station_contact_number` varchar(10) NOT NULL,
-  `contact_type` int(11) NOT NULL,
-  `service_station_id` int(11) NOT NULL
+  `contact_type` int(10) NOT NULL,
+  `service_station_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
