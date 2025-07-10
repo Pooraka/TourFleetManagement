@@ -20,9 +20,18 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "SELECT * FROM role_module r, module m WHERE r.module_id = m.module_id AND r.role_id ='$roleId' ";
+        $sql = "SELECT * FROM role_module r, module m WHERE r.module_id = m.module_id AND r.role_id =?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$roleId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
         return $result;
     }
     
@@ -30,9 +39,18 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "SELECT * FROM function WHERE module_id='$moduleId' ";
-        
-        $result = $con->query($sql) or die ($con->error);
+        $sql = "SELECT * FROM function WHERE module_id=? ";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $moduleId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -40,9 +58,18 @@ class User{
         
         $con=$GLOBALS["con"];
 
-        $sql="SELECT user_email FROM user WHERE user_email='$email'";
-        
-        $result = $con->query($sql) or die($con->error);  
+        $sql="SELECT user_email FROM user WHERE user_email=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("s", $email);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -50,21 +77,39 @@ class User{
         
         $con=$GLOBALS["con"];
 
-        $sql="SELECT user_nic FROM user WHERE user_nic='$nic'";
-        
-        $result = $con->query($sql) or die($con->error);  
+        $sql="SELECT user_nic FROM user WHERE user_nic=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("s", $nic);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
     public function addUser($fname,$lname,$email,$dob,$nic,$user_role,$user_image){
 
         $con = $GLOBALS["con"];
-
-        $sql = "INSERT INTO user (user_fname, user_lname, user_email, user_dob, user_nic, user_role, user_image) "
-                . "VALUES ('$fname','$lname','$email','$dob','$nic','$user_role','$user_image')";
         
-        $con->query($sql) or die ($con->error);
+        $sql = "INSERT INTO user (user_fname, user_lname, user_email, user_dob, user_nic, user_role, user_image) "
+            . "VALUES (?,?,?,?,?,?,?)";
+    
+        $stmt = $con->prepare($sql);
+
+
+        $stmt->bind_param("sssssis", $fname, $lname, $email, $dob, $nic, $user_role, $user_image); 
+
+        $stmt->execute();
+
         $user_id=$con->insert_id;
+
+        $stmt->close();
+
         return $user_id;
     }
     
@@ -72,9 +117,15 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "INSERT INTO function_user (function_id,user_id) VALUES ('$function_id','$user_id')";
-        
-        $con->query($sql) or die ($con->error);
+        $sql = "INSERT INTO function_user (function_id,user_id) VALUES (?,?)";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $function_id, $user_id); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getAllUsers(){
@@ -93,27 +144,45 @@ class User{
         
         $con = $GLOBALS["con"];
         
-        $sql="UPDATE user SET user_status='1' WHERE user_id='$user_id'";
-        
-        $con->query($sql) or die ($con->error);   
+        $sql="UPDATE user SET user_status='1' WHERE user_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $stmt->close();   
     }
     
     public function deactivateUser($user_id){
         
         $con = $GLOBALS["con"];
-        
-        $sql="UPDATE user SET user_status='0' WHERE user_id='$user_id'";
-        
-        $con->query($sql) or die ($con->error);   
+
+        $sql="UPDATE user SET user_status='0' WHERE user_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $user_id); // user_id is INT(10)
+
+        $stmt->execute();
+
+        $stmt->close();  
     }
     
     public function deleteUser($user_id){
         
         $con = $GLOBALS["con"];
-        
-        $sql="UPDATE user SET user_status='-1' WHERE user_id='$user_id'";
-        
-        $con->query($sql) or die ($con->error);   
+
+        $sql="UPDATE user SET user_status='-1' WHERE user_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $stmt->close();  
     }
     
     public function getUser($user_id){
@@ -123,9 +192,18 @@ class User{
         $sql="SELECT u.user_id, u.user_fname, u.user_lname, u.user_dob, u.user_nic, u.user_role, u.user_image, u.user_email, u.user_status, "
                 . "r.role_name, r.role_status, l.login_username, l.login_status "
                 . "FROM user u , role r, login l "
-                . "WHERE u.user_role = r.role_id AND u.user_id = l.user_id  AND u.user_id='$user_id'";
+                . "WHERE u.user_role = r.role_id AND u.user_id = l.user_id  AND u.user_id=?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
         
     }
@@ -134,9 +212,18 @@ class User{
         
         $con = $GLOBALS["con"];
         
-        $sql="SELECT * FROM function_user WHERE user_id='$user_id'";
+        $sql="SELECT * FROM function_user WHERE user_id=?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
         
     }
@@ -144,19 +231,34 @@ class User{
     public function addUserContact($user_id,$number,$type){
         
         $con = $GLOBALS["con"];
-        
-        $sql="INSERT INTO user_contact (contact_type,contact_number,user_id) VALUES ('$type','$number','$user_id')";
-        
-        $con->query($sql) or die ($con->error);
+
+        $sql="INSERT INTO user_contact (contact_type,contact_number,user_id) VALUES (?,?,?)";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("isi", $type, $number, $user_id); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getUserContact($user_id){
         
         $con = $GLOBALS["con"];
         
-        $sql="SELECT * FROM user_contact WHERE user_id='$user_id'";
+        $sql="SELECT * FROM user_contact WHERE user_id=?";
         
-        $result = $con->query($sql) or die ($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -164,28 +266,46 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "UPDATE user SET user_fname='$fname', user_lname='$lname', user_email='$email', user_dob='$dob', user_nic='$nic',"
-                . "user_role='$user_role', user_image='$user_image' WHERE user_id='$user_id'";
-        
-        $con->query($sql) or die ($con->error);
+        $sql = "UPDATE user SET user_fname=?, user_lname=?, user_email=?, user_dob=?, user_nic=?,"
+            . "user_role=?, user_image=? WHERE user_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("sssssisi", $fname, $lname, $email, $dob, $nic, $user_role, $user_image, $user_id); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function removeUserContact($user_id){
         
         $con=$GLOBALS["con"];
         
-        $sql="DELETE FROM user_contact WHERE user_id='$user_id'";
+        $sql="DELETE FROM user_contact WHERE user_id=?";
         
-        $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $user_id); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function removeUserFunctions($user_id){
         
         $con=$GLOBALS["con"];
         
-        $sql="DELETE FROM function_user WHERE user_id='$user_id'";
+        $sql="DELETE FROM function_user WHERE user_id=?";
         
-        $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getUsersToSendBusServiceDueEmail(){
