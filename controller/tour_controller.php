@@ -259,11 +259,7 @@ switch ($status){
                 
                 if ($startDate == $today || $startDate == $tomorrow) {
         
-                    $inspectionExists = $inspectionObj->checkIfInspectionExistsForTour($tourId);
-
-                    if (!$inspectionExists) {
-                        $inspectionObj->scheduleInspection($busId, $tourId);
-                    }
+                    $inspectionObj->scheduleInspection($busId, $tourId);
                 }
             }
             

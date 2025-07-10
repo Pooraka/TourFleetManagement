@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 05:41 PM
+-- Generation Time: Jul 10, 2025 at 08:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,7 +83,7 @@ CREATE TABLE `bus` (
 
 INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year`, `capacity`, `ac_available`, `service_interval_km`, `current_mileage_km`, `current_mileage_as_at`, `last_service_mileage_km`, `service_interval_months`, `last_service_date`, `bus_status`, `removed_by`) VALUES
 (1, 1, 'CAA-1234', 'Yutong', 'ZK6938HQ', '2022', 40, 'N', 15000, 50000, '2025-06-19 12:50:46', 50000, 6, '2025-06-19', 1, NULL),
-(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 186000, '2025-06-19 20:04:33', 186000, 6, '2025-06-19', 1, NULL),
+(2, 2, 'NB-5678', 'Lanka Ashok Leyland', 'Viking', '2018', 54, 'N', 10000, 186201, '2025-07-10 19:18:07', 186000, 6, '2025-06-19', 1, NULL),
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 1, NULL),
 (4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 117600, '2025-07-09 14:15:51', 117520, 6, '2025-07-02', 1, NULL),
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 3, NULL),
@@ -140,12 +140,22 @@ CREATE TABLE `bus_tour` (
 INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (1, 1),
 (1, 2),
+(2, 6),
+(3, 8),
 (4, 1),
 (4, 5),
 (6, 4),
+(6, 9),
 (7, 4),
+(7, 9),
+(8, 8),
+(11, 8),
 (12, 4),
-(18, 3);
+(12, 9),
+(17, 8),
+(18, 3),
+(18, 8),
+(19, 7);
 
 -- --------------------------------------------------------
 
@@ -202,7 +212,10 @@ INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `custom
 (3, '942150889V', 'Nimal', 'Silva', 'nimal.s@email.com', 1),
 (4, '199865401234', 'Fathima', 'Rizwan', 'fathima.r@email.com', 1),
 (5, '953254147V', 'Dilshan', 'Gamage', 'dilshang@ymail.com', 1),
-(6, '901234567V', 'Sunil', 'Perera', 'sunil.perera@example.com', 1);
+(6, '901234567V', 'Sunil', 'Perera', 'sunil.perera@example.com', 1),
+(7, '851234567V', 'Ayesha', 'De Silva', 'ayesha.ds@email.com', 1),
+(8, '928765432V', 'Bala', 'Kumar', 'kumar.b@email.com', 1),
+(9, '200154321098', 'Priya', 'Ramanathan', 'priya.r@email.com', 1);
 
 -- --------------------------------------------------------
 
@@ -232,7 +245,13 @@ INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, 
 (19, 1, '0714525851', 5),
 (20, 2, '0114006319', 5),
 (21, 1, '0771234567', 6),
-(22, 2, '0112345678', 6);
+(22, 2, '0112345678', 6),
+(23, 1, '0711234567', 7),
+(24, 2, '0112233445', 7),
+(25, 1, '0778901234', 8),
+(26, 2, '0115566778', 8),
+(27, 1, '0765432109', 9),
+(28, 2, '0118765432', 9);
 
 -- --------------------------------------------------------
 
@@ -265,11 +284,14 @@ CREATE TABLE `customer_invoice` (
 
 INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `round_trip_mileage`, `actual_fare`, `actual_mileage`) VALUES
 (1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 4, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, 76999.31, 258),
-(2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 1, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, NULL, NULL),
+(2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 4, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, 95000.00, 201),
 (3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL),
-(4, 'ST-IN-C6EE-6', 6, '2025-07-07', 67250.00, 6, 3, 'One Day Trip', '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 278, NULL, 280),
+(4, 'ST-IN-C6EE-6', 6, '2025-07-07', 67250.00, 6, 4, 'One Day Trip', '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 278, 68000.00, 280),
 (5, 'ST-IN-49CD-7', 7, '2025-07-07', 320000.00, 3, 4, '2 Night Trip', '2025-07-08', '2025-07-10', 'Kadawatha', 'Anuradhapura', 'Kadawatha', 360, 322000.00, 375),
-(6, 'ST-IN-F6A6-8', 8, '2025-07-09', 52000.00, 4, 3, 'Quick Travel To Minuwangoda', '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 75, NULL, 80);
+(6, 'ST-IN-F6A6-8', 8, '2025-07-09', 52000.00, 4, 4, 'Quick Travel To Minuwangoda', '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 75, 53000.00, 80),
+(7, 'ST-IN-7DDC-9', 9, '2025-07-10', 26000.00, 2, 2, '1 Night Tour', '2025-07-10', '2025-07-11', 'Bambalapitiya', 'Horana', 'Bambalapitiya', 85, NULL, NULL),
+(8, 'ST-IN-2751-10', 10, '2025-07-10', 347000.00, 9, 2, 'One Night Tour', '2025-07-11', '2025-07-12', 'Pettah', 'Kandy', 'Pettah', 340, NULL, NULL),
+(9, 'ST-IN-2701-11', 11, '2025-07-10', 452000.00, 8, 2, '3 Night Tour', '2025-07-14', '2025-07-17', 'Boralesgamuwa', 'Trincomalee', 'Boralesgamuwa', 610, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -295,7 +317,11 @@ INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `qu
 (4, 3, 1, 1),
 (5, 4, 3, 1),
 (6, 5, 2, 3),
-(7, 6, 2, 1);
+(7, 6, 2, 1),
+(8, 7, 3, 1),
+(9, 8, 1, 1),
+(10, 8, 3, 4),
+(11, 9, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -480,11 +506,18 @@ CREATE TABLE `inspection` (
 
 INSERT INTO `inspection` (`inspection_id`, `bus_id`, `tour_id`, `inspection_date`, `inspection_result`, `final_comments`, `inspected_by`, `inspection_status`) VALUES
 (8, 18, 3, '2025-07-07', 1, 'Overall ok for the tour', 3, 2),
-(9, 6, 4, NULL, NULL, NULL, NULL, 1),
-(10, 7, 4, NULL, NULL, NULL, NULL, 1),
+(9, 6, 4, '2025-07-10', 1, 'All Good', 3, 2),
+(10, 7, 4, '2025-07-10', 1, 'Good Enough', 3, 2),
 (11, 10, 4, '2025-07-07', 0, 'Passenger seats are not properly fixed hence allocating this to a tour is dangerous', 3, 4),
-(12, 12, 4, NULL, NULL, NULL, NULL, 1),
-(13, 1, 2, NULL, NULL, NULL, NULL, 1);
+(12, 12, 4, '2025-07-10', 1, 'All good', 3, 2),
+(13, 1, 2, '2025-07-10', 1, 'All good', 3, 2),
+(14, 2, 6, '2025-07-10', 1, 'Good Enough', 3, 2),
+(15, 19, 7, '2025-07-10', 1, 'All Good', 3, 2),
+(16, 8, 8, NULL, NULL, NULL, NULL, 1),
+(17, 3, 8, NULL, NULL, NULL, NULL, 1),
+(18, 17, 8, NULL, NULL, NULL, NULL, 1),
+(19, 11, 8, NULL, NULL, NULL, NULL, 1),
+(20, 18, 8, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -512,7 +545,39 @@ INSERT INTO `inspection_checklist_response` (`response_id`, `inspection_id`, `ch
 (57, 11, 5, 1, ''),
 (58, 11, 7, 1, ''),
 (59, 11, 8, 1, ''),
-(60, 11, 11, 0, 'Passenger seats are lose');
+(60, 11, 11, 0, 'Passenger seats are lose'),
+(61, 9, 3, 1, ''),
+(62, 9, 4, 1, ''),
+(63, 9, 5, 1, ''),
+(64, 9, 7, 1, ''),
+(65, 9, 8, 1, ''),
+(66, 9, 11, 1, ''),
+(67, 10, 3, 1, ''),
+(68, 10, 4, 1, ''),
+(69, 10, 5, 0, 'Too much noise'),
+(70, 10, 7, 1, ''),
+(71, 10, 8, 1, ''),
+(72, 10, 11, 1, ''),
+(73, 12, 3, 1, ''),
+(74, 12, 4, 1, ''),
+(75, 12, 5, 1, ''),
+(76, 12, 7, 1, ''),
+(77, 12, 8, 1, ''),
+(78, 12, 11, 1, ''),
+(79, 13, 4, 1, ''),
+(80, 13, 5, 1, ''),
+(81, 13, 6, 1, ''),
+(82, 13, 7, 1, ''),
+(83, 13, 8, 1, ''),
+(84, 13, 11, 1, ''),
+(85, 13, 12, 1, ''),
+(86, 14, 3, 1, ''),
+(87, 14, 4, 1, ''),
+(88, 14, 5, 1, ''),
+(89, 14, 7, 1, ''),
+(90, 14, 8, 0, 'It\'s Expired'),
+(91, 14, 11, 1, ''),
+(92, 15, 1, 1, '');
 
 -- --------------------------------------------------------
 
@@ -668,7 +733,8 @@ INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_met
 (5, '2025-05-20', 69000.00, 'CHQ-554321', 'cheque', 2, 'svspmt_68586b9a5f020.pdf', 3, 1),
 (6, '2025-06-28', 133500.00, 'TRF-AX-8891', 'transfer', 2, 'svspmt_68586b9a5f020.pdf', 3, 1),
 (7, '2025-07-06', 69000.00, '256325', 'cheque', 2, 'svspmt_686a6771614b9.pdf', 3, 1),
-(8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'svspmt_686a67d868ce3.pdf', 3, 1);
+(8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'svspmt_686a67d868ce3.pdf', 3, 1),
+(9, '2025-07-10', 50617.88, 'FT5248', 'transfer', 1, 'svspmt_686fc5a64a126.pdf', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -706,8 +772,8 @@ INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quanti
 (5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', 7),
 (6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'Ijkn3', 8),
 (7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'c32v', NULL),
-(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 2, 3, '2025-07-06 18:14:46', 3, NULL, NULL, NULL, NULL),
-(9, 'ST-PO-51FA-8', 10, 3, 2, 0, 3625.00, 7250.00, '2025-07-10', 1, 3, '2025-07-10 16:48:49', NULL, NULL, NULL, NULL, NULL);
+(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 3, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', '1254', NULL),
+(9, 'ST-PO-51FA-8', 10, 3, 2, 0, 3625.00, 7250.00, '2025-07-10', 3, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', '18415', NULL);
 
 -- --------------------------------------------------------
 
@@ -739,10 +805,13 @@ INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_sta
 (2, '2025-06-04', 2, '2025-06-08', '2025-06-09', 'Malabe', 'Nuwara Eliya', 'Malabe', 'One night trip to Nuwara-Eliya', 300, 120000.00, -1),
 (3, '2025-06-29', 6, '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 'Two-day trip to Kandy', 200, 95000.00, 2),
 (4, '2025-07-03', 4, '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 'Two Days, One Night Trip to Ella and Back', 420, 235145.36, 2),
-(5, '2025-07-06', 3, '2025-07-06', '2025-07-07', 'Fort', 'Galle', 'Fort', 'Two Day Trip, One Night. Travel on Highway', 240, 72525.00, 1),
+(5, '2025-07-06', 3, '2025-07-06', '2025-07-07', 'Fort', 'Galle', 'Fort', 'Two Day Trip, One Night. Travel on Highway', 240, 72525.00, -1),
 (6, '2025-07-07', 6, '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 'One Day Trip', 278, 67250.00, 2),
 (7, '2025-07-07', 3, '2025-07-08', '2025-07-10', 'Kadawatha', 'Anuradhapura', 'Kadawatha', '2 Night Trip', 360, 320000.00, 2),
-(8, '2025-07-09', 4, '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 'Quick Travel To Minuwangoda', 75, 52000.00, 2);
+(8, '2025-07-09', 4, '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 'Quick Travel To Minuwangoda', 75, 52000.00, 2),
+(9, '2025-07-10', 2, '2025-07-10', '2025-07-11', 'Bambalapitiya', 'Horana', 'Bambalapitiya', '1 Night Tour', 85, 26000.00, 2),
+(10, '2025-07-10', 9, '2025-07-11', '2025-07-12', 'Pettah', 'Kandy', 'Pettah', 'One Night Tour', 340, 347000.00, 2),
+(11, '2025-07-10', 8, '2025-07-14', '2025-07-17', 'Boralesgamuwa', 'Trincomalee', 'Boralesgamuwa', '3 Night Tour', 610, 452000.00, 2);
 
 -- --------------------------------------------------------
 
@@ -769,7 +838,11 @@ INSERT INTO `quotation_item` (`item_id`, `quotation_id`, `category_id`, `quantit
 (9, 5, 2, 1),
 (10, 6, 3, 1),
 (11, 7, 2, 3),
-(12, 8, 2, 1);
+(12, 8, 2, 1),
+(13, 9, 3, 1),
+(14, 10, 1, 1),
+(15, 10, 3, 4),
+(16, 11, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -893,9 +966,9 @@ INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `se
 (19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, 3, 3, NULL, 3),
 (20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 1),
 (21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 1),
-(22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', NULL, 2, 3, NULL, 1),
+(22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', 9, 3, 3, NULL, 1),
 (23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
-(24, 4, 1, 2, '2025-06-27', '2025-07-02', NULL, 117520, 32363.65, 'svsinv_6864c1bc631bf.pdf', 'OKL55422', NULL, 2, 3, NULL, 3),
+(24, 4, 1, 2, '2025-06-27', '2025-07-02', NULL, 117520, 32363.65, 'svsinv_6864c1bc631bf.pdf', 'OKL55422', 9, 3, 3, NULL, 3),
 (25, 19, 1, 2, '2025-06-28', '2025-06-28', NULL, 3241, 7053.78, 'svsinv_685f64e2cd0c6.pdf', '458IL4', NULL, 2, 3, NULL, 1);
 
 -- --------------------------------------------------------
@@ -1084,7 +1157,11 @@ INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destinat
 (2, 3, '2025-07-10', '2025-07-12', 'Ella', 1),
 (3, 4, '2025-07-08', '2025-07-08', 'Kandy', 3),
 (4, 5, '2025-07-08', '2025-07-10', 'Anuradhapura', 3),
-(5, 6, '2025-07-09', '2025-07-09', 'Minuwangoda', 3);
+(5, 6, '2025-07-09', '2025-07-09', 'Minuwangoda', 3),
+(6, 2, '2025-07-10', '2025-07-12', 'Kandy', 3),
+(7, 7, '2025-07-10', '2025-07-11', 'Horana', 1),
+(8, 8, '2025-07-11', '2025-07-12', 'Kandy', 1),
+(9, 9, '2025-07-14', '2025-07-17', 'Trincomalee', 1);
 
 -- --------------------------------------------------------
 
@@ -1113,7 +1190,10 @@ INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `pa
 (1, 'TST-RCPT-1', 1, '2025-07-04', 78350.00, 'cash', '1751610219_Test PDF.pdf', 3, NULL, -1),
 (3, 'ST-RT-D073-1', 1, '2025-07-06', 80250.25, 'transfer', '1751815862_Test PDF.pdf', 3, NULL, -1),
 (4, 'ST-RT-17E0-1', 1, '2025-07-06', 76999.31, 'transfer', '1751816409_Test PDF.pdf', 3, 3, 2),
-(5, 'ST-RT-3469-5', 5, '2025-07-10', 322000.00, 'cash', '1752147768_Test PDF.pdf', 3, NULL, 1);
+(5, 'ST-RT-3469-5', 5, '2025-07-10', 322000.00, 'cash', '1752147768_Test PDF.pdf', 3, NULL, 1),
+(6, 'ST-RT-E094-2', 2, '2025-07-10', 95000.00, 'transfer', '1752155314_Test PDF.pdf', 3, NULL, 1),
+(7, 'ST-RT-A670-4', 4, '2025-07-10', 68000.00, 'transfer', '1752155335_Test PDF.pdf', 3, NULL, 1),
+(8, 'ST-RT-B0B3-6', 6, '2025-07-10', 53000.00, 'cash', '1752155404_Test PDF.pdf', 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1513,25 +1593,25 @@ ALTER TABLE `checklist_item`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `function`
@@ -1549,13 +1629,13 @@ ALTER TABLE `grn`
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_response`
 --
 ALTER TABLE `inspection_checklist_response`
-  MODIFY `response_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `response_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_template`
@@ -1585,7 +1665,7 @@ ALTER TABLE `part_transaction`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `purchase_order`
@@ -1597,13 +1677,13 @@ ALTER TABLE `purchase_order`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -1651,13 +1731,13 @@ ALTER TABLE `tender`
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
