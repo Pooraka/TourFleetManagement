@@ -20,7 +20,7 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-user.php" class="list-group-item" style="display:<?php echo checkPermissions(46); ?>">
+                <a href="add-user.php" class="list-group-item" style="display:<?php echo checkPermissions(148); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add User
                 </a>
