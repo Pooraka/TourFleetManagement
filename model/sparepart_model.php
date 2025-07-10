@@ -20,6 +20,8 @@ class SparePart{
         
         $result =$stmt->get_result();
         
+        $stmt->close();
+        
         return $result->num_rows > 0;
     }
     
@@ -40,6 +42,9 @@ class SparePart{
         $stmt->execute();
         
         $transactionId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $transactionId;
         
     }
@@ -69,6 +74,9 @@ class SparePart{
         $stmt->execute();
         
         $partId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $partId;
     }
     
@@ -85,10 +93,19 @@ class SparePart{
     public function getSparePart($partId){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "SELECT * FROM spare_part WHERE part_id='$partId'";
-        
-        $result = $con->query($sql) or die($con->error);  
+
+        $sql = "SELECT * FROM spare_part WHERE part_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $partId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -113,6 +130,8 @@ class SparePart{
         
         $result = $stmt->get_result();
         
+        $stmt->close();
+        
         return $result->num_rows > 0;
     }
     
@@ -127,6 +146,8 @@ class SparePart{
         $stmt->bind_param("ssisi",$partNumber,$partName,$reorderLevel,$description,$partId);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     /**
@@ -155,6 +176,9 @@ class SparePart{
         $stmt->execute();
         
         $transactionId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $transactionId;
     }
     
@@ -170,9 +194,15 @@ class SparePart{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
-        
-        $con->query($sql) or die($con->error);    
+        $sql = "UPDATE spare_part SET quantity_on_hand=? WHERE part_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $quantityOnHand, $partId); 
+
+        $stmt->execute();
+
+        $stmt->close();   
     }
     
     /**
@@ -201,6 +231,9 @@ class SparePart{
         $stmt->execute();
         
         $transactionId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $transactionId;
     }
     
@@ -208,9 +241,15 @@ class SparePart{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
-        
-        $con->query($sql) or die($con->error);    
+        $sql = "UPDATE spare_part SET quantity_on_hand=? WHERE part_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $quantityOnHand, $partId); 
+
+        $stmt->execute();
+
+        $stmt->close();   
     }
     
     /**
@@ -238,16 +277,25 @@ class SparePart{
         $stmt->execute();
         
         $transactionId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $transactionId;
     }
     
     public function removeSpareParts($partId,$quantityOnHand){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE spare_part SET quantity_on_hand='$quantityOnHand' WHERE part_id='$partId'";
-        
-        $con->query($sql) or die($con->error);    
+
+        $sql = "UPDATE spare_part SET quantity_on_hand=? WHERE part_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $quantityOnHand, $partId); 
+
+        $stmt->execute();
+
+        $stmt->close();  
     }
     
     public function getAllTransactions(){
