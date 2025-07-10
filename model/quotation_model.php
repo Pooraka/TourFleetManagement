@@ -23,12 +23,9 @@ class Quotation{
         $stmt->bind_param($type,$issuedDate,$customerId,$startDate,$endDate,$pickup,
                 $destination,$dropoff,$description,$roundTripMileage,$amount);
         
-        if($stmt->execute()){
-            return $con->insert_id;
-        }else{
-            return false;
-        }
+        $stmt->execute();
         
+        return $con->insert_id;
     }
     
     public function addQuotationItems($quotationId, $categoryId,$quantity){
@@ -42,6 +39,8 @@ class Quotation{
         $stmt->bind_param("iii",$quotationId,$categoryId,$quantity);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
     
     public function getPendingQuotations(){
@@ -76,6 +75,8 @@ class Quotation{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -93,6 +94,8 @@ class Quotation{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -100,8 +103,14 @@ class Quotation{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE quotation SET quotation_status='$status' WHERE quotation_id='$quotationId'";
-        
-        $con->query($sql) or die ($con->error);
+        $sql = "UPDATE quotation SET quotation_status=? WHERE quotation_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $status, $quotationId); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
 }
