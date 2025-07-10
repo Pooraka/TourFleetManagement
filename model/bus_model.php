@@ -32,10 +32,19 @@ class Bus{
     public function checkIfBusIsAlreadyExist($vehicleNo){
         
         $con = $GLOBALS["con"];
-        
-        $sql="SELECT * FROM bus WHERE vehicle_no = '$vehicleNo'";
-        
-        $result = $con->query($sql) or die ($con->error);
+    
+        $sql="SELECT * FROM bus WHERE vehicle_no = ?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("s", $vehicleNo);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -68,19 +77,31 @@ class Bus{
     public function updateBusMileage($busId, $currentMileage, $currentMileageAsAt){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE bus SET current_mileage_km = '$currentMileage', current_mileage_as_at = '$currentMileageAsAt' WHERE bus_id ='$busId'";
-        
-        $con->query($sql) or die ($con->error);
+    
+        $sql = "UPDATE bus SET current_mileage_km = ?, current_mileage_as_at = ? WHERE bus_id =?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("isi", $currentMileage, $currentMileageAsAt, $busId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
-    public function removeBus($busId,$user_id){
+    public function removeBus($busId,$userId){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE bus SET bus_status = '-1', removed_by = '$user_id' WHERE bus_id = '$busId'";
-        
-        $con->query($sql) or die ($con->error);
+    
+        $sql = "UPDATE bus SET bus_status = '-1', removed_by = ? WHERE bus_id = ?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii",$userId, $busId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getBus($busId){
@@ -105,12 +126,18 @@ class Bus{
     public function updateBus($busId, $category, $vehicleNo, $make, $model, $year, $capacity, $ac, $serviceIntervalKM, $lastServiceKM, $serviceIntervalMonths, $lastServiceDate){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE bus SET category_id='$category', vehicle_no='$vehicleNo', make='$make', model='$model', year='$year', capacity='$capacity' "
-                . ", ac_available='$ac', service_interval_km='$serviceIntervalKM', last_service_mileage_km='$lastServiceKM', service_interval_months='$serviceIntervalMonths' "
-                . ", last_service_date='$lastServiceDate' WHERE bus_id ='$busId' ";
-        
-        $con->query($sql) or die ($con->error);
+    
+        $sql = "UPDATE bus SET category_id=?, vehicle_no=?, make=?, model=?, year=?, capacity=? "
+                . ", ac_available=?, service_interval_km=?, last_service_mileage_km=?, service_interval_months=? "
+                . ", last_service_date=? WHERE bus_id =?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("isssiisiiisi", $category, $vehicleNo, $make, $model, $year, $capacity, $ac, $serviceIntervalKM, $lastServiceKM, $serviceIntervalMonths, $lastServiceDate, $busId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getAllBusesToService(){
@@ -145,11 +172,17 @@ class Bus{
     public function updateServicedBus($busId,$lastServiceMileage,$lastServiceDate){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE bus SET bus_status='1', last_service_mileage_km='$lastServiceMileage', "
-                . "last_service_date='$lastServiceDate' WHERE bus_id='$busId'";
-        
-        $con->query($sql) or die ($con->error);
+    
+        $sql = "UPDATE bus SET bus_status='1', last_service_mileage_km=?, "
+                . "last_service_date=? WHERE bus_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("iis", $lastServiceMileage, $lastServiceDate, $busId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getOperationalBuses(){
@@ -200,6 +233,8 @@ class Bus{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
 
@@ -265,6 +300,8 @@ class Bus{
         $stmt->execute();
 
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
     
@@ -293,6 +330,8 @@ class Bus{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
 }

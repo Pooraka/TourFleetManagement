@@ -8,12 +8,21 @@ class Bid{
     
     public function getBidsOfATender($tenderId){
         
-        $con = $GLOBALS["con"];
+        $con = $GLOBALS["con"];        
         
         $sql = "SELECT b.*, t.*, s.* FROM bid b, tender t, supplier s WHERE b.tender_id=t.tender_id AND b.supplier_id=s.supplier_id "
-                . "AND b.bid_status!='-1' AND b.tender_id='$tenderId'";
+            . "AND b.bid_status!='-1' AND b.tender_id=?";
         
-        $result = $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $tenderId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
     
@@ -30,16 +39,25 @@ class Bid{
         $stmt->execute();
         
         $bidId = $con->insert_id;
+        
+        $stmt->close();
+        
         return $bidId;
     }
     
     public function changeBidStatus($bidId,$status){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE bid SET bid_status='$status' WHERE bid_id='$bidId'";
-        
-        $con->query($sql) or die($con->error);
+    
+        $sql = "UPDATE bid SET bid_status=? WHERE bid_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $status, $bidId);
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     public function getAwardedBids(){
@@ -56,11 +74,20 @@ class Bid{
     public function getBid($bidId){
         
         $con = $GLOBALS["con"];
-        
+    
         $sql = "SELECT b.*, t.*, s.* FROM bid b, tender t, supplier s WHERE b.tender_id=t.tender_id AND b.supplier_id=s.supplier_id "
-                . "AND b.bid_id='$bidId'";
-        
-        $result = $con->query($sql) or die($con->error);
+                . "AND b.bid_id=?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $bidId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
 
