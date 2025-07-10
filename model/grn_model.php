@@ -20,6 +20,8 @@ class GRN{
         $stmt->execute();
         
         $grnId = $con->insert_id;
+        
+        $stmt->close();
         return $grnId;
     }
     
@@ -50,6 +52,8 @@ class GRN{
         $stmt->execute();
         
         $result = $stmt->get_result();
+        
+        $stmt->close();
         return $result;
     }
 }
