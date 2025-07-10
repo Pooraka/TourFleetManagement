@@ -25,17 +25,21 @@ $pendingQuotationResult = $quotationObj->getPendingQuotations();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="generate-quotation.php" class="list-group-item">
+                <a href="generate-quotation.php" class="list-group-item" style="display:<?php echo checkPermissions(76); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Generate Quotation
                 </a>
-                <a href="pending-quotations.php" class="list-group-item">
+                <a href="pending-quotations.php" class="list-group-item" style="display:<?php echo checkPermissions(77); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Quotations
                 </a>
-                <a href="pending-customer-invoices.php" class="list-group-item">
+                <a href="pending-customer-invoices.php" class="list-group-item" style="display:<?php echo checkPermissions(149); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Invoice
+                    Pending Invoices
+                </a>
+                <a href="customer-receipts.php" class="list-group-item" style="display:<?php echo checkPermissions(81); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Customer Receipts
                 </a>
             </ul>
         </div>
@@ -91,15 +95,17 @@ $pendingQuotationResult = $quotationObj->getPendingQuotations();
                                 <td><?php echo $pendingQuotationRow['issued_date'];?></td>
                                 <td>
                                     <a href="../reports/quotation.php?quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
-                                       class="btn btn-xs btn-info" style="margin:2px" target="_blank">
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(78);?>" target="_blank">
                                         <span class="glyphicon glyphicon-search"></span>                                                  
                                         View
                                     </a>
-                                    <a href="../controller/customer_invoice_controller.php?status=generate_customer_invoice&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="../controller/customer_invoice_controller.php?status=generate_customer_invoice&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(79);?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Generate Invoice
                                     </a>
-                                    <a href="../controller/quotation_controller.php?status=cancel_quotation&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/quotation_controller.php?status=cancel_quotation&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(80);?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel
                                     </a>
