@@ -137,7 +137,7 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                                     Award Bid
                                 </a>
                                 <a href="../controller/bid_controller.php?status=remove_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" 
-                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(73); ?>">
+                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(73); ?>">git stat
                                     <span class="glyphicon glyphicon-remove"></span>
                                     Remove
                                 </a>
