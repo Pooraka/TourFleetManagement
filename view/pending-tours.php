@@ -26,13 +26,17 @@ $tourResult = $tourObj->getOngoingTours();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-tour.php" class="list-group-item">
+                <a href="add-tour.php" class="list-group-item" style="display:<?php echo checkPermissions(82); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Tour
                 </a>
-                <a href="pending-tours.php" class="list-group-item">
+                <a href="pending-tours.php" class="list-group-item" style="display:<?php echo checkPermissions(83); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Tours
+                </a>
+                <a href="inspection-failed.php" class="list-group-item" style="display:<?php echo checkPermissions(87); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Pre-Tour Failed Inspections
                 </a>
             </ul>
         </div>
@@ -86,15 +90,18 @@ $tourResult = $tourObj->getOngoingTours();
                                 <td><?php echo $tourRow['destination'];?></td>
                                 <td style="white-space: nowrap"><?php echo $tourRow['invoice_number'];?></td>
                                 <td>
-                                    <a href="#" data-toggle="modal" onclick="loadTour(<?php echo $tourRow['tour_id'];?>)" data-target="#completeTourModal" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="#" data-toggle="modal" onclick="loadTour(<?php echo $tourRow['tour_id'];?>)" data-target="#completeTourModal" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(84); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Complete
                                     </a>
-                                    <a href="#" data-toggle="modal" onclick="loadTourBusList(<?php echo $tourRow['tour_id'];?>)" data-target="#bus_list" class="btn btn-xs btn-info" style="margin:2px">
+                                    <a href="#" data-toggle="modal" onclick="loadTourBusList(<?php echo $tourRow['tour_id'];?>)" data-target="#bus_list" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(85); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         View Assigned Buses
                                     </a>
-                                    <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel
                                     </a>

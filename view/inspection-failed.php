@@ -89,7 +89,8 @@ $inspectionFailedResult = $inspectionObj->getFailedInspectionsToAssignNewBus();
                                 <td><?php echo $inspectionFailedRow["vehicle_no"];?></td>
                                 <td><?php echo $inspectionFailedRow["final_comments"];?></td>
                                 <td>
-                                    <a href="reassign-bus.php?inspection_id=<?php echo base64_encode($inspectionFailedRow['inspection_id'])?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="reassign-bus.php?inspection_id=<?php echo base64_encode($inspectionFailedRow['inspection_id'])?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(88); ?>">
 <!--                                        <span class="glyphicon glyphicon-ok"></span>-->
                                         Assign A </br>Different Bus
                                     </a>

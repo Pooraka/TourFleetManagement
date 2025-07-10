@@ -20,15 +20,15 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-tour.php" class="list-group-item">
+                <a href="add-tour.php" class="list-group-item" style="display:<?php echo checkPermissions(82); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Tour
                 </a>
-                <a href="pending-tours.php" class="list-group-item">
+                <a href="pending-tours.php" class="list-group-item" style="display:<?php echo checkPermissions(83); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pending Tours
                 </a>
-                <a href="inspection-failed.php" class="list-group-item">
+                <a href="inspection-failed.php" class="list-group-item" style="display:<?php echo checkPermissions(87); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Pre-Tour Failed Inspections
                 </a>
