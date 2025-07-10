@@ -131,11 +131,13 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                             <td><?php echo "LKR ".number_format($bidRow['unit_price'],2);?></td>
                             <td><?php echo $bidRow['bid_date'];?></td>
                             <td>
-                                <a href="../controller/bid_controller.php?status=award_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                <a href="../controller/bid_controller.php?status=award_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" 
+                                   class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(72); ?>">
                                     <span class="glyphicon glyphicon-ok"></span>
                                     Award Bid
                                 </a>
-                                <a href="../controller/bid_controller.php?status=remove_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                <a href="../controller/bid_controller.php?status=remove_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" 
+                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(73); ?>">
                                     <span class="glyphicon glyphicon-remove"></span>
                                     Remove
                                 </a>

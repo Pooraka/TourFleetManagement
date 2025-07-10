@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 08:03 PM
+-- Generation Time: Jul 10, 2025 at 10:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -333,112 +333,117 @@ CREATE TABLE `function` (
   `function_id` int(10) NOT NULL,
   `function_name` varchar(50) NOT NULL,
   `module_id` int(10) NOT NULL,
-  `function_status` int(10) NOT NULL DEFAULT 1
+  `function_status` int(10) NOT NULL DEFAULT 1,
+  `done` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `function`
 --
 
-INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_status`) VALUES
-(49, 'Customer', 8, 1),
-(50, 'View Customers', 8, 1),
-(51, 'Edit Customer', 8, 1),
-(52, 'Remove Customer', 8, 1),
-(53, 'User', 10, 1),
-(54, 'View Users', 10, 1),
-(55, 'Generate User List', 10, 1),
-(56, 'View User', 10, 1),
-(57, 'Edit User', 10, 1),
-(58, 'Deactivate User', 10, 1),
-(59, 'Activate User', 10, 1),
-(60, 'Delete User', 10, 1),
-(61, 'Supplier', 3, 1),
-(62, 'View Suppliers', 3, 1),
-(63, 'Edit Supplier', 3, 1),
-(64, 'Activate Supplier', 3, 1),
-(65, 'Deactivate Supplier', 3, 1),
-(66, 'Remove Supplier', 3, 1),
-(67, 'Add Tender', 3, 1),
-(68, 'View Open Tenders', 3, 1),
-(69, 'View Tender Advertisement', 3, 1),
-(70, 'Add Bids', 3, 1),
-(71, 'View Bids', 3, 1),
-(72, 'Award Bid', 3, 1),
-(73, 'Remove Bid', 3, 1),
-(74, 'Cancel Tender', 3, 1),
-(75, 'Tender Status Report', 3, 1),
-(76, 'Generate Quotation', 1, 1),
-(77, 'View Pending Quotations', 1, 1),
-(78, 'View Quotation', 1, 1),
-(79, 'Generate Invoice', 1, 1),
-(80, 'Cancel Quotation', 1, 1),
-(81, 'View Customer Receipts', 1, 1),
-(82, 'Tour', 2, 1),
-(83, 'View Pending Tours', 2, 1),
-(84, 'Complete Tour', 2, 1),
-(85, 'View Assigned Buses', 2, 1),
-(86, 'Cancel Tour', 2, 1),
-(87, 'Pre-Tour Failed Inspections', 2, 1),
-(88, 'Re-assign Bus', 2, 1),
-(89, 'View Awarded Bids', 4, 1),
-(90, 'Generate PO', 4, 1),
-(91, 'Revoke Awarded Bid', 4, 1),
-(92, 'View Pending POs', 4, 1),
-(93, 'Approve PO', 4, 1),
-(94, 'Reject PO', 4, 1),
-(95, 'View Approved PO', 4, 1),
-(96, 'Add Supplier Invoice', 4, 1),
-(97, 'PO Status Report', 4, 1),
-(98, 'Register Spare Parts', 5, 1),
-(99, 'View Spare Part Types', 5, 1),
-(100, 'Edit Spare Part Type', 5, 1),
-(101, 'Add Spare Parts', 5, 1),
-(102, 'View GRNs', 5, 1),
-(103, 'View Spare Parts', 5, 1),
-(104, 'Issue Spare Parts To Bus', 5, 1),
-(105, 'Remove Spare Parts', 5, 1),
-(106, 'Spare Part Inventory Report', 5, 1),
-(107, 'View Spare Part Tranactions', 5, 1),
-(108, 'Add Bus', 6, 1),
-(109, 'View Buses', 6, 1),
-(110, 'View Bus', 6, 1),
-(111, 'Edit Bus', 6, 1),
-(112, 'Remove Bus', 6, 1),
-(113, 'Bus Fleet Details Report', 6, 1),
-(114, 'Add Service Station', 7, 1),
-(115, 'View Service Stations', 7, 1),
-(116, 'Edit Service Station', 7, 1),
-(117, 'Remove Service Station', 7, 1),
-(118, 'Initiate Service', 7, 1),
-(119, 'View Ongoing Services', 7, 1),
-(120, 'Complete Service', 7, 1),
-(121, 'Cancel Service', 7, 1),
-(122, 'View Service History', 7, 1),
-(123, 'View Service Record', 7, 1),
-(124, 'Edit Service Record', 7, 1),
-(125, 'Manage Checklist Items', 7, 1),
-(126, 'Register Checklist Item', 7, 1),
-(127, 'Edit Checklist Item', 7, 1),
-(128, 'Remove Checklist Item', 7, 1),
-(129, 'Manage Checklist Template', 7, 1),
-(130, 'View Pending Inspections', 7, 1),
-(131, 'Inspect Bus', 7, 1),
-(132, 'Upcoming Services Report', 7, 1),
-(133, 'Inspection Status Report', 7, 1),
-(134, 'View Pending Service Payments', 9, 1),
-(135, 'Make Service Payment', 9, 1),
-(136, 'View Pending Supplier Payments', 9, 1),
-(137, 'Make Supplier Payment', 9, 1),
-(138, 'Verify Customers Income', 9, 1),
-(139, 'View Invoice Issued', 9, 1),
-(140, 'View Receipt Issued', 9, 1),
-(141, 'View Payment Proof', 9, 1),
-(142, 'Verify Customer Payment', 9, 1),
-(143, 'Reject Customer Payment', 9, 1),
-(144, 'Supplier Monthly Payment Chart', 9, 1),
-(145, 'Customer Invoice Summary', 9, 1),
-(146, 'Service Cost Trend', 9, 1);
+INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_status`, `done`) VALUES
+(49, 'Customer', 8, 1, NULL),
+(50, 'View Customers', 8, 1, NULL),
+(51, 'Edit Customer', 8, 1, NULL),
+(52, 'Remove Customer', 8, 1, NULL),
+(53, 'User', 10, 1, NULL),
+(54, 'View Users', 10, 1, NULL),
+(55, 'Generate User List', 10, 1, NULL),
+(56, 'View User', 10, 1, NULL),
+(57, 'Edit User', 10, 1, NULL),
+(58, 'Deactivate User', 10, 1, NULL),
+(59, 'Activate User', 10, 1, NULL),
+(60, 'Delete User', 10, 1, NULL),
+(61, 'Add Supplier', 3, 1, 1),
+(62, 'View Suppliers', 3, 1, 1),
+(63, 'Edit Supplier', 3, 1, NULL),
+(64, 'Activate Supplier', 3, 1, NULL),
+(65, 'Deactivate Supplier', 3, 1, NULL),
+(66, 'Remove Supplier', 3, 1, NULL),
+(67, 'Add Tender', 3, 1, 1),
+(68, 'View Open Tenders', 3, 1, 1),
+(69, 'View Tender Advertisement', 3, 1, NULL),
+(70, 'Add Bids', 3, 1, NULL),
+(71, 'View Bids', 3, 1, NULL),
+(72, 'Award Bid', 3, 1, NULL),
+(73, 'Remove Bid', 3, 1, NULL),
+(74, 'Cancel Tender', 3, 1, NULL),
+(75, 'Tender Status Report', 3, 1, NULL),
+(76, 'Generate Quotation', 1, 1, 1),
+(77, 'View Pending Quotations', 1, 1, 1),
+(78, 'View Quotation', 1, 1, 1),
+(79, 'Generate Invoice', 1, 1, 1),
+(80, 'Cancel Quotation', 1, 1, 1),
+(81, 'View Customer Receipts', 1, 1, 1),
+(82, 'Add Tour', 2, 1, 1),
+(83, 'View Pending Tours', 2, 1, 1),
+(84, 'Complete Tour', 2, 1, 1),
+(85, 'View Assigned Buses', 2, 1, 1),
+(86, 'Cancel Tour', 2, 1, 1),
+(87, 'Pre-Tour Failed Inspections', 2, 1, 1),
+(88, 'Re-assign Bus', 2, 1, 1),
+(89, 'View Awarded Bids', 4, 1, NULL),
+(90, 'Generate PO', 4, 1, NULL),
+(91, 'Revoke Awarded Bid', 4, 1, NULL),
+(92, 'View Pending POs', 4, 1, NULL),
+(93, 'Approve PO', 4, 1, NULL),
+(94, 'Reject PO', 4, 1, NULL),
+(95, 'View Approved PO', 4, 1, NULL),
+(96, 'Add Supplier Invoice', 4, 1, NULL),
+(97, 'PO Status Report', 4, 1, NULL),
+(98, 'Register Spare Parts', 5, 1, NULL),
+(99, 'View Spare Part Types', 5, 1, NULL),
+(100, 'Edit Spare Part Type', 5, 1, NULL),
+(101, 'Add Spare Parts', 5, 1, NULL),
+(102, 'View GRNs', 5, 1, NULL),
+(103, 'View Spare Parts', 5, 1, NULL),
+(104, 'Issue Spare Parts To Bus', 5, 1, NULL),
+(105, 'Remove Spare Parts', 5, 1, NULL),
+(106, 'Spare Part Inventory Report', 5, 1, NULL),
+(107, 'View Spare Part Tranactions', 5, 1, NULL),
+(108, 'Add Bus', 6, 1, NULL),
+(109, 'View Buses', 6, 1, NULL),
+(110, 'View Bus', 6, 1, NULL),
+(111, 'Edit Bus', 6, 1, NULL),
+(112, 'Remove Bus', 6, 1, NULL),
+(113, 'Bus Fleet Details Report', 6, 1, NULL),
+(114, 'Add Service Station', 7, 1, NULL),
+(115, 'View Service Stations', 7, 1, NULL),
+(116, 'Edit Service Station', 7, 1, NULL),
+(117, 'Remove Service Station', 7, 1, NULL),
+(118, 'Initiate Service', 7, 1, NULL),
+(119, 'View Ongoing Services', 7, 1, NULL),
+(120, 'Complete Service', 7, 1, NULL),
+(121, 'Cancel Service', 7, 1, NULL),
+(122, 'View Service History', 7, 1, NULL),
+(123, 'View Service Record', 7, 1, NULL),
+(124, 'Edit Service Record', 7, 1, NULL),
+(125, 'Manage Checklist Items', 7, 1, NULL),
+(126, 'Register Checklist Item', 7, 1, NULL),
+(127, 'Edit Checklist Item', 7, 1, NULL),
+(128, 'Remove Checklist Item', 7, 1, NULL),
+(129, 'Manage Checklist Template', 7, 1, NULL),
+(130, 'View Pending Inspections', 7, 1, NULL),
+(131, 'Inspect Bus', 7, 1, NULL),
+(132, 'Upcoming Services Report', 7, 1, NULL),
+(133, 'Inspection Status Report', 7, 1, NULL),
+(134, 'View Pending Service Payments', 9, 1, NULL),
+(135, 'Make Service Payment', 9, 1, NULL),
+(136, 'View Pending Supplier Payments', 9, 1, NULL),
+(137, 'Make Supplier Payment', 9, 1, NULL),
+(138, 'Verify Customers Income', 9, 1, NULL),
+(139, 'View Invoice Issued', 9, 1, NULL),
+(140, 'View Receipt Issued', 9, 1, NULL),
+(141, 'View Payment Proof', 9, 1, NULL),
+(142, 'Verify Customer Payment', 9, 1, NULL),
+(143, 'Reject Customer Payment', 9, 1, NULL),
+(144, 'Supplier Monthly Payment Chart', 9, 1, NULL),
+(145, 'Customer Invoice Summary', 9, 1, NULL),
+(146, 'Service Cost Trend', 9, 1, NULL),
+(147, 'Revenue By Customer', 8, 1, NULL),
+(148, 'Add User', 10, 1, NULL),
+(149, 'View Pending Invoices', 1, 1, 1),
+(150, 'View Tender Status Report', 3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -450,6 +455,113 @@ CREATE TABLE `function_user` (
   `function_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `function_user`
+--
+
+INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
+(49, 3),
+(50, 3),
+(51, 3),
+(52, 3),
+(53, 3),
+(54, 3),
+(55, 3),
+(56, 3),
+(57, 3),
+(58, 3),
+(59, 3),
+(60, 3),
+(61, 3),
+(62, 3),
+(63, 3),
+(64, 3),
+(65, 3),
+(66, 3),
+(67, 3),
+(68, 3),
+(69, 3),
+(70, 3),
+(71, 3),
+(72, 3),
+(73, 3),
+(74, 3),
+(75, 3),
+(76, 3),
+(77, 3),
+(78, 3),
+(79, 3),
+(80, 3),
+(81, 3),
+(82, 3),
+(83, 3),
+(84, 3),
+(85, 3),
+(86, 3),
+(87, 3),
+(88, 3),
+(89, 3),
+(90, 3),
+(91, 3),
+(92, 3),
+(93, 3),
+(94, 3),
+(95, 3),
+(96, 3),
+(97, 3),
+(98, 3),
+(99, 3),
+(100, 3),
+(101, 3),
+(102, 3),
+(103, 3),
+(104, 3),
+(105, 3),
+(106, 3),
+(107, 3),
+(108, 3),
+(109, 3),
+(110, 3),
+(111, 3),
+(112, 3),
+(113, 3),
+(114, 3),
+(115, 3),
+(116, 3),
+(117, 3),
+(118, 3),
+(119, 3),
+(120, 3),
+(121, 3),
+(122, 3),
+(123, 3),
+(124, 3),
+(125, 3),
+(126, 3),
+(127, 3),
+(128, 3),
+(129, 3),
+(130, 3),
+(131, 3),
+(132, 3),
+(133, 3),
+(134, 3),
+(135, 3),
+(136, 3),
+(137, 3),
+(138, 3),
+(139, 3),
+(140, 3),
+(141, 3),
+(142, 3),
+(143, 3),
+(144, 3),
+(145, 3),
+(146, 3),
+(147, 3),
+(148, 3),
+(149, 3);
 
 -- --------------------------------------------------------
 
@@ -701,7 +813,8 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (16, 4, 2, 5, NULL, 8, 'All done', 3, '2025-07-06 15:29:32'),
 (17, 4, 2, 7, NULL, 9, 'All received', 3, '2025-07-06 15:29:40'),
 (18, 2, 2, 20, NULL, 10, 'No Defects', 3, '2025-07-06 15:29:49'),
-(19, 4, 4, 10, NULL, NULL, 'Remove overloaded Stock', 3, '2025-07-09 15:25:54');
+(19, 4, 4, 10, NULL, NULL, 'Remove overloaded Stock', 3, '2025-07-09 15:25:54'),
+(20, 1, 4, 12, NULL, NULL, 'Faults Identified', 3, '2025-07-10 20:37:51');
 
 -- --------------------------------------------------------
 
@@ -861,7 +974,8 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-07-10');
+(1, 'ServiceDueBuses', '2025-07-10'),
+(2, 'SparePartsBelowReorderLevel', '2025-07-10');
 
 -- --------------------------------------------------------
 
@@ -1036,7 +1150,7 @@ CREATE TABLE `spare_part` (
 --
 
 INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
-(1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 25, 25, 1),
+(1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 13, 25, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 44, 5, 1),
 (3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 24, 10, 1),
 (4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 37, 15, 1);
@@ -1271,8 +1385,8 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
-(134, 1, '0778810839', 3),
-(135, 2, '0112729729', 3);
+(140, 1, '0778810839', 3),
+(141, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -1617,7 +1731,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -1659,7 +1773,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -1689,7 +1803,7 @@ ALTER TABLE `quotation_item`
 -- AUTO_INCREMENT for table `reminder`
 --
 ALTER TABLE `reminder`
-  MODIFY `reminder_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `reminder_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -1755,7 +1869,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
 
 --
 -- Constraints for dumped tables

@@ -96,16 +96,20 @@ $tenderResult = $tenderObj->getOpenTenders();
                                 <td style="white-space: nowrap"><?php echo $tenderRow["open_date"];?></td>
                                 <td style="white-space: nowrap"><?php echo $tenderRow["close_date"];?></td>
                                 <td>
-                                    <a href="../documents/tenderadvertisements/<?php echo $tenderRow["advertisement_file_name"];?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">                                                 
+                                    <a href="../documents/tenderadvertisements/<?php echo $tenderRow["advertisement_file_name"];?>" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(69); ?>" target="_blank">                                                 
                                         Advertisement
                                     </a>
-                                    <a href="add-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="add-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(70); ?>">
                                         Add Bids
                                     </a>
-                                    <a href="view-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-primary" style="margin:2px">
+                                    <a href="view-bids.php?tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" 
+                                       class="btn btn-xs btn-primary" style="margin:2px;display:<?php echo checkPermissions(71); ?>">
                                         View Bids
                                     </a>
-                                    <a href="../controller/tender_controller.php?status=cancel_tender&tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" class="btn btn-xs btn-danger" style="margin:2px">                                                 
+                                    <a href="../controller/tender_controller.php?status=cancel_tender&tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(151); ?>">                                                 
                                         Cancel
                                     </a>
                                 </td>

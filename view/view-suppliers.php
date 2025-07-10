@@ -24,13 +24,25 @@ $supplierResult = $supplierObj->getSuppliers();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-supplier.php" class="list-group-item">
+                <a href="add-supplier.php" class="list-group-item" style="display:<?php echo checkPermissions(61); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Supplier
                 </a>
-                <a href="view-suppliers.php" class="list-group-item">
+                <a href="view-suppliers.php" class="list-group-item" style="display:<?php echo checkPermissions(62); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Suppliers
+                </a>
+                <a href="add-tender.php" class="list-group-item" style="display:<?php echo checkPermissions(67); ?>">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    Add Tender
+                </a>
+                <a href="open-tenders.php" class="list-group-item" style="display:<?php echo checkPermissions(68); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Open Tenders
+                </a>
+                <a href="tender-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(150); ?>">
+                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    Tender Status Report
                 </a>
             </ul>
         </div>
@@ -92,22 +104,26 @@ $supplierResult = $supplierObj->getSuppliers();
                                 <td><?php echo $supplierRow['supplier_email'];?></td>
                                 <td><?php echo $supplierStatus;?></td>
                                 <td>
-                                    <a href="edit-supplier.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-warning" style="margin:2px">
+                                    <a href="edit-supplier.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
+                                       class="btn btn-xs btn-warning" style="margin:2px;display:<?php echo checkPermissions(63); ?>">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         Edit
                                     </a>
                                     <?php if($supplierRow['supplier_status']==1){?>
-                                    <a href="../controller/supplier_controller.php?status=deactivate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/supplier_controller.php?status=deactivate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(65); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Deactivate
                                     </a>
                                     <?php } elseif($supplierRow['supplier_status']==0){ ?>
-                                    <a href="../controller/supplier_controller.php?status=activate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="../controller/supplier_controller.php?status=activate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(64); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Activate
                                     </a>
                                     <?php } ?>
-                                    <a href="../controller/supplier_controller.php?status=remove_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/supplier_controller.php?status=remove_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(66); ?>">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         Remove
                                     </a>
