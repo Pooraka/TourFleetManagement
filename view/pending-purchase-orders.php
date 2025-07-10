@@ -34,9 +34,17 @@ $supplierObj = new Supplier();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="awarded-bids.php" class="list-group-item">
+                <a href="awarded-bids.php" class="list-group-item" style="display:<?php echo checkPermissions(89); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Awarded Bids
+                    View Awarded Bids
+                </a>
+                <a href="pending-purchase-orders.php" class="list-group-item" style="display:<?php echo checkPermissions(92); ?>">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    View Pending PO
+                </a>
+                <a href="po-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(97); ?>">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    PO Status Report
                 </a>
             </ul>
         </div>
@@ -116,17 +124,21 @@ $supplierObj = new Supplier();
                                 <td><?php echo $status;?></td>
                                 <td>
                                     <?php if($poRow['po_status']==1){ ?>
-                                    <a href="../controller/purchase_order_controller.php?status=approve_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="../controller/purchase_order_controller.php?status=approve_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(93); ?>">
                                     Approve
                                     </a>
-                                    <a href="../controller/purchase_order_controller.php?status=reject_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/purchase_order_controller.php?status=reject_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(94); ?>">
                                     Reject
                                     </a>
                                     <?php } elseif($poRow['po_status']==2){?>
-                                    <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">
+                                    <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(95); ?>" target="_blank">
                                     View
                                     </a>
-                                    <a href="#" data-toggle="modal" onclick="getSupplierInvoice(<?php echo $poRow['po_id'];?>)" data-target="#add_supplier_po" class="btn btn-xs btn-primary" style="margin:2px">
+                                    <a href="#" data-toggle="modal" onclick="getSupplierInvoice(<?php echo $poRow['po_id'];?>)" data-target="#add_supplier_po" 
+                                       class="btn btn-xs btn-primary" style="margin:2px;display:<?php echo checkPermissions(96); ?>">
                                     Add Supplier Invoice
                                     </a>
                                     <?php } ?>

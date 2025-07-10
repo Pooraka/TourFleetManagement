@@ -29,9 +29,17 @@ $tenderObj = new Tender();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="awarded-bids.php" class="list-group-item">
+                <a href="awarded-bids.php" class="list-group-item" style="display:<?php echo checkPermissions(89); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Awarded Bids
+                    View Awarded Bids
+                </a>
+                <a href="pending-purchase-orders.php" class="list-group-item" style="display:<?php echo checkPermissions(92); ?>">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    View Pending PO
+                </a>
+                <a href="po-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(97); ?>">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    PO Status Report
                 </a>
             </ul>
         </div>
@@ -91,11 +99,13 @@ $tenderObj = new Tender();
                                 <td><?php echo number_format($bidRow['unit_price'],2);?></td>
                                 <td><?php echo $bidRow['supplier_name'];?></td>
                                 <td>
-                                    <a href="../controller/purchase_order_controller.php?status=generate_po&tender_id=<?php echo base64_encode($tenderId);?>" class="btn btn-xs btn-success" style="margin:2px">                                                 
+                                    <a href="../controller/purchase_order_controller.php?status=generate_po&tender_id=<?php echo base64_encode($tenderId);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(90); ?>">                                                 
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Generate PO
                                     </a>
-                                    <a href="../controller/bid_controller.php?status=revoke_award&tender_id=<?php echo base64_encode($tenderId);?>&bid_id=<?php echo base64_encode($bidRow['bid_id']) ?>" class="btn btn-xs btn-danger" style="margin:2px">                                                 
+                                    <a href="../controller/bid_controller.php?status=revoke_award&tender_id=<?php echo base64_encode($tenderId);?>&bid_id=<?php echo base64_encode($bidRow['bid_id']) ?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(91); ?>">                                                 
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Revoke Award
                                     </a>

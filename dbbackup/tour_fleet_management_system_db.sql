@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 10:27 PM
+-- Generation Time: Jul 10, 2025 at 10:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -356,17 +356,17 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (60, 'Delete User', 10, 1, NULL),
 (61, 'Add Supplier', 3, 1, 1),
 (62, 'View Suppliers', 3, 1, 1),
-(63, 'Edit Supplier', 3, 1, NULL),
-(64, 'Activate Supplier', 3, 1, NULL),
-(65, 'Deactivate Supplier', 3, 1, NULL),
-(66, 'Remove Supplier', 3, 1, NULL),
+(63, 'Edit Supplier', 3, 1, 1),
+(64, 'Activate Supplier', 3, 1, 1),
+(65, 'Deactivate Supplier', 3, 1, 1),
+(66, 'Remove Supplier', 3, 1, 1),
 (67, 'Add Tender', 3, 1, 1),
 (68, 'View Open Tenders', 3, 1, 1),
-(69, 'View Tender Advertisement', 3, 1, NULL),
-(70, 'Add Bids', 3, 1, NULL),
-(71, 'View Bids', 3, 1, NULL),
-(72, 'Award Bid', 3, 1, NULL),
-(73, 'Remove Bid', 3, 1, NULL),
+(69, 'View Tender Advertisement', 3, 1, 1),
+(70, 'Add Bids', 3, 1, 1),
+(71, 'View Bids', 3, 1, 1),
+(72, 'Award Bid', 3, 1, 1),
+(73, 'Remove Bid', 3, 1, 1),
 (74, 'Cancel Tender', 3, 1, NULL),
 (75, 'Tender Status Report', 3, 1, NULL),
 (76, 'Generate Quotation', 1, 1, 1),
@@ -382,15 +382,15 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (86, 'Cancel Tour', 2, 1, 1),
 (87, 'Pre-Tour Failed Inspections', 2, 1, 1),
 (88, 'Re-assign Bus', 2, 1, 1),
-(89, 'View Awarded Bids', 4, 1, NULL),
-(90, 'Generate PO', 4, 1, NULL),
-(91, 'Revoke Awarded Bid', 4, 1, NULL),
-(92, 'View Pending POs', 4, 1, NULL),
-(93, 'Approve PO', 4, 1, NULL),
-(94, 'Reject PO', 4, 1, NULL),
-(95, 'View Approved PO', 4, 1, NULL),
-(96, 'Add Supplier Invoice', 4, 1, NULL),
-(97, 'PO Status Report', 4, 1, NULL),
+(89, 'View Awarded Bids', 4, 1, 1),
+(90, 'Generate PO', 4, 1, 1),
+(91, 'Revoke Awarded Bid', 4, 1, 1),
+(92, 'View Pending POs', 4, 1, 1),
+(93, 'Approve PO', 4, 1, 1),
+(94, 'Reject PO', 4, 1, 1),
+(95, 'View Approved PO', 4, 1, 1),
+(96, 'Add Supplier Invoice', 4, 1, 1),
+(97, 'PO Status Report', 4, 1, 1),
 (98, 'Register Spare Parts', 5, 1, NULL),
 (99, 'View Spare Part Types', 5, 1, NULL),
 (100, 'Edit Spare Part Type', 5, 1, NULL),
@@ -443,7 +443,8 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (147, 'Revenue By Customer', 8, 1, NULL),
 (148, 'Add User', 10, 1, NULL),
 (149, 'View Pending Invoices', 1, 1, 1),
-(150, 'View Tender Status Report', 3, 1, 1);
+(150, 'View Tender Status Report', 3, 1, 1),
+(151, 'Cancel Tender', 3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1731,7 +1732,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `grn`

@@ -20,15 +20,15 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="awarded-bids.php" class="list-group-item">
+                <a href="awarded-bids.php" class="list-group-item" style="display:<?php echo checkPermissions(89); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Awarded Bids
+                    View Awarded Bids
                 </a>
-                <a href="pending-purchase-orders.php" class="list-group-item">
+                <a href="pending-purchase-orders.php" class="list-group-item" style="display:<?php echo checkPermissions(92); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Pending PO
+                    View Pending PO
                 </a>
-                <a href="po-status-report.php" class="list-group-item">
+                <a href="po-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(97); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     PO Status Report
                 </a>
