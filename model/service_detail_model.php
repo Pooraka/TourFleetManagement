@@ -124,7 +124,7 @@ class ServiceDetail{
         
         $sql = "SELECT DATE_FORMAT(completed_date,'%Y-%m') AS month, SUM(cost) AS total_cost "
                 . "FROM service_detail "
-                . "WHERE service_status = ? AND DATE_FORMAT(completed_date, '%Y-%m') >= ? AND DATE_FORMAT(completed_date, '%Y-%m') <= ? "
+                . "WHERE service_status = ? AND DATE_FORMAT(completed_date, '%Y-%m') BETWEEN ? AND ? " 
                 . "GROUP BY month ORDER BY month ASC";
         
         $stmt = $con->prepare($sql); // Prepare the statement

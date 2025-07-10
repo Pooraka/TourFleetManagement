@@ -276,41 +276,40 @@ switch ($status){
     
     case "service_cost_trend":
         
+        header('Content-Type: application/json');
+        
         try{
         
-            $startMonth =  $_POST['start_month'];
-            $endMonth =  $_POST['end_month'];
+            $startMonth =  $_POST['startMonth'];
+            $endMonth =  $_POST['endMonth']; 
             
-            if($startMonth==""){
-                throw new Exception("Start month should be selected");
-            }
-            if($endMonth==""){
-                throw new Exception("End month should be selected");
+            if (empty($startMonth) || empty($endMonth)) {
+                throw new Exception("Start and End months are required.");
             }
             
-            if($startMonth>$endMonth){
-                throw new Exception("End month should be greater than start month");
+            if ($startMonth > $endMonth) {
+                throw new Exception("End month should be greater than start month.");
             }
             
-            ?>
+            $serviceCostTrendResult = $serviceDetailObj->getMonthlyServiceCostTrend($startMonth,$endMonth);
+
+            $months = [];
+            $costs = [];
             
-            <script>
-                window.location="../view/service-cost-trend.php?start_month=<?php echo $startMonth;?>&end_month=<?php echo $endMonth;?>";
-            </script>
+            if ($serviceCostTrendResult->num_rows > 0) {
+                while ($serviceCostTrendRow = $serviceCostTrendResult->fetch_assoc()) {
+                    
+                    array_push($months, $serviceCostTrendRow['month']);
+                    array_push($costs, $serviceCostTrendRow['total_cost']);
+                }
+            }
             
-            <?php
+            echo json_encode(['months' => $months, 'costs' => $costs]);
         
         }
         catch(Exception $e){
             
-            $msg= $e->getMessage();
-            $msg= base64_encode($msg);
-            ?>
-    
-            <script>
-                window.location="../view/service-cost-trend.php?msg=<?php echo $msg;?>";
-            </script>
-            <?php
+            echo json_encode(['error' => $e->getMessage()]);
             
         }
     

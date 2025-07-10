@@ -1,31 +1,9 @@
 <?php
 
 include_once '../commons/session.php';
-include_once '../model/service_detail_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
-
-$serviceDetailObj = new ServiceDetail();
-
-if(isset($_GET['start_month']) && isset($_GET['end_month'])){
-    
-    $startMonth = $_GET['start_month'];
-    $endMonth = $_GET['end_month'];
-    
-    $serviceDetailObj = new ServiceDetail();
-    $serviceCostTrendResult = $serviceDetailObj->getMonthlyServiceCostTrend($startMonth, $endMonth);
-    
-    $months =array();
-    $costs =array();
-    
-    while($serviceCostTrendRow =$serviceCostTrendResult->fetch_assoc()){
-        array_push($months,$serviceCostTrendRow['month']);
-        array_push($costs,$serviceCostTrendRow['total_cost']);
-    }
-    
-    $chartDataJson = json_encode(['months' => $months, 'costs' => $costs]);
-}
 
 ?>
 
@@ -68,7 +46,6 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
                 </a>
             </ul>
         </div>
-        <form action="../controller/service_detail_controller.php?status=service_cost_trend" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
                 <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
@@ -99,7 +76,7 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
                     <input type="month" class="form-control" name="end_month" id="end_month"/>
                 </div>
                 <div class="col-md-2">
-                    <input type="submit" value="Generate" class="btn btn-primary"/>
+                    <input type="button" value="Generate" class="btn btn-primary" id="generateChartBtn"/>
                 </div>
             </div>
             <div class="row">
@@ -107,50 +84,95 @@ if(isset($_GET['start_month']) && isset($_GET['end_month'])){
             </div>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
-                    <div id="trend">
-
-                    </div>
+                    <div id="trend" style="width:100%; height:400px;"> </div>
                 </div>
             </div>
         </div>
-        </form>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
-    
-    var chartData = <?php if(isset($chartDataJson)){echo $chartDataJson;} ?>;
-    
-    if(chartData && chartData.months && chartData.months.length > 0){
-        var data = {
-            x:chartData.months,
-            y:chartData.costs,
-            mode: 'lines+markers',  
-            type: 'scatter',
-            name: 'Maintenance Cost',
-            line: { color: '#17A2B8', width: 3 },
-            marker: { color: '#17A2B8', size: 8 },
-            hovertemplate:'<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
-        };
+    $(document).ready(function() {
 
-        var layout = {
-                title: { text:'Monthly Maintenance Cost Trend'},
-                xaxis: {
-                    title: { text:'Month'},
-                    type:'category' // put this to force to get the x axis the way author want
-                },
-                yaxis: {
-                    title: {text:'Total Cost (LKR)'},
-                    // Add a 'LKR ' prefix to the y-axis ticks
-                    // tickprefix: 'LKR ',
-                    separatethousands: true,
-                    rangemode:'tozero'
-                },
-                margin: { t: 50, b: 100, l: 80, r: 40 } // Adjust margins to prevent labels from being cut off
-        };
+        $('#generateChartBtn').on('click', function() {
+            
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var startMonth = $('#start_month').val();
+            var endMonth = $('#end_month').val();
+            
+            if (startMonth == ""){
+        
+                $("#msg").html("Start Month Cannot Be Empty!");
+                $("#msg").addClass("alert alert-danger");
+                return false;
+            }
+            if (endMonth == ""){
 
-        Plotly.newPlot('trend', [data], layout);
-    }
+                $("#msg").html("End Month Cannot Be Empty!");
+                $("#msg").addClass("alert alert-danger");
+                return false;
+            }
+            
+            if (startMonth > endMonth) {
+                
+                $("#msg").html("End month should be greater than start month");
+                $("#msg").addClass("alert alert-danger");
+                return false;
+            }
+            
+            var url = "../controller/service_detail_controller.php?status=service_cost_trend";
+            
+            $.post(url,{ startMonth: startMonth,endMonth: endMonth},function(data){
+                
+                $('#trend').empty();
+                
+                if (data.error) {
+                    
+                    $("#msg").html(data.error);
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                
+                if (data.months && data.months.length > 0) {
+                    
+                    var chartData = {
+                        x: data.months,
+                        y: data.costs,
+                        mode: 'lines+markers',
+                        type: 'scatter',
+                        name: 'Maintenance Cost',
+                        line: { color: '#17A2B8', width: 3 },
+                        marker: { color: '#17A2B8', size: 8 },
+                        hovertemplate: '<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
+                    };
+
+                    var layout = {
+                        title: { text:'Monthly Maintenance Cost Trend'},
+                        xaxis: {
+                            title: { text:'Month'},
+                            type:'category'
+                        },
+                        yaxis: {
+                            title: {text:'Total Cost (LKR)'},
+                            separatethousands: true,
+                            rangemode:'tozero'
+                        },
+                        margin: { t: 50, b: 100, l: 80, r: 40 }
+                    };
+
+                    Plotly.newPlot('trend', [chartData], layout);
+                } 
+                else{
+                        
+                    $('#trend').html('<div class="alert alert-info text-center">No service cost data available for the selected period.</div>');
+                }
+            
+            });
+            
+        });
+    });
 </script>
 </html>
