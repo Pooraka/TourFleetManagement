@@ -10,9 +10,18 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM tour WHERE invoice_id='$invoiceId' AND tour_status!='-1'";
-        
-        $result = $con->query($sql) or die($con->error);  
+        $sql = "SELECT * FROM tour WHERE invoice_id=? AND tour_status!='-1'";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $invoiceId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
         return $result;
     }
       
@@ -20,12 +29,18 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "INSERT INTO tour (invoice_id,start_date,end_date,destination) VALUES "
-                . "('$invoiceId','$startDate','$endDate','$destination')";
-        
-        $con->query($sql) or die($con->error);
-        
+        $sql = "INSERT INTO tour (invoice_id,start_date,end_date,destination) VALUES (?,?,?,?)";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("isss", $invoiceId, $startDate, $endDate, $destination); 
+
+        $stmt->execute();
+
         $tourId = $con->insert_id;
+
+        $stmt->close();
+
         return $tourId;
     }
     
@@ -33,9 +48,15 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "INSERT INTO bus_tour (bus_id,tour_id) VALUES ('$busId','$tourId')";
-        
-        $con->query($sql) or die($con->error);      
+        $sql = "INSERT INTO bus_tour (bus_id,tour_id) VALUES (?,?)";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $busId, $tourId); 
+
+        $stmt->execute();
+
+        $stmt->close();     
         
     }
     
@@ -53,10 +74,16 @@ class Tour{
     public function changeTourStatus($tourId,$status){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "UPDATE tour SET tour_status='$status' WHERE tour_id='$tourId'";
-        
-        $con->query($sql) or die($con->error);
+
+        $sql = "UPDATE tour SET tour_status=? WHERE tour_id=?";
+    
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("ii", $status, $tourId); 
+
+        $stmt->execute();
+
+        $stmt->close();
     }
     
     
@@ -65,9 +92,18 @@ class Tour{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email"
-                . " FROM tour t, customer_invoice i, customer c WHERE t.invoice_id=i.invoice_id AND i.customer_id=c.customer_id AND tour_id='$tourId'";
+                . " FROM tour t, customer_invoice i, customer c WHERE t.invoice_id=i.invoice_id AND i.customer_id=c.customer_id AND tour_id=?";
         
-        $result = $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$tourId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
         return $result;
     }
     
@@ -75,9 +111,18 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT b.* FROM bus b, bus_tour bt WHERE b.bus_id = bt.bus_id AND bt.tour_id='$tourId'";
+        $sql = "SELECT b.* FROM bus b, bus_tour bt WHERE b.bus_id = bt.bus_id AND bt.tour_id=?";
         
-        $result = $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$tourId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
         return $result;
         
     }
@@ -111,5 +156,7 @@ class Tour{
         $stmt->bind_param("iii",$newBusId,$tourId,$oldBusId);
         
         $stmt->execute();
+        
+        $stmt->close();
     }
 }
