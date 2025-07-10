@@ -115,11 +115,7 @@ class Inspection{
     public function getChecklistItemsInATemplate($templateId){
         
         $con = $GLOBALS["con"];
-        
-        $sql = "SELECT t.template_id, c.checklist_item_id, c.checklist_item_name, c.checklist_item_description "
-                . "FROM template_item_link t, checklist_item c WHERE t.checklist_item_id=c.checklist_item_id "
-                . "AND c.checklist_item_status='1' AND template_id='$templateId'";
-        
+
         $sql = "SELECT t.template_id, c.checklist_item_id, c.checklist_item_name, c.checklist_item_description "
             . "FROM template_item_link t, checklist_item c WHERE t.checklist_item_id=c.checklist_item_id "
             . "AND c.checklist_item_status='1' AND template_id=?";

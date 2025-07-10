@@ -42,10 +42,11 @@ if($serviceStatus!=2){ ?>
     
 }
 
-$statusDisplay = match ($serviceStatus) {
-    '-1' => 'Cancelled',
-    '1' => 'Ongoing',
-    '2' => 'Completed',
+$statusDisplay = match ((int)$serviceStatus) {
+    -1 => 'Cancelled',
+    1 => 'Ongoing',
+    2 => 'Completed',
+    3 => 'Completed & Paid',
 };
 
 $userObj = new User();

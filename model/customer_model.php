@@ -46,10 +46,10 @@ class Customer{
     public function addCustomerContact($customerId,$number,$type){
         
         $con = $GLOBALS["con"];
-        
-        $sql="INSERT INTO customer_contact (contact_type,contact_number,customer_id) VALUES ('$type','$number','$customerId')";
-        
+
         $sql="INSERT INTO customer_contact (contact_type,contact_number,customer_id) VALUES (?,?,?)";
+        
+        $stmt = $con->prepare($sql);
     
         $stmt->bind_param("isi", $type, $number, $customerId);
     

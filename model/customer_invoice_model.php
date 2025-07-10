@@ -90,7 +90,7 @@ class CustomerInvoice{
         
         $result = $stmt->get_result();
         
-        $stmt->colse();
+        $stmt->close();
         return $result;
         
     }
@@ -110,7 +110,7 @@ class CustomerInvoice{
         
         $result = $stmt->get_result();
         
-        $stmt->colse();
+        $stmt->close();
         return $result;
     }
     

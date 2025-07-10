@@ -10,10 +10,6 @@ class Login{
 
         $con=$GLOBALS["con"];
         $login_password = sha1($login_password);
-
-        $sql = "SELECT u.user_id, u.user_role, r.role_name, u.user_fname, u.user_lname, u.user_status, l.login_status, l.otp "
-                . "FROM user u, login l, role r WHERE u.user_id=l.user_id AND r.role_id=u.user_role AND "
-                . "l.login_username='$login_username' AND l.login_password='$login_password'";
         
         $sql = "SELECT u.user_id, u.user_role, r.role_name, u.user_fname, u.user_lname, u.user_status, l.login_status, l.otp "
             . "FROM user u, login l, role r WHERE u.user_id=l.user_id AND r.role_id=u.user_role AND "
@@ -106,10 +102,15 @@ class Login{
         
         $con=$GLOBALS["con"];
         
-        $sql="UPDATE login SET otp='', otp_expiry='', login_status='1' WHERE user_id='$user_id'";
+        $sql="UPDATE login SET otp='', otp_expiry='', login_status='1' WHERE user_id=?";
         
-        $con->query($sql) or die($con->error);
+        $stmt = $con->prepare($sql);
         
+        $stmt->bind_param("i",$user_id);
+        
+        $stmt->execute();
+        
+        $stmt->close();  
     }
     
     public function updatePassword($password, $user_id){

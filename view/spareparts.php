@@ -43,7 +43,7 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Spare Part Inventory Report
                 </a>
-                <a href="spare-part-transaction-history.php" class="list-group-item" target="_blank">
+                <a href="spare-part-transaction-history.php" class="list-group-item">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Spare Part Transactions
                 </a>

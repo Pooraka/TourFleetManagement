@@ -156,9 +156,6 @@ class PurchaseOrder{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT p.* FROM purchase_order p, supplier s, bid b "
-                . "WHERE p.bid_id=b.bid_id AND b.supplier_id=s.supplier_id AND s.supplier_id='$supplierId' AND p.po_status='5'";
-        
-        $sql = "SELECT p.* FROM purchase_order p, supplier s, bid b "
             . "WHERE p.bid_id=b.bid_id AND b.supplier_id=s.supplier_id AND s.supplier_id=? AND p.po_status='5'";
     
         $stmt = $con->prepare($sql);
