@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 05:17 PM
+-- Generation Time: Jul 10, 2025 at 05:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -575,24 +575,25 @@ CREATE TABLE `module` (
   `module_name` varchar(30) NOT NULL,
   `module_icon` varchar(50) NOT NULL,
   `module_url` text NOT NULL,
-  `module_status` int(10) NOT NULL DEFAULT 1
+  `module_status` int(10) NOT NULL DEFAULT 1,
+  `module_order` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `module`
 --
 
-INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`) VALUES
-(1, 'Booking management', 'booking.png', 'booking.php', 1),
-(2, 'Tours and tracking', 'tours.png', 'tour-management.php', 1),
-(3, 'Tender management', 'tender.png', 'tender.php', 1),
-(4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1),
-(5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1),
-(6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1),
-(7, 'Bus maintenance', 'busmaintenance.png', 'bus-maintenance.php', 1),
-(8, 'Customer', 'customer.png', 'customer.php', 1),
-(9, 'Finance management', 'finance.png', 'finance.php', 1),
-(10, 'User management', 'user.png', 'user.php', 1);
+INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`, `module_order`) VALUES
+(1, 'Booking management', 'booking.png', 'booking.php', 1, 2),
+(2, 'Tours and tracking', 'tours.png', 'tour-management.php', 1, 4),
+(3, 'Tender management', 'tender.png', 'tender.php', 1, 9),
+(4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1, 6),
+(5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1, 7),
+(6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1, 3),
+(7, 'Bus maintenance', 'busmaintenance.png', 'bus-maintenance.php', 1, 10),
+(8, 'Customer', 'customer.png', 'customer.php', 1, 1),
+(9, 'Finance management', 'finance.png', 'finance.php', 1, 8),
+(10, 'User management', 'user.png', 'user.php', 1, 5);
 
 -- --------------------------------------------------------
 

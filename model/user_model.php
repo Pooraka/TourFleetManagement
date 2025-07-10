@@ -20,7 +20,7 @@ class User{
 
         $con = $GLOBALS["con"];
 
-        $sql = "SELECT * FROM role_module r, module m WHERE r.module_id = m.module_id AND r.role_id =?";
+        $sql = "SELECT * FROM role_module r, module m WHERE r.module_id = m.module_id AND r.role_id =? ORDER BY module_order ASC";
         
         $stmt = $con->prepare($sql);
         
@@ -34,7 +34,7 @@ class User{
         
         return $result;
     }
-    
+ 
     public function getModuleFunctions($moduleId){
 
         $con = $GLOBALS["con"];
