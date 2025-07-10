@@ -7,6 +7,7 @@ include_once '../model/user_model.php';
 include_once '../model/reminder_model.php';
 include_once '../model/tour_model.php';
 include_once '../model/inspection_model.php';
+include_once '../model/sparepart_model.php';
 
 $dbCon= new DbConnection();
 
@@ -102,5 +103,36 @@ class BackgroundTask{
                 }
             }
         }   
+    }
+    
+    public function sendSparePartBelowReorderLevelReminder(){
+        
+        $userObj = new User();
+        $userResult = $userObj->getUsersToSendSparePartListBelowReorderLevel();
+        
+        $sparePartObj = new SparePart();
+        $sparePartResult = $sparePartObj->getSparePartsBelowReorderLevel();
+        
+        if($sparePartResult->num_rows==0){
+            return;
+        }
+        
+        $reminderObj = new Reminder();
+        $reminderResult = $reminderObj->getReminder(2);
+        $reminderRow = $reminderResult->fetch_assoc();
+        
+        $today = date('Y-m-d',time());
+        
+        if($reminderRow['sent_date']<$today){
+        
+            $mailObj = new Mailer();
+            $emailSent = $mailObj->sendSparePartListBelowReOrderLevel($userResult,$sparePartResult);
+            
+            if($emailSent){
+                $reminderObj->updateReminderSent(2, $today);
+            }
+        }
+        
+        return;
     }
 }

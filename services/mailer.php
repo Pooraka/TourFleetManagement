@@ -159,4 +159,80 @@ class Mailer{
          
         return $this->mail->send();
     }
+    
+    public function sendSparePartListBelowReOrderLevel($userResult,$sparePartResult){
+        
+        $this->mail->clearAddresses();
+        $this->mail->clearAttachments();
+        $this->mail->clearReplyTos();
+        $this->mail->clearAllRecipients();
+        $this->mail->clearCustomHeaders();
+        
+        $this->mail->isHTML(true);
+        $this->mail->Subject = 'Spare Part List Below Re-Order Level';
+        $logoCID ='Logo CID';
+        $this->mail->addEmbeddedImage($this->logoPath, $logoCID);
+        
+        while($userRow=$userResult->fetch_assoc()){
+            
+            $name = $userRow['user_fname']." ".$userRow['user_lname'];
+            $email = $userRow['user_email'];
+            
+            $this->mail->addAddress($email,$name);
+        }
+        
+        $htmlBody ='<html>
+                        <head>
+                            <title>Service Reminder</title>
+                        </head>
+                        <body style="background-color: #f4f4f4;">
+                            <div style="width:800px;margin: 20px auto;background-color: #ffffff;font-family: sans-serif;padding: 15px;border-top: 5px solid #007A7A;">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <img src="cid:'.$logoCID.'" alt="Skyline Tours Logo" style="max-width: 130px; height: auto; border:0;" />
+                                </div>
+
+                                <div style="background-color: #007A7A;color: #ffffff;padding: 15px; text-align: center; font-size: 18px;font-weight: bold;border-radius: 20px">
+                                    Reminder To Put Tenders For Spare Parts
+                                </div>
+                                <div style="padding: 25px;line-height: 1.6;">
+                                    <p>Dear Team,</br>This is a reminder that the following spare parts are below or at the re-order level:</p>  
+                                    <table style="width: 100%; border-collapse: collapse;text-align: left">
+                                        <thead>
+                                            <tr style="background-color: #007A7A;color:#ffffff;text-align:center">
+                                                <th style="border: 1px solid black;padding:5px">Spare Part Number</th>
+                                                <th style="border: 1px solid black;padding:5px">Spare Part Name </th>
+                                                <th style="border: 1px solid black;padding:5px">Description</th>
+                                                <th style="border: 1px solid black;padding:5px">Quantity On Hand</th>
+                                                <th style="border: 1px solid black;padding:5px">Re-order level</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>';
+        
+                                        while($sparePartRow = $sparePartResult->fetch_assoc()){
+                                            
+                                            $htmlBody.='<tr>
+                                                        <td style="border: 1px solid black;padding:5px">'.$sparePartRow['part_number'].'</td>
+                                                        <td style="border: 1px solid black;padding:5px">'.$sparePartRow['part_name'].'</td>
+                                                        <td style="border: 1px solid black;padding:5px">'.$sparePartRow['description'].'</td>
+                                                        <td style="border: 1px solid black;padding:5px;text-align:center">'.number_format($sparePartRow['quantity_on_hand']).'</td>
+                                                        <td style="border: 1px solid black;padding:5px;text-align:center">'.number_format($sparePartRow['reorder_level']).'</td>
+                                                        </tr>';
+                                        }
+
+                
+        $htmlBody.=                                '</tbody>
+                                    </table>
+                                    <p> Kindly call for tenders for the above spare parts. </br> Thank You.</p>
+                                </div>
+                                <div style="margin-top: 2px; padding-top: 2px; border-top: 1px solid #eeeeee; text-align: center; font-size: 0.85em; color: #777777;">
+                                    <p>Sent from Skyline Tours Fleet Management</p>
+                                </div>
+                            </div>
+                        </body>
+                    </html>';
+        
+        $this->mail->Body = $htmlBody;
+         
+        return $this->mail->send();
+    }
 }

@@ -307,4 +307,14 @@ class SparePart{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getSparePartsBelowReorderLevel(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM spare_part WHERE quantity_on_hand<=reorder_level AND part_status!=-1";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
