@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 04:28 PM
+-- Generation Time: Jul 10, 2025 at 05:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -50,7 +50,7 @@ INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date
 (7, 5, 5, 2850.00, '2025-07-06', 3),
 (8, 6, 5, 2230.00, '2025-07-06', 3),
 (9, 7, 1, 3650.00, '2025-07-06', 3),
-(10, 8, 3, 3625.00, '2025-07-09', 1);
+(10, 8, 3, 3625.00, '2025-07-09', 3);
 
 -- --------------------------------------------------------
 
@@ -268,7 +268,7 @@ INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, 
 (2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 1, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, NULL, NULL),
 (3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 2, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, NULL, NULL),
 (4, 'ST-IN-C6EE-6', 6, '2025-07-07', 67250.00, 6, 3, 'One Day Trip', '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 278, NULL, 280),
-(5, 'ST-IN-49CD-7', 7, '2025-07-07', 320000.00, 3, 3, '2 Night Trip', '2025-07-08', '2025-07-10', 'Kadawatha', 'Anuradhapura', 'Kadawatha', 360, NULL, 375),
+(5, 'ST-IN-49CD-7', 7, '2025-07-07', 320000.00, 3, 4, '2 Night Trip', '2025-07-08', '2025-07-10', 'Kadawatha', 'Anuradhapura', 'Kadawatha', 360, 322000.00, 375),
 (6, 'ST-IN-F6A6-8', 8, '2025-07-09', 52000.00, 4, 3, 'Quick Travel To Minuwangoda', '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 75, NULL, 80);
 
 -- --------------------------------------------------------
@@ -309,6 +309,110 @@ CREATE TABLE `function` (
   `module_id` int(10) NOT NULL,
   `function_status` int(10) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `function`
+--
+
+INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_status`) VALUES
+(49, 'Customer', 8, 1),
+(50, 'View Customers', 8, 1),
+(51, 'Edit Customer', 8, 1),
+(52, 'Remove Customer', 8, 1),
+(53, 'User', 10, 1),
+(54, 'View Users', 10, 1),
+(55, 'Generate User List', 10, 1),
+(56, 'View User', 10, 1),
+(57, 'Edit User', 10, 1),
+(58, 'Deactivate User', 10, 1),
+(59, 'Activate User', 10, 1),
+(60, 'Delete User', 10, 1),
+(61, 'Supplier', 3, 1),
+(62, 'View Suppliers', 3, 1),
+(63, 'Edit Supplier', 3, 1),
+(64, 'Activate Supplier', 3, 1),
+(65, 'Deactivate Supplier', 3, 1),
+(66, 'Remove Supplier', 3, 1),
+(67, 'Add Tender', 3, 1),
+(68, 'View Open Tenders', 3, 1),
+(69, 'View Tender Advertisement', 3, 1),
+(70, 'Add Bids', 3, 1),
+(71, 'View Bids', 3, 1),
+(72, 'Award Bid', 3, 1),
+(73, 'Remove Bid', 3, 1),
+(74, 'Cancel Tender', 3, 1),
+(75, 'Tender Status Report', 3, 1),
+(76, 'Generate Quotation', 1, 1),
+(77, 'View Pending Quotations', 1, 1),
+(78, 'View Quotation', 1, 1),
+(79, 'Generate Invoice', 1, 1),
+(80, 'Cancel Quotation', 1, 1),
+(81, 'View Customer Receipts', 1, 1),
+(82, 'Tour', 2, 1),
+(83, 'View Pending Tours', 2, 1),
+(84, 'Complete Tour', 2, 1),
+(85, 'View Assigned Buses', 2, 1),
+(86, 'Cancel Tour', 2, 1),
+(87, 'Pre-Tour Failed Inspections', 2, 1),
+(88, 'Re-assign Bus', 2, 1),
+(89, 'View Awarded Bids', 4, 1),
+(90, 'Generate PO', 4, 1),
+(91, 'Revoke Awarded Bid', 4, 1),
+(92, 'View Pending POs', 4, 1),
+(93, 'Approve PO', 4, 1),
+(94, 'Reject PO', 4, 1),
+(95, 'View Approved PO', 4, 1),
+(96, 'Add Supplier Invoice', 4, 1),
+(97, 'PO Status Report', 4, 1),
+(98, 'Register Spare Parts', 5, 1),
+(99, 'View Spare Part Types', 5, 1),
+(100, 'Edit Spare Part Type', 5, 1),
+(101, 'Add Spare Parts', 5, 1),
+(102, 'View GRNs', 5, 1),
+(103, 'View Spare Parts', 5, 1),
+(104, 'Issue Spare Parts To Bus', 5, 1),
+(105, 'Remove Spare Parts', 5, 1),
+(106, 'Spare Part Inventory Report', 5, 1),
+(107, 'View Spare Part Tranactions', 5, 1),
+(108, 'Add Bus', 6, 1),
+(109, 'View Buses', 6, 1),
+(110, 'View Bus', 6, 1),
+(111, 'Edit Bus', 6, 1),
+(112, 'Remove Bus', 6, 1),
+(113, 'Bus Fleet Details Report', 6, 1),
+(114, 'Add Service Station', 7, 1),
+(115, 'View Service Stations', 7, 1),
+(116, 'Edit Service Station', 7, 1),
+(117, 'Remove Service Station', 7, 1),
+(118, 'Initiate Service', 7, 1),
+(119, 'View Ongoing Services', 7, 1),
+(120, 'Complete Service', 7, 1),
+(121, 'Cancel Service', 7, 1),
+(122, 'View Service History', 7, 1),
+(123, 'View Service Record', 7, 1),
+(124, 'Edit Service Record', 7, 1),
+(125, 'Manage Checklist Items', 7, 1),
+(126, 'Register Checklist Item', 7, 1),
+(127, 'Edit Checklist Item', 7, 1),
+(128, 'Remove Checklist Item', 7, 1),
+(129, 'Manage Checklist Template', 7, 1),
+(130, 'View Pending Inspections', 7, 1),
+(131, 'Inspect Bus', 7, 1),
+(132, 'Upcoming Services Report', 7, 1),
+(133, 'Inspection Status Report', 7, 1),
+(134, 'View Pending Service Payments', 9, 1),
+(135, 'Make Service Payment', 9, 1),
+(136, 'View Pending Supplier Payments', 9, 1),
+(137, 'Make Supplier Payment', 9, 1),
+(138, 'Verify Customers Income', 9, 1),
+(139, 'View Invoice Issued', 9, 1),
+(140, 'View Receipt Issued', 9, 1),
+(141, 'View Payment Proof', 9, 1),
+(142, 'Verify Customer Payment', 9, 1),
+(143, 'Reject Customer Payment', 9, 1),
+(144, 'Supplier Monthly Payment Chart', 9, 1),
+(145, 'Customer Invoice Summary', 9, 1),
+(146, 'Service Cost Trend', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -601,7 +705,8 @@ INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quanti
 (5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', 7),
 (6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'Ijkn3', 8),
 (7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'c32v', NULL),
-(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 2, 3, '2025-07-06 18:14:46', 3, NULL, NULL, NULL, NULL);
+(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 2, 3, '2025-07-06 18:14:46', 3, NULL, NULL, NULL, NULL),
+(9, 'ST-PO-51FA-8', 10, 3, 2, 0, 3625.00, 7250.00, '2025-07-10', 1, 3, '2025-07-10 16:48:49', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -952,7 +1057,7 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (5, 4, 5, 'WB 5 Needed', '1751795211_Test PDF.pdf', '2025-07-06', '2025-07-06', 3, 3, '2025-07-06 09:46:51', 7),
 (6, 4, 7, '7WB Needed', '1751795869_Test PDF.pdf', '2025-07-06', '2025-07-06', 3, 3, '2025-07-06 09:57:49', 8),
 (7, 3, 12, '12 Items Needed Urgently', '1751805656_Test PDF.pdf', '2025-07-06', '2025-07-06', 3, 3, '2025-07-06 12:40:56', 9),
-(8, 3, 2, '2 Air Filters Required', '1752045968_Test PDF.pdf', '2025-07-09', '2025-07-10', 1, 3, '2025-07-09 07:26:08', NULL);
+(8, 3, 2, '2 Air Filters Required', '1752045968_Test PDF.pdf', '2025-07-09', '2025-07-10', 3, 3, '2025-07-09 07:26:08', 10);
 
 -- --------------------------------------------------------
 
@@ -1006,7 +1111,8 @@ CREATE TABLE `tour_income` (
 INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `payment_date`, `paid_amount`, `payment_method`, `payment_proof`, `received_by`, `verified_by`, `payment_status`) VALUES
 (1, 'TST-RCPT-1', 1, '2025-07-04', 78350.00, 'cash', '1751610219_Test PDF.pdf', 3, NULL, -1),
 (3, 'ST-RT-D073-1', 1, '2025-07-06', 80250.25, 'transfer', '1751815862_Test PDF.pdf', 3, NULL, -1),
-(4, 'ST-RT-17E0-1', 1, '2025-07-06', 76999.31, 'transfer', '1751816409_Test PDF.pdf', 3, 3, 2);
+(4, 'ST-RT-17E0-1', 1, '2025-07-06', 76999.31, 'transfer', '1751816409_Test PDF.pdf', 3, 3, 2),
+(5, 'ST-RT-3469-5', 5, '2025-07-10', 322000.00, 'cash', '1752147768_Test PDF.pdf', 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1430,7 +1536,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -1484,7 +1590,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `purchase_order`
 --
 ALTER TABLE `purchase_order`
-  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `po_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `quotation`
@@ -1550,7 +1656,7 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
