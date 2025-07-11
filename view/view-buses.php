@@ -25,17 +25,17 @@ $busResult = $busObj->getAllBuses();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-bus.php" class="list-group-item">
+                <a href="add-bus.php" class="list-group-item" style="display:<?php echo checkPermissions(108); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Bus
                 </a>
-                <a href="view-buses.php" class="list-group-item">
+                <a href="view-buses.php" class="list-group-item" style="display:<?php echo checkPermissions(109); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="generate-bus-reports.php" class="list-group-item">
+                <a href="../reports/bus-fleet-report.php" class="list-group-item" target="_blank" style="display:<?php echo checkPermissions(113); ?>">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate Bus Reports
+                    Bus Fleet Details Report
                 </a>
             </ul>
         </div>
@@ -104,15 +104,18 @@ $busResult = $busObj->getAllBuses();
                                         <td><?php echo $busRow['category_name'];?></td>
                                         <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
                                         <td>
-                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-info" style="margin:2px">
+                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-info" 
+                                               style="margin:2px;display:<?php echo checkPermissions(110); ?>">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
                                                 View
                                             </a>
-                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-warning" style="margin:2px">
+                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-warning" 
+                                               style="margin:2px;display:<?php echo checkPermissions(111); ?>">
                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                 Edit
                                             </a>
-                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                            <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" 
+                                               class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Remove
                                             </a> 

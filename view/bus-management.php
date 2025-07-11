@@ -19,15 +19,15 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-bus.php" class="list-group-item">
+                <a href="add-bus.php" class="list-group-item" style="display:<?php echo checkPermissions(108); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Bus
                 </a>
-                <a href="view-buses.php" class="list-group-item">
+                <a href="view-buses.php" class="list-group-item" style="display:<?php echo checkPermissions(109); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="../reports/bus-fleet-report.php" class="list-group-item" target="_blank">
+                <a href="../reports/bus-fleet-report.php" class="list-group-item" target="_blank" style="display:<?php echo checkPermissions(113); ?>">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Bus Fleet Details Report
                 </a>

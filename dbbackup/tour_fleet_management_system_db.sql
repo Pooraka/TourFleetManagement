@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2025 at 10:54 PM
+-- Generation Time: Jul 11, 2025 at 06:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -391,22 +391,22 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (95, 'View Approved PO', 4, 1, 1),
 (96, 'Add Supplier Invoice', 4, 1, 1),
 (97, 'PO Status Report', 4, 1, 1),
-(98, 'Register Spare Parts', 5, 1, NULL),
-(99, 'View Spare Part Types', 5, 1, NULL),
-(100, 'Edit Spare Part Type', 5, 1, NULL),
-(101, 'Add Spare Parts', 5, 1, NULL),
-(102, 'View GRNs', 5, 1, NULL),
-(103, 'View Spare Parts', 5, 1, NULL),
-(104, 'Issue Spare Parts To Bus', 5, 1, NULL),
-(105, 'Remove Spare Parts', 5, 1, NULL),
-(106, 'Spare Part Inventory Report', 5, 1, NULL),
-(107, 'View Spare Part Tranactions', 5, 1, NULL),
-(108, 'Add Bus', 6, 1, NULL),
-(109, 'View Buses', 6, 1, NULL),
-(110, 'View Bus', 6, 1, NULL),
-(111, 'Edit Bus', 6, 1, NULL),
-(112, 'Remove Bus', 6, 1, NULL),
-(113, 'Bus Fleet Details Report', 6, 1, NULL),
+(98, 'Register Spare Parts', 5, 1, 1),
+(99, 'View Spare Part Types', 5, 1, 1),
+(100, 'Edit Spare Part Type', 5, 1, 1),
+(101, 'Add Spare Parts', 5, 1, 1),
+(102, 'View GRNs', 5, 1, 1),
+(103, 'View Spare Parts', 5, 1, 1),
+(104, 'Issue Spare Parts To Bus', 5, 1, 1),
+(105, 'Remove Spare Parts', 5, 1, 1),
+(106, 'Spare Part Inventory Report', 5, 1, 1),
+(107, 'View Spare Part Tranactions', 5, 1, 1),
+(108, 'Add Bus', 6, 1, 1),
+(109, 'View Buses', 6, 1, 1),
+(110, 'View Bus', 6, 1, 1),
+(111, 'Edit Bus', 6, 1, 1),
+(112, 'Remove Bus', 6, 1, 1),
+(113, 'Bus Fleet Details Report', 6, 1, 1),
 (114, 'Add Service Station', 7, 1, NULL),
 (115, 'View Service Stations', 7, 1, NULL),
 (116, 'Edit Service Station', 7, 1, NULL),
@@ -739,7 +739,7 @@ INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, 
 (1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
 (4, 'clintb@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 3, 1, '', '0000-00-00 00:00:00'),
 (6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
-(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 1, '', '0000-00-00 00:00:00'),
+(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 2, '253075', '2025-07-11 11:11:47'),
 (9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -975,8 +975,8 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-07-10'),
-(2, 'SparePartsBelowReorderLevel', '2025-07-10');
+(1, 'ServiceDueBuses', '2025-07-11'),
+(2, 'SparePartsBelowReorderLevel', '2025-07-11');
 
 -- --------------------------------------------------------
 
