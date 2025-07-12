@@ -105,19 +105,24 @@ $userObj = new User();
                                 <td><?php echo $invoiceRow['payment_method'];?></td>
                                 <td><?php echo $userName;?></td>
                                 <td>
-                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceRow['invoice_id']);?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">
+                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceRow['invoice_id']);?>" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(139); ?>" target="_blank">
                                         View Invoice Issued
                                     </a>
-                                    <a href="../reports/receipt.php?invoice_id=<?php echo base64_encode($invoiceRow['invoice_id']);?>" class="btn btn-xs btn-info" style="margin:2px" target="_blank">
+                                    <a href="../reports/receipt.php?invoice_id=<?php echo base64_encode($invoiceRow['invoice_id']);?>" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(140); ?>" target="_blank">
                                         View Receipt Issued
                                     </a>
-                                    <a href="../documents/customerpaymentproofs/<?php echo $invoiceRow['payment_proof'];?>" class="btn btn-xs btn-primary" style="margin:2px" target="_blank">
+                                    <a href="../documents/customerpaymentproofs/<?php echo $invoiceRow['payment_proof'];?>" 
+                                       class="btn btn-xs btn-primary" style="margin:2px;display:<?php echo checkPermissions(141); ?>" target="_blank">
                                         View Payment Proof
                                     </a>
-                                    <a href="../controller/finance_controller.php?status=verify_accepted_payment&tour_income_id=<?php echo base64_encode($invoiceRow['tour_income_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="../controller/finance_controller.php?status=verify_accepted_payment&tour_income_id=<?php echo base64_encode($invoiceRow['tour_income_id']);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(142); ?>">
                                         Verify
                                     </a>
-                                    <a href="../controller/finance_controller.php?status=reject_accepted_payment&tour_income_id=<?php echo base64_encode($invoiceRow['tour_income_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <a href="../controller/finance_controller.php?status=reject_accepted_payment&tour_income_id=<?php echo base64_encode($invoiceRow['tour_income_id']);?>" 
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(143); ?>">
                                         Reject
                                     </a>
                                 </td>

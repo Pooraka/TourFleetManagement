@@ -76,7 +76,8 @@ $serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
                                 <td><?php echo $serviceDetailRow['service_count'];?></td>
                                 <td><?php echo number_format($serviceDetailRow['total_due'],2);?></td>
                                 <td>
-                                    <a href="make-service-payment.php?service_station_id=<?php echo base64_encode($serviceDetailRow['service_station_id']) ?>" class="btn btn-success" style="margin:2px">
+                                    <a href="make-service-payment.php?service_station_id=<?php echo base64_encode($serviceDetailRow['service_station_id']) ?>" 
+                                       class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(135); ?>">
                                         <span class="fas fa-dollar-sign"></span>
                                         Pay
                                     </a>

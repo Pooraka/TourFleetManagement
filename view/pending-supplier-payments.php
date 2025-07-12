@@ -84,7 +84,8 @@ $supplierResult = $supplierObj->getPaymentPendingSuppliers();
                                 <td><?php echo $supplierRow['po_count'];?> </td>
                                 <td><?php echo "LKR ".number_format($supplierRow['total_due'],2);?> </td>
                                 <td>
-                                    <a href="make-supplier-payment.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']) ?>" class="btn btn-success" style="margin:2px">
+                                    <a href="make-supplier-payment.php?supplier_id=<?php echo base64_encode($supplierRow['supplier_id']) ?>" 
+                                       class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(137); ?>">
                                         <span class="fas fa-dollar-sign"></span>
                                         Pay
                                     </a>

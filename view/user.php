@@ -24,11 +24,11 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add User
                 </a>
-                <a href="view-users.php" class="list-group-item">
+                <a href="view-users.php" class="list-group-item" style="display:<?php echo checkPermissions(54); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Users
                 </a>
-                <a href="user-list-report.php" target="_blank" class="list-group-item">
+                <a href="user-list-report.php" target="_blank" class="list-group-item" style="display:<?php echo checkPermissions(55); ?>">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Generate User List
                 </a>

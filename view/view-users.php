@@ -108,32 +108,32 @@ $userResult = $userObj->getAllUsers();
                                         <td><?php echo $userRow["user_email"];?></td>
                                         <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
                                         <td>
-                                            <a href="view-user.php?user_id=<?php echo $user_id;?>" class="btn btn-info" style="margin:2px">
+                                            <a href="view-user.php?user_id=<?php echo $user_id;?>" class="btn btn-info" style="margin:2px;display:<?php echo checkPermissions(56); ?>">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
                                                 View
                                             </a>
-                                            <a href="edit-user.php?user_id=<?php echo $user_id; ?>" class="btn btn-warning" style="margin:2px">
+                                            <a href="edit-user.php?user_id=<?php echo $user_id; ?>" class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(57); ?>">
                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                 Edit
                                             </a>
                                             <?php
                                             if($userRow["user_status"]==0){
                                             ?>
-                                            <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $user_id; ?>" class="btn btn-success" style="margin:2px">
+                                            <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $user_id; ?>" class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(53); ?>">
                                                 <span class="glyphicon glyphicon-ok"></span>
                                                 Activate
                                             </a>
                                             <?php
                                             }elseif ($userRow["user_status"]==1) {     
                                             ?>
-                                            <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
+                                            <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(58); ?>">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 Deactivate
                                             </a>
                                             <?php
                                             }
                                             ?>
-                                            <a href="../controller/user_controller.php?status=delete&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px">
+                                            <a href="../controller/user_controller.php?status=delete&user_id=<?php echo $user_id; ?>" class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(60); ?>">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                                 Delete
                                             </a> 
