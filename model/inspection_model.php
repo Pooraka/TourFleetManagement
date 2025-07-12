@@ -391,4 +391,83 @@ class Inspection{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getPastInspections(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection WHERE inspection_status IN (2,3,4)";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function getInspectionResponses($inspectionId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT r.*, c.* FROM inspection_checklist_response r JOIN checklist_item c ON c.checklist_item_id = r.checklist_item_id "
+                . "WHERE r.inspection_id = ?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$inspectionId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
+        return $result;
+    }
+    
+    public function getExistingInspectionResponseCount($inspectionId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection_checklist_response WHERE inspection_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$inspectionId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
+        return $result->num_rows;
+    }
+    
+    public function updateInspectionResponse($inspectionId,$checklistItemId,$responseValue,$itemComment){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE inspection_checklist_response SET response_value=? , item_comment=? WHERE inspection_id=? AND checklist_item_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("isii",$responseValue,$itemComment,$inspectionId,$checklistItemId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
+    }
+    
+    public function updateInspection($inspectionId,$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE inspection SET inspection_result=?, final_comments=?, inspected_by=?, inspection_status=? WHERE inspection_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("isiii",$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
+    }
 }

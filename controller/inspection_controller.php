@@ -378,4 +378,92 @@ switch ($status){
         }
         
     break;
+    
+    case "edit_inspection":
+        
+        try{
+        
+            $inspectionId = $_POST["inspection_id"];
+            $busId = $_POST["bus_id"];
+            $tourId = $_POST["tour_id"];
+            $inspectedBy = $userId;
+            $overallResult = $_POST['overall_result'];
+            
+            $existingChecklistItemCount = (int)$inspectionObj->getExistingInspectionResponseCount($inspectionId);
+            
+            if($overallResult==""){
+                throw new Exception("Overall Result Not Selected");
+            }
+            
+            $finalComments = $_POST['final_comments'];
+            
+            if($finalComments==""){
+                throw new Exception("Final Comments Were Not Entered");
+            }
+            
+            if(!isset($_POST['item_status'])){
+                
+                throw new Exception("Select Checklist Item Statuses");
+                
+            }else{
+                // Get the arrays of checklist item statuses and comments
+                $itemStatuses = $_POST['item_status'];
+            }
+            
+            $receivedChecklistItemCount = (int)count($itemStatuses);
+            
+            if($receivedChecklistItemCount!=$existingChecklistItemCount){
+                throw new Exception("Select Statuses For All Checklist Items");
+            }
+            
+            foreach ($itemStatuses as $itemId=>$status){
+                
+                if($status==0&&empty($_POST['item_comments'][$itemId])){
+                    throw new Exception("Provide Comments For Failed Checklist Items");
+                }
+            }
+            
+            foreach ($itemStatuses as $itemId=>$status){
+                
+                $itemComment = $_POST['item_comments'][$itemId];
+                
+                $inspectionObj->updateInspectionResponse($inspectionId,$itemId,$status,$itemComment);
+            }
+            
+            $inspectionStatus = ($overallResult==1)? 2:3;
+            
+            $inspectionObj->updateInspection($inspectionId,$overallResult,$finalComments,$inspectedBy,$inspectionStatus);
+            
+            //Change Bus Status To Inspection Failed, So This Will Be reflected To Service
+            if($overallResult==0){
+                $busObj->changeBusStatus($busId,4);
+            }elseif($overallResult==1){
+                $busObj->changeBusStatus($busId,1);
+            }
+            
+            $msg = "Inspection Edited Successfully";
+            $msg = base64_encode($msg);
+            ?>
+
+                <script>
+                    window.location="../view/past-inspections.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+
+            <?php
+        
+        }
+        catch(Exception $e){
+            
+            $inspectionId = base64_encode($inspectionId);
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/edit-inspection.php?msg=<?php echo $msg;?>&inspection_id=<?php echo$inspectionId;?>";
+            </script>
+            <?php
+        }
+        
+    break;
 }
