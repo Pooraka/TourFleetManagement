@@ -43,6 +43,10 @@ $userSession=$_SESSION["user"];
                     <span class="fas fa-chart-line"></span> &nbsp;
                     Service Cost trend
                 </a>
+                <a href="tour-income-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(155); ?>">
+                    <span class="fas fa-chart-line"></span> &nbsp;
+                    Tour Income trend
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

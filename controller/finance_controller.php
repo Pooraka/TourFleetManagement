@@ -343,4 +343,47 @@ switch ($status){
         }
         
     break;
+    
+    case "tour_income_trend":
+        
+        header('Content-Type: application/json');
+        
+        try{
+            
+            $startDate =  $_POST['startDate'];
+            $endDate =  $_POST['endDate'];
+            
+            if (empty($startDate) || empty($endDate)) {
+                throw new Exception("Start and End dates are required.");
+            }
+            
+            if ($startDate > $endDate) {
+                throw new Exception("End date should be greater than start date.");
+            }
+            
+            $tourIncomeResult = $financeObj->getTourIncomeForAPeriod($startDate, $endDate);
+            
+            $dates = [];
+            $income = [];
+            
+            if($tourIncomeResult->num_rows>0){
+                
+                while($tourIncomeRow = $tourIncomeResult->fetch_assoc()){
+                    
+                    array_push($dates,$tourIncomeRow["date"]);
+                    array_push($income,$tourIncomeRow["total_income"]);
+                }
+            }
+            
+            echo json_encode(['dates' => $dates, 'income' => $income]);
+            
+            
+            
+        }
+        catch(Excpetion $e){
+            
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+        
+    break;
 }
