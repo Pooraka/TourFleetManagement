@@ -116,11 +116,13 @@ $serviceStationObj = new ServiceStation();
                                 <td><?php echo $serviceStationName;?></td>
                                 <td><?php echo $serviceDetailRow['start_date'];?></td>
                                 <td>
-                                    <a href="complete-service.php?service_id=<?php echo $serviceId; ?>" class="btn btn-success" style="margin:2px">
+                                    <a href="complete-service.php?service_id=<?php echo $serviceId; ?>" 
+                                       class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(120); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Complete
                                     </a>
-                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" onclick="return confirm('Are you sure you want to cancel?')" class="btn btn-danger" style="margin:2px">
+                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" onclick="return confirm('Are you sure you want to cancel?')" 
+                                       class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(121); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Cancel
                                     </a> 

@@ -148,7 +148,7 @@ $userSession=$_SESSION["user"];
                         marker: { color: '#17A2B8', size: 8 },
                         hovertemplate: '<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
                     };
-
+                    
                     var layout = {
                         title: { text:'Monthly Maintenance Cost Trend'},
                         xaxis: {

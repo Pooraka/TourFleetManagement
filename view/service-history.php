@@ -122,12 +122,14 @@ $busObj = new Bus();
                                     <td><?php echo $serviceDetailRow['invoice_number'];?></td>
                                     <td><span class="<?php echo $statusDisplayClass;?>"><?php echo $statusDisplay;?></span> </td>
                                     <td>
-                                        <a href="view-service-record.php?service_id=<?php echo $serviceId; ?>" class="btn btn-info" style="margin:2px">
+                                        <a href="view-service-record.php?service_id=<?php echo $serviceId; ?>" 
+                                           class="btn btn-info" style="margin:2px;display:<?php echo checkPermissions(123); ?>">
                                             <span class="glyphicon glyphicon-search"></span>                                                  
                                             View
                                         </a>
                                         <?php if($serviceStatus==2){ ?>
-                                        <a href="edit-service-record.php?service_id=<?php echo $serviceId; ?>" class="btn btn-warning" style="margin:2px">
+                                        <a href="edit-service-record.php?service_id=<?php echo $serviceId; ?>" 
+                                           class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(124); ?>">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Edit
                                         </a>

@@ -111,7 +111,8 @@ $pendingInspectionsResult = $inspectionObj->getPendingInspections();
                                 <td><?php echo $pendingInspectionsRow['vehicle_no'];?></td>
                                 <td><?php echo $pendingInspectionsRow['destination'];?></td>
                                 <td>
-                                    <a href="inspect-bus.php?inspection_id=<?php echo base64_encode($pendingInspectionsRow['inspection_id'])?>" class="btn btn-success" style="margin:2px">
+                                    <a href="inspect-bus.php?inspection_id=<?php echo base64_encode($pendingInspectionsRow['inspection_id'])?>" 
+                                       class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(131); ?>">
 <!--                                        <span class="glyphicon glyphicon-ok"></span>-->
                                         Inspect
                                     </a>

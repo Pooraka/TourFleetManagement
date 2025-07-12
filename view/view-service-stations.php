@@ -126,11 +126,13 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                                     <td><?php echo $mobile; //No need to sanitize as data submitted to a restricted format?></td>
                                     <td><?php echo $landline; //No need to sanitize as data submitted to a restricted format?></td>
                                     <td>
-                                        <a href="edit-service-station.php?station_id=<?php echo $serviceStationId; ?>" class="btn btn-warning" style="margin:2px">
+                                        <a href="edit-service-station.php?station_id=<?php echo $serviceStationId; ?>" 
+                                           class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(116); ?>">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Edit
                                         </a>
-                                        <a href="../controller/service_station_controller.php?status=remove_station&station_id=<?php echo $serviceStationId; ?>" class="btn btn-danger" style="margin:2px">
+                                        <a href="../controller/service_station_controller.php?status=remove_station&station_id=<?php echo $serviceStationId; ?>" 
+                                           class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(117); ?>">
                                             <span class="glyphicon glyphicon-trash"></span>
                                             Remove
                                         </a> 

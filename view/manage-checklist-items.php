@@ -106,7 +106,7 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                             </div>
                             <div class="row">
                                 <div class="col-md-offset-3 col-md-6">
-                                    <input type="submit" class="btn btn-primary" value="Register" style="width:120px"/>
+                                    <input type="submit" class="btn btn-primary" value="Register" style="width:120px;display:<?php echo checkPermissions(126); ?>"/>
                                     <input type="reset" class="btn btn-danger" value="Reset" style="width:120px"/>
                                 </div>
                             </div>
@@ -151,11 +151,13 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                             <td><?php echo $inspectionRow['checklist_item_description'];?></td>
                             <td><?php echo $status;?></td>
                             <td>
-                                <a href="#" data-toggle="modal" data-target="#edit_checklist_item" onclick="getChecklistItemEditInfo(<?php echo $inspectionRow['checklist_item_id'];?>)" class="btn btn-xs btn-warning" style="margin:2px">
+                                <a href="#" data-toggle="modal" data-target="#edit_checklist_item" onclick="getChecklistItemEditInfo(<?php echo $inspectionRow['checklist_item_id'];?>)" 
+                                   class="btn btn-xs btn-warning" style="margin:2px;display:<?php echo checkPermissions(127); ?>">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                     Edit
                                 </a>
-                                <a href="../controller/inspection_controller.php?status=remove_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                <a href="../controller/inspection_controller.php?status=remove_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" 
+                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(128); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     Remove
                                 </a>
