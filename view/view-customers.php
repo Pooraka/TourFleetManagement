@@ -112,11 +112,13 @@ $customerResult = $customerObj->getCustomers();
                                         ?>
                                 <td><?php echo $status;?></td>
                                 <td>
-                                    <a href="edit-customer.php?customer_id=<?php echo $customerId;?>" class="btn btn-warning" style="margin:2px">
+                                    <a href="edit-customer.php?customer_id=<?php echo $customerId;?>" 
+                                       class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(51); ?>">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         Edit
                                     </a>
-                                    <a href="../controller/customer_controller.php?status=remove_customer&customer_id=<?php echo $customerId; ?>" class="btn btn-danger" style="margin:2px">
+                                    <a href="../controller/customer_controller.php?status=remove_customer&customer_id=<?php echo $customerId; ?>" 
+                                       class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(52); ?>">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         Remove
                                     </a> 

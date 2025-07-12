@@ -20,15 +20,15 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-customer.php" class="list-group-item">
+                <a href="add-customer.php" class="list-group-item" style="display:<?php echo checkPermissions(49); ?>">
                     <span class="glyphicon glyphicon-plus"></span> &nbsp;
                     Add Customer
                 </a>
-                <a href="view-customers.php" class="list-group-item">
+                <a href="view-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(50); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Customers
                 </a>
-                <a href="revenue-by-customers.php" class="list-group-item">
+                <a href="revenue-by-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(147); ?>">
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     Revenue By Customers
                 </a>
