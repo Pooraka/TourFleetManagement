@@ -27,7 +27,7 @@ $userSession=$_SESSION["user"];
                     <span class="glyphicon glyphicon-search"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="../reports/bus-fleet-report.php" class="list-group-item" target="_blank" style="display:<?php echo checkPermissions(113); ?>">
+                <a href="bus-fleet-filtered-report.php" class="list-group-item" style="display:<?php echo checkPermissions(113); ?>">
                     <span class="glyphicon glyphicon-book"></span> &nbsp;
                     Bus Fleet Details Report
                 </a>

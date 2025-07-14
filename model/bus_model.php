@@ -334,4 +334,23 @@ class Bus{
         $stmt->close();
         return $result;
     }
+    
+    public function getBusFleetFiltered($categoryId,$status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT b.*,c.* FROM bus b JOIN bus_category c ON c.category_id = b.category_id WHERE b.bus_status!='-1' ";
+        
+        if($categoryId!="all"){
+            
+            $sql.="AND b.category_id='$categoryId' ";
+        }
+        
+        if($status!="all"){
+            $sql.="AND b.bus_status='$status' ";
+        }
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
