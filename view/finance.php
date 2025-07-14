@@ -20,31 +20,31 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="pending-service-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(134); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-money-bill-transfer"></span> &nbsp;
                     Pending Service Payments
                 </a>
                 <a href="pending-supplier-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(136); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
                 <a href="verify-customer-income.php" class="list-group-item" style="display:<?php echo checkPermissions(138); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-sack-dollar"></span> &nbsp;
                     Verify Customer Income
                 </a>
                 <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Supplier Monthly Pmt Chart
                 </a>
                 <a href="customer-invoice-summary.php" class="list-group-item" style="display:<?php echo checkPermissions(145); ?>">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                    <span class="fa-solid fa-file-lines"></span> &nbsp;
                     Customer Invoice Summary
                 </a>
                 <a href="service-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(146); ?>">
-                    <span class="fas fa-chart-line"></span> &nbsp;
+                    <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
                     Service Cost trend
                 </a>
                 <a href="tour-income-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(155); ?>">
-                    <span class="fas fa-chart-line"></span> &nbsp;
+                    <span class="fa-solid fa-chart-line"></span> &nbsp;
                     Tour Income trend
                 </a>
             </ul>

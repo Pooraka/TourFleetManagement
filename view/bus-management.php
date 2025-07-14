@@ -20,15 +20,15 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="add-bus.php" class="list-group-item" style="display:<?php echo checkPermissions(108); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Add Bus
                 </a>
                 <a href="view-buses.php" class="list-group-item" style="display:<?php echo checkPermissions(109); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-bus"></span> &nbsp;
                     View Buses
                 </a>
                 <a href="bus-fleet-filtered-report.php" class="list-group-item" style="display:<?php echo checkPermissions(113); ?>">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
+                    <span class="fa-solid fa-file-contract"></span> &nbsp;
                     Bus Fleet Details Report
                 </a>
             </ul>

@@ -21,15 +21,15 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="add-tour.php" class="list-group-item" style="display:<?php echo checkPermissions(82); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Add Tour
                 </a>
                 <a href="pending-tours.php" class="list-group-item" style="display:<?php echo checkPermissions(83); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-clock-rotate-left"></span> &nbsp;
                     Pending Tours
                 </a>
                 <a href="inspection-failed.php" class="list-group-item" style="display:<?php echo checkPermissions(87); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-triangle-exclamation"></span> &nbsp;
                     Pre-Tour Failed Inspections
                 </a>
             </ul>

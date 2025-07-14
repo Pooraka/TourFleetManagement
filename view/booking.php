@@ -21,19 +21,19 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="generate-quotation.php" class="list-group-item" style="display:<?php echo checkPermissions(76); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Generate Quotation
                 </a>
                 <a href="pending-quotations.php" class="list-group-item" style="display:<?php echo checkPermissions(77); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-hourglass-half"></span> &nbsp;
                     Pending Quotations
                 </a>
                 <a href="pending-customer-invoices.php" class="list-group-item" style="display:<?php echo checkPermissions(149); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-file-invoice"></span> &nbsp;
                     Pending Invoices
                 </a>
                 <a href="customer-receipts.php" class="list-group-item" style="display:<?php echo checkPermissions(81); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-receipt"></span> &nbsp;
                     Customer Receipts
                 </a>
             </ul>

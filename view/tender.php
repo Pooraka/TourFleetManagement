@@ -21,23 +21,23 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="add-supplier.php" class="list-group-item" style="display:<?php echo checkPermissions(61); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Add Supplier
                 </a>
                 <a href="view-suppliers.php" class="list-group-item" style="display:<?php echo checkPermissions(62); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-truck-field"></span> &nbsp;
                     View Suppliers
                 </a>
                 <a href="add-tender.php" class="list-group-item" style="display:<?php echo checkPermissions(67); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Add Tender
                 </a>
                 <a href="open-tenders.php" class="list-group-item" style="display:<?php echo checkPermissions(68); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-folder-open"></span> &nbsp;
                     View Open Tenders
                 </a>
                 <a href="tender-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(150); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-file-contract"></span> &nbsp;
                     Tender Status Report
                 </a>
             </ul>

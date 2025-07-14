@@ -150,4 +150,39 @@ class Customer{
 
         $stmt->close();
     }
+    
+    public function getActiveCustomerCount(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT * FROM customer WHERE customer_status =1";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        $count = $result->num_rows;
+        
+        return $count;
+    }
+    
+    public function getCustomerCountWithToursWithinLast7Days(){
+        
+        $con=$GLOBALS["con"];
+        
+        $today = new DateTime();
+        $todayStr = $today->format("Y-m-d");
+        
+        $dateBeforeSevenDays = (new DateTime())->sub(new DateInterval("P7D"));
+        $dateBeforeSevenDaysStr = $dateBeforeSevenDays->format("Y-m-d");
+        
+        $sql = "SELECT DISTINCT c.customer_id FROM customer c "
+                . "JOIN customer_invoice i ON i.customer_id = c.customer_id "
+                . "JOIN tour t ON t.invoice_id = i.invoice_id "
+                . "WHERE t.start_date BETWEEN '$dateBeforeSevenDaysStr' AND '$todayStr' ";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        $count =  $result->num_rows;
+        
+        return $count;
+    }
 }

@@ -337,4 +337,30 @@ class User{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getActiveUserCount(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT * FROM user WHERE user_status=1";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        $count = $result->num_rows;
+        
+        return $count;
+    }
+    
+    public function getDeactivatedUserCount(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT * FROM user WHERE user_status=0";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        $count = $result->num_rows;
+        
+        return $count;
+    }
 }

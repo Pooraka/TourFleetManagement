@@ -1,10 +1,16 @@
 <?php
 
 include_once '../commons/session.php';
-include_once '../model/module_model.php';
+include_once '../model/customer_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$customerObj = new Customer();
+
+$activeCustomerCount = $customerObj->getActiveCustomerCount();
+
+$customerCountWithToursWithinLast7Days = $customerObj->getCustomerCountWithToursWithinLast7Days();
 ?>
 
 <html lang="en">
@@ -21,21 +27,40 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="add-customer.php" class="list-group-item" style="display:<?php echo checkPermissions(49); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Add Customer
                 </a>
                 <a href="view-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(50); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-users"></span> &nbsp;
                     View Customers
                 </a>
                 <a href="revenue-by-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(147); ?>">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Revenue By Customers
                 </a>
             </ul>
         </div>
         <div class="col-md-9">
-
+            <div class="col-md-6">
+                <div class="panel panel-info" style="height:180px">
+                    <div class="panel-heading">
+                        <p align="center">No of Customers</p>
+                    </div>
+                    <div class="panel-body">
+                        <h1 class="h1" align="center"><?php echo $activeCustomerCount;?></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-success" style="height:180px">
+                    <div class="panel-heading">
+                        <p align="center">No of Customers Had Tours Within Last 7 Days</p>
+                    </div>
+                    <div class="panel-body">
+                        <h1 class="h1" align="center"><?php echo $customerCountWithToursWithinLast7Days;?></h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
