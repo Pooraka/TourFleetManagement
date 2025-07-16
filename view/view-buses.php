@@ -103,21 +103,18 @@ $busResult = $busObj->getAllBuses();
                                         <td><?php echo $busRow['capacity'];?></td>
                                         <td><?php echo $busRow['category_name'];?></td>
                                         <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
-                                        <td>
-                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-info" 
-                                               style="margin:2px;display:<?php echo checkPermissions(110); ?>">
+                                        <td style="white-space: nowrap">
+                                            <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-sm btn-info" 
+                                               style="margin:2px;display:<?php echo checkPermissions(110); ?>" title="View">
                                                 <span class="glyphicon glyphicon-search"></span>                                                  
-                                                View
                                             </a>
-                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-xs btn-warning" 
-                                               style="margin:2px;display:<?php echo checkPermissions(111); ?>">
+                                            <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-sm btn-warning" 
+                                               style="margin:2px;display:<?php echo checkPermissions(111); ?>" title="Edit">
                                                 <span class="glyphicon glyphicon-pencil"></span>
-                                                Edit
                                             </a>
                                             <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" 
-                                               class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>">
+                                               class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
                                                 <span class="glyphicon glyphicon-trash"></span>
-                                                Remove
                                             </a> 
                                         </td>
                                     </tr>

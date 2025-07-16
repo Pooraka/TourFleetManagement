@@ -153,7 +153,7 @@ $supplierObj = new Supplier();
     </div>
 </body>
 <div class="modal fade" id="add_supplier_po" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="../controller/purchase_order_controller.php?status=add_supplier_invoice" method="post" enctype="multipart/form-data">
                 <div class="modal-header"><b><h4>Add Supplier Invoice</h4></b></div>

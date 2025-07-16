@@ -24,7 +24,7 @@ $moduleResult = $moduleObj->getAllModules($userSession['user_role']);
         <?php include_once "../includes/header_row_includes.php";?>
         <?php while($moduleRow=$moduleResult->fetch_assoc()){
             ?>
-            <div class="col-md-3 col-sm-4">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
                 <a href="<?php echo $moduleRow["module_url"]?>" style="text-decoration:none;color:black">
                     <div class="panel module" style="height:170px;background-color:#ffffff;border:1px solid lightsteelblue">
                         <h1 align="center">
