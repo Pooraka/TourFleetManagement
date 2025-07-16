@@ -27,7 +27,7 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-bus"></span> &nbsp;
                     View Buses
                 </a>
-                <a href="bus-fleet-filtered-report.php" class="list-group-item" style="display:<?php echo checkPermissions(113); ?>">
+                <a href="bus-fleet-report.php" class="list-group-item" style="display:<?php echo checkPermissions(113); ?>">
                     <span class="fa-solid fa-file-contract"></span> &nbsp;
                     Bus Fleet Details Report
                 </a>

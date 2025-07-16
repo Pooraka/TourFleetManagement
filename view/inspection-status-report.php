@@ -161,7 +161,7 @@ function generateReport(){
             return false;
         }
     
-    var pdfUrl = "../reports/inspection-status-pdf.php?start_date="+startDate+"&end_date="+endDate;
+    var pdfUrl = "../reports/inspection-status-report-pdf.php?start_date="+startDate+"&end_date="+endDate;
     
     $('#pdfViewer').attr('data', pdfUrl);
     $('#pdfContainer').show();

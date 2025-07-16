@@ -135,7 +135,7 @@ $categoryResult = $busObj->getAllBusCategories();
             return false;
         }
     
-    var pdfUrl = "../reports/bus-fleet-report.php?category_id="+categoryId+"&status="+status;
+    var pdfUrl = "../reports/bus-fleet-report-pdf.php?category_id="+categoryId+"&status="+status;
     
     $('#pdfViewer').attr('data', pdfUrl);
     $('#pdfContainer').show();
