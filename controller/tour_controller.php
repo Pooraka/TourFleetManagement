@@ -305,6 +305,8 @@ switch ($status){
         
         $customerInvoiceObj->changeInvoiceStatus($invoiceId,-1);
         
+        $inspectionObj->cancelInspectionOfATour($tourId);
+        
         $msg = "Tour Cancelled Successfully";
         $msg = base64_encode($msg);
 

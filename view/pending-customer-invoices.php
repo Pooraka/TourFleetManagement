@@ -89,7 +89,7 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                                     -1=>"Cancelled",
                                     1=>"Tour to be assigned",
                                     2=>"Tour assigned",
-                                    3=>"Payment Pending",
+                                    3=>"Tour Completed",
                                     4=>"Paid",
                                 };     
                                 ?>
@@ -103,7 +103,7 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                                 <td>
                                     <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" target="_blank" class="btn btn-xs btn-info" style="margin:2px">
                                         <span class="glyphicon glyphicon-search"></span>                                                  
-                                        View
+                                        View Invoice
                                     </a>
                                     <?php if($pendingInvoiceRow['invoice_status']==3){ ?>
                                     <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" class="btn btn-xs btn-success" style="margin:2px">

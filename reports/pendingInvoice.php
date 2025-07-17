@@ -145,17 +145,42 @@ while($customerInvoiceItemRow = $customerInvoiceItemResult->fetch_assoc()){
     $pdf->Cell(40, 6,$customerInvoiceItemRow['quantity'], 1, 1, 'C', true);
 }
 
+$pdf->Ln(10);
+
 $AfterBusDetailsy =$pdf->GetY();
 
+
+$invoiceAmount = (float)$customerInvoiceRow['invoice_amount'];
+$advancePayment = (float)$customerInvoiceRow['advance_payment'];
+$balanceAmount = $invoiceAmount - $advancePayment;
+
 //Amount Details
-$pdf->SetXY(140, $BusDetaily);
-$pdf->SetFont("Arial", "B", 12);
-$pdf->Cell(60,6,'Invoice Amount',0,1,'R');
-$pdf->SetX(140);
+$pdf->SetXY(120, $BusDetaily);
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(40,6,'Invoice Amount:',0,0,'R');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(0, 6,"LKR ".number_format($customerInvoiceRow['invoice_amount'],2),0,1,'R');
-$pdf->SetX(110);
-$pdf->MultiCell(90, 6,"This price is subject to change as estimated mileage can be changed.", 0, "", false);
+$pdf->Cell(40, 6,"LKR ".number_format($invoiceAmount,2),0,2,'R');
+$pdf->SetX(120);
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(40,6,'Advance Payment:',0,0,'R');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(40, 6,"LKR ".number_format($advancePayment,2),0,2,'R');
+
+$pdf->Ln(2);
+$pdf->Line(125, $pdf->GetY(), 200, $pdf->GetY());
+$pdf->Ln(2);
+$pdf->SetX(120);
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(40,6,'Balance Amount:',0,0,'R');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(40, 6,"LKR ".number_format($balanceAmount,2),0,2,'R');
+
+$pdf->Ln(2);
+$pdf->Line(125, $pdf->GetY(), 200, $pdf->GetY());
+$pdf->Ln(1);
+$pdf->Line(125, $pdf->GetY(), 200, $pdf->GetY());
+
+
 
 $pdf->SetY($AfterBusDetailsy);
 $pdf->Ln(20);
@@ -168,10 +193,9 @@ $pdf->Ln(2);
 
 //Terms and conditions
 $pdf->SetFont("Arial", "", 11);
-$pdf->MultiCell(190, 6,'1) This document confirms your booking. No payment is required at this time.', 0, '', false);
-$pdf->MultiCell(190, 6,'2) Final fair is subject to change once the tour is completed.', 0, '', false);
-$pdf->MultiCell(190, 6,'3) Payments to be made on the day of the tour.', 0, '', false);
-$pdf->MultiCell(190, 6,'5) Any damages to the bus caused by passengers will be borne by the customer.', 0, '', false);
+$pdf->MultiCell(190, 6,'1) Final fare is subject to change once the tour is completed.', 0, '', false);
+$pdf->MultiCell(190, 6,'2) Remaining Balance should be paid on the day of the tour, once final fare is informed.', 0, '', false);
+$pdf->MultiCell(190, 6,'3) Any damages to the bus caused by passengers will be borne by the customer.', 0, '', false);
 
 $pdf->Ln(10);
 $pdf->SetFont("Arial", "B", 12);

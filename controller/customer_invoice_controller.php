@@ -9,7 +9,7 @@ include_once '../model/finance_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
-$user_id = $userSession['user_id'];
+$userId = $userSession['user_id'];
 
 
 
@@ -31,59 +31,169 @@ $status= $_GET["status"];
 
 switch ($status){
     
-    case "generate_customer_invoice":
-        
-        $quotationId = base64_decode($_GET['quotation_id']);
-        
+    case "load_generate_invoice_modal":
+    
+        $quotationId = $_POST["quotationId"];
         $quotationResult = $quotationObj->getQuotation($quotationId);
         $quotationRow = $quotationResult->fetch_assoc();
+        $quotedAmount = (float)$quotationRow["total_amount"]; 
+
+        ?>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label">Quoted Amount</label>
+            </div>
+            <div class="col-md-3">
+                <input type="hidden" value="<?php echo $quotationId;?>" name="quotation_id"/>
+                <span>LKR <?php echo number_format($quotedAmount,2);?></span>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Select Payment Type</label>
+            </div>
+            <div class="col-md-3">
+                <input type="radio" name="payment_method" value="1"/>
+                <span>Cash</span>
+                &nbsp;&nbsp;
+                <input type="radio" name="payment_method" value="2"/>
+                <span>Funds Transfer</span>
+            </div>
+        </div>
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <label class="control-label">Advance Payment (Must Be 25% or Higher From The Quoted Amount)</label>
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="advance_payment" id="advance_payment" class="form-control" 
+                       value="<?php echo number_format($quotedAmount*0.25,2,'.','');?>" 
+                       step="0.01" max="<?php echo $quotedAmount;?>" min="<?php echo number_format($quotedAmount*0.25,2,'.','');?>"
+                       pattern="^\d+(\.\d{1,2})?$"/>
+            </div>
+        </div>
+        <div class="row" id="receipt_upload_container" style="display:none; margin-top: 15px;">
+            <div class="col-md-3">
+                <label class="control-label">Upload Receipt</label>
+            </div>
+            <div class="col-md-9">
+                <input type="file" name="transfer_receipt" class="form-control"/>
+            </div>
+        </div>
+        <?php
         
-        $quotationItemResult = $quotationObj->getQuotationItems($quotationId);
+    break;
+    
+    case "generate_customer_invoice":
         
-        $invoiceNumber = "ST-IN-" .strtoupper(bin2hex(random_bytes(2))). "-" . $quotationId;
+        try{
         
-        $invoiceDate = date('Y-m-d');
-        
-        $invoiceAmount = $quotationRow['total_amount'];
-        
-        $customerId = $quotationRow['customer_id'];
-        
-        $invoiceDescription = $quotationRow['description'];
-        
-        $tourStartDate = $quotationRow['tour_start_date'];
-        
-        $tourEndDate = $quotationRow['tour_end_date'];
-        
-        $pickup = $quotationRow['pickup_location'];
-        
-        $destination = $quotationRow['destination'];
-        
-        $dropoff = $quotationRow['dropoff_location'];
-        
-        $roundTripMileage = $quotationRow['round_trip_mileage'];
-        
-        $invoiceId = $customerInvoiceObj->generateCustomerInvoice($invoiceNumber, $quotationId, $invoiceDate, $invoiceAmount, 
-                $customerId, $invoiceDescription, $tourStartDate, $tourEndDate, $pickup, $destination, $dropoff, $roundTripMileage);
-        
-        while($quotationItemRow = $quotationItemResult->fetch_assoc()){
+            $quotationId = $_POST["quotation_id"];
+            $quotationResult = $quotationObj->getQuotation($quotationId);
+            $quotationRow = $quotationResult->fetch_assoc();
+            $quotationItemResult = $quotationObj->getQuotationItems($quotationId);
+            $quotedAmount = (float)$quotationRow["total_amount"];
+            $transferReceiptFileName = "";
             
-            $categoryId = $quotationItemRow["category_id"];
-            $quantity = $quotationItemRow["quantity"];
+            $advancePaymentStr =$_POST["advance_payment"];
             
-            $customerInvoiceObj->addInvoiceItems($invoiceId, $categoryId, $quantity);
+            $currencyFormat = "/^\d+(\.\d{1,2})?$/";
+            
+            if(!preg_match($currencyFormat,$advancePaymentStr)){
+                throw new Exception("Please enter the amount with a maximum of 2 decimal points.");
+            }
+            
+            $advancePayment = (float)$advancePaymentStr;
+            
+            if($advancePayment>$quotedAmount){
+                throw new Exception("Advance Amount Cannot Exceed The Quoted Amount.");
+            }
+            if($advancePayment<$quotedAmount*0.25){
+                throw new Exception("The advance payment must be at least 25% of the quoted amount.");
+            }
+            
+            if(!isset($_POST["payment_method"])){
+                throw new Exception("Payment Method Cannot Be Empty");
+            }
+            
+            $paymentMethod = $_POST["payment_method"];
+            
+            if($paymentMethod==2){
+                
+                if (!isset($_FILES["transfer_receipt"]) || $_FILES["transfer_receipt"]['error'] == UPLOAD_ERR_NO_FILE) {
+                    
+                    throw new Exception("Funds Transfer Receipt Must Be Attached");
+                }
+                
+                $transferReceiptFile = $_FILES["transfer_receipt"];
+            
+                $transferReceiptFileName = time()."_".$transferReceiptFile["name"];
+                $path="../documents/customerpaymentproofs/$transferReceiptFileName";
+                move_uploaded_file($transferReceiptFile["tmp_name"],$path);
+
+            }
+            
+            $invoiceNumber = "ST-IN-" .strtoupper(bin2hex(random_bytes(2))). "-" . $quotationId;
+            
+            $invoiceDate = date('Y-m-d');
+        
+            $invoiceAmount = $quotationRow['total_amount'];
+
+            $customerId = $quotationRow['customer_id'];
+
+            $invoiceDescription = $quotationRow['description'];
+
+            $tourStartDate = $quotationRow['tour_start_date'];
+
+            $tourEndDate = $quotationRow['tour_end_date'];
+
+            $pickup = $quotationRow['pickup_location'];
+
+            $destination = $quotationRow['destination'];
+
+            $dropoff = $quotationRow['dropoff_location'];
+
+            $roundTripMileage = $quotationRow['round_trip_mileage'];
+        
+            $invoiceId = $customerInvoiceObj->generateCustomerInvoice($invoiceNumber, $quotationId, $invoiceDate, $invoiceAmount, 
+                $customerId, $invoiceDescription, $tourStartDate, $tourEndDate, $pickup, $destination, $dropoff, $roundTripMileage,$advancePayment,$advancePayment);
+            
+            while($quotationItemRow = $quotationItemResult->fetch_assoc()){
+            
+                $categoryId = $quotationItemRow["category_id"];
+                $quantity = $quotationItemRow["quantity"];
+
+                $customerInvoiceObj->addInvoiceItems($invoiceId, $categoryId, $quantity);
+            }
+            
+            $quotationObj->changeQuotationStatus($quotationId, 2);
+            
+            $receiptNo = "ST-RT-".strtoupper(bin2hex(random_bytes(2)))."-".$invoiceId;
+            
+            $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$invoiceDate,$advancePayment,$paymentMethod,$transferReceiptFileName,1,$userId);
+            
+            $msg = "Invoice ".$invoiceNumber ." Generated Successfully";
+            $msg = base64_encode($msg);
+            ?>
+
+                <script>
+                    window.location="../view/pending-quotations.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+
+            <?php
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            ?>
+    
+            <script>
+                window.location="../view/pending-quotations.php?msg=<?php echo $msg;?>";
+            </script>
+            <?php
         }
         
-        $quotationObj->changeQuotationStatus($quotationId, 2);
-        
-        $msg = "Invoice ".$invoiceNumber ." Generated Successfully";
-        $msg = base64_encode($msg);
-        ?>
-
-            <script>
-                window.location="../view/pending-quotations.php?msg=<?php echo $msg; ?>&success=true";
-            </script>
-
-        <?php
     break;
     
     case "cancel_customer_invoice":
@@ -100,7 +210,7 @@ switch ($status){
             
             $customerInvoiceObj->changeInvoiceStatus($invoiceId, -1);
             
-            $customerInvoiceResult = $customerInvoiceObj->getInvoiceItems($invoiceId);
+            $customerInvoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
             $customerInvoiceRow = $customerInvoiceResult->fetch_assoc();
             
             $quotationId = $customerInvoiceRow["quotation_id"];

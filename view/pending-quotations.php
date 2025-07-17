@@ -99,8 +99,9 @@ $pendingQuotationResult = $quotationObj->getPendingQuotations();
                                         <span class="glyphicon glyphicon-search"></span>                                                  
                                         View
                                     </a>
-                                    <a href="../controller/customer_invoice_controller.php?status=generate_customer_invoice&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
-                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(79);?>">
+                                    <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#generateInvoiceModal" 
+                                       onclick="generateInvoiceModal(<?php echo $pendingQuotationRow['quotation_id'];?>)" 
+                                       style="margin:2px;display:<?php echo checkPermissions(79);?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Generate Invoice
                                     </a>
@@ -120,13 +121,53 @@ $pendingQuotationResult = $quotationObj->getPendingQuotations();
         </form>
     </div>
 </body>
+<div class="modal fade" id="generateInvoiceModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="../controller/customer_invoice_controller.php?status=generate_customer_invoice" method="post" enctype="multipart/form-data">
+                <div class="modal-header"><b><h4>Generate Invoice</h4></b></div>
+            <div class="modal-body">
+                <div id="display_data">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success" value="Generate Invoice"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#quotationtable").DataTable();
     });
+    
+    function generateInvoiceModal(quotationId){
+        var url ="../controller/customer_invoice_controller.php?status=load_generate_invoice_modal";
+
+        $.post(url,{quotationId:quotationId},function(data){
+            $("#display_data").html(data).show();
+            
+        });
+    }
+    
+    $(document).on('change', 'input[name="payment_method"]', function(){
+        
+        if ($(this).val() == '2') {
+            
+            $('#receipt_upload_container').slideDown();
+        } else {
+            
+            $('#receipt_upload_container').slideUp();
+        }
+    });
+    
+    
 </script>
 </html>

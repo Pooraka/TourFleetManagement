@@ -7,18 +7,18 @@ $dbCon= new DbConnection();
 class CustomerInvoice{
     
     public function generateCustomerInvoice($invoiceNumber,$quotationId,$invoiceDate,$invoiceAmount,$customerId,$invoiceDescription,
-            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage){
+            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage,$advancePayment,$paidAmount){
         
         $con = $GLOBALS["con"];
         
         $sql = "INSERT INTO customer_invoice (invoice_number,quotation_id,invoice_date,invoice_amount,customer_id, "
-            . "invoice_description,tour_start_date,tour_end_date,pickup_location,destination,dropoff_location,round_trip_mileage) "
-            . "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            . "invoice_description,tour_start_date,tour_end_date,pickup_location,destination,dropoff_location,round_trip_mileage,advance_payment,paid_amount) "
+            . "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         $stmt = $con->prepare($sql);
         
-        $stmt->bind_param("sisdissssssi", $invoiceNumber,$quotationId,$invoiceDate,$invoiceAmount,$customerId,$invoiceDescription,
-            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage);
+        $stmt->bind_param("sisdissssssidd", $invoiceNumber,$quotationId,$invoiceDate,$invoiceAmount,$customerId,$invoiceDescription,
+            $tourStartDate,$tourEndDate,$pickup,$destination,$dropoff,$roundTripMileage,$advancePayment,$paidAmount);
         
         $stmt->execute();
     
@@ -79,6 +79,7 @@ class CustomerInvoice{
         $sql = "SELECT i.invoice_id, i.invoice_number, i.quotation_id, i.invoice_date, i.invoice_amount, "
                 . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
                 . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
+                . "i.advance_payment, i.paid_amount, "
                 . "c.customer_fname, c.customer_lname, c.customer_email FROM customer_invoice i, customer c "
                 . "WHERE c.customer_id = i.customer_id AND i.invoice_id=?";
         
@@ -166,7 +167,7 @@ class CustomerInvoice{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT ci.*,c.*,ti.* FROM customer_invoice ci, customer c, tour_income ti WHERE ti.invoice_id=ci.invoice_id "
-                . "AND ci.customer_id = c.customer_id AND ci.invoice_status='4' AND ti.payment_status!='-1'";
+                . "AND ci.customer_id = c.customer_id AND ci.invoice_status='4' AND ti.payment_status!='-1' AND ti.tour_income_type='2'";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
@@ -221,5 +222,20 @@ class CustomerInvoice{
         
         $result = $con->query($sql) or die($con->error);
         return $result;
+    }
+    
+    public function updateInvoiceAfterFinalPayment($paidAmount,$actualFare,$invoiceId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET invoice_status=4, paid_amount=?, actual_fare=? WHERE invoice_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("ddi",$paidAmount,$actualFare,$invoiceId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
     }
 }

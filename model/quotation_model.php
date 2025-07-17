@@ -62,11 +62,8 @@ class Quotation{
         
         $sql = "SELECT q.issued_date, q.customer_id, q.tour_start_date, q.tour_end_date, "
                 . "q.pickup_location, q.destination, q.dropoff_location, q.description, q.round_trip_mileage, "
-                . "q.total_amount, c.customer_fname, c.customer_lname, c.customer_email, "
-                . "CASE "
-                . " WHEN q.quotation_status = 1 THEN 'Pending Customer Approval'"
-                . "END AS status "
-                . "FROM quotation q, customer c WHERE q.customer_id = c.customer_id AND q.quotation_status='1' AND q.quotation_id =?";
+                . "q.total_amount, c.customer_fname, c.customer_lname, c.customer_email, q.quotation_status "
+                . "FROM quotation q, customer c WHERE q.customer_id = c.customer_id AND q.quotation_id =?";
         
         $stmt = $con->prepare($sql);
         

@@ -25,29 +25,29 @@ class Finance{
         return $paymentId;
     }
     
-    public function acceptCustomerPayment($invoiceId,$receiptNo,$paymentDate,$paidAmount,$paymentMethod,$paymentProof,$receivedBy){
+    public function acceptCustomerPayment($invoiceId,$receiptNo,$paymentDate,$paidAmount,$paymentMethod,$paymentProof,$tour_income_type,$receivedBy){
         
         $con=$GLOBALS["con"];
         
-        $sql="INSERT INTO tour_income (invoice_id,receipt_number,payment_date,paid_amount,payment_method,payment_proof,received_by) "
-                . "VALUES (?,?,?,?,?,?,?)";
+        $sql="INSERT INTO tour_income (invoice_id,receipt_number,payment_date,paid_amount,payment_method,payment_proof,tour_income_type,received_by) "
+                . "VALUES (?,?,?,?,?,?,?,?)";
         
         $stmt = $con->prepare($sql);
         
-        $stmt->bind_param("issdssi",$invoiceId,$receiptNo,$paymentDate,$paidAmount,$paymentMethod,$paymentProof,$receivedBy);
+        $stmt->bind_param("issdssii",$invoiceId,$receiptNo,$paymentDate,$paidAmount,$paymentMethod,$paymentProof,$tour_income_type,$receivedBy);
         
         $stmt->execute();
     }
     
-    public function getTourIncomeRecordByInvoiceId($invoiceId){
+    public function getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,$tourIncomeType){
         
         $con=$GLOBALS["con"];
 
-        $sql = "SELECT * FROM tour_income WHERE invoice_id=? AND payment_status!='-1'";
+        $sql = "SELECT * FROM tour_income WHERE invoice_id=? AND tour_income_type=? AND payment_status!='-1'";
         
         $stmt = $con->prepare($sql);
             
-        $stmt->bind_param("i", $invoiceId);
+        $stmt->bind_param("ii", $invoiceId,$tourIncomeType);
     
         $stmt->execute();
 

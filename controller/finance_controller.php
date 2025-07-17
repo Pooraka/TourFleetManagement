@@ -200,6 +200,84 @@ switch ($status){
         
         try{
         
+            $invoiceId = $_POST["invoice_id"];
+            $invoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
+            $invoiceRow = $invoiceResult->fetch_assoc();
+            $transferReceiptFileName="";
+            
+            $advancePayment = (float)$invoiceRow["advance_payment"];
+            
+            $invoiceAmount = (float)$invoiceRow["invoice_amount"];
+            
+            $actualFare = (float)$_POST["actual_fare"];
+            
+            if($actualFare==0){
+                throw new Exception("Actual Fare Cannot Be LKR 0.00");
+            }
+            
+            if($actualFare<$invoiceAmount){
+                throw new Exception ("Actual Fare Cannot Be Less Than Invoice Value");
+            }
+            
+            $paymentMade = (float)$_POST["paymentMade"];
+            
+            if($paymentMade>0){
+                
+                if(!isset($_POST["payment_method"])){
+                    throw new Exception("Select The Payment Method");
+                }
+                
+                $paymentMethod = $_POST["payment_method"];
+                
+                if($paymentMethod==2){
+                    
+                    if (!isset($_FILES["transfer_receipt"]) || $_FILES["transfer_receipt"]['error'] == UPLOAD_ERR_NO_FILE) {
+                    
+                        throw new Exception("Funds Transfer Receipt Must Be Attached");
+                    }
+                    
+                    $transferReceiptFile = $_FILES["transfer_receipt"];
+            
+                    $transferReceiptFileName = time()."_".$transferReceiptFile["name"];
+                    $path="../documents/customerpaymentproofs/$transferReceiptFileName";
+                    move_uploaded_file($transferReceiptFile["tmp_name"],$path);
+                    
+                }
+                
+                $receiptNo = "ST-RT-".strtoupper(bin2hex(random_bytes(2)))."-".$invoiceId;
+                
+                $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$date,$paymentMade,$paymentMethod,$transferReceiptFileName,2,$userId);
+            }
+            
+            $totalPaidAmount = $advancePayment+$paymentMade;
+            
+            $customerInvoiceObj->updateInvoiceAfterFinalPayment($totalPaidAmount,$actualFare);
+            
+            $msg = "Invoice Completed Successfully";
+            $msg = base64_encode($msg);
+            ?>
+                <script>
+                    window.location="../view/pending-customer-invoices.php?msg=<?php echo $msg; ?>&success=true";
+                </script>
+            <?php
+        
+        }
+        catch(Exception $e){
+            
+            $msg= $e->getMessage();
+            $msg= base64_encode($msg);
+            
+            $invoiceId = base64_encode($invoiceId);
+            ?>
+    
+            <script>
+                window.location="../view/accept-customer-payment.php?msg=<?php echo $msg;?>&invoice_id=<?php echo $invoiceId?>";
+            </script>
+            <?php
+        }
+        /*
+        try{
+        
             $invoiceId = base64_decode($_GET['invoice_id']);
 
             $actualFare = $_POST["actual_fare"];
@@ -258,6 +336,8 @@ switch ($status){
             </script>
             <?php
         }
+         * 
+         */
     break;
     
     case "reject_accepted_payment":

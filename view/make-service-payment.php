@@ -109,7 +109,7 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                     <div class="panel-footer">
                         <div class="row">
                             <div class="col-md-12">
-                                <h4><b>Total Amount (LKR):<span id="total"></span></b></h4>
+                                <h4><b>Total Amount:<span id="total"></span></b></h4>
                             </div>
                         </div>
                         <div class="row">
@@ -180,7 +180,9 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                 $('input[name="totalpayment"]').val(total);
             });
             
-            total = total.toLocaleString('en-US', {
+            total = total.toLocaleString('en-LK', {
+            style: 'currency',
+            currency: 'LKR',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
             });

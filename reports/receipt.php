@@ -28,7 +28,7 @@ $customerContactRow = $customerContactResult->fetch_assoc();
 
 //get tour_income transaction
 $financeObj = new Finance();
-$tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceId($invoiceId);
+$tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,2);
 $tourIncomeRow = $tourIncomeResult->fetch_assoc();
 
 //Accepted User Info
@@ -183,20 +183,41 @@ $pdf->SetFont("Arial", "B", 12);
 $pdf->Cell(60,6,'Payment Information',0,1,'');
 $pdf->Ln(2);
 
+
+
+$advancePayment = (float)$customerInvoiceRow["advance_payment"];
+$paymentMade = (float)$tourIncomeRow['paid_amount'];
+
+$totalPaymentMade = $advancePayment+$paymentMade;
+
 //Payment Info
 $y = $pdf->GetY();
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Total Amount:',0,0,'');
+$pdf->Cell(45,6,'Advance Payment Made',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(25, 6,"LKR ".number_format($tourIncomeRow['paid_amount'],2),0,1,'R');
+$pdf->Cell(35, 6,"LKR ".number_format($advancePayment,2),0,1,'R');
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Payment Date:',0,0,'');
+$pdf->Cell(45,6,'Final Payment',0,0,'');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(35, 6,"LKR ".number_format($paymentMade,2),0,1,'R');
+$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(45,6,'Total Payment Made',0,0,'');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(35, 6,"LKR ".number_format($totalPaymentMade,2),0,1,'R');
+
+$pdf->Ln(2);  
+$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+$pdf->Ln(1);
+$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+
+$pdf->Ln(5); 
+
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(30,6,'Payment Date',0,0,'');
 $pdf->SetFont("Arial", "", 10);
 $pdf->Cell(25, 6,$tourIncomeRow['payment_date'],0,1,'R');
-$pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Payment Method:',0,0,'');
-$pdf->SetFont("Arial", "", 10);
-$pdf->Cell(25, 6,$tourIncomeRow['payment_method'],0,1,'R');
 $pdf->SetFont("Arial", "B", 10);
 $pdf->Cell(30,6,'Received By:',0,0,'');
 $pdf->SetFont("Arial", "", 10);

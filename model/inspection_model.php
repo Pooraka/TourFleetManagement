@@ -386,7 +386,7 @@ class Inspection{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM inspection";
+        $sql = "SELECT * FROM inspection WHERE inspection_status!='-1'";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
@@ -465,6 +465,21 @@ class Inspection{
         $stmt = $con->prepare($sql);
         
         $stmt->bind_param("isiii",$inspectionResult,$finalComments,$inspectedBy,$inspectionStatus,$inspectionId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
+    }
+    
+    public function cancelInspectionOfATour($tourId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE inspection SET inspection_status='-1' WHERE tour_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$tourId);
         
         $stmt->execute();
         
