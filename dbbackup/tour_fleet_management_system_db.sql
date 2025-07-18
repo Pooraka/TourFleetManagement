@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2025 at 07:58 PM
+-- Generation Time: Jul 18, 2025 at 11:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -160,6 +160,23 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cash_book`
+--
+
+CREATE TABLE `cash_book` (
+  `cash_book_txn_id` int(10) NOT NULL,
+  `cash_book_txn_date` date NOT NULL,
+  `txn_type` int(10) NOT NULL COMMENT '1:Supplier Payment, 2:Service Payment, 3:Tour Income',
+  `txn_description` text DEFAULT NULL,
+  `txn_amount` decimal(10,2) NOT NULL,
+  `txn_performed_by` int(10) NOT NULL COMMENT 'User Id',
+  `debit_credit_flag` int(11) NOT NULL COMMENT '1:Debit, 2:Credit',
+  `txn_timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `checklist_item`
 --
 
@@ -266,7 +283,7 @@ CREATE TABLE `customer_invoice` (
   `invoice_date` date NOT NULL,
   `invoice_amount` decimal(10,2) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `invoice_status` int(11) NOT NULL DEFAULT 1 COMMENT '-1=Invoice Cancelled,\r\n1=Advance Payment Made & waiting for tour assignment,\r\n2=Tour assigned,\r\n3=Tour completed and payment pending,\r\n4=Paid,5=Partially Refunded, 6= Fully Refunded',
+  `invoice_status` int(11) NOT NULL DEFAULT 1 COMMENT '-1=Invoice Cancelled,\r\n1=Advance Payment Made & waiting for tour assignment,\r\n2=Tour assigned,\r\n3=Tour completed and payment pending,\r\n4=Paid',
   `invoice_description` text DEFAULT NULL,
   `tour_start_date` date NOT NULL COMMENT 'The tour start date as billed/quoted to the customer.',
   `tour_end_date` date NOT NULL COMMENT 'The tour end date as billed/quoted to the customer.',
@@ -449,7 +466,7 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (154, 'Edit Inspection', 7, 1, NULL),
 (155, 'Tour Income Trend', 9, 1, 1),
 (156, 'Accept Customer Payment', 1, 1, 1),
-(157, 'View Invoice', 1, 1, 1);
+(157, 'View Invoice / Booking Confirmation', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1476,6 +1493,12 @@ ALTER TABLE `bus_tour`
   ADD KEY `tour_id` (`tour_id`);
 
 --
+-- Indexes for table `cash_book`
+--
+ALTER TABLE `cash_book`
+  ADD PRIMARY KEY (`cash_book_txn_id`);
+
+--
 -- Indexes for table `checklist_item`
 --
 ALTER TABLE `checklist_item`
@@ -1749,6 +1772,12 @@ ALTER TABLE `bus`
 --
 ALTER TABLE `bus_category`
   MODIFY `category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `cash_book`
+--
+ALTER TABLE `cash_book`
+  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `checklist_item`

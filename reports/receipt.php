@@ -29,32 +29,38 @@ $customerContactRow = $customerContactResult->fetch_assoc();
 //get tour_income transaction
 $financeObj = new Finance();
 $tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,2);
-$tourIncomeRow = $tourIncomeResult->fetch_assoc();
 
-//Accepted User Info
-$receivedBy = $tourIncomeRow['received_by'];
-$userObj = new User();
-$userResult = $userObj->getUser($receivedBy);
-$userRow = $userResult->fetch_assoc();
-$userName = $userRow['user_fname']." ".$userRow['user_lname'];
+if($tourIncomeResult->num_rows==1){
+    
+    $tourIncomeRow = $tourIncomeResult->fetch_assoc();
 
+    //Accepted User Info
+    $receivedBy = $tourIncomeRow['received_by'];
+    $userObj = new User();
+    $userResult = $userObj->getUser($receivedBy);
+    $userRow = $userResult->fetch_assoc();
+    $userName = $userRow['user_fname']." ".$userRow['user_lname'];
 
-$receiptNo = $tourIncomeRow['receipt_number'];
-
+    $receiptNo = $tourIncomeRow['receipt_number'];
+}
 $pdf = new ReportPDF();
 $pdf->AliasNbPages(); // Enable page numbers
-$pdf->setReportTitle('Payment Receipt');
+$pdf->setReportTitle('Final Receipt');
 
 $pdf->AddPage("P", "A4"); // Add page after setting the title for Header() to pick it up
 
 //Get the current Y position to align both columns to the top
 $topY = $pdf->GetY();
 
-//Recipt Number
-$pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Receipt #:',0,0,'');
-$pdf->SetFont("Arial", "", 10);
-$pdf->Cell(25, 6,$receiptNo,0,1,'R');
+if($tourIncomeResult->num_rows==1){
+    
+    //Recipt Number
+    $pdf->SetFont("Arial", "B", 10);
+    $pdf->Cell(30,6,'Receipt #:',0,0,'');
+    $pdf->SetFont("Arial", "", 10);
+    $pdf->Cell(25, 6,$receiptNo,0,1,'R');
+    
+}
 
 //Generated Date
 $pdf->SetFont("Arial", "B", 10);
@@ -183,8 +189,12 @@ $pdf->Ln(3);
 $estimatedAmount = (float)$customerInvoiceRow["invoice_amount"];
 $actualAmount = (float)$customerInvoiceRow["actual_fare"];
 $advanceAmount = (float)$customerInvoiceRow["advance_payment"];
-$balanceAmount = (float)$tourIncomeRow['paid_amount'];
 
+if($tourIncomeResult->num_rows==1){
+    $balanceAmount = (float)$tourIncomeRow['paid_amount'];
+}else{
+    $balanceAmount = (float)0.00;
+}
 
 //Payment Info
 $y = $pdf->GetY();
@@ -209,7 +219,7 @@ $pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
 
 $pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Balance Amount',0,0,'');
+$pdf->Cell(45,6,'Balance Amount Paid',0,0,'');
 $pdf->SetFont("Arial", "", 10);
 $pdf->Cell(35, 6,"LKR ".number_format($balanceAmount,2),0,1,'R');
 
@@ -218,22 +228,24 @@ $pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
 $pdf->Ln(1);
 $pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
 
-$pdf->Ln(5); 
-$pdf->SetX(120);
-$pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Payment Date',0,0,'');
-$pdf->SetFont("Arial", "", 10);
-$pdf->Cell(35, 6,$tourIncomeRow['payment_date'],0,1,'R');
-$pdf->SetX(120);
-$pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Received By:',0,0,'');
-$pdf->SetFont("Arial", "", 10);
-$pdf->Cell(35, 6,$userName,0,1,'R');
+if($tourIncomeResult->num_rows==1){
+    $pdf->Ln(5); 
+    $pdf->SetX(120);
+    $pdf->SetFont("Arial", "B", 10);
+    $pdf->Cell(45,6,'Payment Date',0,0,'');
+    $pdf->SetFont("Arial", "", 10);
+    $pdf->Cell(35, 6,$tourIncomeRow['payment_date'],0,1,'R');
+    $pdf->SetX(120);
+    $pdf->SetFont("Arial", "B", 10);
+    $pdf->Cell(45,6,'Received By:',0,0,'');
+    $pdf->SetFont("Arial", "", 10);
+    $pdf->Cell(35, 6,$userName,0,1,'R');
+}
 
 $pdf->Ln(15);
 $pdf->SetFont("Arial", "B", 20);
 $pdf->SetTextColor(0, 220, 0);
-$pdf->Cell(190,10,'Paid',1,1,'C');
+$pdf->Cell(190,10,'Fully Paid',1,1,'C');
 
 $pdf->Ln(10);
 $pdf->SetFont("Arial", "B", 12);

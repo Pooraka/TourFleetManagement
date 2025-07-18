@@ -310,4 +310,76 @@ switch ($status){
         <?php
         
     break;
+
+    case "booking-history-filtered":
+        
+        $invoiceDate = $_POST["invoiceDate"];
+        $invoiceStatus = $_POST["invoiceStatus"];
+        
+        $invoiceResult = $customerInvoiceObj->getBookingHistoryFiltered($invoiceDate, $invoiceStatus);
+        
+        while($invoiceRow = $invoiceResult->fetch_assoc()){
+
+            $invoiceId = $invoiceRow["invoice_id"];
+
+            $advancePaymentResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,1);
+            $advancePaymentRow = $advancePaymentResult->fetch_assoc();
+
+            $finalPaymentResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,2);
+
+            if($finalPaymentResult->num_rows==1){
+                $finalPaymentRow = $finalPaymentResult->fetch_assoc();
+            }
+
+            $status = match((int)$invoiceRow["invoice_status"]){
+                -1=>"Cancelled",
+                4=>"Completed"
+            };
+
+            ?>
+        <tr>
+            <td style="white-space:nowrap"><?php echo $invoiceRow["invoice_date"];?></td>
+            <td style="white-space:nowrap"><?php echo $invoiceRow["invoice_number"];?></td>
+            <td><?php echo $invoiceRow["customer_fname"]." ".$invoiceRow["customer_lname"];?></td>
+            <td style="text-align: right;white-space:nowrap"><?php echo "LKR ".number_format($invoiceRow["paid_amount"],2);?></td>
+            <td><?php echo $status;?></td>
+            <td>
+                <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
+                   class="btn btn-xs btn-info" style="margin:2px">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Booking Confirmation
+                </a>
+                <?php if($advancePaymentRow["payment_method"]==2){ ?>
+                <a href="../documents/customerpaymentproofs/<?php echo $advancePaymentRow['payment_proof'];?>" target="_blank" 
+                   class="btn btn-xs btn-info" style="margin:2px">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Advance Payment Proof
+                </a>
+                <?php }?>
+                <?php if($invoiceRow["invoice_status"]==4){ ?>
+                <a href="../reports/receipt.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
+                   class="btn btn-xs btn-primary" style="margin:2px">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Final Receipt
+                </a>
+                <?php }?>
+                <?php if($invoiceRow["invoice_status"]==4 && $finalPaymentResult->num_rows==1 && $finalPaymentRow["payment_method"]==2){ ?>
+                <a href="../documents/customerpaymentproofs/<?php echo $finalPaymentRow['payment_proof'];?>" target="_blank" 
+                   class="btn btn-xs btn-primary" style="margin:2px">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Final Payment Proof
+                </a>
+                <?php }?>
+                <?php if($invoiceRow["invoice_status"]==-1){ ?>
+                <a href="../reports/refund-note.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
+                   class="btn btn-xs btn-warning" style="margin:2px">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Refund Note
+                </a>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }
+        
+    break;
 }

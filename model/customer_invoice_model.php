@@ -253,4 +253,36 @@ class CustomerInvoice{
         
         $stmt->close();
     }
+    
+    public function getBookingHistory(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT ci.*,c.* FROM customer_invoice ci JOIN customer c ON c.customer_id = ci.customer_id "
+                . "WHERE ci.invoice_status IN (-1,4)";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        return $result;
+    }
+    
+    public function getBookingHistoryFiltered($invoiceDate,$invoiceStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT ci.*,c.* FROM customer_invoice ci JOIN customer c ON c.customer_id = ci.customer_id "
+                . "WHERE 1=1 ";
+        
+        if($invoiceDate!=""){
+            $sql.="AND ci.invoice_date='$invoiceDate' ";
+        }
+        
+        if($invoiceStatus!=""){
+            $sql.="AND ci.invoice_status='$invoiceStatus' ";
+        }
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        return $result;   
+    }
 }

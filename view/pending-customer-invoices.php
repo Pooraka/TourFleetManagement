@@ -2,6 +2,7 @@
 
 include_once '../commons/session.php';
 include_once '../model/customer_invoice_model.php';
+include_once '../model/finance_model.php';
 
 
 //get user information from session
@@ -9,6 +10,8 @@ $userSession=$_SESSION["user"];
 
 $customerInvoiceObj = new CustomerInvoice();
 $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
+
+$financeObj = new Finance();
 ?>
 
 <html lang="en">
@@ -72,10 +75,11 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                     <table class="table" id="invoicetable">
                         <thead>
                             <tr>
-                                <th>Date</th>
+                                <th>Invoice Date</th>
                                 <th>Invoice No</th>
                                 <th>Customer</th>
-                                <th>Amount</th>
+                                <th>Amount (LKR)</th>
+                                <th>Advance Payment Method</th>
                                 <th>Tour Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -83,6 +87,17 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                         </thead>
                         <tbody>
                             <?php while($pendingInvoiceRow = $pendingInvoiceResult->fetch_assoc()){
+                                
+                                $invoiceId = $pendingInvoiceRow['invoice_id'];
+                                
+                                $tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,1);
+                                $tourIncomeRow = $tourIncomeResult->fetch_assoc();
+                                
+                                $paymentMethod = match((int)$tourIncomeRow["payment_method"]){
+                                    
+                                    1=>"Cash",
+                                    2=>"Funds Transfer"
+                                };
                                 
                                 $invoiceStatus = match((int)$pendingInvoiceRow['invoice_status']){
     
@@ -96,25 +111,33 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                             <tr>
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_date'];?></td>
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_number'];?></td>
-                                <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['customer_fname']." ".$pendingInvoiceRow['customer_lname'];?></td>
-                                <td style="white-space: nowrap"><?php echo "LKR ".number_format($pendingInvoiceRow['invoice_amount'],2);?></td>
+                                <td><?php echo $pendingInvoiceRow['customer_fname']." ".$pendingInvoiceRow['customer_lname'];?></td>
+                                <td style="white-space: nowrap"><?php echo number_format($pendingInvoiceRow['invoice_amount'],2);?></td>
+                                <td><?php echo $paymentMethod?></td>
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['tour_start_date'];?></td>
                                 <td><?php echo $invoiceStatus;?></td>
                                 <td>
-                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" target="_blank" 
+                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
                                        class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(157); ?>">
-                                        <span class="glyphicon glyphicon-search"></span>                                                  
-                                        View Invoice
+                                        <span class="fa-solid fa-eye"></span>                                                  
+                                        Booking Confirmation
                                     </a>
+                                    <?php if($tourIncomeRow["payment_method"]==2){ ?>
+                                    <a href="../documents/customerpaymentproofs/<?php echo $tourIncomeRow['payment_proof'];?>" target="_blank" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(157); ?>">
+                                        <span class="fa-solid fa-eye"></span>                                                  
+                                        Advance Payment Proof
+                                    </a>
+                                    <?php }?>
                                     <?php if($pendingInvoiceRow['invoice_status']==3){ ?>
-                                    <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" 
+                                    <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($invoiceId);?>" 
                                        class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(156); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Accept Payment
                                     </a>
                                     <?php } ?>
                                     <?php if($pendingInvoiceRow['invoice_status']==1){?>
-                                    <a href="#" data-toggle="modal" data-target="#refundModal" onclick="setupRefundModal(<?php echo $pendingInvoiceRow['invoice_id'];?>)"
+                                    <a href="#" data-toggle="modal" data-target="#refundModal" onclick="setupRefundModal(<?php echo $invoiceId;?>)"
                                        class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(138); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel & Refund
@@ -167,7 +190,12 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
 <script>
     $(document).ready(function(){
 
-        $("#invoicetable").DataTable();
+//        $("#invoicetable").DataTable();
+        
+        $('#invoicetable').DataTable({
+            
+            "scrollX": true
+        });
     });
     
     function setupRefundModal(invoiceId){
