@@ -32,9 +32,9 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-file-invoice"></span> &nbsp;
                     Pending Invoices
                 </a>
-                <a href="customer-receipts.php" class="list-group-item" style="display:<?php echo checkPermissions(81); ?>">
+                <a href="booking-history.php" class="list-group-item" style="display:<?php echo checkPermissions(81); ?>">
                     <span class="fa-solid fa-receipt"></span> &nbsp;
-                    Customer Receipts
+                    Booking History
                 </a>
             </ul>
         </div>

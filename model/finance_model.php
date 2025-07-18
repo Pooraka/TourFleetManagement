@@ -193,4 +193,24 @@ class Finance{
         $transactionId = $con->insert_id;
         return $transactionId;
     }
+    
+    public function getRefundRecordOfACancelledInvoice($invoiceId){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT ci.*,ti.* FROM tour_income ti JOIN customer_invoice ci ON ci.invoice_id=ti.invoice_id "
+                . "WHERE ci.invoice_status='-1' AND ti.tour_income_type='3' AND ci.invoice_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i",$invoiceId);
+        
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        
+        return $result;
+    }
 }

@@ -218,11 +218,9 @@ switch ($status){
             $transactionId = $financeObj->makeRefundTransaction($receiptNumber, $invoiceId, $refundAmount, 
                     1,3,$userId, $refundReason);
             
-            if($refundReason==1){
-                $customerInvoiceObj->changeInvoiceStatus($invoiceId,5);
-            }else{
-                $customerInvoiceObj->changeInvoiceStatus($invoiceId,6);
-            }
+            
+            $customerInvoiceObj->changeInvoiceStatus($invoiceId,-1);
+            
             
             $newPaidAmount = $initialPaidAmount + $refundAmount; // Added since refund amount is a negative number
             

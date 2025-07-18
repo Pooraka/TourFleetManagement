@@ -56,7 +56,7 @@ $pdf->Cell(30,6,'Receipt #:',0,0,'');
 $pdf->SetFont("Arial", "", 10);
 $pdf->Cell(25, 6,$receiptNo,0,1,'R');
 
-//Payment Date
+//Generated Date
 $pdf->SetFont("Arial", "B", 10);
 $pdf->Cell(30,6,'Generated On:',0,0,'');
 $pdf->SetFont("Arial", "", 10);

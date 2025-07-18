@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2025 at 11:23 AM
+-- Generation Time: Jul 18, 2025 at 07:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -143,7 +143,6 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (1, 1),
 (1, 2),
 (2, 6),
-(3, 8),
 (3, 12),
 (4, 1),
 (4, 5),
@@ -152,14 +151,10 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (6, 9),
 (7, 4),
 (7, 9),
-(8, 8),
-(11, 8),
 (11, 11),
 (12, 4),
 (12, 9),
-(17, 8),
 (18, 3),
-(18, 8),
 (19, 7);
 
 -- --------------------------------------------------------
@@ -297,12 +292,11 @@ INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, 
 (5, 'ST-IN-49CD-7', 7, '2025-07-07', 322000.00, 3, 4, '2 Night Trip', '2025-07-08', '2025-07-10', 'Kadawatha', 'Anuradhapura', 'Kadawatha', 360, 322000.00, 322000.00, 322000.00, 375),
 (6, 'ST-IN-F6A6-8', 8, '2025-07-09', 53000.00, 4, 4, 'Quick Travel To Minuwangoda', '2025-07-09', '2025-07-09', 'Angoda', 'Minuwangoda', 'Angoda', 75, 53000.00, 53000.00, 53000.00, 80),
 (7, 'ST-IN-7DDC-9', 9, '2025-07-10', 26000.00, 2, 4, '1 Night Tour', '2025-07-10', '2025-07-11', 'Bambalapitiya', 'Horana', 'Bambalapitiya', 85, 26000.00, 26000.00, 26000.00, 90),
-(8, 'ST-IN-2751-10', 10, '2025-07-10', 347000.00, 9, -1, 'One Night Tour', '2025-07-11', '2025-07-12', 'Pettah', 'Kandy', 'Pettah', 340, NULL, NULL, NULL, NULL),
 (9, 'ST-IN-2701-11', 11, '2025-07-10', 452000.00, 8, 4, '3 Night Tour', '2025-07-14', '2025-07-17', 'Boralesgamuwa', 'Trincomalee', 'Boralesgamuwa', 610, 452000.00, 452000.00, 452000.00, 420),
 (10, 'ST-IN-F4A2-12', 12, '2025-07-13', 72500.25, 3, 4, 'One Night Tour', '2025-07-15', '2025-07-16', 'Kiribathgoda', 'Kandy', 'Kiribathgoda', 300, 72500.25, 72500.25, 72500.25, 230),
-(11, 'ST-IN-3932-13', 13, '2025-07-16', 30250.87, 4, -1, 'Oneway Trip', '2025-07-17', '2025-07-17', 'Fort', 'Galle', 'Galle', 120, NULL, NULL, NULL, NULL),
 (12, 'ST-IN-FF96-14', 14, '2025-07-16', 47500.00, 9, 4, 'One day tour', '2025-07-16', '2025-07-16', 'Hanwella', 'Galle', 'Hanwella', 250, 11875.00, 47500.00, 47500.00, 260),
-(13, 'ST-IN-1EA8-15', 15, '2025-07-18', 36000.00, 7, 6, 'One Day Tour', '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 200, 12000.00, 0.00, NULL, NULL);
+(13, 'ST-IN-1EA8-15', 15, '2025-07-18', 36000.00, 7, -1, 'One Day Tour', '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 200, 12000.00, 0.00, NULL, NULL),
+(14, 'ST-IN-DDE7-16', 16, '2025-07-18', 23625.00, 7, 1, '1 Day Tour', '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', 250, 6500.00, 6500.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -330,13 +324,11 @@ INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `qu
 (6, 5, 2, 3),
 (7, 6, 2, 1),
 (8, 7, 3, 1),
-(9, 8, 1, 1),
-(10, 8, 3, 4),
 (11, 9, 2, 3),
 (12, 10, 2, 1),
-(13, 11, 1, 1),
 (14, 12, 3, 1),
-(15, 13, 3, 1);
+(15, 13, 3, 1),
+(16, 14, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -386,7 +378,7 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (78, 'View Quotation', 1, 1, 1),
 (79, 'Generate Invoice', 1, 1, 1),
 (80, 'Cancel Quotation', 1, 1, 1),
-(81, 'View Customer Receipts', 1, 1, 1),
+(81, 'View Booking History', 1, 1, 1),
 (82, 'Add Tour', 2, 1, 1),
 (83, 'View Pending Tours', 2, 1, 1),
 (84, 'Complete Tour', 2, 1, 1),
@@ -965,7 +957,8 @@ INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_sta
 (12, '2025-07-13', 3, '2025-07-15', '2025-07-16', 'Kiribathgoda', 'Kandy', 'Kiribathgoda', 'One Night Tour', 300, 72500.25, 2),
 (13, '2025-07-16', 4, '2025-07-17', '2025-07-17', 'Fort', 'Galle', 'Galle', 'Oneway Trip', 120, 30250.87, -1),
 (14, '2025-07-16', 9, '2025-07-16', '2025-07-16', 'Hanwella', 'Galle', 'Hanwella', 'One day tour', 250, 47500.00, 2),
-(15, '2025-07-18', 7, '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 'One Day Tour', 200, 36000.00, 2);
+(15, '2025-07-18', 7, '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 'One Day Tour', 200, 36000.00, 2),
+(16, '2025-07-18', 7, '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', '1 Day Tour', 250, 23625.00, 2);
 
 -- --------------------------------------------------------
 
@@ -1000,7 +993,8 @@ INSERT INTO `quotation_item` (`item_id`, `quotation_id`, `category_id`, `quantit
 (17, 12, 2, 1),
 (18, 13, 1, 1),
 (19, 14, 3, 1),
-(20, 15, 3, 1);
+(20, 15, 3, 1),
+(21, 16, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1321,7 +1315,6 @@ INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destinat
 (5, 6, '2025-07-09', '2025-07-09', 'Minuwangoda', 3),
 (6, 2, '2025-07-10', '2025-07-12', 'Kandy', 3),
 (7, 7, '2025-07-10', '2025-07-11', 'Horana', 3),
-(8, 8, '2025-07-11', '2025-07-12', 'Kandy', -1),
 (9, 9, '2025-07-14', '2025-07-17', 'Trincomalee', 3),
 (10, 10, '2025-07-15', '2025-07-16', 'Kandy', 3),
 (11, 12, '2025-07-16', '2025-07-16', 'Galle', 3),
@@ -1366,7 +1359,8 @@ INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `pa
 (13, 'ST-RT-451D-12', 12, '2025-07-17', 11875.00, 1, '', 1, 3, 1, NULL),
 (14, 'ST-RT-38C0-12', 12, '2025-07-17', 35625.00, 1, '', 2, 3, 1, NULL),
 (15, 'ST-RT-D409-13', 13, '2025-07-18', 12000.00, 1, '', 1, 3, 1, NULL),
-(16, 'ST-RF-0DBE-13', 13, '2025-07-18', -12000.00, 1, NULL, 3, 3, 1, 2);
+(16, 'ST-RF-0DBE-13', 13, '2025-07-18', -12000.00, 1, NULL, 3, 3, 1, 2),
+(17, 'ST-RT-061D-14', 14, '2025-07-18', 6500.00, 1, '', 1, 3, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1778,13 +1772,13 @@ ALTER TABLE `customer_contact`
 -- AUTO_INCREMENT for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `function`
@@ -1850,13 +1844,13 @@ ALTER TABLE `purchase_order`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -1910,7 +1904,7 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`

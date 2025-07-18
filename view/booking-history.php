@@ -24,21 +24,25 @@ $financeObj = new Finance();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Booking Management - Customer Receipts" ?>
+        <?php $pageName="Booking Management - Booking History" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="generate-quotation.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                <a href="generate-quotation.php" class="list-group-item" style="display:<?php echo checkPermissions(76); ?>">
+                    <span class="fa-solid fa-plus"></span> &nbsp;
                     Generate Quotation
                 </a>
-                <a href="pending-quotations.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                <a href="pending-quotations.php" class="list-group-item" style="display:<?php echo checkPermissions(77); ?>">
+                    <span class="fa-solid fa-hourglass-half"></span> &nbsp;
                     Pending Quotations
                 </a>
-                <a href="pending-customer_invoices.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Invoice
+                <a href="pending-customer-invoices.php" class="list-group-item" style="display:<?php echo checkPermissions(149); ?>">
+                    <span class="fa-solid fa-file-invoice"></span> &nbsp;
+                    Pending Invoices
+                </a>
+                <a href="customer-receipts.php" class="list-group-item" style="display:<?php echo checkPermissions(81); ?>">
+                    <span class="fa-solid fa-receipt"></span> &nbsp;
+                    Booking History
                 </a>
             </ul>
         </div>
