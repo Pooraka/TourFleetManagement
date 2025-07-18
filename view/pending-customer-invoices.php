@@ -88,7 +88,7 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
     
                                     -1=>"Cancelled",
                                     1=>"Tour to be assigned",
-                                    2=>"Tour assigned",
+                                    2=>"Tour Assigned",
                                     3=>"Tour Completed",
                                     4=>"Paid",
                                 };     
@@ -101,20 +101,25 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['tour_start_date'];?></td>
                                 <td><?php echo $invoiceStatus;?></td>
                                 <td>
-                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" target="_blank" class="btn btn-xs btn-info" style="margin:2px">
+                                    <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" target="_blank" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(157); ?>">
                                         <span class="glyphicon glyphicon-search"></span>                                                  
                                         View Invoice
                                     </a>
                                     <?php if($pendingInvoiceRow['invoice_status']==3){ ?>
-                                    <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" class="btn btn-xs btn-success" style="margin:2px">
+                                    <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" 
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(156); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>                                                  
                                         Accept Payment
                                     </a>
                                     <?php } ?>
-                                    <a href="../controller/customer_invoice_controller.php?status=cancel_customer_invoice&invoice_id=<?php echo base64_encode($pendingInvoiceRow['invoice_id']);?>" class="btn btn-xs btn-danger" style="margin:2px">
+                                    <?php if($pendingInvoiceRow['invoice_status']==1){?>
+                                    <a href="#" data-toggle="modal" data-target="#refundModal" onclick="setupRefundModal(<?php echo $pendingInvoiceRow['invoice_id'];?>)"
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(138); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
-                                        Cancel
+                                        Cancel & Refund
                                     </a>
+                                    <?php }?>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -125,13 +130,98 @@ $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
         </div>
     </div>
 </body>
+<div class="modal fade" id="refundModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="../controller/customer_invoice_controller.php?status=cancel_customer_invoice" method="post" id="refund_form" enctype="multipart/form-data">
+                <div class="modal-header"><b><h4>Cancel Invoice & Refund</h4></b></div>
+            <div class="modal-body">
+                <div id="display_data">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success" value="Cancel Invoice & Refund" id="initialRefundButton"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmModal" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to refund?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="confirmRefundButton">Yes, Refund</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#invoicetable").DataTable();
+    });
+    
+    function setupRefundModal(invoiceId){
+        
+        var url ="../controller/customer_invoice_controller.php?status=load_refund_modal";
+
+        $.post(url,{invoiceId:invoiceId},function(data){
+            $("#display_data").html(data).show();
+            
+        });
+    }
+    
+    
+//    $("#refund_reason").on('change',function(){
+    $(document).on('change', '#refund_reason', function(){
+        
+        var reason = $(this).val();
+        var refundAmount = 0.00;
+        
+        if (reason == "1") {
+  
+            refundAmount = $(this).data('partial-refund');
+            
+        } else if (reason == "2") {
+
+            refundAmount = $(this).data('full-refund');
+            
+        }
+        
+        var formattedAmount = parseFloat(refundAmount).toLocaleString('en-LK', {
+            style: 'currency',
+            currency: 'LKR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        
+        $("#refund_amount_span").text(formattedAmount);
+        $("#refund_amount_input").val(refundAmount);
+    });
+    
+    $('#initialRefundButton').on('click', function(e) {
+        
+        e.preventDefault();
+        $('#refundModal').modal('hide');     
+        $('#confirmModal').modal('show');    
+    });
+    
+    $(document).ready(function() {
+        
+        $("#confirmRefundButton").on('click', function() {
+            
+            $("#refund_form").submit();
+        });
+        
     });
 </script>
 </html>

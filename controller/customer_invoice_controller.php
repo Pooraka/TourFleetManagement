@@ -63,12 +63,12 @@ switch ($status){
         </div>
         <div class="row">
             <div class="col-md-9">
-                <label class="control-label">Advance Payment (Must Be 25% or Higher From The Quoted Amount)</label>
+                <label class="control-label">Advance Payment (Must Be 20% or Higher From The Quoted Amount)</label>
             </div>
             <div class="col-md-3">
                 <input type="number" name="advance_payment" id="advance_payment" class="form-control" 
-                       value="<?php echo number_format($quotedAmount*0.25,2,'.','');?>" 
-                       step="0.01" max="<?php echo $quotedAmount;?>" min="<?php echo number_format($quotedAmount*0.25,2,'.','');?>"
+                       value="<?php echo number_format($quotedAmount*0.20,2,'.','');?>" 
+                       step="0.01" max="<?php echo $quotedAmount;?>" min="<?php echo number_format($quotedAmount*0.20,2,'.','');?>"
                        pattern="^\d+(\.\d{1,2})?$"/>
             </div>
         </div>
@@ -108,8 +108,8 @@ switch ($status){
             if($advancePayment>$quotedAmount){
                 throw new Exception("Advance Amount Cannot Exceed The Quoted Amount.");
             }
-            if($advancePayment<$quotedAmount*0.25){
-                throw new Exception("The advance payment must be at least 25% of the quoted amount.");
+            if($advancePayment<$quotedAmount*0.20){
+                throw new Exception("The advance payment must be at least 20% of the quoted amount.");
             }
             
             if(!isset($_POST["payment_method"])){
@@ -200,24 +200,35 @@ switch ($status){
         
         try{
         
-            $invoiceId = base64_decode($_GET['invoice_id']);
-
-            $tourResult = $tourObj->checkIfInvoiceHasAnActiveTour($invoiceId);
-
-            if($tourResult->num_rows>0){
-                throw New Exception ("Tour is assigned already. Please Cancel The Tour First, This Will Be Cancelled Automatically");
+            $invoiceId = $_POST["invoice_id"];
+            $invoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
+            $invoiceRow = $invoiceResult->fetch_assoc();
+            
+            $initialPaidAmount = (float)$invoiceRow["paid_amount"];
+            $receiptNumber = "ST-RF-".strtoupper(bin2hex(random_bytes(2)))."-".$invoiceId;
+            
+            $refundReason = $_POST["refund_reason"];
+            
+            if($refundReason==""){
+                throw new Exception("Select The Refund Reason");
             }
             
-            $customerInvoiceObj->changeInvoiceStatus($invoiceId, -1);
+            $refundAmount = -((float)$_POST["refund_amount_input"]);
             
-            $customerInvoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
-            $customerInvoiceRow = $customerInvoiceResult->fetch_assoc();
+            $transactionId = $financeObj->makeRefundTransaction($receiptNumber, $invoiceId, $refundAmount, 
+                    1,3,$userId, $refundReason);
             
-            $quotationId = $customerInvoiceRow["quotation_id"];
+            if($refundReason==1){
+                $customerInvoiceObj->changeInvoiceStatus($invoiceId,5);
+            }else{
+                $customerInvoiceObj->changeInvoiceStatus($invoiceId,6);
+            }
             
-            $quotationObj->changeQuotationStatus($quotationId, -1);
-
-            $msg = "Invoice ".$customerInvoiceRow['invoice_number']." Cancelled Successfully";
+            $newPaidAmount = $initialPaidAmount + $refundAmount; // Added since refund amount is a negative number
+            
+            $customerInvoiceObj->updateInvoiceAfterRefund($newPaidAmount,$invoiceId);
+            
+            $msg = "Invoice Cancelled Successfully";
             $msg = base64_encode($msg);
             ?>
 
@@ -226,6 +237,7 @@ switch ($status){
                 </script>
 
             <?php
+        
         }
         catch(Exception $e){
             
@@ -241,5 +253,63 @@ switch ($status){
         
     break;
     
-    
+    case"load_refund_modal":
+        
+        $invoiceId = $_POST["invoiceId"];
+        $invoiceResult = $customerInvoiceObj->getInvoice($invoiceId);
+        $invoiceRow = $invoiceResult->fetch_assoc();
+        
+        $invoiceAmount = (float)$invoiceRow["invoice_amount"];
+        $amountPaid = (float)$invoiceRow["paid_amount"];
+        $nonRefundableAmount = $invoiceAmount*0.20;
+        
+        $defaultAmountToBeRefunded =(float)($amountPaid-$nonRefundableAmount>=0)?$amountPaid-$nonRefundableAmount:0.00;
+        
+        
+        ?>
+        
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Invoice Amount</label>
+                </div>
+                <div class="col-md-3">
+                    <span><?php echo "LKR ".number_format($invoiceAmount,2);?></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Amount Paid</label>
+                </div>
+                <div class="col-md-3">
+                    <span><?php echo "LKR ".number_format($amountPaid,2);?></span>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Select Reason</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" name="refund_reason" id="refund_reason"
+                            data-full-refund="<?php echo $amountPaid; ?>"
+                            data-partial-refund="<?php echo $defaultAmountToBeRefunded; ?>">
+                            
+                        <option value="" selected>Select Reason</option>
+                        <option value="1">Requested By Customer</option>
+                        <option value="2">Due To Bus Unavailability</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Refund Amount</label>
+                </div>
+                <div class="col-md-3">
+                    <span id="refund_amount_span">LKR 0.00</span>
+                    <input type="hidden" name="refund_amount_input" id="refund_amount_input" value="0.00">
+                    <input type="hidden" name="invoice_id" value="<?php echo $invoiceId;?>"/>
+                </div>
+            </div>
+            
+        <?php
+        
+    break;
 }

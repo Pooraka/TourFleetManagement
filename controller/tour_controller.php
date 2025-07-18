@@ -303,7 +303,7 @@ switch ($status){
         
         $tourObj->changeTourStatus($tourId,-1);
         
-        $customerInvoiceObj->changeInvoiceStatus($invoiceId,-1);
+        $customerInvoiceObj->changeInvoiceStatus($invoiceId,1);
         
         $inspectionObj->cancelInspectionOfATour($tourId);
         

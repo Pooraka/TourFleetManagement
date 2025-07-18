@@ -9,7 +9,7 @@ include_once '../model/finance_model.php';
 $userSession=$_SESSION["user"];
 
 $customerInvoiceObj = new CustomerInvoice();
-$paidInvoiceResult = $customerInvoiceObj->getPaidInvoices();
+$paidInvoiceResult = $customerInvoiceObj->getInvoicesWithFinalPayments();
 
 $financeObj = new Finance();
 ?>
@@ -88,11 +88,6 @@ $financeObj = new Finance();
                         <tbody>
                             <?php while($paidInvoiceRow = $paidInvoiceResult->fetch_assoc()){
                                 
-                                $tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceId($paidInvoiceRow['invoice_id']);
-                                $tourIncomeRow = $tourIncomeResult->fetch_assoc();
-                                
-                                $receiptNo = "ST-R-".$tourIncomeRow['tour_income_id'];
-                                
                                 $invoiceStatus = match((int)$paidInvoiceRow['invoice_status']){
     
                                     -1=>"Cancelled",
@@ -103,9 +98,9 @@ $financeObj = new Finance();
                                 };     
                                 ?>
                             <tr>
-                                <td style="white-space: nowrap"><?php echo $tourIncomeRow['payment_date'];?></td>
+                                <td style="white-space: nowrap"><?php echo $paidInvoiceRow['payment_date'];?></td>
                                 <td style="white-space: nowrap"><?php echo $paidInvoiceRow['invoice_number'];?></td>
-                                <td style="white-space: nowrap"><?php echo $receiptNo;?></td>
+                                <td style="white-space: nowrap"><?php echo $paidInvoiceRow['receipt_number'];?></td>
                                 <td style="white-space: nowrap"><?php echo $paidInvoiceRow['customer_fname']." ".$paidInvoiceRow['customer_lname'];?></td>
                                 <td style="white-space: nowrap"><?php echo "LKR ".number_format($paidInvoiceRow['actual_fare'],2);?></td>
                                 <td style="white-space: nowrap"><?php echo $paidInvoiceRow['tour_start_date'];?></td>

@@ -27,10 +27,6 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
-                <a href="verify-customer-income.php" class="list-group-item" style="display:<?php echo checkPermissions(138); ?>">
-                    <span class="fa-solid fa-sack-dollar"></span> &nbsp;
-                    Verify Customer Income
-                </a>
                 <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
                     <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Supplier Monthly Pmt Chart

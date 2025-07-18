@@ -176,7 +176,7 @@ $pdf->Ln(2);
 $pdf->SetFont("Arial", "", 11);
 $pdf->MultiCell(190, 6,'1) This quotation is valid for 7 days from the date of issue.', 0, '', false);
 $pdf->MultiCell(190, 6,'2) Buses are offered subject to availability at the time of booking confirmation.', 0, '', false);
-$pdf->MultiCell(190, 6,'3) In-order to confirm the booking, 25% non refundable fee from the quotated amount should be paid.', 0, '', false);
+$pdf->MultiCell(190, 6,'3) In-order to confirm the booking, 20% non refundable fee from the quotated amount should be paid.', 0, '', false);
 
 
 $pdf->Ln(10);

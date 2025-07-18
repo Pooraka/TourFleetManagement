@@ -174,4 +174,23 @@ class Finance{
         $stmt->close();
         return $result;
     }
+    
+    public function makeRefundTransaction($receiptNumber,$invoiceId,$refundAmount,$refundMethod,$tourIncomeType,$issuedBy,$refundReason){
+        
+        $con=$GLOBALS["con"];
+        
+        $paymentDate = date("Y-m-d");
+        
+        $sql = "INSERT INTO tour_income (receipt_number,invoice_id,payment_date,paid_amount,payment_method,tour_income_type,received_by,tour_income_remarks) "
+                . "VALUES(?,?,?,?,?,?,?,?)";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("sisdiiis",$receiptNumber,$invoiceId,$paymentDate,$refundAmount,$refundMethod,$tourIncomeType,$issuedBy,$refundReason);
+        
+        $stmt->execute();
+        
+        $transactionId = $con->insert_id;
+        return $transactionId;
+    }
 }

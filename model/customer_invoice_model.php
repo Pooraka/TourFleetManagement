@@ -162,7 +162,7 @@ class CustomerInvoice{
     }
     
 
-    public function getPaidInvoices(){
+    public function getInvoicesWithFinalPayments(){
         
         $con = $GLOBALS["con"];
         
@@ -179,7 +179,7 @@ class CustomerInvoice{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT ci.*, c.*, ti.* FROM customer_invoice ci, customer c, tour_income ti WHERE c.customer_id=ci.customer_id "
-                . "AND ti.invoice_id=ci.invoice_id AND ci.invoice_status='4' AND ti.payment_status NOT IN (-1,2)";
+                . "AND ti.invoice_id=ci.invoice_id AND ti.tour_income_type=2 AND ci.invoice_status='4' AND ti.payment_status NOT IN (-1,2)";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
@@ -233,6 +233,21 @@ class CustomerInvoice{
         $stmt = $con->prepare($sql);
         
         $stmt->bind_param("ddi",$paidAmount,$actualFare,$invoiceId);
+        
+        $stmt->execute();
+        
+        $stmt->close();
+    }
+    
+    public function updateInvoiceAfterRefund($paidAmount,$invoiceId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "UPDATE customer_invoice SET paid_amount=? WHERE invoice_id=?";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("di",$paidAmount,$invoiceId);
         
         $stmt->execute();
         

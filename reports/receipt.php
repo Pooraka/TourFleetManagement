@@ -140,6 +140,10 @@ $pdf->Line(10, $y, 200, $y);
 //go down by 2 xs
 $pdf->Ln(2);
 
+$pdf->SetFont("Arial", "B", 12);
+$pdf->Cell(60,6,'Bus Details',0,1,'');
+$pdf->Ln(2);
+
 //Bus Details
 $BusDetaily = $pdf->GetY();
 $x = $pdf->GetX();
@@ -163,15 +167,6 @@ while($customerInvoiceItemRow = $customerInvoiceItemResult->fetch_assoc()){
 
 $AfterBusDetailsy =$pdf->GetY();
 
-//Amount Details
-$pdf->SetXY(140, $BusDetaily);
-$pdf->SetFont("Arial", "B", 12);
-$pdf->Cell(60,6,'Actual Fare',0,1,'R');
-$pdf->SetX(140);
-$pdf->SetFont("Arial", "", 10);
-$pdf->Cell(0, 6,"LKR ".number_format($customerInvoiceRow['actual_fare'],2),0,1,'R');
-$pdf->SetX(110);
-$pdf->MultiCell(90, 6,"This might defer with booking confirmation's value as this was calculated at the tour completion.", 0, "", false);
 
 $pdf->SetY($AfterBusDetailsy);
 $pdf->Ln(20);
@@ -179,49 +174,61 @@ $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
 $pdf->Ln(2);
 
 //Payment Info Title
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 12);
-$pdf->Cell(60,6,'Payment Information',0,1,'');
-$pdf->Ln(2);
+$pdf->Cell(80,6,'Payment Information',0,1,'R');
+$pdf->Ln(3);
 
 
+$estimatedAmount = (float)$customerInvoiceRow["invoice_amount"];
+$actualAmount = (float)$customerInvoiceRow["actual_fare"];
+$advanceAmount = (float)$customerInvoiceRow["advance_payment"];
+$balanceAmount = (float)$tourIncomeRow['paid_amount'];
 
-$advancePayment = (float)$customerInvoiceRow["advance_payment"];
-$paymentMade = (float)$tourIncomeRow['paid_amount'];
-
-$totalPaymentMade = $advancePayment+$paymentMade;
 
 //Payment Info
 $y = $pdf->GetY();
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Advance Payment Made',0,0,'');
+$pdf->Cell(45,6,'Estimated Amount',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(35, 6,"LKR ".number_format($advancePayment,2),0,1,'R');
+$pdf->Cell(35, 6,"LKR ".number_format($estimatedAmount,2),0,1,'R');
+$pdf->Ln(5);
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Final Payment',0,0,'');
+$pdf->Cell(45,6,'Actual Amount',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(35, 6,"LKR ".number_format($paymentMade,2),0,1,'R');
-$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+$pdf->Cell(35, 6,"LKR ".number_format($actualAmount,2),0,1,'R');
+$pdf->SetX(120);
+$pdf->SetFont("Arial", "B", 10);
+$pdf->Cell(45,6,'Advance Amount',0,0,'');
+$pdf->SetFont("Arial", "", 10);
+$pdf->Cell(35, 6,"LKR ".number_format($advanceAmount,2),0,1,'R');
 
+$pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
+
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(45,6,'Total Payment Made',0,0,'');
+$pdf->Cell(45,6,'Balance Amount',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(35, 6,"LKR ".number_format($totalPaymentMade,2),0,1,'R');
+$pdf->Cell(35, 6,"LKR ".number_format($balanceAmount,2),0,1,'R');
 
 $pdf->Ln(2);  
-$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+$pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
 $pdf->Ln(1);
-$pdf->Line($pdf->GetX(), $pdf->GetY(),90, $pdf->GetY());
+$pdf->Line(120, $pdf->GetY(),200, $pdf->GetY());
 
 $pdf->Ln(5); 
-
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Payment Date',0,0,'');
+$pdf->Cell(45,6,'Payment Date',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(25, 6,$tourIncomeRow['payment_date'],0,1,'R');
+$pdf->Cell(35, 6,$tourIncomeRow['payment_date'],0,1,'R');
+$pdf->SetX(120);
 $pdf->SetFont("Arial", "B", 10);
-$pdf->Cell(30,6,'Received By:',0,0,'');
+$pdf->Cell(45,6,'Received By:',0,0,'');
 $pdf->SetFont("Arial", "", 10);
-$pdf->Cell(25, 6,$userName,0,1,'R');
+$pdf->Cell(35, 6,$userName,0,1,'R');
 
 $pdf->Ln(15);
 $pdf->SetFont("Arial", "B", 20);
