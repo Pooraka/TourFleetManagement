@@ -111,10 +111,13 @@ $financeObj = new Finance();
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        <?php $totalAmount = (float)0.00;?>
                         <tbody id="tbody_tag">
                             <?php while($invoiceRow = $invoiceResult->fetch_assoc()){
                                 
                                 $invoiceId = $invoiceRow["invoice_id"];
+                                
+                                $totalAmount += $invoiceRow["paid_amount"];
                                 
                                 $advancePaymentResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,1);
                                 $advancePaymentRow = $advancePaymentResult->fetch_assoc();
@@ -175,6 +178,18 @@ $financeObj = new Finance();
                             </tr>
                             <?php }?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" style="text-align:right">Total:</th>
+                                <th style="text-align: right;white-space: nowrap">
+                                    <?php 
+                                    echo "LKR " . number_format($totalAmount, 2); 
+                                    ?>
+                                </th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -187,9 +202,32 @@ $financeObj = new Finance();
 <script>
     $(document).ready(function(){
 
-        var table = $("#invoicetable").DataTable({
-            // "scrollX": true
-        });
+        var dataTableOptions = {
+            "pageLength": 5,
+            // "scrollX": true,
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api();
+                var total = 0;
+ 
+                // Get data from the 'Amount Paid' column (index 3)
+                var columnData = api.column(3, { search: 'applied' }).data();
+                
+                // Loop through the data
+                for (var i = 0; i < columnData.length; i++) {
+                    var amount = columnData[i];
+                    var numericValue = parseFloat(String(amount).replace(/LKR /g, '').replace(/,/g, ''));
+                    if (!isNaN(numericValue)) {
+                       total += numericValue;
+                    }
+                }
+ 
+                // Format total and update the specific footer cell
+                var formattedTotal = 'LKR ' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $(api.column(3).footer()).html(formattedTotal);
+            }
+        };
+        
+        var table = $("#invoicetable").DataTable(dataTableOptions);
         
 
         $('#filter_button').on('click', function(){
@@ -208,9 +246,7 @@ $financeObj = new Finance();
                 $("#tbody_tag").html(data);
 
                 // Re-initialize the DataTable with the new content.
-                table = $("#invoicetable").DataTable({
-                    // "scrollX": true
-                });
+                table = $("#invoicetable").DataTable(dataTableOptions);
             });
         });
     });
