@@ -73,7 +73,13 @@ $pdf->Ln();
 $pdf->SetFont('Arial', '', 8);
 $pdf->SetTextColor(0);
 
+$totalInvoiceAmount =(float)0.00;
+$totalActualFare = (float)0.00;
+$totalAmountPaid = (float)0.00;
+
 while($invoiceRow = $invoiceResult->fetch_assoc()){
+    
+    
     
     $customerId = $invoiceRow["customer_id"];
     $customerResult = $customerObj->getCustomer($customerId);
@@ -82,7 +88,11 @@ while($invoiceRow = $invoiceResult->fetch_assoc()){
     $invoiceNumber = $invoiceRow["invoice_number"];
     $invoiceDate = $invoiceRow["invoice_date"];
     $tourStartDate = $invoiceRow["tour_start_date"];
-  
+    $invoiceAmount = (float)$invoiceRow["invoice_amount"];
+    $paidAmount = (float)$invoiceRow["paid_amount"];
+    
+    $totalInvoiceAmount+=$invoiceAmount;
+    $totalAmountPaid+=$paidAmount;
     
     $status = match((int)$invoiceRow["invoice_status"]){
         
@@ -92,7 +102,9 @@ while($invoiceRow = $invoiceResult->fetch_assoc()){
     };
     
     if($invoiceRow["invoice_status"]==4){
-        $actualFare = number_format($invoiceRow["actual_fare"],2);
+        $actualFare = number_format((float)$invoiceRow["actual_fare"],2);
+        
+        $totalActualFare+=(float)$invoiceRow["actual_fare"];
     }else{
         $actualFare ="N/A";
     }
@@ -100,14 +112,23 @@ while($invoiceRow = $invoiceResult->fetch_assoc()){
     $pdf->Cell($colWidths[0], 6,$invoiceNumber, 1, 0, 'L');
     $pdf->Cell($colWidths[1], 6,$customerName, 1, 0, 'L');
     $pdf->Cell($colWidths[2], 6,$invoiceDate, 1, 0, 'C');
-    $pdf->Cell($colWidths[3], 6,number_format($invoiceRow["invoice_amount"], 2), 1, 0, 'R');
+    $pdf->Cell($colWidths[3], 6,number_format($invoiceAmount, 2), 1, 0, 'R');
     $pdf->Cell($colWidths[4], 6,$actualFare, 1, 0, 'R');
-    $pdf->Cell($colWidths[5], 6,number_format($invoiceRow["paid_amount"], 2), 1, 0, 'R');
+    $pdf->Cell($colWidths[5], 6,number_format($paidAmount, 2), 1, 0, 'R');
     $pdf->Cell($colWidths[6], 6,$tourStartDate, 1, 0, 'C');
     $pdf->Cell($colWidths[7], 6,$status, 1, 1, 'L');
     
     
 }
+
+$pdf->SetFont('Arial', 'B', 9);
+
+$pdf->Cell(95, 6,"Totals", 1, 0, 'L');
+$pdf->Cell(40, 6,number_format($totalInvoiceAmount, 2), 1, 0, 'R');
+$pdf->Cell(40, 6, number_format($totalActualFare,2), 1, 0, 'R');
+$pdf->Cell(40, 6,number_format($totalAmountPaid, 2), 1, 0, 'R');
+$pdf->Cell(50, 6,"", 1, 0, 'C');
+
 
 if($invoiceResult->num_rows!=0){
 $pdf->Output();
