@@ -37,6 +37,11 @@ class Finance{
         $stmt->bind_param("issdssii",$invoiceId,$receiptNo,$paymentDate,$paidAmount,$paymentMethod,$paymentProof,$tour_income_type,$receivedBy);
         
         $stmt->execute();
+        
+        $tourIncomeId = $con->insert_id;
+        
+        $stmt->close();
+        return $tourIncomeId;
     }
     
     public function getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,$tourIncomeType){
@@ -212,5 +217,25 @@ class Finance{
         $stmt->close();
         
         return $result;
+    }
+    
+    public function logInCashBook($txnType,$paymentOrTourIncomeId,$txnDescription,$txnAmount,$txnPerformedBy,$debitCreditFlag){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "INSERT INTO cash_book (txn_type,payment_id_or_tour_income_id,txn_description,txn_amount,txn_performed_by,debit_credit_flag) "
+                . "VALUES(?,?,?,?,?,?)";
+        
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("iisdii",$txnType,$paymentOrTourIncomeId,$txnDescription,$txnAmount,$txnPerformedBy,$debitCreditFlag);
+        
+        $stmt->execute();
+        
+        $cashBookId = $con->insert_id;
+        
+        $stmt->close();
+        
+        return $cashBookId;
     }
 }

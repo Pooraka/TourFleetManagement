@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2025 at 11:17 PM
+-- Generation Time: Jul 19, 2025 at 02:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -165,14 +165,45 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 
 CREATE TABLE `cash_book` (
   `cash_book_txn_id` int(10) NOT NULL,
-  `cash_book_txn_date` date NOT NULL,
-  `txn_type` int(10) NOT NULL COMMENT '1:Supplier Payment, 2:Service Payment, 3:Tour Income',
+  `cash_book_txn_date` date NOT NULL DEFAULT curdate(),
+  `txn_type` int(10) NOT NULL COMMENT '1:Service Payment, 2:Supplier Payment, 3:Tour Income',
+  `payment_id_or_tour_income_id` int(10) NOT NULL,
   `txn_description` text DEFAULT NULL,
   `txn_amount` decimal(10,2) NOT NULL,
   `txn_performed_by` int(10) NOT NULL COMMENT 'User Id',
-  `debit_credit_flag` int(11) NOT NULL COMMENT '1:Debit, 2:Credit',
+  `debit_credit_flag` int(10) NOT NULL COMMENT '1:Debit, 2:Credit',
   `txn_timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cash_book`
+--
+
+INSERT INTO `cash_book` (`cash_book_txn_id`, `cash_book_txn_date`, `txn_type`, `payment_id_or_tour_income_id`, `txn_description`, `txn_amount`, `txn_performed_by`, `debit_credit_flag`, `txn_timestamp`) VALUES
+(1, '2025-06-23', 1, 1, 'Service Payment', -24112.25, 3, 1, '2025-06-23 08:40:12'),
+(2, '2025-06-23', 1, 2, 'Service Payment', -24452.00, 3, 1, '2025-06-23 09:42:14'),
+(3, '2025-06-23', 1, 3, 'Service Payment', -25432.25, 3, 1, '2025-06-23 10:43:25'),
+(4, '2025-06-23', 1, 4, 'Service Payment', -53914.51, 3, 1, '2025-06-23 10:44:10'),
+(5, '2025-05-20', 2, 5, 'Supplier Payment', -69000.00, 3, 1, '2025-05-20 09:45:02'),
+(6, '2025-06-28', 2, 6, 'Supplier Payment', -133500.00, 3, 1, '2025-06-28 11:46:07'),
+(7, '2025-07-06', 2, 7, 'Supplier Payment', -69000.00, 3, 1, '2025-07-06 09:46:55'),
+(8, '2025-07-06', 2, 8, 'Supplier Payment', -73625.00, 3, 1, '2025-07-06 05:52:10'),
+(9, '2025-07-10', 1, 9, 'Service Payment', -50617.88, 3, 1, '2025-07-10 05:55:31'),
+(10, '2025-07-06', 3, 4, 'Advance Booking Payment', 76999.31, 3, 2, '2025-07-06 05:57:22'),
+(11, '2025-07-10', 3, 5, 'Advance Booking Payment', 322000.00, 3, 2, '2025-07-10 06:00:21'),
+(12, '2025-07-10', 3, 6, 'Advance Booking Payment', 95000.00, 3, 2, '2025-07-10 06:00:21'),
+(13, '2025-07-10', 3, 7, 'Advance Booking Payment', 68000.00, 3, 2, '2025-07-10 06:01:59'),
+(14, '2025-07-10', 3, 8, 'Advance Booking Payment', 53000.00, 3, 2, '2025-07-10 06:01:59'),
+(15, '2025-07-13', 3, 9, 'Advance Booking Payment', 452000.00, 3, 2, '2025-07-13 06:04:13'),
+(16, '2025-07-13', 3, 10, 'Advance Booking Payment', 26000.00, 3, 2, '2025-07-13 06:04:13'),
+(17, '2025-07-13', 3, 11, 'Advance Booking Payment', 72500.25, 3, 2, '2025-07-13 06:05:36'),
+(18, '2025-07-17', 3, 12, 'Advance Booking Payment', 235145.36, 3, 2, '2025-07-17 06:48:56'),
+(19, '2025-07-17', 3, 13, 'Advance Booking Payment', 11875.00, 3, 2, '2025-07-17 06:48:56'),
+(20, '2025-07-17', 3, 14, 'Final Booking Payment', 35625.00, 3, 2, '2025-07-17 06:50:38'),
+(21, '2025-07-18', 3, 15, 'Advance Booking Payment', 12000.00, 3, 2, '2025-07-18 06:51:45'),
+(22, '2025-07-18', 3, 16, 'Booking Refund', -12000.00, 3, 1, '2025-07-18 06:51:45'),
+(23, '2025-07-18', 3, 17, 'Advance Booking Payment', 6500.00, 3, 2, '2025-07-18 06:55:55'),
+(24, '2025-07-19', 3, 18, 'Booking Refund', -6500.00, 3, 1, '2025-07-18 19:55:55');
 
 -- --------------------------------------------------------
 
@@ -302,7 +333,7 @@ CREATE TABLE `customer_invoice` (
 --
 
 INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, `invoice_date`, `invoice_amount`, `customer_id`, `invoice_status`, `invoice_description`, `tour_start_date`, `tour_end_date`, `pickup_location`, `destination`, `dropoff_location`, `round_trip_mileage`, `advance_payment`, `paid_amount`, `actual_fare`, `actual_mileage`) VALUES
-(1, 'SKT-14K', 1, '2025-06-01', 75000.00, 1, 4, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, 76999.31, 76999.31, 76999.31, 258),
+(1, 'SKT-14K', 1, '2025-06-01', 76999.31, 1, 4, 'One day trip from Athurugiriya to Galle and back', '2025-06-12', '2025-06-13', 'Athurugiriya', 'Galle', 'Athurugiriya', 240, 76999.31, 76999.31, 76999.31, 258),
 (2, 'SKT-20250703-3', 3, '2025-07-03', 95000.00, 6, 4, 'Two-day trip to Kandy', '2025-07-10', '2025-07-12', 'Colombo', 'Kandy', 'Nugegoda', 200, 95000.00, 95000.00, 95000.00, 201),
 (3, 'SKT-20250703-4', 4, '2025-07-03', 235145.36, 4, 4, 'Two Days, One Night Trip to Ella and Back', '2025-07-10', '2025-07-12', 'Maharagama', 'Ella', 'Maharagama', 420, 235145.36, 235145.36, 235145.36, 220),
 (4, 'ST-IN-C6EE-6', 6, '2025-07-07', 68000.00, 6, 4, 'One Day Trip', '2025-07-08', '2025-07-08', 'Boralesgamuwa', 'Kandy', 'Boralesgamuwa', 278, 68000.00, 68000.00, 68000.00, 280),
@@ -313,7 +344,7 @@ INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, 
 (10, 'ST-IN-F4A2-12', 12, '2025-07-13', 72500.25, 3, 4, 'One Night Tour', '2025-07-15', '2025-07-16', 'Kiribathgoda', 'Kandy', 'Kiribathgoda', 300, 72500.25, 72500.25, 72500.25, 230),
 (12, 'ST-IN-FF96-14', 14, '2025-07-16', 47500.00, 9, 4, 'One day tour', '2025-07-16', '2025-07-16', 'Hanwella', 'Galle', 'Hanwella', 250, 11875.00, 47500.00, 47500.00, 260),
 (13, 'ST-IN-1EA8-15', 15, '2025-07-18', 36000.00, 7, -1, 'One Day Tour', '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 200, 12000.00, 0.00, NULL, NULL),
-(14, 'ST-IN-DDE7-16', 16, '2025-07-18', 23625.00, 7, 1, '1 Day Tour', '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', 250, 6500.00, 6500.00, NULL, NULL);
+(14, 'ST-IN-DDE7-16', 16, '2025-07-18', 23625.00, 7, -1, '1 Day Tour', '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', 250, 6500.00, 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -887,10 +918,10 @@ INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_met
 (2, '2025-06-23', 24452.00, 'TRF522114', 'transfer', 1, 'svspmt_685868f8dcb64.pdf', 3, 1),
 (3, '2025-06-23', 25432.25, '254745', 'cheque', 1, 'svspmt_68586a67a651c.pdf', 3, 1),
 (4, '2025-06-23', 53914.51, 'dfhdh', 'transfer', 1, 'svspmt_68586b9a5f020.pdf', 3, 1),
-(5, '2025-05-20', 69000.00, 'CHQ-554321', 'cheque', 2, 'svspmt_68586b9a5f020.pdf', 3, 1),
-(6, '2025-06-28', 133500.00, 'TRF-AX-8891', 'transfer', 2, 'svspmt_68586b9a5f020.pdf', 3, 1),
-(7, '2025-07-06', 69000.00, '256325', 'cheque', 2, 'svspmt_686a6771614b9.pdf', 3, 1),
-(8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'svspmt_686a67d868ce3.pdf', 3, 1),
+(5, '2025-05-20', 69000.00, 'CHQ-554321', 'cheque', 2, 'suppmt_68586b9a5f599.pdf', 3, 1),
+(6, '2025-06-28', 133500.00, 'TRF-AX-8891', 'transfer', 2, 'suppmt_68586b9a53652.pdf', 3, 1),
+(7, '2025-07-06', 69000.00, '256325', 'cheque', 2, 'suppmt_686a6771614b9.pdf', 3, 1),
+(8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'suppmt_686a67d868ce3.pdf', 3, 1),
 (9, '2025-07-10', 50617.88, 'FT5248', 'transfer', 1, 'svspmt_686fc5a64a126.pdf', 3, 1);
 
 -- --------------------------------------------------------
@@ -1362,22 +1393,21 @@ CREATE TABLE `tour_income` (
 --
 
 INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `payment_date`, `paid_amount`, `payment_method`, `payment_proof`, `tour_income_type`, `received_by`, `payment_status`, `tour_income_remarks`) VALUES
-(1, 'TST-RCPT-1', 1, '2025-07-04', 78350.00, 2, '1751610219_Test PDF.pdf', 1, 3, -1, NULL),
-(3, 'ST-RT-D073-1', 1, '2025-07-06', 80250.25, 2, '1751815862_Test PDF.pdf', 1, 3, -1, NULL),
-(4, 'ST-RT-17E0-1', 1, '2025-07-06', 76999.31, 2, '1751816409_Test PDF.pdf', 1, 3, 2, NULL),
-(5, 'ST-RT-3469-5', 5, '2025-07-10', 322000.00, 2, '1752147768_Test PDF.pdf', 1, 3, 2, NULL),
-(6, 'ST-RT-E094-2', 2, '2025-07-10', 95000.00, 2, '1752155314_Test PDF.pdf', 1, 3, 2, NULL),
-(7, 'ST-RT-A670-4', 4, '2025-07-10', 68000.00, 2, '1752155335_Test PDF.pdf', 1, 3, 2, NULL),
-(8, 'ST-RT-B0B3-6', 6, '2025-07-10', 53000.00, 2, '1752155404_Test PDF.pdf', 1, 3, 2, NULL),
-(9, 'ST-RT-693D-9', 9, '2025-07-13', 452000.00, 2, '1752347576_Test PDF.pdf', 1, 3, 2, NULL),
-(10, 'ST-RT-7E03-7', 7, '2025-07-13', 26000.00, 2, '1752347696_Test PDF.pdf', 1, 3, 2, NULL),
-(11, 'ST-RT-5F2A-10', 10, '2025-07-13', 72500.25, 2, '1752387149_Test PDF.pdf', 1, 3, 2, NULL),
-(12, 'ST-RT-FE0F-3', 3, '2025-07-17', 235145.36, 2, '1752727598_Test PDF.pdf', 1, 3, 2, NULL),
+(4, 'ST-RT-17E0-1', 1, '2025-07-06', 76999.31, 2, '1751816409_Test PDF.pdf', 1, 3, 1, NULL),
+(5, 'ST-RT-3469-5', 5, '2025-07-10', 322000.00, 2, '1752147768_Test PDF.pdf', 1, 3, 1, NULL),
+(6, 'ST-RT-E094-2', 2, '2025-07-10', 95000.00, 2, '1752155314_Test PDF.pdf', 1, 3, 1, NULL),
+(7, 'ST-RT-A670-4', 4, '2025-07-10', 68000.00, 2, '1752155335_Test PDF.pdf', 1, 3, 1, NULL),
+(8, 'ST-RT-B0B3-6', 6, '2025-07-10', 53000.00, 2, '1752155404_Test PDF.pdf', 1, 3, 1, NULL),
+(9, 'ST-RT-693D-9', 9, '2025-07-13', 452000.00, 2, '1752347576_Test PDF.pdf', 1, 3, 1, NULL),
+(10, 'ST-RT-7E03-7', 7, '2025-07-13', 26000.00, 2, '1752347696_Test PDF.pdf', 1, 3, 1, NULL),
+(11, 'ST-RT-5F2A-10', 10, '2025-07-13', 72500.25, 2, '1752387149_Test PDF.pdf', 1, 3, 1, NULL),
+(12, 'ST-RT-FE0F-3', 3, '2025-07-17', 235145.36, 2, '1752727598_Test PDF.pdf', 1, 3, 1, NULL),
 (13, 'ST-RT-451D-12', 12, '2025-07-17', 11875.00, 1, '', 1, 3, 1, NULL),
 (14, 'ST-RT-38C0-12', 12, '2025-07-17', 35625.00, 1, '', 2, 3, 1, NULL),
 (15, 'ST-RT-D409-13', 13, '2025-07-18', 12000.00, 1, '', 1, 3, 1, NULL),
 (16, 'ST-RF-0DBE-13', 13, '2025-07-18', -12000.00, 1, NULL, 3, 3, 1, 2),
-(17, 'ST-RT-061D-14', 14, '2025-07-18', 6500.00, 1, '', 1, 3, 1, NULL);
+(17, 'ST-RT-061D-14', 14, '2025-07-18', 6500.00, 1, '', 1, 3, 1, NULL),
+(18, 'ST-RF-B31E-14', 14, '2025-07-19', -6500.00, 1, NULL, 3, 3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1777,7 +1807,7 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `cash_book`
 --
 ALTER TABLE `cash_book`
-  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `checklist_item`
@@ -1933,7 +1963,7 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`

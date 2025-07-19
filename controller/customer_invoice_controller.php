@@ -170,7 +170,9 @@ switch ($status){
             
             $receiptNo = "ST-RT-".strtoupper(bin2hex(random_bytes(2)))."-".$invoiceId;
             
-            $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$invoiceDate,$advancePayment,$paymentMethod,$transferReceiptFileName,1,$userId);
+            $tourIncomeId = $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$invoiceDate,$advancePayment,$paymentMethod,$transferReceiptFileName,1,$userId);
+            
+            $cashBookId = $financeObj->logInCashBook(3,$tourIncomeId,"Advance Booking Payment",$advancePayment,$userId,2);
             
             $msg = "Invoice ".$invoiceNumber ." Generated Successfully";
             $msg = base64_encode($msg);
@@ -213,18 +215,27 @@ switch ($status){
                 throw new Exception("Select The Refund Reason");
             }
             
-            $refundAmount = -((float)$_POST["refund_amount_input"]);
+            $refundAmountStr = $_POST["refund_amount_input"];
             
-            $transactionId = $financeObj->makeRefundTransaction($receiptNumber, $invoiceId, $refundAmount, 
+            if($refundAmountStr!=0){
+                
+                //Taking refund amount as a negative amount
+                $refundAmount = -((float)$refundAmountStr);
+                
+                $tourIncomeId = $financeObj->makeRefundTransaction($receiptNumber, $invoiceId, $refundAmount, 
                     1,3,$userId, $refundReason);
-            
+                
+                $cashBookId = $financeObj->logInCashBook(3,$tourIncomeId,"Booking Refund",$refundAmount,$userId,1);
+                
+                $newPaidAmount = $initialPaidAmount + $refundAmount; // Added since refund amount is a negative number
+                
+                $customerInvoiceObj->updateInvoiceAfterRefund($newPaidAmount,$invoiceId);
+            }
             
             $customerInvoiceObj->changeInvoiceStatus($invoiceId,-1);
+
             
             
-            $newPaidAmount = $initialPaidAmount + $refundAmount; // Added since refund amount is a negative number
-            
-            $customerInvoiceObj->updateInvoiceAfterRefund($newPaidAmount,$invoiceId);
             
             $msg = "Invoice Cancelled Successfully";
             $msg = base64_encode($msg);

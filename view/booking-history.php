@@ -76,7 +76,7 @@ $financeObj = new Finance();
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <label class="control-label">Select Date</label>
+                    <label class="control-label">Invoice Date</label>
                 </div>
                 <div class="col-md-3">
                     <input type="date" value="" id="invoice_date" class="form-control"/>
@@ -86,7 +86,7 @@ $financeObj = new Finance();
                 </div>
                 <div class="col-md-3">
                     <select id="invoice_status" class="form-control">
-                        <option value="">Select Status</option>
+                        <option value="">All Statuses</option>
                         <option value="4">Completed</option>
                         <option value="-1">Cancelled</option>
                     </select>

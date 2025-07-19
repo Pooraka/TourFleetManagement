@@ -77,10 +77,10 @@ switch ($status){
             }
             
             $fileName= uniqid('svspmt_').$extension;
-            $path="../documents/servicepayments/$fileName";
+            $path="../documents/paymentsmade/$fileName";
             move_uploaded_file($paymentDocument["tmp_name"],$path);
             
-            $totalPayment = $_POST['totalpayment'];
+            $totalPayment = (float)$_POST['totalpayment'];
             
             $paymentId = $financeObj->makeServiceStationPayment($date, $totalPayment, $reference, $paymentMethod,'1', $fileName, $userId);
             
@@ -89,6 +89,10 @@ switch ($status){
                 $serviceDetailObj->updatePaidService($serviceId, $paymentId);
             
             }
+            
+            $txnAmount = -($totalPayment);
+            
+            $cashBookId = $financeObj->logInCashBook(1,$paymentId,"Service Payment",$txnAmount,$userId,1);
             
             $msg = "Payment Updated Successfully";
             $msg = base64_encode($msg);
@@ -157,11 +161,11 @@ switch ($status){
                 throw new Exception("Payment document File Type Not Supported, Please Attach a PDF/PNG/JPEG");
             }
             
-            $fileName= uniqid('svspmt_').$extension;
-            $path="../documents/servicepayments/$fileName";
+            $fileName= uniqid('suppmt_').$extension;
+            $path="../documents/paymentsmade/$fileName";
             move_uploaded_file($paymentDocument["tmp_name"],$path);
             
-            $totalPayment = $_POST['totalpayment'];
+            $totalPayment = (float)$_POST['totalpayment'];
             
             $paymentId = $financeObj->makeSupplierPayment($date,$totalPayment,$reference,$paymentMethod,2,$fileName,$userId);
             
@@ -169,6 +173,10 @@ switch ($status){
                 
                 $poObj->updatePaidPOs($poId, $paymentId);
             }
+            
+            $txnAmount = -($totalPayment);
+            
+            $cashBookId = $financeObj->logInCashBook(2,$paymentId,"Supplier Payment",$txnAmount,$userId,1);
             
             $msg = "Payment Updated Successfully";
             $msg = base64_encode($msg);
@@ -246,7 +254,9 @@ switch ($status){
                 
                 $receiptNo = "ST-RT-".strtoupper(bin2hex(random_bytes(2)))."-".$invoiceId;
                 
-                $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$date,$paymentMade,$paymentMethod,$transferReceiptFileName,2,$userId);
+                $tourIncomeId = $financeObj->acceptCustomerPayment($invoiceId,$receiptNo,$date,$paymentMade,$paymentMethod,$transferReceiptFileName,2,$userId);
+                
+                $cashBookId = $financeObj->logInCashBook(3,$tourIncomeId,"Final Booking Payment",$paymentMade,$userId,2);
             }
             
             $totalPaidAmount = $advancePayment+$paymentMade;
