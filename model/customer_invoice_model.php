@@ -285,4 +285,27 @@ class CustomerInvoice{
         
         return $result;   
     }
+    
+    public function getAllInvoicesFiltered($dateFrom,$dateTo,$status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM customer_invoice WHERE 1 ";
+        
+        if($dateFrom !="" && $dateTo!=""){
+            $sql.="AND invoice_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($status==1){
+            $sql.="AND invoice_status IN (1,2,3) ";
+        }elseif($status==4){
+            $sql.="AND invoice_status='4' ";
+        }elseif($status==-1){
+            $sql.="AND invoice_status='-1' ";
+        }
+        
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }

@@ -199,8 +199,7 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
                                 <label class="control-label">Actual Fare</label>
                             </div>
                             <div class="col-md-3">
-                                <input type="number" class="form-control" name="actual_fare" id="actual_fare" step="0.01" inputmode="decimal" />
-                                <!--min="<?php echo $invoiceAmount;?>"-->
+                                <input type="number" class="form-control" name="actual_fare" id="actual_fare" step="0.01" inputmode="decimal" min="<?php echo $invoiceAmount;?>"/>
                             </div>
                         </div>
                         <div class="row">

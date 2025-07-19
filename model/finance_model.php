@@ -165,7 +165,7 @@ class Finance{
         
         $con=$GLOBALS["con"];
         
-        $sql = "SELECT DATE_FORMAT(payment_date,'%Y-%m-%d') AS date, SUM(paid_amount) AS total_income FROM tour_income WHERE payment_status='2' AND payment_date BETWEEN ? AND ? "
+        $sql = "SELECT DATE_FORMAT(payment_date,'%Y-%m-%d') AS date, SUM(paid_amount) AS total_income FROM tour_income WHERE payment_date BETWEEN ? AND ? "
                 . "GROUP BY date ORDER BY date";
         
         $stmt = $con->prepare($sql);
