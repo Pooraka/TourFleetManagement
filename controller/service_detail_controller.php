@@ -315,4 +315,46 @@ switch ($status){
         }
     
     break;
+    
+    case "service_payments_monthly_chart":
+        
+        header('Content-Type: application/json');
+        
+        try{
+
+            $startMonth =  $_POST['startMonth'];
+            $endMonth =  $_POST['endMonth'];
+            $serviceStationId =  $_POST['serviceStationId'];
+
+            if (empty($startMonth) || empty($endMonth)) {
+                throw new Exception("Start and End months are required.");
+            }
+            
+            if ($startMonth > $endMonth) {
+                throw new Exception("End month should be greater than start month.");
+            }
+
+            $servicePaymentResult = $serviceDetailObj->getMonthlyServicePayments($startMonth,$endMonth,$serviceStationId);
+
+            $months = [];
+            $payments = [];
+
+            if($servicePaymentResult->num_rows>0){
+
+                while($servicePaymentRow = $servicePaymentResult->fetch_assoc()){
+
+                    array_push($months,$servicePaymentRow["month"]);
+                    array_push($payments,$servicePaymentRow["total_cost"]);
+                }
+            }
+            
+            echo json_encode(['months' => $months, 'payments' => $payments]);
+        
+        }
+        catch(Exception $e){
+            
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+        
+    break;
 }

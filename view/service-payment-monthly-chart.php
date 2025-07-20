@@ -1,14 +1,14 @@
 <?php
 
 include_once '../commons/session.php';
-include_once '../model/supplier_model.php';
+include_once '../model/service_station_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
 
-$supplierObj = new Supplier();
+$serviceStationObj = new ServiceStation();
 
-$supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
+$serviceStationResult = $serviceStationObj->getAllServiceStationsIncludingRemoved()
 ?>
 
 <html lang="en">
@@ -20,21 +20,45 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Finance Management - Monthly Supplier Payments" ?>
+        <?php $pageName="Finance Management - Monthly Service Payments" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                <a href="pending-service-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(134); ?>">
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Service Payments
                 </a>
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                <a href="pending-supplier-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(136); ?>">
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
-                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Generate Reports
+                <a href="customer-invoice-summary.php" class="list-group-item" style="display:<?php echo checkPermissions(145); ?>">
+                    <span class="fa-solid fa-file-lines"></span> &nbsp;
+                    Customer Invoice Summary
+                </a>
+                <a href="cash-flow.php" class="list-group-item" style="display:<?php echo checkPermissions(158); ?>">
+                    <span class="fa-solid fa-piggy-bank"></span> &nbsp;
+                    Cash Flow
+                </a>
+                <a href="service-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(146); ?>">
+                    <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
+                    Service Cost Trend
+                </a>
+                <a href="supplier-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(159); ?>">
+                    <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
+                    Supplier Cost Trend
+                </a>
+                <a href="tour-income-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(155); ?>">
+                    <span class="fa-solid fa-chart-line"></span> &nbsp;
+                    Tour Income Trend
+                </a>
+                <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
+                    Supplier Monthly Pmt Chart
+                </a>
+                <a href="service-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(160); ?>">
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
+                    Service Monthly Pmt Chart
                 </a>
             </ul>
         </div>
@@ -73,13 +97,13 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label class="control-label">Select Supplier</label>
+                    <label class="control-label">Select Service Station</label>
                 </div>
                 <div class="col-md-3">
-                    <select id="supplier_id" class="form-control">
-                        <option value="" selected>All Suppliers</option>
-                        <?php while($supplierRow = $supplierResult->fetch_assoc()){?>
-                        <option value="<?php echo $supplierRow['supplier_id'];?>"><?php echo $supplierRow['supplier_name'];?></option>
+                    <select id="service_station_id" class="form-control">
+                        <option value="" selected>All Service Stations</option>
+                        <?php while($serviceStationRow = $serviceStationResult->fetch_assoc()){?>
+                        <option value="<?php echo $serviceStationRow['service_station_id'];?>"><?php echo $serviceStationRow['service_station_name'];?></option>
                         <?php }?>
                     </select>
                 </div>
@@ -110,7 +134,7 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
             
             var startMonth = $('#start_month').val();
             var endMonth = $('#end_month').val();
-            var supplierId = $('#supplier_id').val();
+            var serviceStationId = $('#service_station_id').val();
             
             if (startMonth == ""){
         
@@ -132,9 +156,9 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                 return false;
             }
             
-            var url = "../controller/purchase_order_controller.php?status=supplier_payments_monthly_chart";
+            var url = "../controller/service_detail_controller.php?status=service_payments_monthly_chart";
 
-            $.post(url,{ startMonth: startMonth,endMonth: endMonth,supplierId:supplierId},function(data){
+            $.post(url,{ startMonth: startMonth,endMonth: endMonth,serviceStationId:serviceStationId},function(data){
 
                 $('#trend').empty();
                 
@@ -151,15 +175,15 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                         x: data.months,
                         y: data.payments,
                         type: 'bar',
-                        name: 'Supplier Payments',
+                        name: 'Service Payments',
                         marker: { color: '#17A2B8', width:5},
                         hovertemplate:'<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
                         
                     };
                     
                     var layout = {
-                        
-                        title: { text:'Supplier Payments Monthly'},
+
+                        title: { text:'Service Payments Monthly'},
                         xaxis: {
                             title: { text:'Month'},
                             type:'category' 
@@ -176,13 +200,13 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                     Plotly.newPlot('trend', [chartData], layout);
                 } 
                 else{
-                        
-                    $('#trend').html('<div class="alert alert-info text-center">No supplier payment data available for the selected period.</div>');
+
+                    $('#trend').html('<div class="alert alert-info text-center">No service payment data available for the selected period.</div>');
                 }
                 
             });
             
         });
-    }); 
+    });     
 </script>
 </html>

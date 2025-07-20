@@ -47,13 +47,13 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-chart-line"></span> &nbsp;
                     Tour Income Trend
                 </a>
-                <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
-                    <span class="fa-solid fa-chart-column"></span> &nbsp;
-                    Supplier Monthly Pmt Chart
-                </a>
                 <a href="service-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(160); ?>">
                     <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Service Monthly Pmt Chart
+                </a>
+                <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
+                    Supplier Monthly Pmt Chart
                 </a>
             </ul>
         </div>

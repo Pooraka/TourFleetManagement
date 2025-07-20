@@ -160,31 +160,6 @@ class ServiceDetail{
         
     }
     
-    
-    public function getMonthlyServiceCostTrend($startMonth, $endMonth){
-        
-        $con = $GLOBALS["con"];
-        
-        $serviceStatus = '3';
-        
-        $sql = "SELECT DATE_FORMAT(completed_date,'%Y-%m') AS month, SUM(cost) AS total_cost "
-                . "FROM service_detail "
-                . "WHERE service_status = ? AND DATE_FORMAT(completed_date, '%Y-%m') BETWEEN ? AND ? " 
-                . "GROUP BY month ORDER BY month ASC";
-        
-        $stmt = $con->prepare($sql); // Prepare the statement
-
-        $stmt->bind_param("sss", $serviceStatus, $startMonth, $endMonth); // Bind parameters: all three are strings ('s')
-
-        $stmt->execute(); // Execute and get the result object
-
-        $result = $stmt->get_result();
-        
-        $stmt->close();
-        return $result;
-        
-    }
-    
     public function getServiceCostTrend($dateFrom,$dateTo,$serviceStationId){
         
         $con = $GLOBALS["con"];
@@ -200,6 +175,29 @@ class ServiceDetail{
         }
         
         $sql.="GROUP BY sd.paid_date ORDER BY sd.paid_date ASC";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function getMonthlyServicePayments($startMonth,$endMonth,$serviceStationId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT DATE_FORMAT(paid_date,'%Y-%m') AS month, SUM(cost) AS total_cost "
+                . "FROM service_detail WHERE service_status='3' ";
+        
+        if($startMonth!="" && $endMonth!=""){
+            
+            $sql.="AND DATE_FORMAT(paid_date,'%Y-%m') BETWEEN '$startMonth' AND '$endMonth' ";
+        }
+        
+        if($serviceStationId!=""){
+            
+            $sql.="AND service_station_id='$serviceStationId' ";
+        }
+        
+        $sql.="GROUP BY month ORDER BY month ASC";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
