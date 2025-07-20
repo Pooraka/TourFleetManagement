@@ -238,4 +238,25 @@ class Finance{
         
         return $cashBookId;
     }
+    
+    public function getCashFlowFiltered($dateFrom,$dateTo,$txnType){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT * FROM cash_book WHERE 1 ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND cash_book_txn_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($txnType!=""){
+            $sql.= "AND txn_type='$txnType' ";
+        }
+        
+        $sql.= "ORDER BY txn_timestamp ASC";
+        
+        $result = $con->query($sql) or die($con->error);
+        
+        return $result;
+    }
 }

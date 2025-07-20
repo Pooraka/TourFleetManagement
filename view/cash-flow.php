@@ -19,25 +19,41 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                <a href="pending-service-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(134); ?>">
+                    <span class="fa-solid fa-money-bill-transfer"></span> &nbsp;
                     Pending Service Payments
                 </a>
-                <a href="pending-supplier-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
+                <a href="pending-supplier-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(136); ?>">
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
-                <a href="verify-customer-income.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Verify Customer Income
+                <a href="customer-invoice-summary.php" class="list-group-item" style="display:<?php echo checkPermissions(145); ?>">
+                    <span class="fa-solid fa-file-lines"></span> &nbsp;
+                    Customer Invoice Summary
                 </a>
-                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
+                <a href="cash-flow.php" class="list-group-item" style="display:<?php echo checkPermissions(158); ?>">
+                    <span class="fa-solid fa-piggy-bank"></span> &nbsp;
+                    Cash Flow
+                </a>
+                <a href="service-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(146); ?>">
+                    <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
+                    Service Cost Trend
+                </a>
+                <a href="supplier-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(146); ?>">
+                    <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
+                    Supplier Cost Trend
+                </a>
+                <a href="tour-income-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(155); ?>">
+                    <span class="fa-solid fa-chart-line"></span> &nbsp;
+                    Tour Income Trend
+                </a>
+                <a href="supplier-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Supplier Monthly Pmt Chart
                 </a>
-                <a href="customer-invoice-summary.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Customer Invoice Summary
+                <a href="service-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
+                    <span class="fa-solid fa-chart-column"></span> &nbsp;
+                    Service Monthly Pmt Chart
                 </a>
             </ul>
         </div>
@@ -71,7 +87,7 @@ $userSession=$_SESSION["user"];
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label class="control-label">Invoice Date From:</label>
+                    <label class="control-label">Date From:</label>
                 </div>
                 <div class="col-md-3">
                     <input type="date" class="form-control" id="dateFrom" >
@@ -89,20 +105,18 @@ $userSession=$_SESSION["user"];
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label class="control-label">Invoice Status</label>
+                    <label class="control-label">Transaction Type</label>
                 </div>
                 <div class="col-md-3">
-                    <select id="invoice_status" class="form-control">
-                        <option value="" selected>All Statuses</option>
-                        <option value="1">Advance Paid</option>
-                        <option value="4">Completed</option>
-                        <option value="-1">Cancelled</option>
+                    <select id="txn_type" class="form-control">
+                        <option value="" selected>All Transaction Types</option>
+                        <option value="1">Service Payments</option>
+                        <option value="2">Supplier Payments</option>
+                        <option value="3">Tour Income</option>
                     </select>
                 </div>
                 <div class="col-md-offset-3 col-md-3 text-right">
-                    <a href="#" class="btn btn-primary" id="generateReportLink" onclick="generateReport()">
-                        Generate
-                    </a>
+                    <button type="button" class="btn btn-primary" id="generateReportLink" onclick="generateReport()">Generate</button>
                 </div>
             </div>
             <div class="row">
@@ -133,7 +147,7 @@ function generateReport(){
     var dateFrom = $('#dateFrom').val();
     var dateTo = $('#dateTo').val();
     
-    var invoiceStatus = $('#invoice_status').val();
+    var txnType = $('#txn_type').val();
     
     if(dateFrom !="" || dateTo!=""){
         
@@ -155,7 +169,7 @@ function generateReport(){
         }
     }
     
-    var pdfUrl = "../reports/customer-invoice-summary-report-pdf.php?dateFrom="+dateFrom+"&dateTo="+dateTo+"&invoiceStatus="+invoiceStatus;
+    var pdfUrl = "../reports/cash-flow-pdf.php?dateFrom="+dateFrom+"&dateTo="+dateTo+"&txnType="+txnType;
     
     $('#pdfViewer').attr('data', pdfUrl);
     $('#pdfContainer').show();

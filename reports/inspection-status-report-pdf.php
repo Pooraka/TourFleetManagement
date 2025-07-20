@@ -101,8 +101,7 @@ while($inspectionRow = $inspectionResult->fetch_assoc()){
   
     
     $pdf->Cell($colWidths[0], 6,$vehicleNo, 1, 0, 'L');
-    $pdf->Cell($colWidths[1], 6,"Lanka Ashok Leyland", 1, 0, 'L');
-//    $pdf->Cell($colWidths[1], 6,$make, 1, 0, 'L');
+    $pdf->Cell($colWidths[1], 6,$make, 1, 0, 'L');
     $pdf->Cell($colWidths[2], 6,$model, 1, 0, 'L');
     $pdf->Cell($colWidths[3], 6,$inspectionDate->format("Y-m-d"), 1, 0, 'C');
     $pdf->Cell($colWidths[4], 6,$status, 1, 0, 'L');

@@ -63,6 +63,8 @@ for ($i = 0; $i < count($headers); $i++) {
 }
 $pdf->Ln();
 
+$pdf->SetFont('Arial', '', 8);
+
 while($tenderRow = $tenderResult->fetch_assoc()){
     
     $tenderOpenDate = new DateTime($tenderRow["open_date"]);
