@@ -141,22 +141,22 @@ class Finance{
         $stmt->close(); 
     }
     
-    public function getTourIncomeForAPeriod($startDate,$endDate){
+    public function getTourIncomeTrend($dateFrom, $dateTo){
         
         $con=$GLOBALS["con"];
         
-        $sql = "SELECT DATE_FORMAT(payment_date,'%Y-%m-%d') AS date, SUM(paid_amount) AS total_income FROM tour_income WHERE payment_date BETWEEN ? AND ? "
-                . "GROUP BY date ORDER BY date";
+        $sql = "SELECT ti.payment_date, SUM(ti.paid_amount) AS amount "
+                . "FROM tour_income ti JOIN customer_invoice ci ON ci.invoice_id=ti.invoice_id "
+                . "JOIN customer c ON c.customer_id=ci.customer_id WHERE ti.payment_status ='1' ";
         
-        $stmt = $con->prepare($sql);
+        if($dateFrom!=="" && $dateTo!=""){
+            
+            $sql.="AND ti.payment_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
         
-        $stmt->bind_param("ss",$startDate,$endDate);
+        $sql.="GROUP BY ti.payment_date ORDER BY ti.payment_date ASC";
         
-        $stmt->execute();
-        
-        $result = $stmt->get_result();
-        
-        $stmt->close();
+        $result = $con->query($sql) or die($con->error);
         return $result;
     }
     

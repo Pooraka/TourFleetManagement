@@ -15,7 +15,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Finance Management" ?>
+        <?php $pageName="Finance Management - Customer Invoice Summary" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -74,13 +74,13 @@ $userSession=$_SESSION["user"];
                     <label class="control-label">Invoice Date From:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="dateFrom" >
+                    <input type="date" class="form-control" id="dateFrom" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-3">
                     <label class="control-label">To Date:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="dateTo" >
+                    <input type="date" class="form-control" id="dateTo" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 
             </div>

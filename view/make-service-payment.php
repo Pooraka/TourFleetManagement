@@ -118,10 +118,10 @@ $serviceStationRow = $serviceStationResult->fetch_assoc();
                             </div>
                             <div class="col-md-6">
                                 <h4>
-                                    <input type="radio" name="payment_method" value="cheque"/>
+                                    <input type="radio" name="payment_method" value="Cheque"/>
                                     <label>Cheque</label>
                                     &nbsp;&nbsp;
-                                    <input type="radio" name="payment_method" value="transfer"/>
+                                    <input type="radio" name="payment_method" value="Transfer"/>
                                     <label>Funds Transfer</label>
                                 </h4>
                             </div>

@@ -16,7 +16,7 @@ $userSession=$_SESSION["user"];
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Finance - Tour Trend" ?>
+        <?php $pageName="Finance - Tour Income Trend" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
@@ -64,19 +64,19 @@ $userSession=$_SESSION["user"];
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <label class="control-label">Start Date</label>
+                    <label class="control-label">Date From:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" name="start_date" id="start_date"/>
+                    <input type="date" class="form-control" id="dateFrom" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-2">
-                    <label class="control-label">End Date</label>
+                    <label class="control-label">To Date:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" name="end_date" id="end_date"/>
+                    <input type="date" class="form-control" id="dateTo" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-2">
-                    <input type="button" value="Generate" class="btn btn-primary" id="generateChartBtn"/>
+                    <button type="button" class="btn btn-primary" id="generateChartBtn">Generate</button>
                 </div>
             </div>
             <div class="row">
@@ -100,33 +100,26 @@ $userSession=$_SESSION["user"];
             $("#msg").html("");
             $("#msg").removeClass("alert alert-danger");
             
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
+            var dateFrom = $('#dateFrom').val();
+            var dateTo = $('#dateTo').val();
             
-            if (startDate == ""){
-        
-                $("#msg").html("Start Date Cannot Be Empty!");
+            if (dateFrom === "" || dateTo === "") {
                 $("#msg").addClass("alert alert-danger");
-                return false;
+                $("#msg").html("<b>Please select both dates.</b>");
+                return;
             }
-            if (endDate == ""){
 
-                $("#msg").html("End Date Cannot Be Empty!");
-                $("#msg").addClass("alert alert-danger");
-                return false;
-            }
-            
-            if (startDate > endDate) {
-                
-                $("#msg").html("End date should be greater than start date");
+            if (dateFrom > dateTo) {
+
+                $("#msg").html("End date should be equal to or greater than start date");
                 $("#msg").addClass("alert alert-danger");
                 return false;
             }
             
             var url = "../controller/finance_controller.php?status=tour_income_trend";
-            
-            $.post(url,{ startDate: startDate,endDate: endDate},function(data){
-                
+
+            $.post(url,{dateFrom: dateFrom, dateTo: dateTo},function(data){
+
                 $('#trend').empty();
                 
                 if (data.error) {
@@ -144,8 +137,8 @@ $userSession=$_SESSION["user"];
                         mode: 'lines+markers',
                         type: 'scatter',
                         name: 'Tour Income',
-                        line: { color: '#17A2B8', width: 3 },
-                        marker: { color: '#17A2B8', size: 8 },
+                        line: { color: '#17b875ff', width: 3 },
+                        marker: { color: '#17b875ff', size: 8 },
                         hovertemplate: '<b>Income</b>:LKR %{y:,.2f}<extra></extra>'
                     };
                     
@@ -158,7 +151,7 @@ $userSession=$_SESSION["user"];
                         yaxis: {
                             title: {text:'Total Income (LKR)'},
                             separatethousands: true,
-                            rangemode:'tozero'
+                            //rangemode:'tozero'
                         },
                         margin: { t: 50, b: 100, l: 80, r: 40 }
                     };
@@ -167,7 +160,7 @@ $userSession=$_SESSION["user"];
                 } 
                 else{
                         
-                    $('#trend').html('<div class="alert alert-info text-center">No service cost data available for the selected period.</div>');
+                    $('#trend').html('<div class="alert alert-info text-center">No tour income data available for the selected parameters.</div>');
                 }
             
             });

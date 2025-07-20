@@ -293,18 +293,18 @@ switch ($status){
         
         try{
             
-            $startDate =  $_POST['startDate'];
-            $endDate =  $_POST['endDate'];
+            $dateFrom = $_POST["dateFrom"];
+            $dateTo = $_POST["dateTo"];
             
-            if (empty($startDate) || empty($endDate)) {
-                throw new Exception("Start and End dates are required.");
+            if($dateFrom == "" || $dateTo == ""){
+                throw new Exception("Please select both start and end dates.");
+            }
+
+            if($dateFrom > $dateTo){
+                throw new Exception("End date should be equal to or greater than start date.");
             }
             
-            if ($startDate > $endDate) {
-                throw new Exception("End date should be greater than start date.");
-            }
-            
-            $tourIncomeResult = $financeObj->getTourIncomeForAPeriod($startDate, $endDate);
+            $tourIncomeResult = $financeObj->getTourIncomeTrend($dateFrom, $dateTo);
             
             $dates = [];
             $income = [];
@@ -313,8 +313,8 @@ switch ($status){
                 
                 while($tourIncomeRow = $tourIncomeResult->fetch_assoc()){
                     
-                    array_push($dates,$tourIncomeRow["date"]);
-                    array_push($income,$tourIncomeRow["total_income"]);
+                    array_push($dates,$tourIncomeRow["payment_date"]);
+                    array_push($income,$tourIncomeRow["amount"]);
                 }
             }
             

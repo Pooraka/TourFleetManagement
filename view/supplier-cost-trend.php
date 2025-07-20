@@ -92,7 +92,6 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                 <div class="col-md-3">
                     <input type="date" class="form-control" id="dateTo" max="<?php echo date('Y-m-d'); ?>">
                 </div>
-                
             </div>
             <div class="row">
                 &nbsp;
