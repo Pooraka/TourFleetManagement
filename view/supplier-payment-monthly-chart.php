@@ -1,9 +1,14 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/supplier_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$supplierObj = new Supplier();
+
+$supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
 ?>
 
 <html lang="en">
@@ -50,20 +55,36 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">Start Month</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="month" class="form-control" name="start_month" id="start_month"/>
+                    <input type="month" class="form-control" name="start_month" id="start_month" max="<?php echo date('Y-m'); ?>"/>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">End Month</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="month" class="form-control" name="end_month" id="end_month"/>
+                    <input type="month" class="form-control" name="end_month" id="end_month" max="<?php echo date('Y-m'); ?>"/>
                 </div>
-                <div class="col-md-2">
-                    <input type="button" value="Generate" class="btn btn-primary" id="generateChartBtn"/>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Select Supplier</label>
+                </div>
+                <div class="col-md-3">
+                    <select id="supplier_id" class="form-control">
+                        <option value="" selected>All Suppliers</option>
+                        <?php while($supplierRow = $supplierResult->fetch_assoc()){?>
+                        <option value="<?php echo $supplierRow['supplier_id'];?>"><?php echo $supplierRow['supplier_name'];?></option>
+                        <?php }?>
+                    </select>
+                </div>
+                <div class="col-md-offset-3 col-md-3 text-right">
+                    <button type="button" class="btn btn-primary" id="generateChartBtn">Generate</button>
                 </div>
             </div>
             <div class="row">
@@ -89,6 +110,7 @@ $userSession=$_SESSION["user"];
             
             var startMonth = $('#start_month').val();
             var endMonth = $('#end_month').val();
+            var supplierId = $('#supplier_id').val();
             
             if (startMonth == ""){
         
@@ -110,10 +132,10 @@ $userSession=$_SESSION["user"];
                 return false;
             }
             
-            var url = "../controller/finance_controller.php?status=supplier_payments_monthly_chart";
-            
-            $.post(url,{ startMonth: startMonth,endMonth: endMonth},function(data){
-                
+            var url = "../controller/purchase_order_controller.php?status=supplier_payments_monthly_chart";
+
+            $.post(url,{ startMonth: startMonth,endMonth: endMonth,supplierId:supplierId},function(data){
+
                 $('#trend').empty();
                 
                 if (data.error) {

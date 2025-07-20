@@ -113,7 +113,7 @@ class Supplier{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM supplier";
+        $sql = "SELECT * FROM supplier ORDER BY supplier_name ASC";
         
         $result = $con->query($sql) or die($con->error);
         return $result;

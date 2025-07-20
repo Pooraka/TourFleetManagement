@@ -141,26 +141,6 @@ class Finance{
         $stmt->close(); 
     }
     
-    public function getMonthlySupplierPayments($startMonth,$endMonth){
-        
-        $con=$GLOBALS["con"];
-        
-        $sql = "SELECT DATE_FORMAT(date,'%Y-%m') AS month, SUM(amount) AS total_amount "
-                . "FROM payment WHERE category_id='2' AND DATE_FORMAT(date, '%Y-%m') BETWEEN ? AND ? "
-                . "GROUP BY month ORDER BY month ASC";
-        
-        $stmt = $con->prepare($sql);
-        
-        $stmt->bind_param("ss",$startMonth,$endMonth);
-        
-        $stmt->execute();
-        
-        $result = $stmt->get_result();
-        
-        $stmt->close();
-        return $result;
-    }
-    
     public function getTourIncomeForAPeriod($startDate,$endDate){
         
         $con=$GLOBALS["con"];

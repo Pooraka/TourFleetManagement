@@ -203,7 +203,7 @@ class PurchaseOrder{
 
         $con = $GLOBALS["con"];
         
-        $sql="SELECT p.po_paid_date, SUM(p.total_amount) AS total_cost
+        $sql="SELECT p.po_paid_date, SUM(p.total_amount) AS total_amount
               FROM purchase_order p
               JOIN bid b ON p.bid_id = b.bid_id
               WHERE p.po_status = '6' ";
@@ -217,6 +217,29 @@ class PurchaseOrder{
         }
 
         $sql.="GROUP BY p.po_paid_date ORDER BY p.po_paid_date ASC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+        
+    public function getMonthlySupplierPayments($startMonth,$endMonth,$supplierId){
+        
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT DATE_FORMAT(p.po_paid_date, '%Y-%m') AS month, SUM(p.total_amount) AS total_amount  
+                FROM purchase_order p JOIN bid b ON p.bid_id = b.bid_id WHERE p.po_status = '6' ";
+
+        if($startMonth!="" && $endMonth!=""){
+            $sql .= "AND DATE_FORMAT(p.po_paid_date, '%Y-%m') BETWEEN '$startMonth' AND '$endMonth' ";
+        }
+
+        if($supplierId!=""){
+            $sql .= "AND b.supplier_id = '$supplierId' ";
+        }
+
+        $sql .= "GROUP BY month ORDER BY month ASC";
 
         $result = $con->query($sql) or die($con->error);
         return $result;

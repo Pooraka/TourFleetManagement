@@ -39,7 +39,7 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
                     Service Cost Trend
                 </a>
-                <a href="supplier-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(146); ?>">
+                <a href="supplier-cost-trend.php" class="list-group-item" style="display:<?php echo checkPermissions(159); ?>">
                     <span class="fa-solid fa-arrow-trend-up"></span> &nbsp;
                     Supplier Cost Trend
                 </a>
@@ -51,7 +51,7 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Supplier Monthly Pmt Chart
                 </a>
-                <a href="service-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(144); ?>">
+                <a href="service-payment-monthly-chart.php" class="list-group-item" style="display:<?php echo checkPermissions(160); ?>">
                     <span class="fa-solid fa-chart-column"></span> &nbsp;
                     Service Monthly Pmt Chart
                 </a>

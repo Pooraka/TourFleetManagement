@@ -201,7 +201,7 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                     Plotly.newPlot('trend', [chartData], layout);
                 }
                 else {
-                    $('#trend').html('<div class="alert alert-info text-center">No supplier cost data available for the selected period.</div>');
+                    $('#trend').html('<div class="alert alert-info text-center">No supplier cost data available for the selected parameters.</div>');
                 }
             
             });

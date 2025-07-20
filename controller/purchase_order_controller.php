@@ -309,7 +309,7 @@ switch ($status){
                 while ($supplierCostRow = $supplierCostTrendResult->fetch_assoc()) {
 
                     array_push($dates, $supplierCostRow['po_paid_date']);
-                    array_push($costs, (float)$supplierCostRow['total_cost']);
+                    array_push($costs, (float)$supplierCostRow['total_amount']);
                 }
             }
 
@@ -319,5 +319,46 @@ switch ($status){
 
             echo json_encode(['error' => $e->getMessage()]);
         }
+    break;
+    
+    case "supplier_payments_monthly_chart":
+        
+        header('Content-Type: application/json');
+        
+        try{
+            
+            $startMonth =  $_POST['startMonth'];
+            $endMonth =  $_POST['endMonth']; 
+            $supplierId =  $_POST['supplierId'];
+            
+            if (empty($startMonth) || empty($endMonth)) {
+                throw new Exception("Start and End months are required.");
+            }
+            
+            if ($startMonth > $endMonth) {
+                throw new Exception("End month should be greater than start month.");
+            }
+            
+            $supplierPaymentResult = $poObj->getMonthlySupplierPayments($startMonth, $endMonth, $supplierId);
+            
+            $months = [];
+            $payments = [];
+            
+            if($supplierPaymentResult->num_rows>0){
+                
+                while($supplierPaymentRow = $supplierPaymentResult->fetch_assoc()){
+                    
+                    array_push($months,$supplierPaymentRow["month"]);
+                    array_push($payments,$supplierPaymentRow["total_amount"]);
+                }
+            }
+            
+            echo json_encode(['months' => $months, 'payments' => $payments]);
+        }
+        catch(Exception $e){
+            
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+        
     break;
 }
