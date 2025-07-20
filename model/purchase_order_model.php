@@ -175,7 +175,9 @@ class PurchaseOrder{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE purchase_order SET po_payment_id=?, po_status='6' WHERE po_id=?";
+        $poPaidDate = date("Y-m-d");
+        
+        $sql = "UPDATE purchase_order SET po_payment_id=?, po_status='6', po_paid_date='$poPaidDate' WHERE po_id=?";
     
         $stmt = $con->prepare($sql);
 
@@ -194,6 +196,29 @@ class PurchaseOrder{
         $sql = "SELECT * FROM purchase_order";
         
         $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+
+    public function getSupplierCostTrend($dateFrom, $dateTo, $supplierId){
+
+        $con = $GLOBALS["con"];
+        
+        $sql="SELECT p.po_paid_date, SUM(p.total_amount) AS total_cost
+              FROM purchase_order p
+              JOIN bid b ON p.bid_id = b.bid_id
+              WHERE p.po_status = '6' ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND p.po_paid_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+
+        if($supplierId!=""){
+            $sql.="AND b.supplier_id = '$supplierId' ";
+        }
+
+        $sql.="GROUP BY p.po_paid_date ORDER BY p.po_paid_date ASC";
+
+        $result = $con->query($sql) or die($con->error);
         return $result;
     }
 }

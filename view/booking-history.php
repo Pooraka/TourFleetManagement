@@ -79,7 +79,7 @@ $financeObj = new Finance();
                     <label class="control-label">Invoice Date</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" value="" id="invoice_date" class="form-control"/>
+                    <input type="date" value="" id="invoice_date" class="form-control" max="<?php echo date('Y-m-d'); ?>"/>
                 </div>
                 <div class="col-md-2">
                     <label class="control-label">Invoice Status</label>

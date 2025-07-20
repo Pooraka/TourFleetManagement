@@ -20,7 +20,7 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <ul class="list-group">
                 <a href="pending-service-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(134); ?>">
-                    <span class="fa-solid fa-money-bill-transfer"></span> &nbsp;
+                    <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Service Payments
                 </a>
                 <a href="pending-supplier-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(136); ?>">

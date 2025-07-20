@@ -146,7 +146,9 @@ class ServiceDetail{
         
         $con = $GLOBALS["con"];
         
-        $sql = "UPDATE service_detail SET payment_id=?, service_status='3' WHERE service_id =?";
+        $paidDate = date("Y-m-d");
+        
+        $sql = "UPDATE service_detail SET payment_id=?, paid_date='$paidDate' service_status='3' WHERE service_id =?";
     
         $stmt = $con->prepare($sql);
 

@@ -44,6 +44,8 @@ if($txnType==1){
     $pdf->Cell(0, 8, "Transaction Type : All Types", 0, 1, 'L');
 }
 
+$pdf->Cell(0, 8, "Generated On : ".date("Y-m-d"), 0, 1, 'L');
+
 
 $pdf->Ln(5); // Small space before the table
 

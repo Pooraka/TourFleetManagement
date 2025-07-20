@@ -108,4 +108,15 @@ class Supplier{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getAllSuppliersIncludingRemoved(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM supplier";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
 }

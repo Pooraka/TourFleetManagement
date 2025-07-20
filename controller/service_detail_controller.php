@@ -300,7 +300,7 @@ switch ($status){
                 while ($serviceCostTrendRow = $serviceCostTrendResult->fetch_assoc()) {
                     
                     array_push($months, $serviceCostTrendRow['month']);
-                    array_push($costs, $serviceCostTrendRow['total_cost']);
+                    array_push($costs, (float)$serviceCostTrendRow['total_cost']);
                 }
             }
             

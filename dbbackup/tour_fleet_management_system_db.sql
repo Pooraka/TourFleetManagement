@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2025 at 05:23 PM
+-- Generation Time: Jul 20, 2025 at 04:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,7 +95,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
 (10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 4, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130260, '2025-07-17 10:52:10', 122000, 12, '2024-08-20', 1, NULL),
-(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40552, '2025-07-13 00:42:37', 40052, 1, '2025-06-19', 1, NULL),
+(12, 2, 'CAD-5005', 'Isuzu', 'Journey J', '2022', 40, 'Y', 15000, 40552, '2025-07-13 00:42:37', 40052, 1, '2025-06-19', 2, NULL),
 (13, 1, 'PE-7733', 'Hino', 'AK / Liesse', '2017', 35, 'Y', 15000, 195000, '2025-04-21 22:57:00', 181000, 3, '2025-01-05', 2, NULL),
 (16, 2, 'NC-1212', 'Lanka Ashok Leyland', 'Viking', '2014', 49, 'N', 7000, 38000, '2025-05-18 01:50:58', 35000, 1, '2025-04-01', 2, NULL),
 (17, 3, 'ABC-1527', 'Toyota', 'Coaster', '2019', 35, 'Y', 5000, 15748, '2025-05-07 12:49:36', 15748, 3, '2025-05-07', 1, NULL),
@@ -184,8 +184,6 @@ INSERT INTO `cash_book` (`cash_book_txn_id`, `cash_book_txn_date`, `txn_type`, `
 (2, '2025-06-23', 1, 2, 'Service Payment', -24452.00, 3, 1, '2025-06-23 09:42:14'),
 (3, '2025-06-23', 1, 3, 'Service Payment', -25432.25, 3, 1, '2025-06-23 10:43:25'),
 (4, '2025-06-23', 1, 4, 'Service Payment', -53914.51, 3, 1, '2025-06-23 10:44:10'),
-(5, '2025-05-20', 2, 5, 'Supplier Payment', -69000.00, 3, 1, '2025-05-20 09:45:02'),
-(6, '2025-06-28', 2, 6, 'Supplier Payment', -133500.00, 3, 1, '2025-06-28 11:46:07'),
 (7, '2025-07-06', 2, 7, 'Supplier Payment', -69000.00, 3, 1, '2025-07-06 09:46:55'),
 (8, '2025-07-06', 2, 8, 'Supplier Payment', -73625.00, 3, 1, '2025-07-06 05:52:10'),
 (9, '2025-07-10', 1, 9, 'Service Payment', -50617.88, 3, 1, '2025-07-10 05:55:31'),
@@ -497,7 +495,8 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (154, 'Edit Inspection', 7, 1, NULL),
 (155, 'Tour Income Trend', 9, 1, 1),
 (156, 'Accept Customer Payment', 1, 1, 1),
-(157, 'View Invoice / Booking Confirmation', 1, 1, 1);
+(157, 'View Invoice / Booking Confirmation', 1, 1, 1),
+(158, 'Cash Flow', 9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -615,7 +614,8 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (154, 3),
 (155, 3),
 (156, 3),
-(157, 3);
+(157, 3),
+(158, 3);
 
 -- --------------------------------------------------------
 
@@ -918,8 +918,6 @@ INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_met
 (2, '2025-06-23', 24452.00, 'TRF522114', 'transfer', 1, 'svspmt_685868f8dcb64.pdf', 3, 1),
 (3, '2025-06-23', 25432.25, '254745', 'cheque', 1, 'svspmt_68586a67a651c.pdf', 3, 1),
 (4, '2025-06-23', 53914.51, 'dfhdh', 'transfer', 1, 'svspmt_68586b9a5f020.pdf', 3, 1),
-(5, '2025-05-20', 69000.00, 'CHQ-554321', 'cheque', 2, 'suppmt_68586b9a5f599.pdf', 3, 1),
-(6, '2025-06-28', 133500.00, 'TRF-AX-8891', 'transfer', 2, 'suppmt_68586b9a53652.pdf', 3, 1),
 (7, '2025-07-06', 69000.00, '256325', 'cheque', 2, 'suppmt_686a6771614b9.pdf', 3, 1),
 (8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'suppmt_686a67d868ce3.pdf', 3, 1),
 (9, '2025-07-10', 50617.88, 'FT5248', 'transfer', 1, 'svspmt_686fc5a64a126.pdf', 3, 1);
@@ -947,23 +945,24 @@ CREATE TABLE `purchase_order` (
   `rejected_by` int(10) DEFAULT NULL,
   `supplier_invoice` varchar(255) DEFAULT NULL,
   `supplier_invoice_number` varchar(255) DEFAULT NULL,
-  `po_payment_id` int(10) DEFAULT NULL
+  `po_payment_id` int(10) DEFAULT NULL,
+  `po_paid_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `purchase_order`
 --
 
-INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`, `po_payment_id`) VALUES
-(3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss', NULL),
-(4, 'ST-PO-63B4-4', 6, 4, 25, 25, 2375.00, 59375.00, '2025-07-05', 6, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652', 8),
-(5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', 7),
-(6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'Ijkn3', 8),
-(7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'c32v', NULL),
-(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 3, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', '1254', NULL),
-(9, 'ST-PO-51FA-8', 10, 3, 2, 1, 3625.00, 7250.00, '2025-07-10', 4, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', '18415', NULL),
-(10, 'ST-PO-E42A-9', 11, 2, 5, 0, 2375.00, 11875.00, '2025-07-13', 2, 3, '2025-07-13 11:34:49', 3, NULL, NULL, NULL, NULL),
-(11, 'ST-PO-1EF1-10', 12, 2, 5, 0, 3624.00, 18120.00, '2025-07-16', 1, 3, '2025-07-16 12:47:46', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quantity_ordered`, `quantity_received`, `po_unit_price`, `total_amount`, `order_date`, `po_status`, `created_by`, `created_at`, `approved_by`, `rejected_by`, `supplier_invoice`, `supplier_invoice_number`, `po_payment_id`, `po_paid_date`) VALUES
+(3, 'ST-PO-9AF1-3', 4, 3, 10, 10, 4750.00, 47500.00, '2025-07-05', 5, 3, '2025-07-05 13:06:05', 3, NULL, '1751720671_Test PDF.pdf', 'bkjvu-ss', NULL, NULL),
+(4, 'ST-PO-63B4-4', 6, 4, 25, 25, 2375.00, 59375.00, '2025-07-05', 6, 3, '2025-07-05 18:50:34', 3, NULL, '1751721763_Test PDF.pdf', 'TestINV652', 8, '2025-07-06'),
+(5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'asdwav', 7, '2025-07-06'),
+(6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'Ijkn3', 8, '2025-07-06'),
+(7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'c32v', NULL, NULL),
+(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 3, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', '1254', NULL, NULL),
+(9, 'ST-PO-51FA-8', 10, 3, 2, 1, 3625.00, 7250.00, '2025-07-10', 4, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', '18415', NULL, NULL),
+(10, 'ST-PO-E42A-9', 11, 2, 5, 0, 2375.00, 11875.00, '2025-07-13', 2, 3, '2025-07-13 11:34:49', 3, NULL, NULL, NULL, NULL, NULL),
+(11, 'ST-PO-1EF1-10', 12, 2, 5, 0, 3624.00, 18120.00, '2025-07-16', 1, 3, '2025-07-16 12:47:46', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1149,6 +1148,7 @@ CREATE TABLE `service_detail` (
   `invoice` varchar(255) DEFAULT NULL,
   `invoice_number` varchar(255) DEFAULT NULL,
   `payment_id` int(10) DEFAULT NULL,
+  `paid_date` date DEFAULT NULL,
   `service_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled,1=Ongoing,2=Completed,3=Completed & Paid',
   `initiated_by` int(10) NOT NULL,
   `cancelled_by` int(10) DEFAULT NULL,
@@ -1159,18 +1159,18 @@ CREATE TABLE `service_detail` (
 -- Dumping data for table `service_detail`
 --
 
-INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `cancelled_date`, `mileage_at_service`, `cost`, `invoice`, `invoice_number`, `payment_id`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
-(6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 'gbfb33', 2, 3, 1, NULL, 1),
-(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, 3, 3, NULL, 1),
-(12, 17, 2, 2, '2025-05-07', '2025-05-07', NULL, 15748, 24112.25, 'svsinv_681b09afde3ba.pdf', '2222', 1, 3, 3, NULL, 3),
-(18, 2, 1, 2, '2025-06-19', '2025-06-19', NULL, 186000, 25432.25, 'svsinv_68541ff971466.jpg', 'hujsn', 3, 3, 1, NULL, 1),
-(19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, 3, 3, NULL, 3),
-(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, 3, 3, NULL, 1),
-(21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, 2, 3, NULL, 1),
-(22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', 9, 3, 3, NULL, 1),
-(23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
-(24, 4, 1, 2, '2025-06-27', '2025-07-02', NULL, 117520, 32363.65, 'svsinv_6864c1bc631bf.pdf', 'OKL55422', 9, 3, 3, NULL, 3),
-(25, 19, 1, 2, '2025-06-28', '2025-06-28', NULL, 3241, 7053.78, 'svsinv_685f64e2cd0c6.pdf', '458IL4', NULL, 2, 3, NULL, 1);
+INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `cancelled_date`, `mileage_at_service`, `cost`, `invoice`, `invoice_number`, `payment_id`, `paid_date`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
+(6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 'gbfb33', 2, '2025-07-23', 3, 1, NULL, 1),
+(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, '2025-07-23', 3, 3, NULL, 1),
+(12, 17, 2, 2, '2025-05-07', '2025-05-07', NULL, 15748, 24112.25, 'svsinv_681b09afde3ba.pdf', '2222', 1, '2025-06-23', 3, 3, NULL, 3),
+(18, 2, 1, 2, '2025-06-19', '2025-06-19', NULL, 186000, 25432.25, 'svsinv_68541ff971466.jpg', 'hujsn', 3, '2025-06-23', 3, 1, NULL, 1),
+(19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, '2025-07-23', 3, 3, NULL, 3),
+(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, '2025-07-23', 3, 3, NULL, 1),
+(21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, NULL, 2, 3, NULL, 1),
+(22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', 9, '2025-07-10', 3, 3, NULL, 1),
+(23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
+(24, 4, 1, 2, '2025-06-27', '2025-07-02', NULL, 117520, 32363.65, 'svsinv_6864c1bc631bf.pdf', 'OKL55422', 9, '2025-07-10', 3, 3, NULL, 3),
+(25, 19, 1, 2, '2025-06-28', '2025-06-28', NULL, 3241, 7053.78, 'svsinv_685f64e2cd0c6.pdf', '458IL4', NULL, NULL, 2, 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1485,8 +1485,8 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
-(150, 1, '0778810839', 3),
-(151, 2, '0112729729', 3);
+(152, 1, '0778810839', 3),
+(153, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -1843,7 +1843,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -1981,7 +1981,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- Constraints for dumped tables

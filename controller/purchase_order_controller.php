@@ -278,4 +278,46 @@ switch ($status){
         <?php
         
     break;
+
+    
+    case "supplier_cost_trend":
+
+        header('Content-Type: application/json');
+
+        try{
+
+            $dateFrom = $_POST["dateFrom"];
+            $dateTo = $_POST["dateTo"];
+            $supplierId = $_POST["supplierId"];
+
+            if($dateFrom == "" || $dateTo == ""){
+                throw new Exception("Please select both start and end dates.");
+            }
+
+            if($dateFrom > $dateTo){
+                throw new Exception("End date should be equal to or greater than start date.");
+            }
+
+            
+            $supplierCostTrendResult = $poObj->getSupplierCostTrend($dateFrom, $dateTo, $supplierId);
+
+            $dates = [];
+            $costs = [];
+
+            if($supplierCostTrendResult->num_rows > 0) {
+
+                while ($supplierCostRow = $supplierCostTrendResult->fetch_assoc()) {
+
+                    array_push($dates, $supplierCostRow['po_paid_date']);
+                    array_push($costs, (float)$supplierCostRow['total_cost']);
+                }
+            }
+
+            echo json_encode(['dates' => $dates, 'costs' => $costs]);
+        }
+        catch(Exception $e){
+
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    break;
 }

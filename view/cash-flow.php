@@ -90,13 +90,13 @@ $userSession=$_SESSION["user"];
                     <label class="control-label">Date From:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="dateFrom" >
+                    <input type="date" class="form-control" id="dateFrom" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-3">
                     <label class="control-label">To Date:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="dateTo" >
+                    <input type="date" class="form-control" id="dateTo" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 
             </div>
@@ -125,7 +125,7 @@ $userSession=$_SESSION["user"];
             <div class="row">
                 <div class="col-md-12">
                     <div id="pdfContainer">
-                        <object id="pdfViewer" data="" type="application/pdf" width="100%" height="500px">
+                        <object id="pdfViewer" data="" type="application/pdf" width="100%" height="1000px">
 
                         </object>
                     </div>
@@ -143,6 +143,9 @@ $userSession=$_SESSION["user"];
 //});
 
 function generateReport(){
+    
+    $("#msg").html("");
+    $("#msg").removeClass("alert alert-danger");
     
     var dateFrom = $('#dateFrom').val();
     var dateTo = $('#dateTo').val();
