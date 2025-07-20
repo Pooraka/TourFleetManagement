@@ -1,9 +1,15 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/service_station_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+
+$serviceStationObj = new ServiceStation();
+
+$serviceStationResult = $serviceStationObj->getAllServiceStationsIncludingRemoved()
 
 ?>
 
@@ -75,20 +81,37 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
-                    <label class="control-label">Start Month</label>
+                <div class="col-md-3">
+                    <label class="control-label">Date From:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="month" class="form-control" name="start_month" id="start_month"/>
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">End Month</label>
+                    <input type="date" class="form-control" id="dateFrom" max="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-3">
-                    <input type="month" class="form-control" name="end_month" id="end_month"/>
+                    <label class="control-label">To Date:</label>
                 </div>
-                <div class="col-md-2">
-                    <input type="button" value="Generate" class="btn btn-primary" id="generateChartBtn"/>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateTo" max="<?php echo date('Y-m-d'); ?>">
+                </div>
+                
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Select Service Station</label>
+                </div>
+                <div class="col-md-3">
+                    <select id="service_station_id" class="form-control">
+                        <option value="" selected>All Service Stations</option>
+                        <?php while($serviceStationRow = $serviceStationResult->fetch_assoc()){?>
+                        <option value="<?php echo $serviceStationRow['service_station_id'];?>"><?php echo $serviceStationRow['service_station_name'];?></option>
+                        <?php }?>
+                    </select>
+                </div>
+                <div class="col-md-offset-3 col-md-3 text-right">
+                    <button type="button" class="btn btn-primary" id="generateChartBtn">Generate</button>
                 </div>
             </div>
             <div class="row">
@@ -112,33 +135,27 @@ $userSession=$_SESSION["user"];
             $("#msg").html("");
             $("#msg").removeClass("alert alert-danger");
             
-            var startMonth = $('#start_month').val();
-            var endMonth = $('#end_month').val();
+            var dateFrom = $('#dateFrom').val();
+            var dateTo = $('#dateTo').val();
+            var serviceStationId = $('#service_station_id').val();
             
-            if (startMonth == ""){
-        
-                $("#msg").html("Start Month Cannot Be Empty!");
+            if (dateFrom === "" || dateTo === "") {
                 $("#msg").addClass("alert alert-danger");
-                return false;
+                $("#msg").html("<b>Please select both dates.</b>");
+                return;
             }
-            if (endMonth == ""){
 
-                $("#msg").html("End Month Cannot Be Empty!");
+            if (dateFrom > dateTo) {
+
+                $("#msg").html("End date should be equal to or greater than start date");
                 $("#msg").addClass("alert alert-danger");
                 return false;
             }
-            
-            if (startMonth > endMonth) {
-                
-                $("#msg").html("End month should be greater than start month");
-                $("#msg").addClass("alert alert-danger");
-                return false;
-            }
-            
+
             var url = "../controller/service_detail_controller.php?status=service_cost_trend";
-            
-            $.post(url,{ startMonth: startMonth,endMonth: endMonth},function(data){
-                
+
+            $.post(url,{ dateFrom: dateFrom, dateTo: dateTo, serviceStationId: serviceStationId },function(data){
+
                 $('#trend').empty();
                 
                 if (data.error) {
@@ -147,43 +164,41 @@ $userSession=$_SESSION["user"];
                     $("#msg").addClass("alert alert-danger");
                     return false;
                 }
-                
-                if (data.months && data.months.length > 0) {
-                    
+
+                if (data.dates && data.dates.length > 0) {
+
                     var chartData = {
-                        x: data.months,
+                        x: data.dates,
                         y: data.costs,
                         mode: 'lines+markers',
                         type: 'scatter',
-                        name: 'Maintenance Cost',
+                        name: 'Service Cost',
                         line: { color: '#17A2B8', width: 3 },
                         marker: { color: '#17A2B8', size: 8 },
                         hovertemplate: '<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
-                    };
-                    
+                    }
+
                     var layout = {
-                        title: { text:'Monthly Maintenance Cost Trend'},
+                        title: { text:'Service Cost Trend'},
                         xaxis: {
-                            title: { text:'Month'},
+                            title: { text:'Date'},
                             type:'category'
                         },
                         yaxis: {
                             title: {text:'Total Cost (LKR)'},
                             separatethousands: true,
-                            rangemode:'tozero'
+                            //rangemode:'tozero'
                         },
                         margin: { t: 50, b: 100, l: 80, r: 40 }
                     };
 
                     Plotly.newPlot('trend', [chartData], layout);
-                } 
-                else{
-                        
-                    $('#trend').html('<div class="alert alert-info text-center">No service cost data available for the selected period.</div>');
+                }
+                else {
+                    $('#trend').html('<div class="alert alert-info text-center">No service cost data available for the selected parameters.</div>');
                 }
             
             });
-            
         });
     });
 </script>

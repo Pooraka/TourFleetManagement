@@ -148,7 +148,7 @@ class ServiceDetail{
         
         $paidDate = date("Y-m-d");
         
-        $sql = "UPDATE service_detail SET payment_id=?, paid_date='$paidDate' service_status='3' WHERE service_id =?";
+        $sql = "UPDATE service_detail SET payment_id=?, paid_date='$paidDate', service_status='3' WHERE service_id =?";
     
         $stmt = $con->prepare($sql);
 
@@ -183,5 +183,25 @@ class ServiceDetail{
         $stmt->close();
         return $result;
         
+    }
+    
+    public function getServiceCostTrend($dateFrom,$dateTo,$serviceStationId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT sd.paid_date, SUM(sd.cost) AS total_cost FROM service_detail sd WHERE sd.service_status='3' ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND sd.paid_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($serviceStationId!=""){
+            $sql.="AND sd.service_station_id='$serviceStationId' ";
+        }
+        
+        $sql.="GROUP BY sd.paid_date ORDER BY sd.paid_date ASC";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
     }
 }

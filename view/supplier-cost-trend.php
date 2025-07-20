@@ -138,17 +138,10 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
             var dateTo = $('#dateTo').val();
             var supplierId = $('#supplier_id').val();
 
-            if (dateFrom == ""){
-
-                $("#msg").html("Start Date Cannot Be Empty!");
+            if (dateFrom === "" || dateTo === "") {
                 $("#msg").addClass("alert alert-danger");
-                return false;
-            }
-            if (dateTo == ""){
-
-                $("#msg").html("End Date Cannot Be Empty!");
-                $("#msg").addClass("alert alert-danger");
-                return false;
+                $("#msg").html("<b>Please select both dates.</b>");
+                return;
             }
 
             if (dateFrom > dateTo) {
@@ -193,7 +186,7 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
                         yaxis: {
                             title: {text:'Total Cost (LKR)'},
                             separatethousands: true,
-                            rangemode:'tozero'
+                            //rangemode:'tozero'
                         },
                         margin: { t: 50, b: 100, l: 80, r: 40 }
                     };

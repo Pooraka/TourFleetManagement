@@ -133,4 +133,15 @@ class ServiceStation{
 
         $stmt->close();
     }
+    
+    
+    public function getAllServiceStationsIncludingRemoved(){
+        
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT * FROM service_station ORDER BY service_station_name ASC";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }

@@ -280,31 +280,32 @@ switch ($status){
         
         try{
         
-            $startMonth =  $_POST['startMonth'];
-            $endMonth =  $_POST['endMonth']; 
-            
-            if (empty($startMonth) || empty($endMonth)) {
-                throw new Exception("Start and End months are required.");
-            }
-            
-            if ($startMonth > $endMonth) {
-                throw new Exception("End month should be greater than start month.");
-            }
-            
-            $serviceCostTrendResult = $serviceDetailObj->getMonthlyServiceCostTrend($startMonth,$endMonth);
+            $dateFrom = $_POST["dateFrom"];
+            $dateTo = $_POST["dateTo"];
+            $serviceStationId = $_POST["serviceStationId"];
 
-            $months = [];
+            if($dateFrom == "" || $dateTo == ""){
+                throw new Exception("Please select both start and end dates.");
+            }
+
+            if($dateFrom > $dateTo){
+                throw new Exception("End date should be equal to or greater than start date.");
+            }
+            
+            $serviceCostTrendResult = $serviceDetailObj->getServiceCostTrend($dateFrom, $dateTo, $serviceStationId);
+
+            $dates = [];
             $costs = [];
             
             if ($serviceCostTrendResult->num_rows > 0) {
                 while ($serviceCostTrendRow = $serviceCostTrendResult->fetch_assoc()) {
-                    
-                    array_push($months, $serviceCostTrendRow['month']);
+
+                    array_push($dates, $serviceCostTrendRow['paid_date']);
                     array_push($costs, (float)$serviceCostTrendRow['total_cost']);
                 }
             }
-            
-            echo json_encode(['months' => $months, 'costs' => $costs]);
+
+            echo json_encode(['dates' => $dates, 'costs' => $costs]);
         
         }
         catch(Exception $e){

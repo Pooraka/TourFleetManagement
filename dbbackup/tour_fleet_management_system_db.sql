@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2025 at 04:15 PM
+-- Generation Time: Jul 20, 2025 at 06:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -492,11 +492,13 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (151, 'Cancel Tender', 3, 1, 1),
 (152, 'View Past Inspections', 7, 1, 1),
 (153, 'View Inspection', 7, 1, 1),
-(154, 'Edit Inspection', 7, 1, NULL),
+(154, 'Edit Inspection', 7, 1, 1),
 (155, 'Tour Income Trend', 9, 1, 1),
 (156, 'Accept Customer Payment', 1, 1, 1),
 (157, 'View Invoice / Booking Confirmation', 1, 1, 1),
-(158, 'Cash Flow', 9, 1, 1);
+(158, 'Cash Flow', 9, 1, 1),
+(159, 'Supplier Cost Trend', 9, 1, 1),
+(160, 'ServiceMonthly Payment Chart', 9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -615,7 +617,9 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (155, 3),
 (156, 3),
 (157, 3),
-(158, 3);
+(158, 3),
+(159, 3),
+(160, 3);
 
 -- --------------------------------------------------------
 
@@ -1160,12 +1164,12 @@ CREATE TABLE `service_detail` (
 --
 
 INSERT INTO `service_detail` (`service_id`, `bus_id`, `previous_bus_status`, `service_station_id`, `start_date`, `completed_date`, `cancelled_date`, `mileage_at_service`, `cost`, `invoice`, `invoice_number`, `payment_id`, `paid_date`, `service_status`, `initiated_by`, `cancelled_by`, `completed_by`) VALUES
-(6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 'gbfb33', 2, '2025-07-23', 3, 1, NULL, 1),
-(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, '2025-07-23', 3, 3, NULL, 1),
+(6, 1, 0, 1, '2025-04-28', '2025-04-28', NULL, 48000, 12000.00, 'svsinv_6810b675b14df.jpg', 'gbfb33', 2, '2025-06-23', 3, 1, NULL, 1),
+(9, 10, 1, 1, '2025-04-29', '2025-04-29', NULL, 12758, 12452.00, 'svsinv_6810bb166af37.jpg', 'dfgvdb', 2, '2025-06-23', 3, 3, NULL, 1),
 (12, 17, 2, 2, '2025-05-07', '2025-05-07', NULL, 15748, 24112.25, 'svsinv_681b09afde3ba.pdf', '2222', 1, '2025-06-23', 3, 3, NULL, 3),
 (18, 2, 1, 2, '2025-06-19', '2025-06-19', NULL, 186000, 25432.25, 'svsinv_68541ff971466.jpg', 'hujsn', 3, '2025-06-23', 3, 1, NULL, 1),
-(19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, '2025-07-23', 3, 3, NULL, 3),
-(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, '2025-07-23', 3, 3, NULL, 1),
+(19, 8, 2, 1, '2025-06-23', '2025-06-23', NULL, 17000, 32512.96, 'svsinv_68586ab9c8fd7.pdf', '8451kl', 4, '2025-06-23', 3, 3, NULL, 3),
+(20, 4, 1, 1, '2025-06-23', '2025-06-23', NULL, 116000, 21401.55, 'svsinv_68586b4cc3f19.pdf', 'jhvhjcas', 4, '2025-06-23', 3, 3, NULL, 1),
 (21, 10, 1, 2, '2025-06-23', '2025-06-23', NULL, 13257, 12547.00, 'svsinv_6858f4d7898d4.pdf', 'kijh777', NULL, NULL, 2, 3, NULL, 1),
 (22, 8, 2, 2, '2025-06-25', '2025-06-25', NULL, 18245, 18254.23, 'svsinv_685bf1599037e.pdf', 'fbfb77', 9, '2025-07-10', 3, 3, NULL, 1),
 (23, 5, 1, 1, '2025-06-26', NULL, NULL, 24000, NULL, NULL, NULL, NULL, NULL, 1, 3, NULL, NULL),
@@ -1485,8 +1489,8 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
-(152, 1, '0778810839', 3),
-(153, 2, '0112729729', 3);
+(154, 1, '0778810839', 3),
+(155, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -1843,7 +1847,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -1981,7 +1985,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- Constraints for dumped tables
