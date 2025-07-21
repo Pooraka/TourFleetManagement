@@ -121,4 +121,35 @@ switch ($status){
         }
         
     break;
+    
+    case "grn_list_filtered":
+
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        $supplierId = $_POST["supplierId"];
+        $partId = $_POST["partId"];
+
+        $grnResult = $grnObj->getAllGRNsFiltered($dateFrom,$dateTo,$supplierId,$partId);
+
+        while($grnRow = $grnResult->fetch_assoc()){
+
+        ?>
+        <tr>
+            <td style="white-space:nowrap"><?php echo $grnRow['grn_received_date'];?></td>
+            <td style="white-space:nowrap"><?php echo $grnRow['grn_number'];?></td>
+            <td style="white-space:nowrap"><?php echo $grnRow['po_number'];?></td>
+            <td><?php echo $grnRow['supplier_name'];?></td>
+            <td><?php echo $grnRow['part_name'];?></td>
+            <td><?php echo $grnRow['quantity_ordered'];?></td>
+            <td><?php echo $grnRow['grn_quantity_received'];?></td>
+            <td>
+                <a href="../reports/grn.php?grn_id=<?php echo base64_encode($grnRow['grn_id']); ?>" target="_blank" class="btn btn-info" style="margin:2px">
+                    <span class="glyphicon glyphicon-search"></span>                                                  
+                    View
+                </a>
+            </td>
+        </tr>
+    <?php }
+
+    break;
 }

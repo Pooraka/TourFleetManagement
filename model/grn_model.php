@@ -56,4 +56,30 @@ class GRN{
         $stmt->close();
         return $result;
     }
+
+    public function getAllGRNsFiltered($dateFrom,$dateTo,$supplierId,$partId){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT g.*,p.*,s.supplier_name,sp.part_name FROM grn g JOIN purchase_order p ON g.po_id=p.po_id "
+                . "JOIN bid b ON p.bid_id=b.bid_id JOIN supplier s ON b.supplier_id=s.supplier_id "
+                ."JOIN spare_part sp ON p.part_id=sp.part_id WHERE 1 ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql .= "AND g.grn_received_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+
+        if($supplierId!=""){
+            $sql .= "AND s.supplier_id='$supplierId' ";
+        }
+
+        if($partId!=""){
+            $sql .= "AND p.part_id='$partId' ";
+        }
+
+        $sql .= "ORDER BY g.grn_received_date DESC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
