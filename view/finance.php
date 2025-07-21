@@ -27,6 +27,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Pending Supplier Payments
                 </a>
+                <a href="past-payment-info.php" class="list-group-item" style="display:<?php echo checkPermissions(161); ?>">
+                    <span class="fa-solid fa-scroll"></span> &nbsp;
+                    Past Payment Info
+                </a>
                 <a href="customer-invoice-summary.php" class="list-group-item" style="display:<?php echo checkPermissions(145); ?>">
                     <span class="fa-solid fa-file-lines"></span> &nbsp;
                     Customer Invoice Summary

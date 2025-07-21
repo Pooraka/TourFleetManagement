@@ -244,4 +244,34 @@ class PurchaseOrder{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getPastPOsFiltered($dateFrom,$dateTo,$partId,$poStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT p.*,b.* FROM purchase_order p JOIN bid b ON p.bid_id = b.bid_id WHERE 1 ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            
+            $sql.="AND p.order_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($partId!=""){
+            
+            $sql.="AND p.part_id='$partId' ";
+        }
+        
+        if($poStatus==""){
+            
+            $sql.="AND p.po_status IN (3,4,5,6) ";
+        }else{
+            
+            $sql.="AND p.po_status='$poStatus' ";
+        }
+        
+        $sql.="ORDER BY p.order_date ASC";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
 }

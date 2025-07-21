@@ -317,4 +317,14 @@ class SparePart{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getAllSparePartsIncludingRemoved(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM spare_part";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

@@ -4,16 +4,14 @@ include_once '../model/purchase_order_model.php';
 include_once '../model/tender_model.php';
 include_once '../model/bid_model.php';
 include_once '../model/sparepart_model.php';
+include_once '../model/supplier_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
 $userId = $userSession['user_id'];
 
-$tenderObj = new Tender();
-$bidObj = new Bid();
-$poObj = new PurchaseOrder();
-$sparePartObj = new SparePart();
+
 
 if(!isset($_GET["status"])){
     ?>
@@ -22,6 +20,12 @@ if(!isset($_GET["status"])){
     </script>
     <?php
 }
+
+$tenderObj = new Tender();
+$bidObj = new Bid();
+$poObj = new PurchaseOrder();
+$sparePartObj = new SparePart();
+$supplierObj = new Supplier();
 
 $status= $_GET["status"];
 
@@ -360,5 +364,61 @@ switch ($status){
             echo json_encode(['error' => $e->getMessage()]);
         }
         
+    break;
+    
+    case "past_po_filtered":
+        
+        $dateFrom = $_POST['dateFrom'];
+        $dateTo = $_POST['dateTo'];
+        $poStatus = $_POST['poStatus'];
+        $partId = $_POST['sparePart'];
+
+        $poResult = $poObj->getPastPOsFiltered($dateFrom,$dateTo,$partId,$poStatus);
+        
+        while($poRow = $poResult->fetch_assoc()){
+
+            $supplierId = $poRow["supplier_id"];
+
+            $supplierResult = $supplierObj->getSupplier($supplierId);
+            $supplierRow = $supplierResult->fetch_assoc();
+            $supplierName = $supplierRow["supplier_name"];
+
+            $sparePartId = $poRow["part_id"];
+            $sparePartResult = $sparePartObj->getSparePart($sparePartId);
+            $sparePartRow = $sparePartResult->fetch_assoc();
+            $sparePartName = $sparePartRow["part_name"];
+
+            $status = match((int)$poRow["po_status"]){
+
+                3=>"Approved",
+                4=>"Partially Received",
+                5=>"All Parts Received",
+                6=>"Paid",
+            };
+
+            ?>
+        <tr>
+            <td style="white-space:nowrap"><?php echo $poRow["order_date"];?></td>
+            <td style="white-space:nowrap"><?php echo $poRow["po_number"];?></td>
+            <td><?php echo $supplierName;?></td>
+            <td><?php echo $poRow["supplier_invoice_number"];?></td>
+            <td><?php echo $sparePartName;?></td>
+            <td><?php echo number_format($poRow["quantity_ordered"]);?></td>
+            <td><?php echo number_format($poRow["quantity_received"]);?></td>
+            <td style="text-align:right"><?php echo number_format($poRow["total_amount"],2);?></td>
+            <td><?php echo $status;?></td>
+            <td>
+                <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" 
+                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(95); ?>" target="_blank">
+                View PO
+                </a>
+                <a href="../documents/supplierinvoices/<?php echo $poRow['supplier_invoice'];?>" 
+                   class="btn btn-xs btn-primary" style="margin:2px;display:<?php echo checkPermissions(163); ?>" target="_blank">
+                View Supp Inv
+                </a>
+            </td>
+        </tr>
+        <?php }
+
     break;
 }

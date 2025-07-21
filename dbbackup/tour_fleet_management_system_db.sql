@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2025 at 06:16 PM
+-- Generation Time: Jul 20, 2025 at 08:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -482,7 +482,7 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (136, 'View Pending Supplier Payments', 9, 1, 1),
 (137, 'Make Supplier Payment', 9, 1, 1),
 (138, 'Cancel Invoice & Refund', 1, 1, 1),
-(144, 'Supplier Monthly Payment Chart', 9, 1, 1),
+(144, 'Supplier-Monthly Payment Chart', 9, 1, 1),
 (145, 'Customer Invoice Summary', 9, 1, 1),
 (146, 'Service Cost Trend', 9, 1, 1),
 (147, 'Revenue By Customer', 8, 1, 1),
@@ -498,7 +498,8 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (157, 'View Invoice / Booking Confirmation', 1, 1, 1),
 (158, 'Cash Flow', 9, 1, 1),
 (159, 'Supplier Cost Trend', 9, 1, 1),
-(160, 'ServiceMonthly Payment Chart', 9, 1, 1);
+(160, 'Service-Monthly Payment Chart', 9, 1, 1),
+(161, 'View Past Payment Info', 9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -619,7 +620,8 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (157, 3),
 (158, 3),
 (159, 3),
-(160, 3);
+(160, 3),
+(161, 3);
 
 -- --------------------------------------------------------
 
@@ -918,13 +920,13 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`payment_id`, `date`, `amount`, `reference`, `payment_method`, `category_id`, `payment_document`, `paid_by`, `payment_status`) VALUES
-(1, '2025-06-23', 24112.25, '562584', 'cheque', 1, 'svspmt_6858676d5f02a.pdf', 3, 1),
-(2, '2025-06-23', 24452.00, 'TRF522114', 'transfer', 1, 'svspmt_685868f8dcb64.pdf', 3, 1),
-(3, '2025-06-23', 25432.25, '254745', 'cheque', 1, 'svspmt_68586a67a651c.pdf', 3, 1),
-(4, '2025-06-23', 53914.51, 'dfhdh', 'transfer', 1, 'svspmt_68586b9a5f020.pdf', 3, 1),
-(7, '2025-07-06', 69000.00, '256325', 'cheque', 2, 'suppmt_686a6771614b9.pdf', 3, 1),
-(8, '2025-07-06', 73625.00, 'FT369521', 'transfer', 2, 'suppmt_686a67d868ce3.pdf', 3, 1),
-(9, '2025-07-10', 50617.88, 'FT5248', 'transfer', 1, 'svspmt_686fc5a64a126.pdf', 3, 1);
+(1, '2025-06-23', 24112.25, '562584', 'Cheque', 1, 'svspmt_6858676d5f02a.pdf', 3, 1),
+(2, '2025-06-23', 24452.00, 'TRF522114', 'Transfer', 1, 'svspmt_685868f8dcb64.pdf', 3, 1),
+(3, '2025-06-23', 25432.25, '254745', 'Cheque', 1, 'svspmt_68586a67a651c.pdf', 3, 1),
+(4, '2025-06-23', 53914.51, 'TRF256348', 'Transfer', 1, 'svspmt_68586b9a5f020.pdf', 3, 1),
+(7, '2025-07-06', 69000.00, '256325', 'Cheque', 2, 'suppmt_686a6771614b9.pdf', 3, 1),
+(8, '2025-07-06', 73625.00, 'FT369521', 'Transfer', 2, 'suppmt_686a67d868ce3.pdf', 3, 1),
+(9, '2025-07-10', 50617.88, 'FT5248', 'Transfer', 1, 'svspmt_686fc5a64a126.pdf', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1489,8 +1491,8 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
-(154, 1, '0778810839', 3),
-(155, 2, '0112729729', 3);
+(156, 1, '0778810839', 3),
+(157, 2, '0112729729', 3);
 
 --
 -- Indexes for dumped tables
@@ -1847,7 +1849,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -1985,7 +1987,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- Constraints for dumped tables
