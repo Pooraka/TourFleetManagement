@@ -7,8 +7,12 @@ include_once '../model/tour_model.php';
 //get user information from session
 $userSession=$_SESSION["user"];
 
+
+$dateFrom = "";
+$dateTo = "";
+
 $tourObj = new Tour();
-$tourResult = $tourObj->getOngoingTours();
+$tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
 
 ?>
 
@@ -69,8 +73,36 @@ $tourResult = $tourObj->getOngoingTours();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-8">
+                    <label class="control-label">Select Date Range To Filter Pending Tours (Keep Blank for All)</label>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" class="btn btn-success" id="filter_button">Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">From Date</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">To Date</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateTo" name="dateTo" />
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="tourtable">
+                    <table class="table" id="tourtable" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Customer</th>
@@ -81,7 +113,7 @@ $tourResult = $tourObj->getOngoingTours();
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tourtableBody">
                             <?php while($tourRow = $tourResult->fetch_assoc()){ ?>
                             <tr>
                                 <td><?php echo $tourRow['customer_fname']." ".$tourRow['customer_lname'];?></td>
@@ -153,7 +185,60 @@ $tourResult = $tourObj->getOngoingTours();
 <script>
     $(document).ready(function(){
 
-        $("#tourtable").DataTable();
+        var dataTableOptions = {
+            
+            "pageLength": 5,
+            "order": [
+                [ 1, "desc" ] //Desc order by quotation date
+            ],
+             "scrollX": true
+        };
+        
+        var table = $("#tourtable").DataTable(dataTableOptions);
+        
+        $('#filter_button').on('click', function(){
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var dateFrom = $("#dateFrom").val();
+            var dateTo = $("#dateTo").val();
+
+            if(dateFrom!="" || dateTo!=""){
+
+                if(dateFrom ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                if(dateTo ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                
+                if(dateFrom>dateTo){
+                    $("#msg").html("'From' Date Cannot Be Greater Than 'To' Date");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+
+            }
+            
+            var url = "../controller/tour_controller.php?status=pending_tours_filtered";
+
+            $.post(url, {dateFrom:dateFrom, dateTo:dateTo}, function (data) {
+
+                // Destroy the old DataTable instance.
+                table.destroy();
+
+                // Update the table body with the new filtered data.
+                $("#tourtableBody").html(data);
+
+                // Re-initialize the DataTable with the new content.
+                table = $("#tourtable").DataTable(dataTableOptions);
+            });
+        });
     });
     
     function loadTour(tourId){

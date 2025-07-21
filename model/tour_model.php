@@ -60,12 +60,20 @@ class Tour{
         
     }
     
-    public function getOngoingTours(){
+    public function getOngoingToursFiltered($dateFrom,$dateTo){
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email"
-                . " FROM tour t, customer_invoice i, customer c WHERE t.invoice_id=i.invoice_id AND i.customer_id=c.customer_id AND tour_status IN(1,2)";
+        $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email 
+            FROM tour t 
+            JOIN customer_invoice i ON t.invoice_id = i.invoice_id 
+            JOIN customer c ON i.customer_id = c.customer_id 
+            WHERE t.tour_status IN (1, 2) ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            
+            $sql .= "AND (t.start_date <= '$dateTo' AND t.end_date >= '$dateFrom') ";
+        }
         
         $result = $con->query($sql) or die($con->error);
         return $result;

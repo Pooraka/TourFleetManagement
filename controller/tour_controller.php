@@ -517,5 +517,41 @@ switch ($status){
         }
         
     break;
+    
+    case "pending_tours_filtered":
+        
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        
+        $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
+        
+        while($tourRow = $tourResult->fetch_assoc()){ ?>
+        <tr>
+            <td><?php echo $tourRow['customer_fname']." ".$tourRow['customer_lname'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['start_date'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['end_date'];?></td>
+            <td><?php echo $tourRow['destination'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['invoice_number'];?></td>
+            <td>
+                <a href="#" data-toggle="modal" onclick="loadTour(<?php echo $tourRow['tour_id'];?>)" data-target="#completeTourModal" 
+                   class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(84); ?>">
+                    <span class="glyphicon glyphicon-ok"></span>                                                  
+                    Complete
+                </a>
+                <a href="#" data-toggle="modal" onclick="loadTourBusList(<?php echo $tourRow['tour_id'];?>)" data-target="#bus_list" 
+                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(85); ?>">
+                    <span class="glyphicon glyphicon-ok"></span>                                                  
+                    View Assigned Buses
+                </a>
+                <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" 
+                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
+                    <span class="glyphicon glyphicon-remove"></span>                                                  
+                    Cancel
+                </a>
+            </td>
+        </tr>
+        <?php }
+        
+    break;
 
 }
