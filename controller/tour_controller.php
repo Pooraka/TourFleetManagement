@@ -107,8 +107,8 @@ switch ($status){
             </div>
             <?php 
             
-//              $busResult = $busObj->getBusAvailableForTour($startDate, $endDate, $categoryIdArray);
-                $busResult = $busObj->getBusAvailableForTour($startDate, $endDate);
+              $busResult = $busObj->getBusAvailableForTourByRequestedCategory($startDate, $endDate, $categoryIdArray);
+//                $busResult = $busObj->getBusAvailableForTour($startDate, $endDate);
             
             ?>
             <div class="row">

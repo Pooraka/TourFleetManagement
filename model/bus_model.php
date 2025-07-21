@@ -237,12 +237,8 @@ class Bus{
         $stmt->close();
         return $result;
     }
-
-     /**
-     * 
-     * This function to be used if need to be filtered via category
     
-    public function getBusAvailableForTour($startDate,$endDate,$categoryIdArray){
+    public function getBusAvailableForTourByRequestedCategory($startDate,$endDate,$categoryIdArray){
         
         
         $categoryIdString = implode(',', $categoryIdArray);
@@ -266,8 +262,7 @@ class Bus{
         $result = $stmt->get_result();
         return $result;
     }
-      * 
-      */
+
 
     /**
      * Sends a list of bus categories for tours
