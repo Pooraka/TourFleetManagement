@@ -398,4 +398,74 @@ switch ($status){
         <?php }
         
     break;
+    
+    case "pending_customer_invoices_filtered":
+
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        
+        $pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoicesFiltered($dateFrom,$dateTo);
+        
+        while($pendingInvoiceRow = $pendingInvoiceResult->fetch_assoc()){
+                                
+            $invoiceId = $pendingInvoiceRow['invoice_id'];
+
+            $tourIncomeResult = $financeObj->getTourIncomeRecordByInvoiceIdAndTourIncomeType($invoiceId,1);
+            $tourIncomeRow = $tourIncomeResult->fetch_assoc();
+
+            $paymentMethod = match((int)$tourIncomeRow["payment_method"]){
+
+                1=>"Cash",
+                2=>"Funds Transfer"
+            };
+
+            $invoiceStatus = match((int)$pendingInvoiceRow['invoice_status']){
+
+                -1=>"Cancelled",
+                1=>"Tour to be assigned",
+                2=>"Tour Assigned",
+                3=>"Tour Completed",
+                4=>"Paid",
+            };     
+            ?>
+        <tr>
+            <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_date'];?></td>
+            <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_number'];?></td>
+            <td><?php echo $pendingInvoiceRow['customer_fname']." ".$pendingInvoiceRow['customer_lname'];?></td>
+            <td style="white-space: nowrap;text-align: right"><?php echo number_format($pendingInvoiceRow['invoice_amount'],2);?></td>
+            <td><?php echo $paymentMethod?></td>
+            <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['tour_start_date'];?></td>
+            <td><?php echo $invoiceStatus;?></td>
+            <td>
+                <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
+                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(157); ?>">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Booking Confirmation
+                </a>
+                <?php if($tourIncomeRow["payment_method"]==2){ ?>
+                <a href="../documents/customerpaymentproofs/<?php echo $tourIncomeRow['payment_proof'];?>" target="_blank" 
+                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(157); ?>">
+                    <span class="fa-solid fa-eye"></span>                                                  
+                    Advance Payment Proof
+                </a>
+                <?php }?>
+                <?php if($pendingInvoiceRow['invoice_status']==3){ ?>
+                <a href="accept-customer-payment.php?invoice_id=<?php echo base64_encode($invoiceId);?>" 
+                   class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(156); ?>">
+                    <span class="glyphicon glyphicon-ok"></span>                                                  
+                    Accept Payment
+                </a>
+                <?php } ?>
+                <?php if($pendingInvoiceRow['invoice_status']==1){?>
+                <a href="#" data-toggle="modal" data-target="#refundModal" onclick="setupRefundModal(<?php echo $invoiceId;?>)"
+                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(138); ?>">
+                    <span class="glyphicon glyphicon-remove"></span>                                                  
+                    Cancel & Refund
+                </a>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }
+        
+    break;
 }

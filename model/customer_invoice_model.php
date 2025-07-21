@@ -44,7 +44,7 @@ class CustomerInvoice{
         $stmt->close();
     }
     
-    public function getPendingCustomerInvoices(){
+    public function getPendingCustomerInvoicesFiltered($dateFrom,$dateTo){
         
         $con = $GLOBALS["con"];
 
@@ -52,7 +52,13 @@ class CustomerInvoice{
                 . "i.customer_id, i.invoice_status, i.invoice_description, i.tour_start_date, i.tour_end_date, "
                 . "i.pickup_location, i.destination, i.dropoff_location, i.round_trip_mileage, i.actual_fare, i.actual_mileage, "
                 . "c.customer_fname, c.customer_lname FROM customer_invoice i, customer c "
-                . "WHERE c.customer_id = i.customer_id AND i.invoice_status IN('1','2','3')";
+                . "WHERE c.customer_id = i.customer_id AND i.invoice_status IN('1','2','3') ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND i.invoice_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        $sql.="ORDER BY i.invoice_date DESC ";
         
         $result = $con->query($sql) or die ($con->error);
         return $result;

@@ -8,8 +8,11 @@ include_once '../model/finance_model.php';
 //get user information from session
 $userSession=$_SESSION["user"];
 
+$dateFrom = "";
+$dateTo = "";
+
 $customerInvoiceObj = new CustomerInvoice();
-$pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoices();
+$pendingInvoiceResult = $customerInvoiceObj->getPendingCustomerInvoicesFiltered($dateFrom,$dateTo);
 
 $financeObj = new Finance();
 ?>
@@ -44,7 +47,7 @@ $financeObj = new Finance();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -71,8 +74,36 @@ $financeObj = new Finance();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-8">
+                    <label class="control-label">Select Invoice Date Range To Filter (Keep Blank for All)</label>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" class="btn btn-success" id="filter_button">Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">From Date</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" max="<?php echo date("Y-m-d"); ?>"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">To Date</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateTo" name="dateTo" max="<?php echo date("Y-m-d"); ?>"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="invoicetable">
+                    <table class="table" id="invoiceTable" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Invoice Date</th>
@@ -85,7 +116,7 @@ $financeObj = new Finance();
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="invoiceTableBody">
                             <?php while($pendingInvoiceRow = $pendingInvoiceResult->fetch_assoc()){
                                 
                                 $invoiceId = $pendingInvoiceRow['invoice_id'];
@@ -112,7 +143,7 @@ $financeObj = new Finance();
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_date'];?></td>
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['invoice_number'];?></td>
                                 <td><?php echo $pendingInvoiceRow['customer_fname']." ".$pendingInvoiceRow['customer_lname'];?></td>
-                                <td style="white-space: nowrap"><?php echo number_format($pendingInvoiceRow['invoice_amount'],2);?></td>
+                                <td style="white-space: nowrap;text-align: right"><?php echo number_format($pendingInvoiceRow['invoice_amount'],2);?></td>
                                 <td><?php echo $paymentMethod?></td>
                                 <td style="white-space: nowrap"><?php echo $pendingInvoiceRow['tour_start_date'];?></td>
                                 <td><?php echo $invoiceStatus;?></td>
@@ -147,6 +178,15 @@ $financeObj = new Finance();
                             </tr>
                             <?php } ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Page Total:</th>
+                                <th style="white-space: nowrap;text-align: right"></th>
+                                <th>Total Amount:</th>
+                                <th style="white-space: nowrap;text-align: right"></th>
+                                <th colspan="4"></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -190,11 +230,98 @@ $financeObj = new Finance();
 <script>
     $(document).ready(function(){
 
-//        $("#invoicetable").DataTable();
-        
-        $('#invoicetable').DataTable({
+        var dataTableOptions = {
             
-            "scrollX": true
+            "pageLength": 5,
+            "order": [
+                [ 0, "desc" ] //Desc order by invoice date
+            ],
+             "scrollX": true,
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api();
+                
+                // Calculate Total for the Current Page
+                var pageTotal = 0;
+                var pageData = api.column(3, { page: 'current' }).data(); // Get data for current page only
+                
+                for (var i = 0; i < pageData.length; i++) {
+                    var amount = pageData[i];
+                    var numericValue = parseFloat(String(amount).replace(/LKR /g, '').replace(/,/g, ''));
+                    if (!isNaN(numericValue)) {
+                       pageTotal += numericValue;
+                    }
+                }
+                
+                // Format and display the page total in the 2nd footer cell
+                var formattedPageTotal = 'LKR ' + pageTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $(api.column(1).footer()).html(formattedPageTotal);
+                
+                
+                //Calculate Overall Total for All Filtered Pages
+                
+                var overallTotal = 0;
+                var overallData = api.column(3, { search: 'applied' }).data(); // Get data for all filtered pages
+                
+                for (var i = 0; i < overallData.length; i++) {
+                    
+                    var amount = overallData[i];
+                    var numericValue = parseFloat(String(amount).replace(/LKR /g, '').replace(/,/g, ''));
+                    
+                    if (!isNaN(numericValue)) {
+                       overallTotal += numericValue;
+                    }
+                }
+                
+                // Format and display the overall total in the 4th footer cell
+                var formattedOverallTotal = 'LKR ' + overallTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $(api.column(3).footer()).html(formattedOverallTotal);
+            }
+        };
+        
+        var table = $("#invoiceTable").DataTable(dataTableOptions);
+        
+        $('#filter_button').on('click', function(){
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var dateFrom = $("#dateFrom").val();
+            var dateTo = $("#dateTo").val();
+
+            if(dateFrom!="" || dateTo!=""){
+
+                if(dateFrom ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                if(dateTo ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                
+                if(dateFrom>dateTo){
+                    $("#msg").html("'From' Date Cannot Be Greater Than 'To' Date");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+
+            }
+            
+            var url = "../controller/customer_invoice_controller.php?status=pending_customer_invoices_filtered";
+
+            $.post(url, {dateFrom:dateFrom, dateTo:dateTo}, function (data) {
+
+                // Destroy the old DataTable instance.
+                table.destroy();
+
+                // Update the table body with the new filtered data.
+                $("#invoiceTableBody").html(data);
+
+                // Re-initialize the DataTable with the new content.
+                table = $("#invoiceTable").DataTable(dataTableOptions);
+            });
         });
     });
     

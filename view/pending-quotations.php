@@ -151,7 +151,7 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                                 <th style="white-space: nowrap;text-align: right"></th>
                                 <th>Total Amount:</th>
                                 <th style="white-space: nowrap;text-align: right"></th>
-                                <th colspan="2"></th>
+                                <th colspan="4"></th>
                             </tr>
                         </tfoot>
                     </table>
