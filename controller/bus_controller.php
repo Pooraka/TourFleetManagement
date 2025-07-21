@@ -366,4 +366,59 @@ switch ($status){
                 <?php
         }
     break;
+
+    case "all_buses_filtered":
+
+        $categoryId = $_POST["categoryId"];
+        $busStatus = $_POST["busStatus"];
+
+        $busResult = $busObj->getAllBusesFiltered($busStatus,$categoryId);
+
+        while($busRow = $busResult->fetch_assoc()){
+                                    
+            $status = match ((int)$busRow['bus_status']) {
+                                0=> "Out of Service",
+                                1=> "Operational",
+                                2=> "Service is Due",
+                                3=> "In Service",
+                                4=> "Inspection Failed",
+                            };
+            $statusClass = match ((int)$busRow['bus_status']) {
+                                0,4=> "label label-danger",
+                                1=> "label label-success",
+                                2=> "label label-default",
+                                3=> "label label-warning",
+                            };                
+                            
+            $busId = $busRow['bus_id'];
+            $busId = base64_encode($busId);
+            
+        ?>
+    
+            <tr>
+                <td><?php echo $busRow['vehicle_no'];?></td>
+                <td><?php echo $busRow['make'];?></td>
+                <td><?php echo $busRow['model'];?></td>
+                <td><?php echo $busRow['capacity'];?></td>
+                <td><?php echo $busRow['category_name'];?></td>
+                <td><span class="<?php echo $statusClass;?>"><?php echo $status;?></span></td>
+                <td style="white-space: nowrap">
+                    <a href="view-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-sm btn-info" 
+                        style="margin:2px;display:<?php echo checkPermissions(110); ?>" title="View">
+                        <span class="fa-solid fa-circle-info"></span>                                                  
+                    </a>
+                    <a href="edit-bus.php?bus_id=<?php echo $busId;?>" class="btn btn-sm btn-warning" 
+                        style="margin:2px;display:<?php echo checkPermissions(111); ?>" title="Edit">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" 
+                        class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a> 
+                </td>
+            </tr>
+            <?php
+        }
+
+    break;
 }
