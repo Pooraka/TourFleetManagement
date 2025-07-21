@@ -30,7 +30,12 @@ class Tender{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*,s.* FROM tender t, spare_part s WHERE t.part_id=s.part_id AND t.tender_status='1'";
+        $today = date("Y-m-d");
+        
+        $sql = "SELECT t.*, s.* FROM tender t 
+            JOIN spare_part s ON t.part_id = s.part_id 
+            WHERE t.tender_status = '1' 
+            AND t.open_date <= '$today' AND t.close_date >= '$today'";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
@@ -111,6 +116,45 @@ class Tender{
         $sql = "SELECT * FROM tender";
         
         $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function getPastTendersFiltered($dateFrom,$dateTo,$partId,$tenderStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql ="SELECT t.*,s.* FROM tender t JOIN spare_part s ON t.part_id=s.part_id WHERE 1 ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND DATE(t.created_at) BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($partId!=""){
+            $sql.="AND t.part_id='$partId' ";
+        }
+        
+        if($tenderStatus==""){
+            $sql.="AND t.tender_status IN (-1,2,3) ";
+        }else{
+            $sql.="AND t.tender_status ='$tenderStatus' ";
+        }
+        
+        $sql.="ORDER BY DATE(t.created_at) ASC";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
+    public function getTendersToClose(){
+        
+        $con = $GLOBALS["con"];
+        
+        $today = date("Y-m-d");
+        
+        $sql="SELECT tender_id FROM tender WHERE close_date<'$today' AND tender_status='1' ";
+        
+        $result = $con->query($sql) or die($con->error);
+        
         return $result;
     }
 }

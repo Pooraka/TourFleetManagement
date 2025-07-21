@@ -26,6 +26,26 @@ class Bid{
         return $result;
     }
     
+    public function getBidsOfATenderIncludingRemoved($tenderId){
+        
+        $con = $GLOBALS["con"];        
+        
+        $sql = "SELECT b.*, t.*, s.* FROM bid b, tender t, supplier s WHERE b.tender_id=t.tender_id AND b.supplier_id=s.supplier_id "
+            . "AND b.tender_id=?";
+        
+        $stmt = $con->prepare($sql);
+    
+        $stmt->bind_param("i", $tenderId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
+        return $result;
+    }
+    
     public function addBid($tenderId,$supplierId,$unitPrice){
         
         $con = $GLOBALS["con"];

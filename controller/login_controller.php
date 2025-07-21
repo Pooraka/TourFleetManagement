@@ -95,6 +95,7 @@ switch ($status) {
                 $backgroundTaskObj->sendServiceDueEmail();
                 $backgroundTaskObj->scheduleBusInspectionsPreTour();
                 $backgroundTaskObj->sendSparePartBelowReorderLevelReminder();
+                $backgroundTaskObj->closeTenders();
                 ?>
                     <script>
                         window.location = "../view/dashboard.php";

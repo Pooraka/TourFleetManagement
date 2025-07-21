@@ -1,6 +1,7 @@
 <?php
 include_once '../commons/session.php';
 include_once '../model/tender_model.php';
+include_once '../model/bid_model.php';
 
 
 //get user information from session
@@ -8,6 +9,7 @@ $userSession=$_SESSION["user"];
 $userId = $userSession['user_id'];
 
 $tenderObj = new Tender();
+$bidObj = new Bid();
 
 if(!isset($_GET["status"])){
     ?>
@@ -47,6 +49,11 @@ switch ($status){
             
             if($closeDate==""){
                 throw new Exception("Close Date Cannot Be Empty");
+            }
+            
+            if($openDate>$closeDate){
+                
+                throw new Exception("Open Date Cannot Be Greater Than Close Date");
             }
             
             $tenderDescription = $_POST["tender_description"];
@@ -122,5 +129,104 @@ switch ($status){
             <?php   
         }
         
+    break;
+
+    case "get_bids_of_past_tender":
+        
+        $tenderId = $_POST["tenderId"];
+        
+        $tenderResult = $tenderObj->getTender($tenderId);
+        $tenderRow = $tenderResult->fetch_assoc();
+        $awardedBidId = $tenderRow["awarded_bid"];
+        
+        $bidListResult = $bidObj->getBidsOfATenderIncludingRemoved($tenderId);
+        
+        
+        ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table" id="bid_list_table">
+                        <thead>
+                            <tr>
+                                <th>Bid ID</th>
+                                <th>Supplier</th>
+                                <th>Unit Price</th>
+                                <th>Bid Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($bidListRow = $bidListResult->fetch_assoc()){
+                                
+                                
+                                $status = match((int)$bidListRow["bid_status"]){
+                                    
+                                    -1=>"Removed",
+                                    1=>"Not Awarded",
+                                    2,3=>"Awarded",
+                                }
+                                ?>
+                            <tr>
+                                <td><?php echo $bidListRow["bid_id"];?></td>
+                                <td><?php echo $bidListRow["supplier_name"];?></td>
+                                <td style="text-align: right"><?php echo "LKR ".number_format((float)$bidListRow["unit_price"],2);?></td>
+                                <td><?php echo $bidListRow["bid_date"];?></td>
+                                <td><?php echo $status;?></td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        <?php
+        
+    break;
+    
+    case "past_tenders_filtered":
+
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        $tenderStatus = $_POST["tenderStatus"];
+        $partId = $_POST["partId"];
+
+        $tenderResult = $tenderObj->getPastTendersFiltered($dateFrom, $dateTo, $partId, $tenderStatus);
+        
+        while($tenderRow = $tenderResult->fetch_assoc()){
+                                
+            $status = match((int)$tenderRow["tender_status"]){
+
+                -1=>"Cancelled",
+                2=>"Closed By System",
+                3=>"Bid Awarded",
+            };
+
+            ?>
+        <tr>
+            <td style="white-space: nowrap"><?php echo date("Y-m-d", strtotime($tenderRow["created_at"])); ?></td>
+            <td><?php echo $tenderRow["tender_id"];?></td>
+            <td><?php echo $tenderRow["part_name"];?></td>
+            <td><?php echo $tenderRow["quantity_required"];?></td>
+            <td style="white-space: nowrap"><?php echo $tenderRow["open_date"];?></td>
+            <td style="white-space: nowrap"><?php echo $tenderRow["close_date"];?></td>
+            <td><?php echo $status;?></td>
+            <td>
+                <a href="../documents/tenderadvertisements/<?php echo $tenderRow["advertisement_file_name"];?>" 
+                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(69); ?>" target="_blank">                                                 
+                    Advertisement
+                </a>
+                <?php if($tenderRow["tender_status"]==3){ ?>
+                <button type="button" id="viewBidsBtn" class="btn btn-xs btn-primary" 
+                        style="margin:2px;display:<?php echo checkPermissions(71); ?>"
+                        onclick="getBidsToView(<?php echo $tenderRow["tender_id"];?>)"
+                        data-toggle="modal" data-target="#viewBidsModal"
+                        >
+                    View Bids
+                </button>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }
+
     break;
 }

@@ -36,6 +36,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-folder-open"></span> &nbsp;
                     View Open Tenders
                 </a>
+                <a href="past-tenders.php" class="list-group-item" style="display:<?php echo checkPermissions(164); ?>">
+                    <span class="fa-solid fa-scroll"></span> &nbsp;
+                    Past Tenders
+                </a>
                 <a href="tender-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(150); ?>">
                     <span class="fa-solid fa-file-contract"></span> &nbsp;
                     Tender Status Report

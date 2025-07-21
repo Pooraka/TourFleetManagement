@@ -8,6 +8,7 @@ include_once '../model/reminder_model.php';
 include_once '../model/tour_model.php';
 include_once '../model/inspection_model.php';
 include_once '../model/sparepart_model.php';
+include_once '../model/tender_model.php';
 
 $dbCon= new DbConnection();
 
@@ -131,6 +132,21 @@ class BackgroundTask{
             if($emailSent){
                 $reminderObj->updateReminderSent(2, $today);
             }
+        }
+        
+        return;
+    }
+    
+    
+    public function closeTenders(){
+        
+        $tenderObj = new Tender();
+        
+        $tenderResult = $tenderObj->getTendersToClose();
+        
+        while($tenderRow = $tenderResult->fetch_assoc()){
+            
+            $tenderObj->changeTenderStatus($tenderRow["tender_id"],2);
         }
         
         return;
