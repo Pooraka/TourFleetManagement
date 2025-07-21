@@ -239,4 +239,28 @@ class Finance{
         
         return $result;
     }
+
+    public function getPastPayments($dateFrom, $dateTo, $txnCategory,$paymentMethod){
+
+        $con=$GLOBALS["con"];
+
+        $sql = "SELECT p.*,tc.category FROM payment p JOIN transaction_category tc ON p.category_id=tc.category_id WHERE 1 ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql .= "AND p.date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+
+        if($txnCategory!=""){
+            $sql .= "AND p.category_id='$txnCategory' ";
+        }
+
+        if($paymentMethod!=""){
+            $sql .= "AND p.payment_method='$paymentMethod' ";
+        }
+
+        $sql .= "ORDER BY p.date DESC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

@@ -5,6 +5,7 @@ include_once '../model/tender_model.php';
 include_once '../model/bid_model.php';
 include_once '../model/sparepart_model.php';
 include_once '../model/supplier_model.php';
+include_once '../model/user_model.php';
 
 
 //get user information from session
@@ -26,6 +27,7 @@ $bidObj = new Bid();
 $poObj = new PurchaseOrder();
 $sparePartObj = new SparePart();
 $supplierObj = new Supplier();
+$userObj = new User();
 
 $status= $_GET["status"];
 
@@ -420,5 +422,65 @@ switch ($status){
         </tr>
         <?php }
 
+    break;
+    
+    case "po_list_of_a_payment_modal":
+        
+        $paymentId = $_POST['paymentId'];
+        
+        $poResult = $poObj->getPOListOfPayment($paymentId);
+        
+        ?> 
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>PO Number</th>
+                            <th>PO Date</th>
+                            <th>Part Name</th>
+                            <th>Quantity Ord.</th>
+                            <th>Amount</th>
+                            <th>Created By</th>
+                            <th>Approved By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($poRow = $poResult->fetch_assoc()){ 
+                            
+                            $createdById = $poRow["created_by"];
+                            $createdByResult = $userObj->getUser($createdById);
+                            $createdByRow = $createdByResult->fetch_assoc();
+                            $createdBy = substr($createdByRow["user_fname"],0,1).". ".$createdByRow["user_lname"];
+                            
+                            
+                            $approvedById = $poRow["approved_by"];
+                            $approvedByResult = $userObj->getUser($createdById);
+                            $approvedByRow = $approvedByResult->fetch_assoc();
+                            $approvedBy = substr($approvedByRow["user_fname"],0,1).". ".$approvedByRow["user_lname"];
+                            
+                            ?>
+                        <tr>
+                            <td style="white-space: nowrap"><?php echo $poRow["po_number"]?></td>
+                            <td style="white-space: nowrap"><?php echo $poRow["order_date"]?></td>
+                            <td style=""><?php echo $poRow["part_name"]?></td>
+                            <td style=""><?php echo number_format($poRow["quantity_ordered"])?></td>
+                            <td style="white-space: nowrap;text-align: right"><?php echo "LKR ".number_format($poRow["total_amount"],2)?></td>
+                            <td style="white-space: nowrap"><?php echo $createdBy?></td>
+                            <td style="white-space: nowrap"><?php echo $approvedBy?></td>
+                            <td>
+                                <a href="../reports/purchaseorder.php?po_id=<?php echo base64_encode($poRow['po_id']);?>" 
+                                    class="btn btn-primary" style="margin:2px;display:<?php echo checkPermissions(95); ?>" target="_blank">
+                                 View PO
+                                </a>
+                            </td>
+                        </tr>
+                        <?php }?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php
     break;
 }

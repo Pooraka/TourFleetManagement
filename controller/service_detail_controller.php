@@ -357,4 +357,48 @@ switch ($status){
         }
         
     break;
+    
+    case "service_list_of_a_payment_modal":
+
+        $paymentId = $_POST['paymentId'];
+
+        $serviceDetailResult = $serviceDetailObj->getServiceListOfPayment($paymentId);
+
+        ?> 
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Vehicle No</th>
+                            <th>Serviced Date</th>
+                            <th>Station Name</th>
+                            <th>Cost (LKR)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($serviceDetailRow = $serviceDetailResult->fetch_assoc()){?>
+                        <tr>
+                            <td><?php echo $serviceDetailRow["vehicle_no"];?></td>
+                            <td><?php echo $serviceDetailRow["completed_date"];?></td>
+                            <td><?php echo $serviceDetailRow["service_station_name"];?></td>
+                            <td><?php echo number_format($serviceDetailRow["cost"],2);?></td>
+                            <td>
+                                <a href="view-service-record.php?service_id=<?php echo base64_encode($serviceDetailRow["service_id"]); ?>" 
+                                   class="btn btn-primary" style="margin:2px;display:<?php echo checkPermissions(123); ?>" target="_blank">                                                
+                                     View Service
+                                </a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+        <?php
+
+    break;
 }

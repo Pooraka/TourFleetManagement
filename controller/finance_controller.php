@@ -7,6 +7,7 @@ include_once '../model/quotation_model.php';
 include_once '../model/customer_model.php';
 include_once '../model/customer_invoice_model.php';
 include_once '../model/tour_model.php';
+include_once '../model/user_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
@@ -29,6 +30,7 @@ $tourObj = new Tour();
 $financeObj = new Finance();
 $serviceDetailObj = new ServiceDetail();
 $poObj = new PurchaseOrder();
+$userObj = new User();
 
 $status= $_GET["status"];
 
@@ -328,5 +330,58 @@ switch ($status){
             echo json_encode(['error' => $e->getMessage()]);
         }
         
+    break;
+    
+    case "past_payments_filtered":
+        
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        $txnCategory = $_POST["txnCategory"];
+        $paymentMethod = $_POST["paymentMethod"];
+
+        $paymentResult = $financeObj->getPastPayments($dateFrom, $dateTo, $txnCategory,$paymentMethod);
+
+        while($paymentRow = $paymentResult->fetch_assoc()){
+                                
+            $userId = $paymentRow["paid_by"];
+            $userResult = $userObj->getUser($userId);
+            $userRow = $userResult->fetch_assoc();
+            $userName = substr($userRow["user_fname"],0,1).". ".$userRow["user_lname"];
+            
+            ?>
+        <tr>
+            <td style="white-space: nowrap"><?php echo $paymentRow["date"];?></td>
+            <td style="white-space: nowrap"><?php echo number_format((float)$paymentRow["amount"],2);?></td>
+            <td style=""><?php echo $paymentRow["reference"];?></td>
+            <td style=""><?php echo $paymentRow["payment_method"];?></td>
+            <td style=""><?php echo $paymentRow["category"];?></td>
+            <td style="white-space: nowrap"><?php echo $userName;?></td>
+            <td>
+                <a href="../documents/paymentsmade/<?php echo $paymentRow["payment_document"];?>" 
+                    class="btn btn-xs btn-info" style="margin:2px;" target="_blank">
+                Payment Document
+                </a>
+                <?php if($paymentRow["category_id"]==1){ ?>
+                <button type="button" class="btn btn-xs btn-primary"
+                        style="margin:2px;"
+                        data-toggle="modal" data-target="#serviceListModal"
+                        onclick="serviceListOfAPayment(<?php echo $paymentRow["payment_id"];?>)"
+                        >
+                    View Service List
+                </button>   
+                <?php } ?>
+                <?php if($paymentRow["category_id"]==2){ ?>
+                <button type="button" class="btn btn-xs btn-primary"
+                        style="margin:2px;"
+                        data-toggle="modal" data-target="#poListModal"
+                        onclick="poListOfAPayment(<?php echo $paymentRow["payment_id"];?>)"
+                        >
+                    View PO List
+                </button>   
+                <?php } ?>
+            </td>
+        </tr>
+        <?php }
+
     break;
 }

@@ -202,4 +202,24 @@ class ServiceDetail{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getServiceListOfPayment($paymentId){
+        
+        $con = $GLOBALS["con"];
+        $sql = "SELECT sd.*, b.*, ss.service_station_name FROM service_detail sd JOIN bus b ON sd.bus_id = b.bus_id ".
+                "JOIN service_station ss ON sd.service_station_id = ss.service_station_id ".
+                " WHERE sd.payment_id = ?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $paymentId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
+        return $result;
+    }
 }

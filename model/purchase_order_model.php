@@ -293,4 +293,21 @@ class PurchaseOrder{
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }
+    
+    public function getPOListOfPayment($paymentId){
+        
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT p.*, b.*, sp.* FROM purchase_order p JOIN bid b ON p.bid_id = b.bid_id ".
+                "JOIN spare_part sp ON p.part_id = sp.part_id WHERE p.po_payment_id = ?";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $paymentId);
+
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        return $result;
+    }
 }
