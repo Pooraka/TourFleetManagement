@@ -492,4 +492,49 @@ switch ($status){
         <?php }
         
     break;
+    
+    case "past_inspections_filtered":
+        
+        $resultId = $_POST["resultId"];
+        
+        $inspectionData = $inspectionObj->getPastInspectionsFiltered($resultId);
+        
+        while($inspectionRow = $inspectionData->fetch_assoc()){
+                                
+            $result = match((int)$inspectionRow["inspection_result"]){
+                1=>"Passed",
+                0=>"Failed",
+            };
+
+            $busId = $inspectionRow["bus_id"];
+
+            $busResult = $busObj->getBus($busId);
+            $busRow = $busResult->fetch_assoc();
+
+            ?>
+
+        <tr>
+            <td style="white-space: nowrap"><?php echo $inspectionRow["inspection_date"];?></td>
+            <td><?php echo $inspectionRow["inspection_id"];?></td>
+            <td style="white-space: nowrap"><?php echo $busRow["vehicle_no"];?></td>
+            <td style="white-space: nowrap"><?php echo $result;?></td>
+            <td><?php echo $inspectionRow["final_comments"];?></td>
+            <td style="white-space: nowrap">
+                <a href="view-inspection.php?inspection_id=<?php echo base64_encode($inspectionRow["inspection_id"]); ?>" 
+                   class="btn btn-sm btn-info" style="margin:2px;display:<?php echo checkPermissions(153); ?>">
+                    <span class="fa-solid fa-circle-info"></span>
+                    View
+                </a>
+                <?php if($inspectionRow["inspection_status"]==2||$inspectionRow["inspection_status"]==3){?>
+                <a href="edit-inspection.php?inspection_id=<?php echo base64_encode($inspectionRow["inspection_id"]); ?>" 
+                   class="btn btn-sm btn-warning" style="margin:2px;display:<?php echo checkPermissions(154); ?>">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    Edit
+                </a>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }
+        
+    break;
 }

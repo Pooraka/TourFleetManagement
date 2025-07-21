@@ -396,11 +396,15 @@ class Inspection{
         return $result;
     }
     
-    public function getPastInspections(){
+    public function getPastInspectionsFiltered($resultId){
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM inspection WHERE inspection_status IN (2,3,4)";
+        $sql = "SELECT * FROM inspection WHERE inspection_status IN (2,3,4) ";
+        
+        if($resultId!=""){
+            $sql.="AND inspection_result='$resultId' ";
+        }
         
         $result = $con->query($sql) or die($con->error);
         return $result;
