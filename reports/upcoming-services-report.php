@@ -101,7 +101,7 @@ $pdf->Ln(10);
 $pdf->SetFont('Arial', '', 10);
 $pdf->SetTextColor(0); // Black text for data
 $pdf->MultiCell(190,5,"This report highlights buses that are due for services, "
-        . "service date is within next 14 days and services within next 1,000 Kms.",0,"L",false);
+        . "service date is within next 14 days or services within next 1,000 Kms.",0,"L",false);
 
 
 
