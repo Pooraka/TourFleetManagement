@@ -298,11 +298,27 @@ class SparePart{
         $stmt->close();  
     }
     
-    public function getAllTransactions(){
+    public function getAllTransactionsFiltered($dateFrom, $dateTo,$txnType, $sparePart){
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id ORDER BY t.transacted_at ASC";
+        //$sql = "SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id ORDER BY t.transacted_at ASC";
+
+        $sql ="SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id WHERE 1 ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND DATE(t.transacted_at) BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+
+        if($txnType!=""){
+            $sql.="AND t.transaction_type='$txnType' ";
+        }
+
+        if($sparePart!=""){
+            $sql.="AND t.part_id='$sparePart' ";
+        }
+        
+        $sql.="ORDER BY t.transacted_at ASC";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
