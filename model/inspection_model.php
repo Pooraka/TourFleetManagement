@@ -356,12 +356,16 @@ class Inspection{
        return $result;
    }
    
-    public function getFailedInspectionsToAssignNewBus(){
+    public function getFailedInspectionsToAssignNewBusUsingFilters($dateFrom,$dateTo){
        
         $con = $GLOBALS["con"];
         
         $sql = "SELECT i.*,t.*,b.* FROM inspection i JOIN tour t ON t.tour_id = i.tour_id JOIN bus b ON b.bus_id = i.bus_id "
-                . "WHERE i.inspection_status='3'";
+                . "WHERE i.inspection_status='3' ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND i.inspection_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
         
         $result = $con->query($sql) or die($con->error);
         return $result;

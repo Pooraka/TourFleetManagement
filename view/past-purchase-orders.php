@@ -248,7 +248,7 @@ $supplierObj = new Supplier();
                 
                 // Format and display the page total in the 2nd footer cell
                 var formattedPageTotal = 'LKR ' + pageTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                $(api.column(1).footer()).html(formattedPageTotal);
+                $(api.column(2).footer()).html(formattedPageTotal);
                 
                 
                 //Calculate Overall Total for All Filtered Pages
@@ -268,7 +268,7 @@ $supplierObj = new Supplier();
                 
                 // Format and display the overall total in the 4th footer cell
                 var formattedOverallTotal = 'LKR ' + overallTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                $(api.column(3).footer()).html(formattedOverallTotal);
+                $(api.column(7).footer()).html(formattedOverallTotal);
             }
         };
         

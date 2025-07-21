@@ -352,6 +352,18 @@ switch ($status){
                 throw new Exception ("Enter Tour's Actual Mileage To Complete The Tour");
             }
             
+            $busResult = $tourObj->getBusListOfATour($tourId);
+            
+            while($busRow=$busResult->fetch_assoc()){
+                
+                $busStatus = $busRow['bus_status'];
+                
+                if($busStatus==4){
+                    throw new Exception("Replace The Inspection Failed Bus With The New Bus To Complete The Tour");
+                }
+
+            }
+            
             $tourResult = $tourObj->getTour($tourId);
             $tourRow = $tourResult->fetch_assoc();
             
@@ -360,7 +372,6 @@ switch ($status){
             $customerInvoiceObj->addActualTourMileage($invoiceId, $actualMileage);
             $customerInvoiceObj->changeInvoiceStatus($invoiceId,3);
             
-            $busResult = $tourObj->getBusListOfATour($tourId);
             
             while($busRow=$busResult->fetch_assoc()){
                 

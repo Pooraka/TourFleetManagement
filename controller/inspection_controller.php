@@ -466,4 +466,30 @@ switch ($status){
         }
         
     break;
+    
+    case "inspection_failed_list_filtered":
+        
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        
+        $inspectionFailedResult = $inspectionObj->getFailedInspectionsToAssignNewBusUsingFilters($dateFrom,$dateTo);
+        
+        while($inspectionFailedRow = $inspectionFailedResult->fetch_assoc()){ ?>
+        <tr>
+            <td><?php echo $inspectionFailedRow["inspection_id"];?></td>
+            <td><?php echo $inspectionFailedRow["destination"];?></td>
+            <td style="white-space: nowrap"><?php echo $inspectionFailedRow["start_date"];?></td>
+            <td><?php echo $inspectionFailedRow["vehicle_no"];?></td>
+            <td><?php echo $inspectionFailedRow["final_comments"];?></td>
+            <td>
+                <a href="reassign-bus.php?inspection_id=<?php echo base64_encode($inspectionFailedRow['inspection_id'])?>" 
+                   class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(88); ?>">
+<!--                                        <span class="glyphicon glyphicon-ok"></span>-->
+                    Assign A </br>Different Bus
+                </a>
+            </td>
+        </tr>
+        <?php }
+        
+    break;
 }
