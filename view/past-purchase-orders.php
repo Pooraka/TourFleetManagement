@@ -57,7 +57,7 @@ $supplierObj = new Supplier();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -275,11 +275,35 @@ $supplierObj = new Supplier();
         var table = $("#poTable").DataTable(dataTableOptions);
         
         $('#filter_button').on('click', function(){
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
             
             var dateFrom = $("#dateFrom").val();
             var dateTo = $("#dateTo").val();
             var poStatus = $("#poStatus").val();
             var sparePart = $("#sparePart").val();
+
+            if(dateFrom!="" || dateTo!=""){
+
+                if(dateFrom ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                if(dateTo ==""){
+                    $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+                
+                if(dateFrom>dateTo){
+                    $("#msg").html("'From' Date Cannot Be Greater Than 'To' Date");
+                    $("#msg").addClass("alert alert-danger");
+                    return false;
+                }
+
+            }
             
             var url = "../controller/purchase_order_controller.php?status=past_po_filtered";
 

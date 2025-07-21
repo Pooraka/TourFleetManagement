@@ -48,7 +48,7 @@ $financeObj = new Finance();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -251,6 +251,9 @@ $financeObj = new Finance();
         
 
         $('#filter_button').on('click', function(){
+            
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
             
             var invoiceDate = $("#invoice_date").val();
             var invoiceStatus = $("#invoice_status").val();
