@@ -62,6 +62,15 @@ $invoiceResult = $customerInvoiceObj->getRevenueByCustomers();
                     </tr>
                     <?php }?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th style="white-space: nowrap">Page Total:</th>
+                        <th style="white-space: nowrap"></th>
+                        <th style="white-space: nowrap">Total Revenue:</th>
+                        <th style="white-space: nowrap;text-align: right"></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -71,8 +80,55 @@ $invoiceResult = $customerInvoiceObj->getRevenueByCustomers();
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
+        
+        var dataTableOptions = {
+            "pageLength": 5,
+            "order": [
+                [ 3, "desc" ] //Desc order amount
+            ],
+             "scrollX": true,
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api();
+                
+                // Calculate Total for the Current Page
+                var pageTotal = 0;
+                var pageData = api.column(3, { page: 'current' }).data(); // Get data for current page only
+                
+                for (var i = 0; i < pageData.length; i++) {
+                    var amount = pageData[i];
+                    var numericValue = parseFloat(String(amount).replace(/LKR /g, '').replace(/,/g, ''));
+                    if (!isNaN(numericValue)) {
+                       pageTotal += numericValue;
+                    }
+                }
+                
+                // Format and display the page total in the 2nd footer cell
+                var formattedPageTotal = 'LKR ' + pageTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $(api.column(1).footer()).html(formattedPageTotal);
+                
+                
+                //Calculate Overall Total for All Filtered Pages
+                
+                var overallTotal = 0;
+                var overallData = api.column(3, { search: 'applied' }).data(); // Get data for all filtered pages
+                
+                for (var i = 0; i < overallData.length; i++) {
+                    
+                    var amount = overallData[i];
+                    var numericValue = parseFloat(String(amount).replace(/LKR /g, '').replace(/,/g, ''));
+                    
+                    if (!isNaN(numericValue)) {
+                       overallTotal += numericValue;
+                    }
+                }
+                
+                // Format and display the overall total in the 4th footer cell
+                var formattedOverallTotal = 'LKR ' + overallTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $(api.column(3).footer()).html(formattedOverallTotal);
+            }
+        };
 
-        $("#customer_revenue_table").DataTable();
+        $("#customer_revenue_table").DataTable(dataTableOptions);
 
     });
 </script>
