@@ -401,4 +401,59 @@ switch ($status){
         <?php
 
     break;
+
+    case "all_past_services_filtered":
+
+        $status = $_POST['status'];
+
+        $serviceDetailResult = $serviceDetailObj->getPastServicesFiltered($status);
+
+        while($serviceDetailRow = $serviceDetailResult->fetch_assoc()){
+                                            
+                    $busId = $serviceDetailRow['bus_id'];
+                    $busResult = $busObj->getBus($busId);
+                    $busRow = $busResult->fetch_assoc();
+                    $serviceStatus = $serviceDetailRow['service_status'];
+                    $statusDisplay = match($serviceStatus){
+                        '-1'=>'Cancelled',
+                        '1'=>'Ongoing',
+                        '2'=>'Completed',
+                        '3'=>'Completed & Paid'
+                    };
+                    
+                    $statusDisplayClass = match($serviceStatus){
+                        '-1'=>'label label-danger',
+                        '1'=>'label label-warning',
+                        '2'=>'label label-success',
+                        '3'=>'label label-primary'
+                    };
+                    
+                    $serviceId = $serviceDetailRow['service_id'];
+                    $serviceId = base64_encode($serviceId);
+        ?>
+        <tr>
+            <td><?php echo $busRow['vehicle_no'];?></td>
+            <td><?php echo $servicedDate = ($serviceDetailRow['completed_date']=="")?"Not Applicable":$serviceDetailRow['completed_date'];?> </td>
+            <td><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp; Km </td>
+            <td><?php echo $serviceDetailRow['invoice_number'];?></td>
+            <td><span class="<?php echo $statusDisplayClass;?>"><?php echo $statusDisplay;?></span> </td>
+            <td>
+                <a href="view-service-record.php?service_id=<?php echo $serviceId; ?>" 
+                    class="btn btn-info" style="margin:2px;display:<?php echo checkPermissions(123); ?>">
+                    <span class="glyphicon glyphicon-search"></span>                                                  
+                    View
+                </a>
+                <?php if($serviceStatus==2){ ?>
+                <a href="edit-service-record.php?service_id=<?php echo $serviceId; ?>" 
+                    class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(124); ?>">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    Edit
+                </a>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php            
+        }
+        
+    break;
 }

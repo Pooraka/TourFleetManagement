@@ -7,8 +7,10 @@ include_once '../model/bus_model.php';
 //get user information from session
 $userSession=$_SESSION["user"];
 
+$status="";
+
 $serviceDetailObj = new ServiceDetail();
-$serviceDetailResult = $serviceDetailObj->getPastServices();
+$serviceDetailResult = $serviceDetailObj->getPastServicesFiltered($status);
 
 $busObj = new Bus();
 ?>
@@ -52,7 +54,7 @@ $busObj = new Bus();
         <form action="../controller/service_detail_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 col-md-offset-3" id="msg">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -79,8 +81,26 @@ $busObj = new Bus();
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label">Select Status</label>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="status" class="form-control">
+                            <option value="">All</option>
+                            <option value="2">Completed</option>
+                            <option value="3">Completed & Paid</option>
+                        </select>
+                    </div>
+                    <div class="col-md-offset-3 col-md-3 text-right">
+                        <button type="button" class="btn btn-success" id="filter_button">Filter</button>
+                    </div>
+                </div>
+                <div class="row">
+                    &nbsp;
+                </div>
+                <div class="row">
                     <div class="col-md-12">
-                        <table class="table" id="servicetable">
+                        <table class="table" id="servicetable" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Vehicle</th>
@@ -91,7 +111,7 @@ $busObj = new Bus();
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="servicetableBody">
                                 <?php   while($serviceDetailRow = $serviceDetailResult->fetch_assoc()){
                                             
                                             $busId = $serviceDetailRow['bus_id'];
@@ -123,13 +143,13 @@ $busObj = new Bus();
                                     <td><span class="<?php echo $statusDisplayClass;?>"><?php echo $statusDisplay;?></span> </td>
                                     <td>
                                         <a href="view-service-record.php?service_id=<?php echo $serviceId; ?>" 
-                                           class="btn btn-info" style="margin:2px;display:<?php echo checkPermissions(123); ?>">
-                                            <span class="glyphicon glyphicon-search"></span>                                                  
+                                           class="btn btn-sm btn-info" style="margin:2px;display:<?php echo checkPermissions(123); ?>">
+                                            <span class="fa-solid fa-circle-info"></span>                                                  
                                             View
                                         </a>
                                         <?php if($serviceStatus==2){ ?>
                                         <a href="edit-service-record.php?service_id=<?php echo $serviceId; ?>" 
-                                           class="btn btn-warning" style="margin:2px;display:<?php echo checkPermissions(124); ?>">
+                                           class="btn btn-sm btn-warning" style="margin:2px;display:<?php echo checkPermissions(124); ?>">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Edit
                                         </a>
@@ -150,10 +170,42 @@ $busObj = new Bus();
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
 
-        $("#servicetable").DataTable();
+        var dataTableOptions = {
+            "pageLength": 15,
+            "order": [
+                [ 1, "desc" ] 
+            ],
+             "scrollX": true
+        };
+
+        var table = $("#servicetable").DataTable(dataTableOptions);
+
+        $('#filter_button').on('click', function(){
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var status = $('#status').val();
+
+            
+            var url = "../controller/service_detail_controller.php?status=all_past_services_filtered";
+
+            $.post(url, {status:status}, function (data) {
+
+                // Destroy the old DataTable instance.
+                table.destroy();
+
+                // Update the table body with the new filtered data.
+                $("#servicetableBody").html(data);
+
+                // Re-initialize the DataTable with the new content.
+                table = $("#servicetable").DataTable(dataTableOptions);
+            });
+        });
     });
 </script>
 </html>

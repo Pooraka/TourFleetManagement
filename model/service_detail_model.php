@@ -85,11 +85,17 @@ class ServiceDetail{
         $stmt->close();
     }
     
-    public function getPastServices(){
+    public function getPastServicesFiltered($status){
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT * FROM service_detail WHERE service_status!='1'";
+        $sql = "SELECT * FROM service_detail WHERE 1 ";
+        
+        if($status!=""){
+            $sql.="AND service_status='$status' ";
+        }else{
+            $sql.="AND service_status!='1' ";
+        }
         
         $result = $con->query($sql) or die ($con->error);
         return $result;
