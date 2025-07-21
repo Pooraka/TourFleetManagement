@@ -1,10 +1,14 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/sparepart_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$sparePartObj = new SparePart();
+$sparePartResult = $sparePartObj->getAllSparePartsIncludingRemoved();
 ?>
 
 <html lang="en">
@@ -71,30 +75,56 @@ $userSession=$_SESSION["user"];
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    Select The Tender Open Period
+                <div class="col-md-8">
+                    <label class="control-label">Select Tender Open Date Range To Filter (Keep Blank for All)</label>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" class="btn btn-primary" id="generateBtn" onclick="generateReport()">Generate</button>
                 </div>
             </div>
             <div class="row">
                 &nbsp;
             </div>
             <div class="row">
-                <div class="col-md-2">
-                    <label class="control-label">Start Date:</label>
+                <div class="col-md-3">
+                    <label class="control-label">From Date</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="start_date" name="start_date">
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">End Date:</label>
+                    <input type="date" class="form-control" id="dateFrom" name="dateFrom" max="<?php echo date("Y-m-d"); ?>"/>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" id="end_date" name="end_date">
+                    <label class="control-label">To Date</label>
                 </div>
-                <div class="col-md-2">
-                    <a href="#" class="btn btn-primary" id="generateReportLink" onclick="generateReport()">
-                        Generate
-                    </a>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateTo" name="dateTo" max="<?php echo date("Y-m-d"); ?>"/>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Select Tender Status</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" id="tenderStatus" name="tenderStatus">
+                        <option value="">All</option>
+                        <option value="1">Open</option>
+                        <option value="3">Bid Awarded</option>
+                        <option value="2">Closed By System</option>
+                        <option value="-1">Cancelled</option>                     
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Select Spare Part</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" id="sparePart" name="sparePart">
+                        <option value="">All</option>
+                        <?php while($sparePartRow = $sparePartResult->fetch_assoc()) { ?>
+                            <option value="<?php echo $sparePartRow["part_id"];?>"><?php echo $sparePartRow["part_name"];?></option>
+                        <?php } ?>
+                    </select>
                 </div>
             </div>
             <div class="row">
@@ -103,7 +133,7 @@ $userSession=$_SESSION["user"];
             <div class="row">
                 <div class="col-md-12">
                     <div id="pdfContainer">
-                        <object id="pdfViewer" data="" type="application/pdf" width="100%" height="500px">
+                        <object id="pdfViewer" data="" type="application/pdf" width="100%" height="1000px">
 
                         </object>
                     </div>
@@ -122,23 +152,36 @@ $userSession=$_SESSION["user"];
 
 function generateReport(){
     
-    var startDate = $('#start_date').val();
-    var endDate = $('#end_date').val();
-    
-    if (startDate == ""){
-        
-            $("#msg").html("Start Date Cannot Be Empty!");
+    $("#msg").html("");
+    $("#msg").removeClass("alert alert-danger");
+
+    var dateFrom = $("#dateFrom").val();
+    var dateTo = $("#dateTo").val();
+    var tenderStatus = $("#tenderStatus").val();
+    var partId = $("#sparePart").val();
+
+    if(dateFrom!="" || dateTo!=""){
+
+        if(dateFrom ==""){
+            $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
             $("#msg").addClass("alert alert-danger");
             return false;
         }
-    if (endDate == ""){
-        
-            $("#msg").html("End Date Cannot Be Empty!");
+        if(dateTo ==""){
+            $("#msg").html("Both Dates Must Be Selected To Get The Report For A Period");
             $("#msg").addClass("alert alert-danger");
             return false;
         }
+
+        if(dateFrom>dateTo){
+            $("#msg").html("'From' Date Cannot Be Greater Than 'To' Date");
+            $("#msg").addClass("alert alert-danger");
+            return false;
+        }
+
+    }
     
-    var pdfUrl = "../reports/tender-status-pdf.php?start_date="+startDate+"&end_date="+endDate;
+    var pdfUrl = "../reports/tender-status-pdf.php?dateFrom="+dateFrom+"&dateTo="+dateTo+"&tenderStatus="+tenderStatus+"&partId="+partId;
     
     $('#pdfViewer').attr('data', pdfUrl);
     $('#pdfContainer').show();

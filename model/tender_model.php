@@ -157,4 +157,28 @@ class Tender{
         
         return $result;
     }
+    
+    public function getAllTendersFiltered($dateFrom,$dateTo,$partId,$tenderStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT t.*,s.* FROM tender t JOIN spare_part s ON t.part_id=s.part_id WHERE 1 ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.="AND t.open_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        
+        if($partId!=""){
+            $sql.="AND t.part_id='$partId' ";
+        }
+        
+        if($tenderStatus!=""){
+            $sql.="AND t.tender_status='$tenderStatus' ";
+        }
+        
+        $sql.="ORDER BY t.open_date ASC";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
