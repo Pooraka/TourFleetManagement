@@ -25,6 +25,10 @@ $deactivatedUserCount = $userObj->getDeactivatedUserCount();
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
+                <a href="dashboard.php" class="list-group-item">
+                    <span class="fa-solid fa-house"></span> &nbsp;
+                    Back To Dashboard
+                </a>
                 <a href="add-user.php" class="list-group-item" style="display:<?php echo checkPermissions(148); ?>">
                     <span class="fa-solid fa-plus"></span> &nbsp;
                     Add User

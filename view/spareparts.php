@@ -19,6 +19,10 @@ $userSession=$_SESSION["user"];
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
+                <a href="dashboard.php" class="list-group-item">
+                    <span class="fa-solid fa-house"></span> &nbsp;
+                    Back To Dashboard
+                </a>
                 <a href="register-spareparts.php" class="list-group-item" style="display:<?php echo checkPermissions(98); ?>">
                     <span class="fa-solid fa-gears"></span> &nbsp;
                     Register Spare Parts
