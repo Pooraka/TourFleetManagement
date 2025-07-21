@@ -7,7 +7,10 @@ include_once '../model/sparepart_model.php';
 $userSession=$_SESSION["user"];
 
 $sparePartObj = new SparePart();
-$sparePartResult = $sparePartObj->getSpareParts();
+
+$status ="";
+
+$sparePartResult = $sparePartObj->getSparePartsFiltered($status);
 ?>
 
 <html lang="en">
@@ -15,7 +18,6 @@ $sparePartResult = $sparePartObj->getSpareParts();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spare Parts</title>
-    <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.min.css"/>
     <?php include_once "../includes/bootstrap_css_includes.php"?>
 </head>
 <body>
@@ -83,8 +85,26 @@ $sparePartResult = $sparePartObj->getSpareParts();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">Select Status</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" id="status" name="status">
+                        <option value="">All</option>
+                        <option value="1">Sufficient Stock</option>
+                        <option value="2">Re-order Now</option>
+                    </select>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-success" id="filter_button">Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="spare_parts">
+                    <table class="table" id="partsTable">
                         <thead>
                             <tr>
                                 <th>Part Number</th>
@@ -94,7 +114,7 @@ $sparePartResult = $sparePartObj->getSpareParts();
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="partsTableBody">
                             <?php while($sparePartRow = $sparePartResult->fetch_assoc()){
                                 $partId = $sparePartRow['part_id'];
                                 ?>
@@ -148,7 +168,35 @@ $sparePartResult = $sparePartObj->getSpareParts();
 <script>
     $(document).ready(function(){
 
-        $("#spare_parts").DataTable();
+        var dataTableOptions = {
+            "pageLength": 5,
+            
+             "scrollX": true
+        };
+        
+        var table = $("#partsTable").DataTable(dataTableOptions);
+
+        $('#filter_button').on('click', function(){
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var status = $("#status").val();
+
+            var url = "../controller/sparepart_controller.php?status=sparepart_list_filtered";
+
+            $.post(url, {status:status}, function (data) {
+
+                // Destroy the old DataTable instance.
+                table.destroy();
+
+                // Update the table body with the new filtered data.
+                $("#partsTableBody").html(data);
+
+                // Re-initialize the DataTable with the new content.
+                table = $("#partsTable").DataTable(dataTableOptions);
+            });
+        });
 
     });
     

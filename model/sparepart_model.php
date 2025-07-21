@@ -327,4 +327,22 @@ class SparePart{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+    
+    public function getSparePartsFiltered($status){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM spare_part WHERE 	part_status!=-1 ";
+        
+        if($status=="1"){
+            $sql.="AND quantity_on_hand>reorder_level ";
+        }elseif($status=="2"){
+            $sql.="AND quantity_on_hand<=reorder_level ";
+        }
+
+        $sql.="ORDER BY part_name ASC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

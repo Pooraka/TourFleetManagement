@@ -303,4 +303,35 @@ switch ($status){
         }
         
     break;
+
+    case "sparepart_list_filtered":
+
+        $status = $_POST["status"];
+
+        $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
+
+        while($sparePartRow = $sparePartResult->fetch_assoc()){
+            $partId = $sparePartRow['part_id'];
+            ?>
+        <tr>
+            <td><?php echo $sparePartRow['part_number'];?></td>
+            <td><?php echo $sparePartRow['part_name'];?></td>
+            <td><?php echo $sparePartRow['quantity_on_hand'];?></td>
+            <td><?php echo $sparePartRow['reorder_level'];?></td>
+            <td>
+                <a href="issue-spare-parts.php?part_id=<?php echo base64_encode($partId); ?>"  
+                    class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(104); ?>">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Issue To Bus
+                </a> 
+                <a href="#" data-toggle="modal" onclick="removeSpareParts(<?php echo $partId;?>)" data-target="#add_remove_info" 
+                    class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(105); ?>">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Remove
+                </a> 
+            </td>
+        </tr>
+        <?php }
+
+    break;
 }
