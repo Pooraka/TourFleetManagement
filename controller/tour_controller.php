@@ -564,5 +564,41 @@ switch ($status){
         <?php }
         
     break;
+    
+    case "past_tours_filtered":
+
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+        $tourStatus = $_POST["tourStatus"];
+
+        $tourResult = $tourObj->getPastToursFiltered($dateFrom,$dateTo,$tourStatus);
+
+        while($tourRow = $tourResult->fetch_assoc()){ 
+                                
+            $status = match((int)$tourRow["tour_status"]){
+                
+                -1=>"Cancelled",
+                3=>"Completed",
+            };
+            ?>
+        <tr>
+            <td><?php echo $tourRow['customer_fname']." ".$tourRow['customer_lname'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['start_date'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['end_date'];?></td>
+            <td><?php echo $tourRow['destination'];?></td>
+            <td style="white-space: nowrap"><?php echo $tourRow['invoice_number'];?></td>
+            <td ><?php echo $status;?></td>
+            <td>
+                <?php if($tourRow["tour_status"]==3){?>
+                <a href="#" data-toggle="modal" onclick="loadTourBusList(<?php echo $tourRow['tour_id'];?>)" data-target="#bus_list" 
+                    class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(85); ?>">                                                 
+                    View Assigned Buses
+                </a>
+                <?php }?>
+            </td>
+        </tr>
+        <?php }
+
+    break;
 
 }

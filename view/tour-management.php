@@ -36,6 +36,10 @@ $userSession=$_SESSION["user"];
                     <span class="fa-solid fa-triangle-exclamation"></span> &nbsp;
                     Pre-Tour Failed Inspections
                 </a>
+                <a href="past-tour-info.php" class="list-group-item" style="display:<?php echo checkPermissions(165); ?>">
+                    <span class="fa-solid fa-scroll"></span> &nbsp;
+                    Past Tour Info
+                </a>
             </ul>
         </div>
         <div class="col-md-9">

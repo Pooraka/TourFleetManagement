@@ -167,4 +167,32 @@ class Tour{
         
         $stmt->close();
     }
+    
+    public function getPastToursFiltered($dateFrom,$dateTo,$tourStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email 
+            FROM tour t 
+            JOIN customer_invoice i ON t.invoice_id = i.invoice_id 
+            JOIN customer c ON i.customer_id = c.customer_id 
+            WHERE 1 ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            
+            $sql .= "AND (t.start_date <= '$dateTo' AND t.end_date >= '$dateFrom') ";
+        }
+        
+        if($tourStatus==""){
+            
+            $sql.="AND t.tour_status IN (-1,3) ";
+        }elseif($tourStatus!=""){
+            $sql.="AND t.tour_status='$tourStatus' ";
+        }
+        
+        $sql.= "ORDER BY t.start_date DESC ";
+        
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
