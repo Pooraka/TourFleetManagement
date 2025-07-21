@@ -301,8 +301,6 @@ class SparePart{
     public function getAllTransactionsFiltered($dateFrom, $dateTo,$txnType, $sparePart){
         
         $con = $GLOBALS["con"];
-        
-        //$sql = "SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id ORDER BY t.transacted_at ASC";
 
         $sql ="SELECT t.*,s.* FROM part_transaction t JOIN spare_part s ON t.part_id = s.part_id WHERE 1 ";
 

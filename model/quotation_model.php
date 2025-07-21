@@ -43,15 +43,19 @@ class Quotation{
         $stmt->close();
     }
     
-    public function getPendingQuotations(){
+    public function getPendingQuotationsFitered($dateFrom,$dateTo){
         
         $con = $GLOBALS["con"];
 
-        $sql = "SELECT q.quotation_id, q.issued_date, q.customer_id, q.tour_start_date, q.tour_end_date, "
-                . "q.pickup_location, q.dropoff_location, q.description, q.total_amount, q.quotation_status, "
-                . "c.customer_fname, c.customer_lname FROM quotation q, customer c "
-                . "WHERE q.customer_id = c.customer_id AND q.quotation_status='1'";
+        $sql = "SELECT q.*,c.* FROM quotation q JOIN customer c ON q.customer_id = c.customer_id "
+                . "WHERE q.quotation_status='1' ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql .= "AND q.issued_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
         
+        $sql .= "ORDER BY q.issued_date DESC";
+
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }

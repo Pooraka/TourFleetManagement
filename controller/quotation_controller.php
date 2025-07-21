@@ -126,7 +126,7 @@ switch ($status){
             ?>
             
             <script>
-                window.location="../view/pending-quotations.php?msg=<?php echo $msg;?>&success=true";
+                window.location="../view/booking.php?msg=<?php echo $msg;?>&success=true";
             </script>
             
             <?php
@@ -162,5 +162,42 @@ switch ($status){
                     
         <?php
         
+    break;
+
+    case "pending_quotation_filtered":
+
+        $dateFrom = $_POST["dateFrom"];
+        $dateTo = $_POST["dateTo"];
+
+        $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$dateTo);
+
+        while($pendingQuotationRow = $pendingQuotationResult->fetch_assoc()){?>
+        <tr>
+            <td style="text-align: center"><?php echo $pendingQuotationRow['quotation_id'];?></td>
+            <td style="white-space: nowrap"><?php echo $pendingQuotationRow['issued_date'];?></td>
+            <td><?php echo htmlspecialchars($pendingQuotationRow['customer_fname']." ".$pendingQuotationRow['customer_lname']);?></td>
+            <td style="white-space: nowrap;text-align: right"><?php echo "LKR ".number_format($pendingQuotationRow['total_amount'],2);?></td>
+            <td style="white-space: nowrap"><?php echo $pendingQuotationRow['tour_start_date'];?></td>
+            <td>
+                <a href="../reports/quotation.php?quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
+                    class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(78);?>" target="_blank">
+                    <span class="glyphicon glyphicon-search"></span>                                                  
+                    View
+                </a>
+                <a href="#" class="btn btn-xs btn-success" data-toggle="modal" data-target="#generateInvoiceModal" 
+                    onclick="generateInvoiceModal(<?php echo $pendingQuotationRow['quotation_id'];?>)" 
+                    style="margin:2px;display:<?php echo checkPermissions(79);?>">
+                    <span class="glyphicon glyphicon-ok"></span>                                                  
+                    Generate Invoice
+                </a>
+                <a href="../controller/quotation_controller.php?status=cancel_quotation&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
+                    class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(80);?>">
+                    <span class="glyphicon glyphicon-remove"></span>                                                  
+                    Cancel
+                </a>
+            </td>
+        </tr>
+        <?php }
+
     break;
 }

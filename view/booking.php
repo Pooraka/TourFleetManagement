@@ -43,7 +43,33 @@ $userSession=$_SESSION["user"];
             </ul>
         </div>
         <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" id="msg">
+                    <?php
+                    if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-success" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    } elseif (isset($_GET["msg"])) {
+
+                        $msg = base64_decode($_GET["msg"]);
+                        ?>
+                        <div class="row">
+                            <div class="alert alert-danger" style="text-align:center">
+                                <?php echo $msg; ?>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 </body>

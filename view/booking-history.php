@@ -141,6 +141,11 @@ $financeObj = new Finance();
                                 <td style="text-align: right;white-space:nowrap"><?php echo "LKR ".number_format($invoiceRow["paid_amount"],2);?></td>
                                 <td><?php echo $status;?></td>
                                 <td>
+                                    <a href="../reports/quotation.php?quotation_id=<?php echo base64_encode($invoiceRow['quotation_id']);?>" 
+                                       class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(78);?>" target="_blank">
+                                        <span class="fa-solid fa-file-signature"></span>                                                  
+                                        Quotation
+                                    </a>
                                     <a href="../reports/pendingInvoice.php?invoice_id=<?php echo base64_encode($invoiceId);?>" target="_blank" 
                                        class="btn btn-xs btn-info" style="margin:2px">
                                         <span class="fa-solid fa-eye"></span>                                                  
@@ -201,7 +206,7 @@ $financeObj = new Finance();
     $(document).ready(function(){
 
         var dataTableOptions = {
-            "pageLength": 5,
+            "pageLength": 3,
             "order": [
                 [ 0, "desc" ] //Desc order by invoice date
             ],
