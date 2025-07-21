@@ -126,7 +126,7 @@ class Tender{
         $sql ="SELECT t.*,s.* FROM tender t JOIN spare_part s ON t.part_id=s.part_id WHERE 1 ";
         
         if($dateFrom!="" && $dateTo!=""){
-            $sql.="AND DATE(t.created_at) BETWEEN '$dateFrom' AND '$dateTo' ";
+            $sql.="AND t.open_date BETWEEN '$dateFrom' AND '$dateTo' ";
         }
         
         if($partId!=""){
@@ -139,7 +139,7 @@ class Tender{
             $sql.="AND t.tender_status ='$tenderStatus' ";
         }
         
-        $sql.="ORDER BY DATE(t.created_at) ASC";
+        $sql.="ORDER BY t.open_date ASC";
         
         $result = $con->query($sql) or die($con->error);
         return $result;

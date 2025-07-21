@@ -90,7 +90,7 @@ $tenderResult = $tenderObj->getPastTendersFiltered($dateFrom, $dateTo, $partId, 
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <label class="control-label">Select Tender Placed Date Range To Filter (Keep Blank for All)</label>
+                    <label class="control-label">Select Tender Open Date Range To Filter (Keep Blank for All)</label>
                 </div>
                 <div class="col-md-4 text-right">
                     <button type="button" class="btn btn-success" id="filter_button">Filter</button>
