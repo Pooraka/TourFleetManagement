@@ -104,10 +104,6 @@ $pdf->MultiCell(190,5,"This report highlights buses that are due for services, "
         . "service date is within next 14 days or services within next 1,000 Kms.",0,"L",false);
 
 
-
-
-
-
-
+$pdf->Ln(5); // Space before the footer
 
 $pdf->Output();

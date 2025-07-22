@@ -22,11 +22,7 @@ $pdf->AddPage("P", "A4"); // Add page after setting the title for Header() to pi
 // Set initial content font and introductory text
 $pdf->SetFont("Arial", "", 11);
 
-if($cashFlowResult->num_rows==0){
-    $pdf->Cell(0, 10, "No Records Found For The Selected Parameters", 0, 1, 'L');
-    
-    $pdf->Output();
-}
+
 
 if($dateFrom!="" && $dateTo!=""){
     $pdf->Cell(0, 8, "Cash Flow between $dateFrom and $dateTo as follows,", 0, 1, 'L');
@@ -48,6 +44,13 @@ $pdf->Cell(0, 8, "Generated On : ".date("Y-m-d"), 0, 1, 'L');
 
 
 $pdf->Ln(5); // Small space before the table
+
+if($cashFlowResult->num_rows == 0){
+    $pdf->SetFont("Arial", "B", 11);
+    $pdf->Cell(0, 10, 'No cash flow records found for the selected filters.', 0, 1, 'C');
+    $pdf->Output();
+    exit;
+}
 
 $colWidths = [
     20,  // Transaction Date
@@ -130,11 +133,7 @@ $pdf->Cell(55, 6,"Debits (LKR): ".number_format($debits, 2), 1, 0, 'C');
 $pdf->Cell(55, 6,"Credits (LKR): ".number_format($credits, 2), 1, 0, 'C');
 $pdf->Cell(80, 6,"Net Balance (LKR): ".number_format($netBalance, 2), 1, 1, 'C');
 
+$pdf->Ln(5); // Space before the footer
 
-
-
-
-
-if($cashFlowResult->num_rows!=0){
 $pdf->Output();
-}
+
