@@ -34,8 +34,8 @@ class Tender{
         
         $sql = "SELECT t.*, s.* FROM tender t 
             JOIN spare_part s ON t.part_id = s.part_id 
-            WHERE t.tender_status = '1' 
-            AND t.open_date <= '$today' AND t.close_date >= '$today'";
+            WHERE t.tender_status IN (1,2)  
+            AND t.open_date <= '$today' ";
         
         $result = $con->query($sql) or die($con->error);
         return $result;
@@ -134,7 +134,7 @@ class Tender{
         }
         
         if($tenderStatus==""){
-            $sql.="AND t.tender_status IN (-1,2,3) ";
+            $sql.="AND t.tender_status IN (-1,3) ";
         }else{
             $sql.="AND t.tender_status ='$tenderStatus' ";
         }
@@ -151,7 +151,7 @@ class Tender{
         
         $today = date("Y-m-d");
         
-        $sql="SELECT tender_id FROM tender WHERE close_date<'$today' AND tender_status='1' ";
+        $sql="SELECT tender_id FROM tender WHERE close_date<='$today' AND tender_status='1' ";
         
         $result = $con->query($sql) or die($con->error);
         

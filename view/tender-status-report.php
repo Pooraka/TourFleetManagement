@@ -110,8 +110,8 @@ $sparePartResult = $sparePartObj->getAllSparePartsIncludingRemoved();
                     <select class="form-control" id="tenderStatus" name="tenderStatus">
                         <option value="">All</option>
                         <option value="1">Open</option>
+                        <option value="2">Closed</option>
                         <option value="3">Bid Awarded</option>
-                        <option value="2">Closed By System</option>
                         <option value="-1">Cancelled</option>                     
                     </select>
                 </div>

@@ -194,11 +194,16 @@ switch ($status){
         
         while($tenderRow = $tenderResult->fetch_assoc()){
                                 
-            $status = match((int)$tenderRow["tender_status"]){
+            $statusDisplay = match((int)$tenderRow["tender_status"]){
 
                 -1=>"Cancelled",
-                2=>"Closed By System",
                 3=>"Bid Awarded",
+            };
+
+            $statusClass = match((int)$tenderRow["tender_status"]){
+
+                -1=>"label label-danger",
+                3=>"label label-success"
             };
 
             ?>
@@ -209,14 +214,14 @@ switch ($status){
             <td><?php echo $tenderRow["quantity_required"];?></td>
             <td style="white-space: nowrap"><?php echo $tenderRow["open_date"];?></td>
             <td style="white-space: nowrap"><?php echo $tenderRow["close_date"];?></td>
-            <td><?php echo $status;?></td>
+            <td><span class="<?php echo $statusClass?>"><?php echo $statusDisplay;?></span></td>
             <td>
                 <a href="../documents/tenderadvertisements/<?php echo $tenderRow["advertisement_file_name"];?>" 
-                   class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(69); ?>" target="_blank">                                                 
+                   class="btn btn-sm btn-info" style="margin:2px;display:<?php echo checkPermissions(69); ?>" target="_blank">                                                 
                     Advertisement
                 </a>
                 <?php if($tenderRow["tender_status"]==3){ ?>
-                <button type="button" id="viewBidsBtn" class="btn btn-xs btn-primary" 
+                <button type="button" id="viewBidsBtn" class="btn btn-sm btn-primary" 
                         style="margin:2px;display:<?php echo checkPermissions(71); ?>"
                         onclick="getBidsToView(<?php echo $tenderRow["tender_id"];?>)"
                         data-toggle="modal" data-target="#viewBidsModal"
