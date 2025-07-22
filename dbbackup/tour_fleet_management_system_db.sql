@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2025 at 11:24 PM
+-- Generation Time: Jul 22, 2025 at 10:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -483,7 +483,7 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (130, 'View Pending Inspections', 7, 1, 1),
 (131, 'Inspect Bus', 7, 1, 1),
 (132, 'Upcoming Services Report', 7, 1, 1),
-(133, 'Inspection Status Report', 7, 1, 1),
+(133, 'Inspection Result Report', 7, 1, 1),
 (134, 'View Pending Service Payments', 9, 1, 1),
 (135, 'Make Service Payment', 9, 1, 1),
 (136, 'View Pending Supplier Payments', 9, 1, 1),
@@ -528,114 +528,223 @@ CREATE TABLE `function_user` (
 --
 
 INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
+(49, 1),
 (49, 3),
+(50, 1),
 (50, 3),
+(51, 1),
 (51, 3),
+(52, 1),
 (52, 3),
+(53, 1),
 (53, 3),
+(54, 1),
 (54, 3),
+(55, 1),
 (55, 3),
+(56, 1),
 (56, 3),
+(57, 1),
 (57, 3),
+(58, 1),
 (58, 3),
+(60, 1),
 (60, 3),
+(61, 1),
 (61, 3),
+(62, 1),
 (62, 3),
+(63, 1),
 (63, 3),
+(64, 1),
 (64, 3),
+(65, 1),
 (65, 3),
+(66, 1),
 (66, 3),
+(67, 1),
 (67, 3),
+(68, 1),
 (68, 3),
+(69, 1),
 (69, 3),
+(70, 1),
 (70, 3),
+(71, 1),
 (71, 3),
+(72, 1),
 (72, 3),
+(73, 1),
 (73, 3),
+(76, 1),
 (76, 3),
+(77, 1),
 (77, 3),
+(78, 1),
 (78, 3),
+(79, 1),
 (79, 3),
+(80, 1),
 (80, 3),
+(81, 1),
 (81, 3),
+(82, 1),
 (82, 3),
+(83, 1),
 (83, 3),
+(84, 1),
 (84, 3),
+(85, 1),
 (85, 3),
+(86, 1),
 (86, 3),
+(87, 1),
 (87, 3),
+(88, 1),
 (88, 3),
+(89, 1),
 (89, 3),
+(90, 1),
 (90, 3),
+(91, 1),
 (91, 3),
+(92, 1),
 (92, 3),
+(93, 1),
 (93, 3),
+(94, 1),
 (94, 3),
+(95, 1),
 (95, 3),
+(96, 1),
 (96, 3),
+(97, 1),
 (97, 3),
+(98, 1),
 (98, 3),
+(99, 1),
 (99, 3),
+(100, 1),
 (100, 3),
+(101, 1),
 (101, 3),
+(102, 1),
 (102, 3),
+(103, 1),
 (103, 3),
+(104, 1),
 (104, 3),
+(105, 1),
 (105, 3),
+(106, 1),
 (106, 3),
+(107, 1),
 (107, 3),
+(108, 1),
 (108, 3),
+(109, 1),
 (109, 3),
+(110, 1),
 (110, 3),
+(111, 1),
 (111, 3),
+(112, 1),
 (112, 3),
+(113, 1),
 (113, 3),
+(114, 1),
 (114, 3),
+(115, 1),
 (115, 3),
+(116, 1),
 (116, 3),
+(117, 1),
 (117, 3),
+(118, 1),
 (118, 3),
+(119, 1),
 (119, 3),
+(120, 1),
 (120, 3),
+(121, 1),
 (121, 3),
+(122, 1),
 (122, 3),
+(123, 1),
 (123, 3),
+(124, 1),
 (124, 3),
+(125, 1),
 (125, 3),
+(126, 1),
 (126, 3),
+(127, 1),
 (127, 3),
+(128, 1),
 (128, 3),
+(129, 1),
 (129, 3),
+(130, 1),
 (130, 3),
+(131, 1),
 (131, 3),
+(132, 1),
 (132, 3),
+(133, 1),
 (133, 3),
+(134, 1),
 (134, 3),
+(135, 1),
 (135, 3),
+(136, 1),
 (136, 3),
+(137, 1),
 (137, 3),
+(138, 1),
 (138, 3),
+(144, 1),
 (144, 3),
+(145, 1),
 (145, 3),
+(146, 1),
 (146, 3),
+(147, 1),
 (147, 3),
+(148, 1),
 (148, 3),
+(149, 1),
 (149, 3),
+(150, 1),
 (150, 3),
+(151, 1),
 (151, 3),
+(152, 1),
 (152, 3),
+(153, 1),
 (153, 3),
+(154, 1),
 (154, 3),
+(155, 1),
 (155, 3),
+(156, 1),
 (156, 3),
+(157, 1),
 (157, 3),
+(158, 1),
 (158, 3),
+(159, 1),
 (159, 3),
+(160, 1),
 (160, 3),
+(161, 1),
 (161, 3),
+(162, 1),
 (162, 3),
+(163, 1),
 (163, 3),
+(164, 1),
 (164, 3),
+(165, 1),
 (165, 3);
 
 -- --------------------------------------------------------
@@ -853,11 +962,11 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`login_id`, `login_username`, `login_password`, `user_id`, `login_status`, `otp`, `otp_expiry`) VALUES
-(1, '1', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
+(1, 'hasendra@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 1, 1, '', '0000-00-00 00:00:00'),
 (4, 'clintb@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 3, 1, '', '0000-00-00 00:00:00'),
-(6, 'stever@st.lk', '35fec01bf369d08599826e05d98e8c51acad1824', 5, 1, '', '0000-00-00 00:00:00'),
-(8, 'tonys@st.lk', 'f1707f87b7662b61ea627b9769338d60aa852e16', 7, 2, '253075', '2025-07-11 11:11:47'),
-(9, 'natashar@st.lk', '4b6c812cf500b82cece3de2162f037b4d99244dd', 8, 1, '', '0000-00-00 00:00:00');
+(6, 'stever@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 5, 1, '', '0000-00-00 00:00:00'),
+(8, 'tonys@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 7, 2, '253075', '2025-07-11 11:11:47'),
+(9, 'natashar@st.lk', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 8, 1, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -879,16 +988,16 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`module_id`, `module_name`, `module_icon`, `module_url`, `module_status`, `module_order`) VALUES
-(1, 'Booking management', 'booking.png', 'booking.php', 1, 2),
+(1, 'Booking management', 'booking.png', 'booking.php', 1, 6),
 (2, 'Tour management', 'tours.png', 'tour-management.php', 1, 4),
 (3, 'Tender management', 'tender.png', 'tender.php', 1, 9),
-(4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1, 6),
-(5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1, 7),
-(6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1, 3),
+(4, 'Purchasing', 'purchasing.png', 'purchasing.php', 1, 7),
+(5, 'Spare parts management', 'spareparts.png', 'spareparts.php', 1, 5),
+(6, 'Bus management', 'busmanagement.png', 'bus-management.php', 1, 2),
 (7, 'Bus maintenance', 'busmaintenance.png', 'bus-maintenance.php', 1, 10),
 (8, 'Customer', 'customer.png', 'customer.php', 1, 1),
 (9, 'Finance management', 'finance.png', 'finance.php', 1, 8),
-(10, 'User management', 'user.png', 'user.php', 1, 5);
+(10, 'User management', 'user.png', 'user.php', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -1106,8 +1215,8 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`reminder_id`, `reminder_type`, `sent_date`) VALUES
-(1, 'ServiceDueBuses', '2025-07-21'),
-(2, 'SparePartsBelowReorderLevel', '2025-07-21');
+(1, 'ServiceDueBuses', '2025-07-22'),
+(2, 'SparePartsBelowReorderLevel', '2025-07-22');
 
 -- --------------------------------------------------------
 
@@ -1384,7 +1493,7 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (8, 3, 2, '2 Air Filters Required', '1752045968_Test PDF.pdf', '2025-07-09', '2025-07-10', 3, 3, '2025-07-09 07:26:08', 10),
 (9, 2, 5, 'Test Tender', '1752386422_Test PDF.pdf', '2025-07-13', '2025-07-15', 3, 3, '2025-07-13 06:00:22', 11),
 (10, 2, 5, 'Need This Urgently', '1752649637_Test PDF.pdf', '2025-07-16', '2025-07-17', 3, 3, '2025-07-16 07:07:17', 12),
-(11, 3, 2, '2 Items are needed', '1753080684_Test PDF.pdf', '2025-07-21', '2025-07-22', 1, 3, '2025-07-21 06:51:24', NULL);
+(11, 3, 2, '2 Items are needed', '1753080684_Test PDF.pdf', '2025-07-21', '2025-07-22', 2, 3, '2025-07-21 06:51:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -1533,12 +1642,12 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (79, 2, '0112843951', 8),
 (106, 1, '0734351355', 5),
 (107, 2, '0112008888', 5),
-(122, 1, '0779535000', 1),
-(123, 2, '0114006319', 1),
 (124, 1, '0772456456', 7),
 (125, 2, '0312243581', 7),
 (164, 1, '0778810839', 3),
-(165, 2, '0112729729', 3);
+(165, 2, '0112729729', 3),
+(166, 1, '0779535000', 1),
+(167, 2, '0114006319', 1);
 
 --
 -- Indexes for dumped tables
@@ -2033,7 +2142,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
 
 --
 -- Constraints for dumped tables

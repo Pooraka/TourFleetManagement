@@ -11,8 +11,9 @@ $userSession=$_SESSION["user"];
 $inspectionObj = new Inspection();
 
 $resultId = "";
+$inspectionDate ="";
 
-$inspectionData = $inspectionObj->getPastInspectionsFiltered($resultId);
+$inspectionData = $inspectionObj->getPastInspectionsFiltered($resultId,$inspectionDate);
 
 $busObj = new Bus();
 
@@ -107,7 +108,7 @@ $busObj = new Bus();
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="control-label">Select Result</label>
                 </div>
                 <div class="col-md-3">
@@ -117,7 +118,13 @@ $busObj = new Bus();
                         <option value="0">Failed</option>
                     </select>
                 </div>
-                <div class="col-md-offset-3 col-md-3 text-right">
+                <div class="col-md-2">
+                    <label class="control-label">Inspection Date</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" value="" max="<?php echo date("Y-m-d");?>" id="inspectionDate" class="form-control"/>
+                </div>
+                <div class="col-md-2 text-right">
                     <button type="button" class="btn btn-success" id="filter_button">Filter</button>
                 </div>
             </div>
@@ -145,6 +152,11 @@ $busObj = new Bus();
                                     0=>"Failed",
                                 };
                                 
+                                $resultClass = match((int)$inspectionRow["inspection_result"]){
+                                    1=>"label label-success",
+                                    0=>"label label-danger",
+                                };
+                                
                                 $busId = $inspectionRow["bus_id"];
                                 
                                 $busResult = $busObj->getBus($busId);
@@ -156,7 +168,7 @@ $busObj = new Bus();
                                 <td style="white-space: nowrap"><?php echo $inspectionRow["inspection_date"];?></td>
                                 <td><?php echo $inspectionRow["inspection_id"];?></td>
                                 <td style="white-space: nowrap"><?php echo $busRow["vehicle_no"];?></td>
-                                <td style="white-space: nowrap"><?php echo $result;?></td>
+                                <td style="white-space: nowrap"><span class="<?php echo $resultClass;?>"><?php echo $result;?></span></td>
                                 <td><?php echo $inspectionRow["final_comments"];?></td>
                                 <td style="white-space: nowrap">
                                     <a href="view-inspection.php?inspection_id=<?php echo base64_encode($inspectionRow["inspection_id"]); ?>" 
@@ -191,7 +203,7 @@ $busObj = new Bus();
         var dataTableOptions = {
             "pageLength": 5,
             "order": [
-                [ 1, "desc" ] 
+                [ 0, "desc" ] 
             ],
              "scrollX": true
         };
@@ -204,10 +216,11 @@ $busObj = new Bus();
             $("#msg").removeClass("alert alert-danger");
 
             var resultId = $("#resultId").val();
+            var inspectionDate = $("#inspectionDate").val();
             
             var url = "../controller/inspection_controller.php?status=past_inspections_filtered";
 
-            $.post(url, {resultId:resultId}, function (data) {
+            $.post(url, {resultId:resultId, inspectionDate:inspectionDate}, function (data) {
 
                 // Destroy the old DataTable instance.
                 table.destroy();

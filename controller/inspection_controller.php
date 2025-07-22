@@ -496,14 +496,20 @@ switch ($status){
     case "past_inspections_filtered":
         
         $resultId = $_POST["resultId"];
+        $inspectionDate = $_POST["inspectionDate"];
         
-        $inspectionData = $inspectionObj->getPastInspectionsFiltered($resultId);
+        $inspectionData = $inspectionObj->getPastInspectionsFiltered($resultId,$inspectionDate);
         
         while($inspectionRow = $inspectionData->fetch_assoc()){
                                 
             $result = match((int)$inspectionRow["inspection_result"]){
                 1=>"Passed",
                 0=>"Failed",
+            };
+            
+            $resultClass = match((int)$inspectionRow["inspection_result"]){
+                1=>"label label-success",
+                0=>"label label-danger",
             };
 
             $busId = $inspectionRow["bus_id"];
@@ -517,7 +523,7 @@ switch ($status){
             <td style="white-space: nowrap"><?php echo $inspectionRow["inspection_date"];?></td>
             <td><?php echo $inspectionRow["inspection_id"];?></td>
             <td style="white-space: nowrap"><?php echo $busRow["vehicle_no"];?></td>
-            <td style="white-space: nowrap"><?php echo $result;?></td>
+            <td style="white-space: nowrap"><span class="<?php echo $resultClass;?>"><?php echo $result;?></span></td>
             <td><?php echo $inspectionRow["final_comments"];?></td>
             <td style="white-space: nowrap">
                 <a href="view-inspection.php?inspection_id=<?php echo base64_encode($inspectionRow["inspection_id"]); ?>" 

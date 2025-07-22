@@ -423,7 +423,7 @@ class Inspection{
         return $result;
     }
     
-    public function getPastInspectionsFiltered($resultId){
+    public function getPastInspectionsFiltered($resultId,$inspectionDate){
         
         $con = $GLOBALS["con"];
         
@@ -431,6 +431,10 @@ class Inspection{
         
         if($resultId!=""){
             $sql.="AND inspection_result='$resultId' ";
+        }
+        
+        if($inspectionDate!=""){
+            $sql.="AND inspection_date='$inspectionDate' ";
         }
         
         $result = $con->query($sql) or die($con->error);
