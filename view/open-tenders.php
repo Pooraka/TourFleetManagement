@@ -1,15 +1,23 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/sparepart_model.php';
 include_once '../model/tender_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
 
+$sparePartObj = new SparePart();
+$sparePartResult = $sparePartObj->getAllSparePartsIncludingRemoved();
+
 $tenderObj = new Tender();
 
-$tenderResult = $tenderObj->getOpenTenders();
+$tenderStatus = "";
+$partId = "";
+
+$tenderResult = $tenderObj->getOpenTendersFiltered($tenderStatus,$partId);
+
 ?>
 
 <html lang="en">
@@ -46,7 +54,7 @@ $tenderResult = $tenderObj->getOpenTenders();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -73,6 +81,35 @@ $tenderResult = $tenderObj->getOpenTenders();
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-2">
+                    <label class="control-label">Select Tender Status</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" id="tenderStatus" name="tenderStatus">
+                        <option value="">All</option>
+                        <option value="1">Open</option>
+                        <option value="2">Closed</option>                     
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label">Select Spare Part</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" id="sparePart" name="sparePart">
+                        <option value="">All</option>
+                        <?php while($sparePartRow = $sparePartResult->fetch_assoc()) { ?>
+                            <option value="<?php echo $sparePartRow["part_id"];?>"><?php echo $sparePartRow["part_name"];?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="col-md-2 text-right">
+                    <button type="button" class="btn btn-success" id="filter_button">Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <table class="table" id="open_tenders">
                         <thead>
@@ -87,7 +124,7 @@ $tenderResult = $tenderObj->getOpenTenders();
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="open_tenders_body">
                             <?php while($tenderRow = $tenderResult->fetch_assoc()){ 
                                 
                                 $statusDisplay = match((int)$tenderRow["tender_status"]){
@@ -105,7 +142,7 @@ $tenderResult = $tenderObj->getOpenTenders();
                                 ?>
                             <tr>
                                 <td style="white-space: wrap"><?php echo $tenderRow["tender_id"];?></td>
-                                <td style="white-space: nowrap"><?php echo $tenderRow["part_number"];?></td>
+                                <td><?php echo $tenderRow["part_name"];?></td>
                                 <td><?php echo $tenderRow["quantity_required"];?></td>
                                 <td><?php echo $tenderRow["tender_description"];?></td>
                                 <td style="white-space: nowrap"><?php echo $tenderRow["open_date"];?></td>
@@ -143,10 +180,43 @@ $tenderResult = $tenderObj->getOpenTenders();
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
+        
+        var dataTableOptions = {
+            "pageLength": 5,
+            "order": [
+                [ 0, "desc" ] //Desc order by tender created date
+            ],
+             "scrollX": true
+        };
+        
+        var table = $("#open_tenders").DataTable(dataTableOptions); 
+        
+        
+        $('#filter_button').on('click', function(){
 
-        $("#open_tenders").DataTable();
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
+            
+            var tenderStatus = $("#tenderStatus").val();
+            var partId = $("#sparePart").val();
+            
+            var url = "../controller/tender_controller.php?status=open_tenders_filtered";
+
+            $.post(url, {tenderStatus:tenderStatus, partId:partId}, function (data) {
+
+                // Destroy the old DataTable instance.
+                table.destroy();
+
+                // Update the table body with the new filtered data.
+                $("#open_tenders_body").html(data);
+
+                // Re-initialize the DataTable with the new content.
+                table = $("#open_tenders").DataTable(dataTableOptions);
+            });
+        });
     });
 </script>
 </html>

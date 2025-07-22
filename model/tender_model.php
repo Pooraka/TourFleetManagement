@@ -26,7 +26,7 @@ class Tender{
         return $tenderId;
     }
     
-    public function getOpenTenders(){
+    public function getOpenTendersFiltered($tenderStatus,$partId){
         
         $con = $GLOBALS["con"];
         
@@ -34,8 +34,17 @@ class Tender{
         
         $sql = "SELECT t.*, s.* FROM tender t 
             JOIN spare_part s ON t.part_id = s.part_id 
-            WHERE t.tender_status IN (1,2)  
-            AND t.open_date <= '$today' ";
+            WHERE t.open_date <= '$today' ";
+        
+        if($tenderStatus!=""){
+            $sql.="AND t.tender_status='$tenderStatus' ";
+        } else {
+            $sql.="AND t.tender_status IN (1,2) ";
+        }
+        
+        if($partId!=""){
+            $sql.="t.part_id = '$partId' ";
+        }
         
         $result = $con->query($sql) or die($con->error);
         return $result;
