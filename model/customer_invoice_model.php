@@ -314,4 +314,34 @@ class CustomerInvoice{
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }
+
+    public function getPendingInvoiceCount(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) AS pending_invoice_count FROM customer_invoice WHERE invoice_status IN (1,2,3)";
+        
+        $result = $con->query($sql) or die ($con->error);
+        
+        $row = $result->fetch_assoc();
+        
+        return $row['pending_invoice_count'];
+    }
+
+    public function getAdvancePaymentAmountReceivedWithinLast7Days(){
+
+        $con = $GLOBALS["con"];
+        
+        $today = date('Y-m-d');
+        $dateFrom = date('Y-m-d', strtotime($today . ' -7 days'));
+
+        $sql = "SELECT SUM(advance_payment) AS total_advance_payment FROM customer_invoice 
+                WHERE invoice_date BETWEEN '$dateFrom' AND '$today' AND invoice_status != -1";
+
+        $result = $con->query($sql) or die ($con->error);
+
+        $row = $result->fetch_assoc();
+
+        return $row['total_advance_payment'];
+    }
 }

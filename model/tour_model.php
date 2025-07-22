@@ -195,4 +195,44 @@ class Tour{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getOngoingTourCount(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) as count FROM tour WHERE start_date <= CURDATE() AND end_date >= CURDATE()";
+
+        $result = $con->query($sql) or die($con->error);
+        
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getUpComingToursCount(){
+        
+        $con = $GLOBALS["con"];
+
+        $sevenDaysFromNow = date("Y-m-d", strtotime("+7 days"));
+
+        $sql = "SELECT COUNT(*) as count FROM tour WHERE start_date > CURDATE() AND start_date <= '$sevenDaysFromNow' AND tour_status != -1";
+
+        $result = $con->query($sql) or die($con->error);
+
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getTourCountStartingToday(){
+        
+        $con = $GLOBALS["con"];
+        
+        $today = date("Y-m-d");
+        
+        $sql = "SELECT COUNT(*) as count FROM tour WHERE start_date = '$today' AND tour_status != -1";
+
+        $result = $con->query($sql) or die($con->error);
+
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
 }

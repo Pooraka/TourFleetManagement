@@ -176,7 +176,7 @@ $serviceStationResult = $serviceStationObj->getAllServiceStationsIncludingRemove
                         line: { color: '#17A2B8', width: 3 },
                         marker: { color: '#17A2B8', size: 8 },
                         hovertemplate: '<b>Cost</b>:LKR %{y:,.2f}<extra></extra>'
-                    }
+                    };
 
                     var layout = {
                         title: { text:'Service Cost Trend'},

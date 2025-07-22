@@ -139,6 +139,24 @@ class User{
         $result = $con->query($sql) or die ($con->error);
         return $result;
     }
+
+    public function getAllUsersFiltered($userStatus){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql="SELECT u.user_id, u.user_fname, u.user_lname, u.user_dob, u.user_nic, u.user_role, "
+                . "u.user_image, u.user_email, u.user_status, r.role_name "
+                . "FROM user u, role r WHERE u.user_role=r.role_id ";
+
+        if($userStatus != ""){
+            $sql .= "AND u.user_status = '$userStatus' ";
+        }
+
+        $sql .= "ORDER BY u.user_fname ASC";
+
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
     
     public function getAllUsersIncludingRemoved(){
         

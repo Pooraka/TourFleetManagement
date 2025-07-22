@@ -372,4 +372,35 @@ class Bus{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getEntireBusFleetCategoryCount(){
+
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT b.category_id, c.category_name, COUNT(b.bus_id) AS count "
+                . "FROM bus b JOIN bus_category c ON b.category_id = c.category_id "
+                . "WHERE b.bus_status != '-1' GROUP BY b.category_id, c.category_name";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
+    public function getBusFleetStatusBreakdown(){
+
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT bus_status,
+
+        CASE 
+            WHEN bus_status = '1' THEN 'Operational'
+            WHEN bus_status = '2' THEN 'Service Due'
+            WHEN bus_status = '3' THEN 'In Service'
+            WHEN bus_status = '4' THEN 'Inspection Failed'
+            ELSE 'Unknown'
+        END AS status_name,
+        COUNT(bus_id) AS count FROM bus WHERE bus_status != '-1' GROUP BY bus_status, status_name";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

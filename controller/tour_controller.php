@@ -366,6 +366,10 @@ switch ($status){
             
             $tourResult = $tourObj->getTour($tourId);
             $tourRow = $tourResult->fetch_assoc();
+
+            if($tourRow["end_date"]> date('Y-m-d')){
+                throw new Exception("Tour Cannot Be Completed Before The End Date");
+            }
             
             $invoiceId = $tourRow["invoice_id"];
             

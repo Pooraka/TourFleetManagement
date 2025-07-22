@@ -1,10 +1,20 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/inspection_model.php';
+include_once '../model/tour_model.php';
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+
+$inspectionObj = new Inspection();
+$tourObj = new Tour();
+
+$inspectionFailedCountToAssignNewBuses = $inspectionObj->getInspectionFailedCountToAssignNewBuses();
+$ongoingTourCount = $tourObj->getOngoingTourCount();
+$upComingTourCount = $tourObj->getUpComingToursCount();
+$tourCountStartingToday = $tourObj->getTourCountStartingToday();
 ?>
 
 <html lang="en">
@@ -43,7 +53,54 @@ $userSession=$_SESSION["user"];
             </ul>
         </div>
         <div class="col-md-9">
-
+            <?php if($inspectionFailedCountToAssignNewBuses > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
+                        <strong>Action Required:</strong> There are <strong><?php echo $inspectionFailedCountToAssignNewBuses; ?></strong> buses that have failed pre-tour inspections. 
+                        <a href="inspection-failed.php" class="alert-link">Please assign new buses immediately</a>.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-info" style="text-align:center; height:150px">
+                        <div class="panel-heading">
+                            <span class="fa-solid fa-truck"></span>&nbsp;
+                            Ongoing Tours
+                        </div>
+                        <div class="panel-body">
+                            <h1 class="h1"><?php echo $ongoingTourCount; ?></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-info" style="text-align:center; height:150px">
+                        <div class="panel-heading">
+                            <span class="fa-solid fa-calendar-day"></span>&nbsp;
+                            Tours Starting Today
+                        </div>
+                        <div class="panel-body">
+                            <h1 class="h1"><?php echo $tourCountStartingToday; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-3 col-md-6">
+                    <div class="panel panel-info" style="text-align:center; height:150px">
+                        <div class="panel-heading">
+                            <span class="fa-solid fa-hourglass-half"></span>&nbsp;
+                            Upcoming Tours (Next 7 Days)
+                        </div>
+                        <div class="panel-body">
+                            <h1 class="h1"><?php echo $upComingTourCount; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -114,4 +114,17 @@ class Quotation{
 
         $stmt->close();
     }
+
+    public function getPendingQuotationCount() {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) as count FROM quotation WHERE quotation_status='1'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        
+        $row = $result->fetch_assoc();
+        
+        return $row['count'];
+    }
 }

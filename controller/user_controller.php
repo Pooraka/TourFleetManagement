@@ -64,8 +64,8 @@ switch ($status)
         
         try{
         
-            $fname = $_POST["fname"];
-            $lname = $_POST["lname"];
+            $fname = ucwords($_POST["fname"]);
+            $lname = ucwords($_POST["lname"]);
             $email = strtolower(trim($_POST["email"]));
             $dob = $_POST["dob"];
             $nic = strtoupper(trim($_POST["nic"]));

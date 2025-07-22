@@ -44,7 +44,7 @@ $(document).ready(function () {
 
         var patNic = /^([0-9]{9}[VvXx]|[0-9]{12})$/;
         var patMobile = /^07[0-9]{8}$/;
-        var patLandline = /^0[0-9]{9}/;
+        var patLandline = /^0[0-9]{9}$/;
 
         if (fname == "")
         {

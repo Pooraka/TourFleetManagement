@@ -37,7 +37,7 @@ $deactivatedUserCount = $userObj->getDeactivatedUserCount();
                     <span class="fa-solid fa-users-cog"></span> &nbsp;
                     View Users
                 </a>
-                <a href="user-list-report.php" target="_blank" class="list-group-item" style="display:<?php echo checkPermissions(55); ?>">
+                <a href="user-list-report.php" class="list-group-item" style="display:<?php echo checkPermissions(55); ?>">
                     <span class="fa-solid fa-address-book"></span> &nbsp;
                     Generate User List
                 </a>
