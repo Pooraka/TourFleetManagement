@@ -65,7 +65,7 @@ $userSession=$_SESSION["user"];
                 </a>
                 <a href="inspection-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(133); ?>">
                     <span class="fa-solid fa-clipboard-check"></span> &nbsp;
-                    Inspection Status Report
+                    Inspection Result Report
                 </a>
             </ul>
         </div>

@@ -140,6 +140,18 @@ class User{
         return $result;
     }
     
+    public function getAllUsersIncludingRemoved(){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql="SELECT u.user_id, u.user_fname, u.user_lname, u.user_dob, u.user_nic, u.user_role, "
+                . "u.user_image, u.user_email, u.user_status, r.role_name "
+                . "FROM user u, role r WHERE u.user_role=r.role_id";
+        
+        $result = $con->query($sql) or die ($con->error);
+        return $result;
+    }
+    
     public function activateUser($user_id){
         
         $con = $GLOBALS["con"];

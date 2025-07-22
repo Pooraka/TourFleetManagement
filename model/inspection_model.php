@@ -396,6 +396,33 @@ class Inspection{
         return $result;
     }
     
+    public function getAllInspectionsFiltered($dateFrom,$dateTo,$resultId,$inspectedId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT i.*,b.*,c.* FROM inspection i 
+                JOIN bus b ON b.bus_id = i.bus_id
+                JOIN bus_category c ON c.category_id = b.category_id 
+                WHERE i.inspection_status NOT IN (-1,1) ";
+        
+        if($dateFrom!="" && $dateTo!=""){
+            $sql.=" AND i.inspection_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+
+        if($resultId!=""){
+            $sql.=" AND i.inspection_result='$resultId' ";
+        }
+
+        if($inspectedId!=""){
+            $sql.=" AND i.inspected_by='$inspectedId' ";
+        }
+
+        $sql.=" ORDER BY i.inspection_date ASC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+    
     public function getPastInspectionsFiltered($resultId){
         
         $con = $GLOBALS["con"];
