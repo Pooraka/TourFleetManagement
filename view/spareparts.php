@@ -1,9 +1,19 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/sparepart_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+$userFunctions=$_SESSION['user_functions'];
+
+$sparePartObj = new SparePart();
+
+//Get zero stock spare parts count
+$zeroStockCount = $sparePartObj->getSparePartCountWith0Stock();
+
+//Get low stock spare parts count
+$lowStockCount = $sparePartObj->getSparePartCountWithLowStock();
 ?>
 
 <html lang="en">
@@ -54,7 +64,26 @@ $userSession=$_SESSION["user"];
             </ul>
         </div>
         <div class="col-md-9">
-        
+            <?php if($zeroStockCount > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <span class="fa-solid fa-triangle-exclamation"></span> &nbsp;
+                        <strong>Action Required:</strong> There are <?php echo $zeroStockCount; ?> spare parts with zero stock. Please consult Procurement Officer.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php if($lowStockCount > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <span class="fa-solid fa-triangle-exclamation"></span> &nbsp;
+                        <strong>Action Required:</strong> There are <?php echo $lowStockCount; ?> spare parts with low stock. Please consult Procurement Officer.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
         </div>
     </div>
 </body>

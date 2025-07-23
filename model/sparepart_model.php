@@ -359,4 +359,25 @@ class SparePart{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getSparePartCountWith0Stock(){
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT COUNT(*) as count FROM spare_part WHERE quantity_on_hand=0 AND part_status!=-1";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getSparePartCountWithLowStock(){
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT COUNT(*) as count FROM spare_part 
+        WHERE quantity_on_hand<=reorder_level AND part_status!=-1 AND quantity_on_hand>0";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
 }

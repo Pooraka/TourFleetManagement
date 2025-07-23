@@ -65,7 +65,9 @@ switch ($status){
             
             $partId = $sparePartObj->registerSparePart($partNumber, $partName, $description, $quantityOnHand, $reorderLevel);
             
+            if($quantityOnHand>0){
             $sparePartObj->initialStockLoadTransaction($partId, $quantityOnHand, $userId);
+            }
             
             $msg = "Spare Part ".$partName."Registered Successfully";
             $msg = base64_encode($msg);
