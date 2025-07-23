@@ -403,4 +403,27 @@ class Bus{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getUpComingServicesBusCount() {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "
+                    SELECT COUNT(bus_id) AS count 
+                    FROM bus
+                    WHERE 
+                        bus_status NOT IN ('-1', '3','2')
+                    AND (
+                        
+                        ((last_service_mileage_km + service_interval_km) - current_mileage_km) <= 1000
+                        OR
+
+                        DATE_ADD(last_service_date, INTERVAL service_interval_months MONTH) <= DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+                    )";
+
+        $result = $con->query($sql) or die($con->error);
+
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
 }

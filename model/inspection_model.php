@@ -554,4 +554,17 @@ class Inspection{
         
         return $result;
     }
+
+    public function getPendingInspectionsCount() {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) as count FROM inspection WHERE inspection_status='1'";
+        
+        $result = $con->query($sql) or die ($con->error);
+        
+        $row = $result->fetch_assoc();
+        
+        return $row['count'];
+    }
 }

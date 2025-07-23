@@ -7,6 +7,7 @@ include_once '../model/tour_model.php';
 
 //get user information from session
 $userSession=$_SESSION["user"];
+$userFunctions=$_SESSION['user_functions'];
 
 $inspectionObj = new Inspection();
 $tourObj = new Tour();
@@ -59,7 +60,7 @@ $tourCountStartingToday = $tourObj->getTourCountStartingToday();
                     <div class="alert alert-danger">
                         <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
                         <strong>Action Required:</strong> There are <strong><?php echo $inspectionFailedCountToAssignNewBuses; ?></strong> buses that have failed pre-tour inspections. 
-                        <a href="inspection-failed.php" class="alert-link">Please assign new buses immediately</a>.
+                        <a id="inspectionFailedLink" href="" class="alert-link">Please assign new buses immediately</a>.
                     </div>
                 </div>
             </div>
@@ -105,4 +106,14 @@ $tourCountStartingToday = $tourObj->getTourCountStartingToday();
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+
+    var userFunctionsArray = <?php echo json_encode($userFunctions); ?>;
+
+    var inspectionFailedURL = "inspection-failed.php";
+
+    if( userFunctionsArray.includes(87)) {
+        $('#inspectionFailedLink').attr('href', inspectionFailedURL);
+    }
+</script>
 </html>

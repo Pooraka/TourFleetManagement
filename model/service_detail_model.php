@@ -228,4 +228,21 @@ class ServiceDetail{
 
         return $result;
     }
+
+    public function getAverageServiceDowntime(){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "    SELECT CEILING(AVG(DATEDIFF(completed_date, start_date))) AS average_downtime_days
+                    FROM service_detail 
+                    WHERE service_status IN ('2', '3') AND completed_date IS NOT NULL";
+                    
+        $result = $con->query($sql) or die($con->error);
+        if($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['average_downtime_days'];
+        } else {
+            return 0; // No completed services found
+        }
+    }
 }

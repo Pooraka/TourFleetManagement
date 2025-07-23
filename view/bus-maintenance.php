@@ -2,12 +2,33 @@
 
 include_once '../commons/session.php';
 include_once '../model/inspection_model.php';
+include_once '../model/bus_model.php';
+include_once '../model/service_detail_model.php';
+
+
 
 //get user information from session
 $userSession=$_SESSION["user"];
+$userFunctions=$_SESSION['user_functions'];
+
+$inspectionObj = new Inspection();
+$busObj = new Bus();
+$serviceDetailObj = new ServiceDetail();
+
+// Get the count of buses that are due for service
+$serviceDueBusResult = $busObj->getServiceDueBuses();
+$serviceDueBusCount = $serviceDueBusResult->num_rows;
+
+//Get Pending Inspections Data
+$pendingInspectionsCount = $inspectionObj->getPendingInspectionsCount();
+
+//Get Upcoming Services Within next 14 days or next 1000 km
+$upComingServicesCount = $busObj->getUpComingServicesBusCount();
+
+//Get Average Service Downtime
+$averageDowntime = $serviceDetailObj->getAverageServiceDowntime();
 
 // Get failed checklist items data for the chart
-$inspectionObj = new Inspection();
 $failedChecklistResult = $inspectionObj->getFailedCheckListItemCount();
 
 $checklistItemNames = array();
@@ -87,12 +108,53 @@ $failedChecklistData = json_encode(['itemNames' => $checklistItemNames, 'failure
             </ul>
         </div>
         <div class="col-md-9">
+            <?php if ($pendingInspectionsCount > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <span class="fa-solid fa-clock"></span>&nbsp;
+                        <strong>Action Required:</strong> There are <strong><?php echo $pendingInspectionsCount; ?></strong> pending pre-tour inspections. 
+                        <a id="pendingInspectionsLink" href="" class="alert-link">Complete inspections to clear buses for tours</a>.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php if ($serviceDueBusCount > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
+                        <strong>Critical Action:</strong> There are <strong><?php echo $serviceDueBusCount; ?></strong> buses due for service. 
+                        <a id="initiateServiceLink" href="" class="alert-link">Initiate services now</a>.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php if ($upComingServicesCount > 0) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        <span class="fa fa-bell" ></span>&nbsp;
+                        <strong>Upcoming Services:</strong> There are <strong><?php echo $upComingServicesCount; ?></strong> buses that have services due soon.
+                        <a id="upComingServicesLink" href="" target="_blank" class="alert-link">View the up coming services report for details</a>.
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
             <div class="row">
                 <div class="col-md-6">
-                    <div id="failedCheckListChartDiv" style="width:100%; height:400px;"> </div>
+                    <div id="failedCheckListChartDiv" style="width:100%; height:300px;"> </div>
                 </div>
                 <div class="col-md-6">
-                    <div id="busStatusChartDiv" style="width:100%; height:400px;"> </div>
+                    <div class="panel panel-info" style="text-align:center; height:300px">
+                        <div class="panel-heading">
+                            <span class="fa-solid fa-clock"></span>&nbsp;
+                            Average Service Downtime
+                        </div>
+                        <div class="panel-body">
+                            <h1 class="h1"><?php echo $averageDowntime." days"; ?></h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,6 +162,23 @@ $failedChecklistData = json_encode(['itemNames' => $checklistItemNames, 'failure
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
 <script>
+    
+    var userFunctionsArray = <?php echo json_encode($userFunctions); ?>;
+
+    var pendingInspectionsURL = "pending-inspections.php";
+    var initiateServiceURL = "initiate-service.php";
+    var upComingServicesURL = "../reports/upcoming-services-report.php";
+
+    if( userFunctionsArray.includes(130)) {
+        $('#pendingInspectionsLink').attr('href', pendingInspectionsURL);
+    }
+    if( userFunctionsArray.includes(118)) {
+        $('#initiateServiceLink').attr('href', initiateServiceURL);
+    }
+    if( userFunctionsArray.includes(132)) {
+        $('#upComingServicesLink').attr('href', upComingServicesURL);
+    }
+        
     
     var failedChecklistData = <?php echo $failedChecklistData;?>;
     
