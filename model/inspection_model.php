@@ -537,4 +537,21 @@ class Inspection{
         
         return $row['count'];
     }
+
+    public function getFailedCheckListItemCount() {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT ci.checklist_item_name, COUNT(*) as failure_count 
+                FROM inspection_checklist_response icr 
+                JOIN checklist_item ci ON icr.checklist_item_id = ci.checklist_item_id 
+                WHERE icr.response_value = 0 
+                GROUP BY icr.checklist_item_id 
+                ORDER BY failure_count DESC 
+                LIMIT 5";
+        
+        $result = $con->query($sql) or die ($con->error);
+        
+        return $result;
+    }
 }

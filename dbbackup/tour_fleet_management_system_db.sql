@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2025 at 01:16 PM
+-- Generation Time: Jul 22, 2025 at 08:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1637,7 +1637,7 @@ CREATE TABLE `tour` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `destination` varchar(255) NOT NULL,
-  `tour_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled, 1=Assigned, 2=Ongoing, 3=Completed'
+  `tour_status` int(10) NOT NULL DEFAULT 1 COMMENT '-1=Cancelled, 1=Assigned, , 3=Completed'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
