@@ -152,7 +152,7 @@ $failedChecklistData = json_encode(['itemNames' => $checklistItemNames, 'failure
                             Average Service Downtime
                         </div>
                         <div class="panel-body">
-                            <h1 class="h1"><?php echo $averageDowntime." days"; ?></h1>
+                            <h1 class="h1"><?php echo $averageDowntime." day(s)"; ?></h1>
                         </div>
                     </div>
                 </div>

@@ -380,4 +380,61 @@ class SparePart{
         $row = $result->fetch_assoc();
         return $row['count'];
     }
+
+    /**
+     * Get the inventory value distribution of spare parts.
+     * 
+     * However this was not used as initial loaded spare parts don't have purchase order details.
+     * 
+     * @return mysqli_result
+     */
+    public function getInventoryValueDistribution(){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT sp.part_name, SUM(sp.quantity_on_hand * po.po_unit_price) AS inventory_value
+                FROM spare_part sp
+                JOIN purchase_order po ON sp.part_id = po.part_id
+                WHERE po.order_date = (SELECT MAX(p.order_date) FROM purchase_order p WHERE p.part_id = sp.part_id) 
+                AND sp.part_status != -1 ORDER BY inventory_value DESC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
+    public function getTop5MostStockedParts() {
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT part_name, quantity_on_hand FROM spare_part 
+                WHERE part_status != -1 ORDER BY quantity_on_hand DESC LIMIT 5";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
+    public function getSparePartsYetToReceive() {
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT 
+                sp.part_name, 
+                sp.part_id, 
+                SUM(p.quantity_ordered - p.quantity_received) AS pending_count 
+            FROM 
+                spare_part sp 
+            JOIN 
+                purchase_order p ON sp.part_id = p.part_id 
+            WHERE 
+                p.po_status IN ('3', '4')
+            GROUP BY 
+                sp.part_name, sp.part_id 
+            HAVING 
+                pending_count > 0 
+            ORDER BY 
+                pending_count DESC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

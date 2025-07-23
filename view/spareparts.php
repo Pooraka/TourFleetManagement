@@ -14,6 +14,36 @@ $zeroStockCount = $sparePartObj->getSparePartCountWith0Stock();
 
 //Get low stock spare parts count
 $lowStockCount = $sparePartObj->getSparePartCountWithLowStock();
+
+//Get top 5 most stocked spare parts
+$top5MostStockedPartsResult = $sparePartObj->getTop5MostStockedParts();
+
+$partNames = array();
+$partQuantities = array();
+
+if($top5MostStockedPartsResult->num_rows > 0) {
+    while ($partRow = $top5MostStockedPartsResult->fetch_assoc()) {
+        array_push($partNames, $partRow['part_name']);
+        array_push($partQuantities, (int)$partRow['quantity_on_hand']);
+    }
+}
+
+$top5PartsData = json_encode(['partNames' => $partNames, 'partQuantities' => $partQuantities]);
+
+//Get Spare Parts Yet To Receive and Issue GRN
+$sparePartYetToReceiveResult = $sparePartObj->getSparePartsYetToReceive();
+
+$sparePartNames = array();
+$partsPendingToReceive = array();
+
+if($sparePartYetToReceiveResult->num_rows > 0) {
+    while ($partRow = $sparePartYetToReceiveResult->fetch_assoc()) {
+        array_push($sparePartNames, $partRow['part_name']);
+        array_push($partsPendingToReceive, (int)$partRow['pending_count']);
+    }
+}
+
+$sparePartsPendingData = json_encode(['sparePartNames'=>$sparePartNames, 'pendingCounts'=>$partsPendingToReceive]);
 ?>
 
 <html lang="en">
@@ -38,7 +68,7 @@ $lowStockCount = $sparePartObj->getSparePartCountWithLowStock();
                     Register Spare Parts
                 </a>
                 <a href="spare-part-types.php" class="list-group-item" style="display:<?php echo checkPermissions(99); ?>">
-                    <span class="fa-solid fa-tags"></span> &nbsp;
+                    <span class="fas fa-eye"></span> &nbsp;
                     View Spare Part Types
                 </a>
                 <a href="add-spare-parts.php" class="list-group-item" style="display:<?php echo checkPermissions(101); ?>">
@@ -84,8 +114,84 @@ $lowStockCount = $sparePartObj->getSparePartCountWithLowStock();
                 </div>
             </div>
             <?php } ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="top5MostStockedPartsDiv" style="width:100%; height:400px;"> </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="pendingToReceivePartsDiv" style="width:100%; height:400px;"> </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+
+    var top5PartsData = <?php echo $top5PartsData;?>;
+
+    // Top 5 Most Stocked Parts Bar Chart
+    var trace1 = {
+        x: top5PartsData.partNames,
+        y: top5PartsData.partQuantities,
+        type: 'bar',
+        marker: {
+            color: '#bd35dcff',
+            opacity: 0.8
+        },
+        hovertemplate: '<b>%{x}</b><br>Stock: %{y}<extra></extra>'
+    };
+
+    var layout1 = {
+        title: { 
+            text: 'Top 5 Most Stocked Spare Parts',
+            font: { size: 15 }
+        },
+        xaxis: {
+            title: { text: 'Spare Part Name' },
+            tickangle: -45
+        },
+        yaxis: {
+            title: { text: 'Stock Quantity' },
+            //dtick: 1, commented as this will show all integer values on y-axis
+            
+        },
+        margin: { t: 60, b: 170, l: 60, r: 40 }
+    };
+
+    Plotly.newPlot('top5MostStockedPartsDiv', [trace1], layout1);
+
+    var sparePartsPendingData = <?php echo $sparePartsPendingData;?>;
+
+    // Spare Parts Pending to Receive Bar Chart
+    var trace2 = {
+        x: sparePartsPendingData.sparePartNames,
+        y: sparePartsPendingData.pendingCounts,
+        type: 'bar',
+        marker: {
+            color: '#3538dcff',
+            opacity: 0.8
+        },
+        hovertemplate: '<b>%{x}</b><br>Pending Count: %{y}<extra></extra>'
+    };
+
+    var layout2 = {
+        title: { 
+            text: 'Parts Pending to Receive At Warehouse',
+            font: { size: 15 }
+        },
+        xaxis: {
+            title: { text: 'Spare Part Name' },
+            tickangle: -45
+        },
+        yaxis: {
+            title: { text: 'Pending Count' },
+            //dtick: 1, commented as this will show all integer values on y-axis
+        },
+        margin: { t: 60, b: 170, l: 60, r: 40 }
+    };
+
+    Plotly.newPlot('pendingToReceivePartsDiv', [trace2], layout2);
+
+</script>
 </html>

@@ -118,22 +118,26 @@ $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
                             <?php while($sparePartRow = $sparePartResult->fetch_assoc()){
                                 $partId = $sparePartRow['part_id'];
                                 ?>
-                            <tr>
+                            <tr title='<?php echo htmlspecialchars($sparePartRow['description']);?>' data-toggle="tooltip">
                                 <td><?php echo $sparePartRow['part_number'];?></td>
                                 <td><?php echo $sparePartRow['part_name'];?></td>
                                 <td><?php echo $sparePartRow['quantity_on_hand'];?></td>
                                 <td><?php echo $sparePartRow['reorder_level'];?></td>
                                 <td>
+                                    <?php if($sparePartRow['quantity_on_hand'] >0){ ?>
                                     <a href="issue-spare-parts.php?part_id=<?php echo base64_encode($partId); ?>"  
-                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(104); ?>">
+                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(104); ?>"
+                                       title="">
                                         <span class="glyphicon glyphicon-plus"></span>
                                         Issue To Bus
-                                    </a> 
+                                    </a>
                                     <a href="#" data-toggle="modal" onclick="removeSpareParts(<?php echo $partId;?>)" data-target="#add_remove_info" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(105); ?>">
+                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(105); ?>"
+                                       title="">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Remove
                                     </a> 
+                                    <?php } ?> 
                                 </td>
                             </tr>
                             <?php } ?>
@@ -171,7 +175,18 @@ $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
         var dataTableOptions = {
             "pageLength": 5,
             
-             "scrollX": true
+            "scrollX": true,
+            "drawCallback": function(settings) {
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+
+                var tooltips = $(rows).filter('[data-toggle="tooltip"]');
+
+                $(tooltips).tooltip({
+                    container: 'body',
+                    placement: 'right'
+                });
+            }
         };
         
         var table = $("#partsTable").DataTable(dataTableOptions);

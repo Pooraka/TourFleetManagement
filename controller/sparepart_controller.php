@@ -69,7 +69,7 @@ switch ($status){
             $sparePartObj->initialStockLoadTransaction($partId, $quantityOnHand, $userId);
             }
             
-            $msg = "Spare Part ".$partName."Registered Successfully";
+            $msg = "Spare Part ".$partName." Registered Successfully";
             $msg = base64_encode($msg);
 
             ?>
@@ -315,7 +315,7 @@ switch ($status){
         while($sparePartRow = $sparePartResult->fetch_assoc()){
             $partId = $sparePartRow['part_id'];
             ?>
-        <tr>
+        <tr title='<?php echo htmlspecialchars($sparePartRow['description']);?>' data-toggle="tooltip">
             <td><?php echo $sparePartRow['part_number'];?></td>
             <td><?php echo $sparePartRow['part_name'];?></td>
             <td><?php echo $sparePartRow['quantity_on_hand'];?></td>

@@ -83,22 +83,22 @@ $busResult = $busObj->getAllBuses();
                         <div class="panel-body" id="poinfo">
                             <div class="row">
                                 <div class="col-md-3" style="margin-bottom: 10px">
-                                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Part Number</b>
+                                    <span class="fas fa-hashtag"></span>&nbsp;<b>Part Number</b>
                                     </br>
                                     <span><?php echo $sparePartRow['part_number']; ?> </span>
                                 </div>
                                 <div class="col-md-3" style="margin-bottom: 10px">
-                                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Part Name</b>
+                                    <span class="fas fa-wrench"></span>&nbsp;<b>Part Name</b>
                                     </br>
                                     <span><?php echo $sparePartRow['part_name']; ?> </span>
                                 </div>
                                 <div class="col-md-3" style="margin-bottom: 10px">
-                                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Quantity On Hand</b>
+                                    <span class="fas fa-boxes"></span>&nbsp;<b>Quantity On Hand</b>
                                     </br>
                                     <span><?php echo number_format($sparePartRow['quantity_on_hand'],0); ?> </span>
                                 </div>
                                 <div class="col-md-3" style="margin-bottom: 10px">
-                                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Re-Order Level</b>
+                                    <span class="fas fa-redo-alt"></span>&nbsp;<b>Re-Order Level</b>
                                     </br>
                                     <span><?php echo number_format($sparePartRow['reorder_level'], 0); ?> </span>
                                 </div>
@@ -108,11 +108,24 @@ $busResult = $busObj->getAllBuses();
                             </div>
                             <div class="row">
                                 <div class="col-md-12" style="margin-bottom: 10px">
-                                    <span class="fa-solid fa-bus"></span>&nbsp;<b>Description</b>
+                                    <span class="fas fa-info-circle"></span>&nbsp;<b>Description</b>
                                     </br>
                                     <span><?php echo $sparePartRow['description']; ?> </span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 style="margin:0px">Vehicle Details</h3>
+                        </div>
+                        <div class="panel-body" id="vehicleInfo">
+                            Select The Vehicle To View The Details
                         </div>
                     </div>
                 </div>
@@ -125,7 +138,7 @@ $busResult = $busObj->getAllBuses();
                     </div>
                     <div class="col-md-3">
                         <select name="bus_id" id="bus_id" class="form-control">
-                            <option value="">------------------</option>
+                            <option value="">Select Vehicle</option>
                             <?php
                                 while($busRow = $busResult->fetch_assoc()){
                                     ?>
@@ -152,22 +165,38 @@ $busResult = $busObj->getAllBuses();
                         <label class="control-label">Notes</label>
                     </div>
                     <div class="col-md-4">
-                        <textarea id="issue_notes" name="issue_notes" rows="2" class="form-control"></textarea>
+                        <textarea id="issue_notes" name="issue_notes" rows="1" class="form-control"></textarea>
                         <input type="hidden" value="<?php echo $partId;?>" name="part_id"/>
+                    </div>
+                    <div class="col-md-offset-2 col-md-4 text-right">
+                        <button type=submit class="btn btn-primary"><i class="fas fa-check"></i> Submit</button>
+                        <button type="reset" class="btn btn-danger"><i class="fas fa-undo"></i> Reset</button>
                     </div>
                 </div>
                 <div class="row">
                     &nbsp;
-                </div>
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-6">
-                        <input type="submit" class="btn btn-primary" value="Submit"/>
-                        <input type="reset" class="btn btn-danger" value="Reset"/>
-                    </div>
                 </div>
             </div>
         </form>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+$(document).ready(function() {
+
+    $("#bus_id").on("change", function() {
+        var busId = $(this).val();
+
+        var url = "../controller/bus_controller.php?status=get_bus_details_to_issue_spare_parts";
+
+        
+        if (busId) {
+
+            $.post(url, { busId: busId }, function(data) {
+                $("#vehicleInfo").html(data);
+            });
+        }
+    });
+});
+</script>
 </html>

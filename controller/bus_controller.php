@@ -421,4 +421,39 @@ switch ($status){
         }
 
     break;
+
+    case "get_bus_details_to_issue_spare_parts":
+
+        $busId = $_POST['busId'];
+        
+        $busResult = $busObj->getBus($busId);
+        $busRow = $busResult->fetch_assoc();
+
+        ?>
+            <div class="row">
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fas fa-bus"></span>&nbsp;<b>Vehicle No</b>
+                    </br>
+                    <span><?php echo $busRow['vehicle_no']; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fas fa-th-list"></span>&nbsp;<b>Category</b>
+                    </br>
+                    <span><?php echo $busRow['category_name']; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fas fa-industry"></span>&nbsp;<b>Make</b>
+                    </br>
+                    <span><?php echo $busRow['make']; ?> </span>
+                </div>
+                <div class="col-md-3" style="margin-bottom: 10px">
+                    <span class="fas fa-bezier-curve"></span>&nbsp;<b>Model</b>
+                    </br>
+                    <span><?php echo $busRow['model']; ?> </span>
+                </div>
+            </div>    
+            
+        <?php
+
+    break;
 }

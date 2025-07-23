@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2025 at 08:04 PM
+-- Generation Time: Jul 23, 2025 at 10:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -903,7 +903,8 @@ INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `ye
 (8, 'GRN-0706F784-4', 4, 5, 0, '2025-07-06', 3, 'All done', 1),
 (9, 'GRN-0706AEDA-7', 7, 7, 0, '2025-07-06', 3, 'All received', 1),
 (10, 'GRN-0706A649-5', 5, 20, 0, '2025-07-06', 3, 'No Defects', 1),
-(11, 'GRN-07137FF0-9', 9, 1, 1, '2025-07-13', 3, 'Only received 1 item', 1);
+(11, 'GRN-07137FF0-9', 9, 1, 1, '2025-07-13', 3, 'Only received 1 item', 1),
+(12, 'GRN-07235D73-8', 8, 5, 7, '2025-07-23', 3, 'All checked', 1);
 
 -- --------------------------------------------------------
 
@@ -948,7 +949,8 @@ INSERT INTO `inspection` (`inspection_id`, `bus_id`, `tour_id`, `inspection_date
 (26, 3, 12, NULL, NULL, NULL, NULL, -1),
 (27, 1, 1, '2025-06-11', 1, 'All Good', 3, 2),
 (28, 4, 1, '2025-06-11', 1, 'All Good', 3, 2),
-(29, 4, 5, '2025-07-08', 1, 'All Good', 3, 2);
+(29, 4, 5, '2025-07-08', 1, 'All Good', 3, 2),
+(30, 19, 13, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1171,7 +1173,12 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (18, 2, 2, 20, NULL, 10, 'No Defects', 3, '2025-07-06 15:29:49'),
 (19, 4, 4, 10, NULL, NULL, 'Remove overloaded Stock', 3, '2025-07-09 15:25:54'),
 (20, 1, 4, 12, NULL, NULL, 'Faults Identified', 3, '2025-07-10 20:37:51'),
-(21, 3, 2, 1, NULL, 11, 'Only received 1 item', 3, '2025-07-13 11:36:48');
+(21, 3, 2, 1, NULL, 11, 'Only received 1 item', 3, '2025-07-13 11:36:48'),
+(22, 3, 4, 25, NULL, NULL, 'All Defects', 3, '2025-07-23 18:20:08'),
+(23, 3, 2, 5, NULL, 12, 'All checked', 3, '2025-07-23 18:23:27'),
+(24, 4, 3, 2, 11, NULL, '2WBs Issued', 17, '2025-07-23 19:31:41'),
+(25, 6, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:34:54'),
+(26, 7, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:36:26');
 
 -- --------------------------------------------------------
 
@@ -1241,7 +1248,7 @@ INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quanti
 (5, 'ST-PO-E420-1', 2, 2, 20, 20, 3450.00, 69000.00, '2025-07-06', 6, 3, '2025-07-06 11:07:05', 3, NULL, '1751795944_Test PDF.pdf', 'JK-5988', 7, '2025-07-06'),
 (6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'INV23374', 8, '2025-07-06'),
 (7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'IN25473', NULL, NULL),
-(8, 'ST-PO-08B3-7', 9, 3, 12, 0, 3650.00, 43800.00, '2025-07-06', 3, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', 'JKIN1254', NULL, NULL),
+(8, 'ST-PO-08B3-7', 9, 3, 12, 5, 3650.00, 43800.00, '2025-07-06', 4, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', 'JKIN1254', NULL, NULL),
 (9, 'ST-PO-51FA-8', 10, 3, 2, 1, 3625.00, 7250.00, '2025-07-10', 4, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', 'CKIN18415', NULL, NULL),
 (10, 'ST-PO-E42A-9', 11, 2, 5, 0, 2375.00, 11875.00, '2025-07-13', 2, 3, '2025-07-13 11:34:49', 3, NULL, NULL, NULL, NULL, NULL),
 (11, 'ST-PO-1EF1-10', 12, 2, 5, 0, 3624.00, 18120.00, '2025-07-16', 1, 3, '2025-07-16 12:47:46', NULL, NULL, NULL, NULL, NULL, NULL);
@@ -1524,8 +1531,11 @@ CREATE TABLE `spare_part` (
 INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 13, 25, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 44, 5, 1),
-(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 25, 10, 1),
-(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 37, 15, 1);
+(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 5, 10, 1),
+(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 35, 15, 1),
+(5, 'TYRE-11R22.5', 'Bus Tire 11R22.5', 'Standard radial tire for Hino AK and Yutong ZK6938HQ buses.', 0, 5, 1),
+(6, 'TYRE-315-80R22.5', 'Bus Tire 315/80R22.5', 'Wide radial tire for Yutong ZK6122H and Tata Marcopolo buses.', 2, 5, 1),
+(7, 'TYRE-10R20', 'Bus Tire 10R20', 'Radial tire for Lanka Ashok Leyland Viking buses.', 2, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -2152,13 +2162,13 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `grn`
 --
 ALTER TABLE `grn`
-  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_response`
@@ -2188,7 +2198,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -2248,7 +2258,7 @@ ALTER TABLE `service_station_contact`
 -- AUTO_INCREMENT for table `spare_part`
 --
 ALTER TABLE `spare_part`
-  MODIFY `part_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `part_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tender`
