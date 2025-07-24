@@ -335,13 +335,30 @@ class CustomerInvoice{
         $today = date('Y-m-d');
         $dateFrom = date('Y-m-d', strtotime($today . ' -7 days'));
 
-        $sql = "SELECT SUM(advance_payment) AS total_advance_payment FROM customer_invoice 
-                WHERE invoice_date BETWEEN '$dateFrom' AND '$today' AND invoice_status != -1";
+        $sql= "SELECT SUM(paid_amount) AS total_advance_payment FROM tour_income 
+                WHERE tour_income_type=1 AND payment_status !=-1 AND payment_date BETWEEN '$dateFrom' AND '$today'";
 
         $result = $con->query($sql) or die ($con->error);
 
         $row = $result->fetch_assoc();
 
         return $row['total_advance_payment'];
+    }
+
+    public function getRefundAmountsWithinLast7Days(){
+
+        $con = $GLOBALS["con"];
+        
+        $today = date('Y-m-d');
+        $dateFrom = date('Y-m-d', strtotime($today . ' -7 days'));
+
+        $sql= "SELECT SUM(ABS(paid_amount)) AS total_refund_amount FROM tour_income 
+                WHERE tour_income_type=3 AND payment_status !=-1 AND payment_date BETWEEN '$dateFrom' AND '$today'";
+
+        $result = $con->query($sql) or die ($con->error);
+
+        $row = $result->fetch_assoc();
+
+        return $row['total_refund_amount'];
     }
 }

@@ -14,6 +14,7 @@ $customerInvoiceObj = new CustomerInvoice();
 $pendingQuotationCount = $quotationObj->getPendingQuotationCount();
 $pendingCustomerInvoiceCount = $customerInvoiceObj->getPendingInvoiceCount();
 $advancePaymentsReceivedWithinLast7Days = $customerInvoiceObj->getAdvancePaymentAmountReceivedWithinLast7Days();
+$refundedAmountsWithinLast7Days = $customerInvoiceObj->getRefundAmountsWithinLast7Days();
 ?>
 
 <html lang="en">
@@ -102,13 +103,23 @@ $advancePaymentsReceivedWithinLast7Days = $customerInvoiceObj->getAdvancePayment
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-offset-3 col-md-6">
+                <div class="col-md-6">
                     <div class="panel panel-info" style="text-align:center;height:150px">
                         <div class="panel-heading">
                             <p align="center">Advance Payments Received Within Last 7 Days</p>
                         </div>
                         <div class="panel-body">
                             <h1 class="h1" align="center"><?php echo "LKR " . number_format($advancePaymentsReceivedWithinLast7Days, 2);?></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-info" style="text-align:center;height:150px">
+                        <div class="panel-heading">
+                            <p align="center">Refunded Amount Within Last 7 Days</p>
+                        </div>
+                        <div class="panel-body">
+                            <h1 class="h1" align="center"><?php echo "LKR " . number_format($refundedAmountsWithinLast7Days, 2);?></h1>
                         </div>
                     </div>
                 </div>
