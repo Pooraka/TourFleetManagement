@@ -252,12 +252,12 @@ switch ($status){
         
         try{
             $templateId = $_POST["template_id"];
-
-            $checklistItems = $_POST["checklist_item"];
-
-            if(empty($checklistItems)){
+            
+            if(!isset($_POST["checklist_item"]) && empty($_POST["checklist_item"])){
                 throw new Exception("Select At Least 1 Item");
             }
+            
+            $checklistItems = $_POST["checklist_item"];
             
             $inspectionObj->removeAllChecklistItemsFromTemplate($templateId);
             
