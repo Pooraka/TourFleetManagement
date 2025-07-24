@@ -24,15 +24,27 @@ $userSession=$_SESSION["user"];
         <form action="../controller/supplier_controller.php?status=add_supplier" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
-                        <?php if (isset($_GET["msg"])) { ?>
+                    <div class="col-md-6 col-md-offset-3" id="msg" >
+                        <?php
+                        if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                            <script>
-                                var msgElement = document.getElementById("msg");
-                                msgElement.classList.add("alert", "alert-danger");
-                            </script>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                            <?php
+                        } elseif (isset($_GET["msg"])) {
 
-                            <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-danger" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
                             <?php
                         }
                         ?>
@@ -81,4 +93,43 @@ $userSession=$_SESSION["user"];
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function () {
+
+        
+
+        $("form").submit(function () {
+
+            var name = $("#name").val();
+            var contact = $("#contact").val();
+            var email = $("#email").val();
+
+            var contactPattern = /^(07[0-9]{8}|0[0-9]{9})$/;
+
+            if(name==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter supplier name</b>");
+                return false;
+            }
+
+            if(contact==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter supplier contact</b>");
+                return false;
+            }
+
+            if(!contactPattern.test(contact)){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter a valid contact number</b>");
+                return false;
+            }
+
+            if(email==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter supplier email</b>");
+                return false;
+            }
+        });
+    });
+</script>
 </html>

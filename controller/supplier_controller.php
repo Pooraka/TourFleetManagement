@@ -57,7 +57,7 @@ switch ($status){
             ?>
 
             <script>
-                window.location="../view/view-suppliers.php?msg=<?php echo $msg;?>&success=true";
+                window.location="../view/add-supplier.php?msg=<?php echo $msg;?>&success=true";
             </script>
 
             <?php
