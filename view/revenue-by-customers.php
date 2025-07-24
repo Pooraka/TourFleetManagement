@@ -47,7 +47,7 @@ $invoiceResult = $customerInvoiceObj->getRevenueByCustomers();
                         <th>Customer NIC</th>
                         <th>Email</th>
                         <th>Revenue (LKR)</th>
-                        <th>No of Tours</th>
+                        <th>No Of Tours</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -263,4 +263,66 @@ class Finance{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getPendingServicePaymentCount(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) AS count FROM service_Detail WHERE service_status = 2";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getPendingSupplierPaymentCount(){
+        
+        $con=$GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) AS count FROM purchase_order WHERE po_status = 5";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getExpenseBreakdown(){
+
+        $dateFrom ="";
+        $dateTo = "";
+        $month = "";
+
+        $con=$GLOBALS["con"];
+
+        $sql = "SELECT SUM(ABS(txn_amount)) AS expenses, txn_description FROM cash_book 
+                WHERE txn_type IN(1,2) AND debit_credit_flag=1 ";
+
+        if($dateFrom!="" && $dateTo!=""){
+            $sql .= "AND cash_book_txn_date BETWEEN '$dateFrom' AND '$dateTo' ";
+        }
+        if($month!=""){
+            $sql .= "AND DATE_FORMAT(cash_book_txn_date, '%Y-%m') = '$month' ";
+        }
+
+        $sql .= "GROUP BY txn_description";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
+    public function getRevenueByBusCategory(){
+
+        $con=$GLOBALS["con"];
+
+        $sql = "SELECT
+                    bc.category_name,
+                    SUM(ci.paid_amount) AS total_revenue
+                FROM customer_invoice ci
+                JOIN customer_invoice_item cii ON ci.invoice_id = cii.invoice_id
+                JOIN bus_category bc ON cii.category_id = bc.category_id 
+                GROUP BY bc.category_name";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result; 
+    }
 }

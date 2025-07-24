@@ -215,7 +215,7 @@ class Customer{
         $sql = "SELECT DISTINCT c.* FROM customer c
                 JOIN customer_invoice i ON c.customer_id = i.customer_id
                 JOIN tour t ON i.invoice_id = t.invoice_id
-                WHERE c.customer_status != -1 AND t.tour_status != -1";
+                WHERE c.customer_status != -1 ";
 
         $result = $con->query($sql) or die($con->error);
         return $result;

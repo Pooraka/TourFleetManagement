@@ -221,9 +221,9 @@ class CustomerInvoice{
         $con = $GLOBALS["con"];
         
         $sql = "SELECT c.customer_fname, c.customer_lname, c.customer_nic, c.customer_email, "
-                . "SUM(i.actual_fare) AS total_amount, "
+                . "SUM(i.paid_amount) AS total_amount, "
                 . "COUNT(i.invoice_id) AS tours "
-                . " FROM customer_invoice i JOIN customer c ON i.customer_id = c.customer_id WHERE i.invoice_status='4' "
+                . "FROM customer_invoice i JOIN customer c ON i.customer_id = c.customer_id WHERE i.invoice_status IN (-1,1,2,3,4) "
                 . "GROUP BY c.customer_fname, c.customer_lname, c.customer_nic, c.customer_email ORDER BY total_amount DESC";
         
         $result = $con->query($sql) or die($con->error);
