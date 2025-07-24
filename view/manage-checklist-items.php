@@ -27,7 +27,7 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -166,6 +166,24 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
     $(document).ready(function(){
 
         $("#checklist_items").DataTable();
+
+        $("form").submit(function(){
+
+            var checklistItemName = $("#checklist_item_name").val();
+            var checklistItemDescription = $("#checklist_item_description").val();
+
+            if(checklistItemName.trim() == ""){
+                $("#msg").html("<b>Checklist Item Name Cannot Be Empty!</b>");
+                $("#msg").addClass("alert alert-danger");
+                return false;
+            }
+
+            if(checklistItemDescription.trim() == ""){
+                $("#msg").html("<b>Checklist Item Description Cannot Be Empty!</b>");
+                $("#msg").addClass("alert alert-danger");
+                return false;
+            }
+        });
 
     });
     

@@ -28,7 +28,7 @@ $templateResult = $inspectionObj->getInspectionChecklistTemplates();
         <form action="../controller/inspection_controller.php?status=update_template" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -60,7 +60,7 @@ $templateResult = $inspectionObj->getInspectionChecklistTemplates();
                 </div>
                 <div class="col-md-6">
                     <select name="template_id" id="template_id" class="form-control">
-                        <option value="">------------------</option>
+                        <option value="">Select Template</option>
                         <?php
                             while($templateRow=$templateResult->fetch_assoc()){
                                     ?>
@@ -77,11 +77,6 @@ $templateResult = $inspectionObj->getInspectionChecklistTemplates();
                 &nbsp;
             </div>
             <div id="display_data">
-                <div class="row">
-                    <div class="col-md-offset-4 col-md-4">
-                        <span>Select The Template</span>
-                    </div>
-                </div>
             </div>
         </div>
         </form>
@@ -108,7 +103,33 @@ $templateResult = $inspectionObj->getInspectionChecklistTemplates();
     
     $(document).ready(function(){
 
+        // Prevent form submission if no checklist items are selected
+        $("form").on("submit", function(e) {
+            // Only check if checklist items are visible
+            if ($("input[name='checklist_item[]']").length) {
+
+                var checked = $("input[name='checklist_item[]']:checked").length;
+
+                if (checked === 0) {
+                    //alert("Please select at least one checklist item.");
+                    $("#msg").addClass("alert alert-danger");
+                    $("#msg").html("<b>Please select at least one checklist item.</b>");
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        $("input[name='checklist_item[]']").on("reset", function() {
+            // Remove any previous error message
+            $("#msg").removeClass("alert alert-danger");
+            $("#msg").html("");
+        });
+
         $("#template_id").change(function () {
+
+            $("#msg").html("");
+            $("#msg").removeClass("alert alert-danger");
             
             var templateId = $("#template_id").val();
             
