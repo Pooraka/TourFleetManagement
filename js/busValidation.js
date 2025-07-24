@@ -49,6 +49,7 @@ $(document).ready(function () {
             return false;
         }
 
+        /*
         var yearPattern = /^(19|20)\d{2}$/;
 
         // Check if the year is a valid 4-digit number between 1900 and 2099
@@ -57,6 +58,8 @@ $(document).ready(function () {
             $("#msg").addClass("alert alert-danger");
             return false;
         }
+
+        */
 
         if (capacity == "") {
             $("#msg").html("Passenger Capacity Cannot Be Empty!");

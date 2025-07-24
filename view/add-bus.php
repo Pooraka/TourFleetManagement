@@ -71,7 +71,8 @@ $categoryResult = $busObj->getAllBusCategories();
                         <label class="control-label">Year</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="year" id="year" placeholder="Ex: 2014"/>
+                        <!-- <input type="text" class="form-control" name="year" id="year" placeholder="Ex: 2014"/> -->
+                        <input type="number" class="form-control" name="year" id="year" placeholder="Ex: 2014" min="1900" max="<?php echo date('Y'); ?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -109,7 +110,7 @@ $categoryResult = $busObj->getAllBusCategories();
                         <label class="control-label">Service Interval (Months) </label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="serviceintervalmonths" id="serviceintervalmonths" placeholder="Ex: 3"/>
+                        <input type="number" class="form-control" name="serviceintervalmonths" id="serviceintervalmonths" placeholder="Ex: 3" min="1" max="6"/>
                     </div>
                 </div>
                 <div class="row">
@@ -129,7 +130,7 @@ $categoryResult = $busObj->getAllBusCategories();
                         <label class="control-label">Last Service Date</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" class="form-control" name="lastservicedate" id="lastservicedate"/>
+                        <input type="date" class="form-control" name="lastservicedate" id="lastservicedate" max="<?php echo date('Y-m-d'); ?>"/>
                         <h5>If vehicle is brand new enter today's date</h5>
                     </div>
                 </div>
@@ -144,7 +145,7 @@ $categoryResult = $busObj->getAllBusCategories();
                     </div>
                     <div class="col-md-3">
                         <select name="ac" id="ac" class="form-control" required="required">
-                            <option value="">------------</option>
+                            <option value="">Select AC Availability</option>
                             <option value="Y">Yes</option>
                             <option value="N">No</option>
                         </select>
@@ -154,7 +155,7 @@ $categoryResult = $busObj->getAllBusCategories();
                     </div>
                     <div class="col-md-3">
                         <select name="category" id="category" class="form-control" required="required">
-                            <option value="">------------</option>
+                            <option value="">Select Bus Category</option>
                             <?php   while($busCategoryRow = $categoryResult->fetch_assoc()){
                                 ?>
                                     <option value="<?php echo $busCategoryRow['category_id'];?>">
