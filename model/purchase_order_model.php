@@ -338,4 +338,47 @@ class PurchaseOrder{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getPOCountPendingApproval() {
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT COUNT(po_id) AS count FROM purchase_order WHERE po_status = 1";
+
+        $result = $con->query($sql) or die($con->error);
+        
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getPOCountPendingSupplierInvoice() {
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT COUNT(po_id) AS count FROM purchase_order WHERE po_status = 2 AND supplier_invoice IS NULL";
+
+        $result = $con->query($sql) or die($con->error);
+
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getMostSpendingBySupplier(){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT 
+                    s.supplier_name,
+                    SUM(po.total_amount) AS total_spent 
+                FROM purchase_order po 
+                JOIN bid b ON po.bid_id = b.bid_id 
+                JOIN supplier s ON b.supplier_id = s.supplier_id 
+                WHERE po.po_status = 6 
+                GROUP BY s.supplier_name 
+                ORDER BY total_spent DESC 
+                LIMIT 4;";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
 }

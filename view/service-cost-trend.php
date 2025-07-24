@@ -186,7 +186,7 @@ $serviceStationResult = $serviceStationObj->getAllServiceStationsIncludingRemove
                         },
                         yaxis: {
                             title: {text:'Total Cost (LKR)'},
-                            separatethousands: true,
+                            separatethousands: true
                             //rangemode:'tozero'
                         },
                         margin: { t: 50, b: 100, l: 80, r: 40 }
