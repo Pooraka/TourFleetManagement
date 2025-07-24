@@ -115,6 +115,12 @@ switch ($status){
     case "revoke_award":
         
         $tenderId = base64_decode($_GET['tender_id']);
+
+        $tenderResult = $tenderObj->getTender($tenderId);
+        $tenderRow = $tenderResult->fetch_assoc();
+
+        $tenderCloseDate = $tenderRow['close_date'];
+        $today = date("Y-m-d");
         
         $bidId = base64_decode($_GET['bid_id']);
         
@@ -122,8 +128,13 @@ switch ($status){
         $tenderObj->revokeBidFromTender($tenderId);
         
         $bidObj->changeBidStatus($bidId,1);
-        
-        $tenderObj->changeTenderStatus($tenderId,1);
+
+        if($tenderCloseDate <= $today) {
+            $tenderObj->changeTenderStatus($tenderId,2);
+        }else{
+            $tenderObj->changeTenderStatus($tenderId,1);
+        }
+
         
         $msg = "Bid ID $bidId Revoked Successfully";
         $msg = base64_encode($msg);
