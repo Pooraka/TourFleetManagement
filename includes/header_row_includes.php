@@ -1,6 +1,6 @@
 <div class="row" >
     <div class="col-md-offset-0 col-xs-3 col-xs-offset-4  col-md-3 col-sm-offset-0 " style="text-align: center;">
-        <a href="../view/dashboard.php"><img src="../images/logo.png" alt="" style="height:100px;"></a>
+        <img src="../images/logo.png" alt="" style="height:100px;">
     </div>
     <div class="col-md-6 hidden-xs" style="text-align:center;">
         </br>

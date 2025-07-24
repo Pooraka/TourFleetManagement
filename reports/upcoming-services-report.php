@@ -79,7 +79,7 @@ while($busRow = $busResult->fetch_assoc()){
     if($nextServiceDate<=$today || $currentMileage>=$nextServiceMileage){
         $status = "Service Due";
     }
-    elseif($nextServiceDate<$fourteenDaysFromNow){
+    elseif($nextServiceDate<=$fourteenDaysFromNow){
         $status = "Upcoming (Date)";
     }
     elseif($nextServiceMileage<=$currentMileage+1000){

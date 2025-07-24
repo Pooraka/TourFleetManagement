@@ -426,4 +426,25 @@ class Bus{
         $row = $result->fetch_assoc();
         return $row['count'];
     }
+
+    public function isATourAssignedForThisBus($busId){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT 1 FROM bus_tour bt 
+            JOIN tour t ON bt.tour_id = t.tour_id 
+            WHERE bt.bus_id = ? AND t.tour_status = 1 LIMIT 1";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $busId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
+        return $result->num_rows > 0;
+    }
 }

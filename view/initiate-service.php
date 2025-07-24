@@ -142,7 +142,7 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                                     <tr>
                                         <th>Vehicle No</th>
                                         <th>Last Serviced Date</th>
-                                        <th>Last Serviced Mileage</th>
+                                        <th>Last Serviced Mileage (Km)</th>
                                         <th>Current Mileage (Km)</th>
                                         <th>Current Mileage As At</th>
                                     </tr>
@@ -152,8 +152,8 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
                                     <tr>
                                         <td><?php echo $serviceDueBusRow['vehicle_no'];?></td>
                                         <td><?php echo $serviceDueBusRow['last_service_date'];?></td>
-                                        <td><?php echo number_format($serviceDueBusRow['last_service_mileage_km'],0);?></td>
-                                        <td><?php echo number_format($serviceDueBusRow['current_mileage_km'],0);?></td>
+                                        <td style="text-align:right"><?php echo number_format($serviceDueBusRow['last_service_mileage_km'],0);?></td>
+                                        <td style="text-align:right"><?php echo number_format($serviceDueBusRow['current_mileage_km'],0);?></td>
                                         <td><?php echo $serviceDueBusRow['current_mileage_as_at'];?></td>
                                     </tr>
                                     <?php } ?>
