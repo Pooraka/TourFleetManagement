@@ -37,7 +37,7 @@ $(document).ready(function () {
             $("#msg").addClass("alert alert-danger");
             return false;
         }
-        if (!nic.match(patNic))
+        if (!patNic.test(nic))
         {
             $("#msg").html("NIC is invalid!!!");
             $("#msg").addClass("alert alert-danger");
@@ -49,13 +49,13 @@ $(document).ready(function () {
             $("#msg").addClass("alert alert-danger");
             return false;
         }
-        if (!mno.match(patMobile))
+        if (!patMobile.test(mno))
         {
             $("#msg").html("Mobile Number is invalid!!!");
             $("#msg").addClass("alert alert-danger");
             return false;
         }
-        if(lno!="" && !lno.match(patLandline))
+        if (lno != "" && !patLandline.test(lno))
         {
             $("#msg").html("Landline is invalid!!!");
             $("#msg").addClass("alert alert-danger");
