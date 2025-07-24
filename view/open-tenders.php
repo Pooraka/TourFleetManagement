@@ -30,7 +30,7 @@ $tenderResult = $tenderObj->getOpenTendersFiltered($tenderStatus,$partId);
 </head>
 <body>
     <div class="container">
-        <?php $pageName="Tender Management - Open Tenders" ?>
+        <?php $pageName="Tender Management - Pending Tenders" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">

@@ -140,6 +140,11 @@ $sparePartsPendingData = json_encode(['sparePartNames'=>$sparePartNames, 'pendin
             opacity: 0.8
         },
         hovertemplate: '<b>%{x}</b><br>Stock: %{y}<extra></extra>'
+        ,
+        domain: {
+            x: [0, 1.0],
+            y: [0, 1.0]
+        }
     };
 
     var layout1 = {
@@ -152,8 +157,8 @@ $sparePartsPendingData = json_encode(['sparePartNames'=>$sparePartNames, 'pendin
             tickangle: -45
         },
         yaxis: {
-            title: { text: 'Stock Quantity' },
-            //dtick: 1, commented as this will show all integer values on y-axis
+            title: { text: 'Stock Quantity' }
+            //,dtick: 1, commented as this will show all integer values on y-axis
             
         },
         margin: { t: 60, b: 170, l: 60, r: 40 }

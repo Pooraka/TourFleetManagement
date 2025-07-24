@@ -124,4 +124,18 @@ class Bid{
         return $result;
     }
 
+    public function getMostActiveBidders(){
+
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT s.supplier_id, s.supplier_name, COUNT(b.bid_id) AS bid_count "
+             . "FROM supplier s JOIN bid b ON s.supplier_id = b.supplier_id "
+             . "WHERE b.bid_status != '-1' "
+             . "GROUP BY s.supplier_id, s.supplier_name "
+             . "ORDER BY bid_count DESC LIMIT 5";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
 }

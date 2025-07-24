@@ -97,9 +97,9 @@ $topSpendingData = json_encode(['supplierNames' => $supplierNames, 'supplierSpen
             <?php if ($poPendingApprovalCount > 0 && in_array(93, $userFunctions)) { ?>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-warning">
-                        <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
-                        <strong>Critical Action:</strong> There are <strong><?php echo $poPendingApprovalCount; ?></strong> purchase orders pending approval.
+                    <div class="alert alert-info">
+                        <span class="fas fa-bell"></span>&nbsp;
+                        <strong>Pending Action:</strong> There are <strong><?php echo $poPendingApprovalCount; ?></strong> purchase orders pending approval.
                         <a href="pending-purchase-orders.php" class="alert-link">Review now</a>.
                     </div>
                 </div>
@@ -108,9 +108,9 @@ $topSpendingData = json_encode(['supplierNames' => $supplierNames, 'supplierSpen
             <?php if ($poPendingInvoiceCount > 0 && in_array(96, $userFunctions)) { ?>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-warning">
-                        <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
-                        <strong>Critical Action:</strong> There are <strong><?php echo $poPendingInvoiceCount; ?></strong> purchase orders pending supplier invoices.
+                    <div class="alert alert-info">
+                        <span class="fas fa-bell"></span>&nbsp;
+                        <strong>Pending Action:</strong> There are <strong><?php echo $poPendingInvoiceCount; ?></strong> purchase orders pending supplier invoices.
                         <a href="pending-purchase-orders.php" class="alert-link">Get Supplier Confirmation & Invoices Now</a>.
                     </div>
                 </div>
@@ -119,9 +119,9 @@ $topSpendingData = json_encode(['supplierNames' => $supplierNames, 'supplierSpen
             <?php if ($awardedBidsCount > 0 && in_array(89, $userFunctions)) { ?>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-warning">
-                        <span class="fa-solid fa-triangle-exclamation"></span>&nbsp;
-                        <strong>Critical Action:</strong> There are <strong><?php echo $awardedBidsCount; ?></strong> awarded bids.
+                    <div class="alert alert-info">
+                        <span class="fas fa-bell"></span>&nbsp;
+                        <strong>Pending Action:</strong> There are <strong><?php echo $awardedBidsCount; ?></strong> awarded bids.
                         <a href="awarded-bids.php" class="alert-link">Review now</a>.
                     </div>
                 </div>

@@ -190,4 +190,28 @@ class Tender{
         $result = $con->query($sql) or die($con->error);
         return $result;
     }
+
+    public function getTenderCountClosingTomorrow() {
+        
+        $con = $GLOBALS["con"];
+        
+        $tomorrow = date("Y-m-d", strtotime("+1 day"));
+        
+        $sql = "SELECT COUNT(*) AS count FROM tender WHERE close_date = $tomorrow AND tender_status = '1'";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
+    public function getClosedTendersCount() {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) AS count FROM tender WHERE tender_status =2";
+
+        $result = $con->query($sql) or die($con->error);
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
 }
