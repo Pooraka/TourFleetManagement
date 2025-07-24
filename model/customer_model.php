@@ -185,4 +185,26 @@ class Customer{
         
         return $count;
     }
+
+    public function getNewCustomerGrowth(){
+
+        $con=$GLOBALS["con"];
+
+        $sql =  "SELECT
+                    first_invoice_date AS acquisition_date,
+                    COUNT(customer_id) AS new_customer_count
+                FROM (
+                    SELECT
+                        customer_id,
+                        MIN(invoice_date) AS first_invoice_date
+                    FROM customer_invoice
+                    WHERE invoice_status != -1
+                    GROUP BY customer_id
+                ) AS first_invoices
+                GROUP BY acquisition_date
+                ORDER BY acquisition_date ASC;";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }
