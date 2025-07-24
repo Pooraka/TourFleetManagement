@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2025 at 10:01 PM
+-- Generation Time: Jul 24, 2025 at 01:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -144,6 +144,7 @@ INSERT INTO `bus_tour` (`bus_id`, `tour_id`) VALUES
 (1, 2),
 (2, 6),
 (3, 12),
+(3, 14),
 (4, 1),
 (4, 5),
 (4, 10),
@@ -203,7 +204,8 @@ INSERT INTO `cash_book` (`cash_book_txn_id`, `cash_book_txn_date`, `txn_type`, `
 (22, '2025-07-18', 3, 16, 'Booking Refund', -12000.00, 3, 1, '2025-07-18 06:51:45'),
 (23, '2025-07-18', 3, 17, 'Advance Booking Payment', 6500.00, 3, 2, '2025-07-18 06:55:55'),
 (24, '2025-07-19', 3, 18, 'Booking Refund', -6500.00, 3, 1, '2025-07-18 19:55:55'),
-(25, '2025-07-21', 3, 19, 'Advance Booking Payment', 8400.00, 3, 2, '2025-07-21 13:15:55');
+(25, '2025-07-21', 3, 19, 'Advance Booking Payment', 8400.00, 3, 2, '2025-07-21 13:15:55'),
+(26, '2025-07-23', 3, 20, 'Booking Refund', -8400.00, 1, 1, '2025-07-23 17:41:52');
 
 -- --------------------------------------------------------
 
@@ -348,7 +350,7 @@ INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, 
 (12, 'ST-IN-FF96-14', 14, '2025-07-16', 47500.00, 9, 4, 'One day tour', '2025-07-16', '2025-07-16', 'Hanwella', 'Galle', 'Hanwella', 250, 11875.00, 47500.00, 47500.00, 260),
 (13, 'ST-IN-1EA8-15', 15, '2025-07-18', 36000.00, 7, -1, 'One Day Tour', '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 200, 12000.00, 0.00, NULL, NULL),
 (14, 'ST-IN-DDE7-16', 16, '2025-07-18', 23625.00, 7, -1, '1 Day Tour', '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', 250, 6500.00, 0.00, NULL, NULL),
-(15, 'ST-IN-D30A-17', 17, '2025-07-21', 42000.00, 10, 1, 'Short Distant Tour With Two Nights', '2025-07-24', '2025-07-26', 'Kohuwala', 'Ja-Ela', 'Kohuwala', 280, 8400.00, 8400.00, NULL, NULL);
+(15, 'ST-IN-D30A-17', 17, '2025-07-21', 42000.00, 10, -1, 'Short Distant Tour With Two Nights', '2025-07-24', '2025-07-26', 'Kohuwala', 'Ja-Ela', 'Kohuwala', 280, 8400.00, 0.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -420,7 +422,7 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (65, 'Deactivate Supplier', 3, 1, 1),
 (66, 'Remove Supplier', 3, 1, 1),
 (67, 'Add Tender', 3, 1, 1),
-(68, 'View Open Tenders', 3, 1, 1),
+(68, 'View Pending Tenders', 3, 1, 1),
 (69, 'View Tender Advertisement', 3, 1, 1),
 (70, 'Add Bids', 3, 1, 1),
 (71, 'View Bids', 3, 1, 1),
@@ -509,8 +511,9 @@ INSERT INTO `function` (`function_id`, `function_name`, `module_id`, `function_s
 (161, 'View Past Payment Info', 9, 1, 1),
 (162, 'View Past Purchase Orders', 4, 1, 1),
 (163, 'View Supplier Invoice', 4, 1, 1),
-(164, 'View Past Tenders', 3, 1, NULL),
-(165, 'View Past Tour Info', 2, 1, 1);
+(164, 'View Past Tenders', 3, 1, 1),
+(165, 'View Past Tour Info', 2, 1, 1),
+(166, 'Past Tours By Customers', 8, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -870,7 +873,11 @@ INSERT INTO `function_user` (`function_id`, `user_id`) VALUES
 (164, 18),
 (165, 1),
 (165, 3),
-(165, 5);
+(165, 5),
+(166, 1),
+(166, 3),
+(166, 5),
+(166, 7);
 
 -- --------------------------------------------------------
 
@@ -950,7 +957,8 @@ INSERT INTO `inspection` (`inspection_id`, `bus_id`, `tour_id`, `inspection_date
 (27, 1, 1, '2025-06-11', 1, 'All Good', 3, 2),
 (28, 4, 1, '2025-06-11', 1, 'All Good', 3, 2),
 (29, 4, 5, '2025-07-08', 1, 'All Good', 3, 2),
-(30, 19, 13, NULL, NULL, NULL, NULL, 1);
+(30, 19, 13, NULL, NULL, NULL, NULL, -1),
+(31, 3, 14, NULL, NULL, NULL, NULL, -1);
 
 -- --------------------------------------------------------
 
@@ -1666,7 +1674,8 @@ INSERT INTO `tour` (`tour_id`, `invoice_id`, `start_date`, `end_date`, `destinat
 (10, 10, '2025-07-15', '2025-07-16', 'Kandy', 3),
 (11, 12, '2025-07-16', '2025-07-16', 'Galle', 3),
 (12, 13, '2025-07-18', '2025-07-18', 'Galle', -1),
-(13, 15, '2025-07-24', '2025-07-26', 'Ja-Ela', -1);
+(13, 15, '2025-07-24', '2025-07-26', 'Ja-Ela', -1),
+(14, 15, '2025-07-24', '2025-07-26', 'Ja-Ela', -1);
 
 -- --------------------------------------------------------
 
@@ -1708,7 +1717,8 @@ INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `pa
 (16, 'ST-RF-0DBE-13', 13, '2025-07-18', -12000.00, 1, NULL, 3, 3, 1, 2),
 (17, 'ST-RT-061D-14', 14, '2025-07-18', 6500.00, 1, '', 1, 3, 1, NULL),
 (18, 'ST-RF-B31E-14', 14, '2025-07-19', -6500.00, 1, NULL, 3, 3, 1, 2),
-(19, 'ST-RT-4A15-15', 15, '2025-07-21', 8400.00, 1, '', 1, 3, 1, NULL);
+(19, 'ST-RT-4A15-15', 15, '2025-07-21', 8400.00, 1, '', 1, 3, 1, NULL),
+(20, 'ST-RF-4685-15', 15, '2025-07-23', -8400.00, 1, NULL, 3, 1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1755,9 +1765,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `user_fname`, `user_lname`, `user_dob`, `user_nic`, `user_role`, `user_image`, `user_email`, `user_status`) VALUES
 (1, 'Pooraka', 'Hasendra', '1998-01-08', '990080836V', 1, '', 'hasendra@st.lk', 1),
-(3, 'Clint', 'Barton', '2025-02-12', '999999999V', 1, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
+(3, 'Clint', 'Barton', '2025-02-12', '993654751V', 1, '1742137423_userimage3.jpg', 'clint@st.lk', 1),
 (5, 'Steve', 'Rogers', '1996-01-25', '960250236V', 4, '', 'steve@st.lk', 1),
-(7, 'Tony', 'Stark', '1996-12-15', '199512347521', 3, '1742137478_userimage5.jpg', 'tony@st.lk', 0),
+(7, 'Tony', 'Stark', '1996-12-15', '199512347521', 3, '1742137478_userimage5.jpg', 'tony@st.lk', 1),
 (8, 'Natasha', 'Romanov', '1999-03-16', '990362581V', 2, '1742135511_userimage4w.jpg', 'natasha@st.lk', 1),
 (15, 'Mihin', 'Sathsara', '2001-06-25', '200117701861', 5, '1753168784_WhatsApp Image 2025-07-22 at 12.46.34_8eecc7a8.jpg', 'mihin@st.lk', 1),
 (16, 'Naveen', 'Dulanja', '1995-01-05', '951242536V', 6, '1753168588_Naveen.jpg', 'naveen@st.lk', 1),
@@ -1782,14 +1792,6 @@ CREATE TABLE `user_contact` (
 --
 
 INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `user_id`) VALUES
-(164, 1, '0778810839', 3),
-(165, 2, '0112729729', 3),
-(166, 1, '0779535000', 1),
-(167, 2, '0114006319', 1),
-(168, 1, '0734351355', 5),
-(169, 2, '0112008888', 5),
-(170, 1, '0772456456', 7),
-(171, 2, '0312243581', 7),
 (172, 1, '0736415732', 8),
 (173, 2, '0112843951', 8),
 (184, 1, '0712536954', 16),
@@ -1799,7 +1801,15 @@ INSERT INTO `user_contact` (`contact_id`, `contact_type`, `contact_number`, `use
 (188, 1, '0785469521', 17),
 (189, 2, '0415445815', 17),
 (192, 1, '0745852155', 18),
-(193, 2, '0114256325', 18);
+(193, 2, '0114256325', 18),
+(194, 1, '0779535000', 1),
+(195, 2, '0114006319', 1),
+(198, 1, '0778810839', 3),
+(199, 2, '0112729729', 3),
+(200, 1, '0734351355', 5),
+(201, 2, '0112008888', 5),
+(202, 1, '0772456456', 7),
+(203, 2, '0312243581', 7);
 
 --
 -- Indexes for dumped tables
@@ -2120,7 +2130,7 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `cash_book`
 --
 ALTER TABLE `cash_book`
-  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `checklist_item`
@@ -2156,7 +2166,7 @@ ALTER TABLE `customer_invoice_item`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+  MODIFY `function_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 
 --
 -- AUTO_INCREMENT for table `grn`
@@ -2168,7 +2178,7 @@ ALTER TABLE `grn`
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `inspection_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `inspection_checklist_response`
@@ -2270,13 +2280,13 @@ ALTER TABLE `tender`
 -- AUTO_INCREMENT for table `tour`
 --
 ALTER TABLE `tour`
-  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `tour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
@@ -2294,7 +2304,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_contact`
 --
 ALTER TABLE `user_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 
 --
 -- Constraints for dumped tables

@@ -605,4 +605,87 @@ switch ($status){
 
     break;
 
+    case "load_tour_info_modal":
+
+        $tourId = $_POST['tourId'];
+
+        $tourResult = $tourObj->getTour($tourId);
+        $tourRow = $tourResult->fetch_assoc();
+
+        $startDate = $tourRow['start_date'];
+        $endDate = $tourRow['end_date'];
+        $destination = $tourRow['destination'];
+        $invoiceId = $tourRow['invoice_id'];
+        $invoiceNumber = $tourRow['invoice_number'];
+        $pickupLocation = $tourRow['pickup_location'];
+        $dropoffLocation = $tourRow['dropoff_location'];
+
+        ?>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Tour ID:</strong> <?php echo $tourId; ?></p>
+                <p><strong>Start Date:</strong> <?php echo $startDate; ?></p>
+                <p><strong>End Date:</strong> <?php echo $endDate; ?></p>
+                <p><strong>Destination:</strong> <?php echo $destination; ?></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Invoice ID:</strong> <?php echo $invoiceId; ?></p>
+                <p><strong>Invoice Number:</strong> <?php echo $invoiceNumber; ?></p>
+                <p><strong>Pickup Location:</strong> <?php echo $pickupLocation; ?></p>
+                <p><strong>Dropoff Location:</strong> <?php echo $dropoffLocation; ?></p>
+            </div>
+        </div>
+        <?php
+
+    break;
+
+    case "load_past_tours_by_customer":
+
+        $customerId = $_POST['customerId'];
+
+        $pastTourResult = $tourObj->getPastToursOfACustomer($customerId);
+        
+        ?>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table" id="tour_list_table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Tour Start Date</th>
+                            <th>Tour End Date</th>
+                            <th>Destination</th>
+                            <th>Pickup</th>
+                            <th>Dropoff</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($tourRow = $pastTourResult->fetch_assoc()){ 
+                            
+                            $status = match((int)$tourRow["tour_status"]){
+                                
+                                -1=>"Cancelled",
+                                3=>"Completed",
+                            };
+                            ?>
+                        <tr>
+                            <td><?php echo $tourRow["start_date"];?></td>
+                            <td><?php echo $tourRow["end_date"];?></td>
+                            <td><?php echo $tourRow["destination"];?></td>
+                            <td><?php echo $tourRow["pickup_location"];?></td>
+                            <td><?php echo $tourRow["dropoff_location"];?></td>
+                            <td><?php echo $status;?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            
+            
+        <?php
+
+    break;
+
 }

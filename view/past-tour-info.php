@@ -153,6 +153,12 @@ $tourResult = $tourObj->getPastToursFiltered($dateFrom,$dateTo,$tourStatus);
                                         View Assigned Buses
                                     </a>
                                     <?php }?>
+                                    <!-- <?php //if($tourRow["tour_status"]!=-1){?>
+                                    <a href="#" data-toggle="modal" onclick="getTourInfo(<?php// echo $tourRow['tour_id'];?>)" data-target="#tour_info" 
+                                       class="btn btn-xs btn-primary" style="margin:2px;">                                                 
+                                        View Tour Info
+                                    </a>
+                                    <?php// }?> -->
                                 </td>
                             </tr>
                             <?php } ?>
@@ -177,6 +183,23 @@ $tourResult = $tourObj->getPastToursFiltered($dateFrom,$dateTo,$tourStatus);
         </div>
     </div>
 </div>
+<!-- <div class="modal fade" id="tour_info" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4>Tour Information</h4>
+                </div>
+                <div class="panel-body">
+                    <div id="display_tour_info"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
@@ -191,6 +214,18 @@ $tourResult = $tourObj->getPastToursFiltered($dateFrom,$dateTo,$tourStatus);
             $("#tour_bus_list_table").DataTable();
         });
     }
+    
+    /*
+    function getTourInfo(tourId){
+        var url ="../controller/tour_controller.php?status=load_tour_info_modal";
+
+        $.post(url,{tourId:tourId},function(data){
+            $("#display_tour_info").html(data).show();
+            
+            
+        });
+    }
+        */
 
     $(document).ready(function() {
 

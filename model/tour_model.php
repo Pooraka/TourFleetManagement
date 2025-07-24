@@ -99,8 +99,11 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email"
-                . " FROM tour t, customer_invoice i, customer c WHERE t.invoice_id=i.invoice_id AND i.customer_id=c.customer_id AND tour_id=?";
+        $sql = "SELECT t.*, i.*, c.*
+                FROM tour t
+                JOIN customer_invoice i ON t.invoice_id = i.invoice_id
+                JOIN customer c ON c.customer_id = i.customer_id
+                WHERE t.tour_id = ?;";
         
         $stmt = $con->prepare($sql);
         
@@ -234,5 +237,28 @@ class Tour{
 
         $row = $result->fetch_assoc();
         return $row['count'];
+    }
+
+    public function getPastToursOfACustomer($customerId){
+
+        $con=$GLOBALS["con"];
+
+        $sql ="SELECT t.*,i.* FROM tour t 
+            JOIN customer_invoice i ON t.invoice_id = i.invoice_id 
+            JOIN customer c ON i.customer_id = c.customer_id 
+            WHERE c.customer_id = ? AND t.tour_status IN (-1,3)
+            ORDER BY t.start_date DESC";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bind_param("i", $customerId);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
+        return $result;
     }
 }

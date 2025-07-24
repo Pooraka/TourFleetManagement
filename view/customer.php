@@ -57,6 +57,10 @@ $newCustomerGrowthData = json_encode(['acquisitionDates' => $acquisitionDates,
                     <span class="fa-solid fa-users"></span> &nbsp;
                     View Customers
                 </a>
+                <a href="past-tours-by-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(166); ?>">
+                    <span class="fa-solid fa-scroll"></span> &nbsp;
+                    Past Tours By Customers
+                </a>
                 <a href="revenue-by-customers.php" class="list-group-item" style="display:<?php echo checkPermissions(147); ?>">
                     <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
                     Revenue By Customers
