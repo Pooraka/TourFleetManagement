@@ -138,4 +138,21 @@ class Bid{
         return $result;
     }
 
+    public function getBidPerformanceBySuppliers(){
+
+        $con = $GLOBALS["con"];
+
+        $sql = "SELECT s.supplier_id, s.supplier_name, COUNT(b.bid_id) AS total_bids, 
+                SUM(CASE WHEN b.bid_status IN (2,3) THEN 1 ELSE 0 END) AS won_bids 
+                FROM supplier s JOIN bid b ON s.supplier_id=b.supplier_id 
+                WHERE b.bid_status !=-1 
+                GROUP BY s.supplier_id, s.supplier_name 
+                HAVING total_bids >0 
+                ORDER BY total_bids DESC 
+                LIMIT 5";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
+
 }

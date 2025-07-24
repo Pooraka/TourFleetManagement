@@ -31,6 +31,23 @@ if($mostActiveBiddersResult->num_rows > 0) {
 }
 
 $mostActiveBiddersData = json_encode(['bidderNames' => $bidderNames, 'bidCounts' => $bidCounts]);
+
+//Get Bid Performance By Suppliers
+$bidPerformanceResult = $bidObj->getBidPerformanceBySuppliers();
+
+$performanceSupplierNames = array();
+$performanceTotalBids = array();
+$performanceWonBids = array();
+
+if($bidPerformanceResult->num_rows > 0) {
+    while ($performanceRow = $bidPerformanceResult->fetch_assoc()) {
+        array_push($performanceSupplierNames, $performanceRow['supplier_name']);
+        array_push($performanceTotalBids, (int)$performanceRow['total_bids']);
+        array_push($performanceWonBids, (int)$performanceRow['won_bids']);
+    }
+}
+
+$bidPerformanceData = json_encode(['supplierNames' => $performanceSupplierNames, 'totalBids' => $performanceTotalBids, 'wonBids' => $performanceWonBids]);
 ?>
 
 <html lang="en">
@@ -104,7 +121,7 @@ $mostActiveBiddersData = json_encode(['bidderNames' => $bidderNames, 'bidCounts'
                     <div id="mostActiveBiddersChartDiv" style="width:100%; height:400px;"> </div>
                 </div>
                 <div class="col-md-6">
-                    <div id="" style="width:100%; height:400px;"> </div>
+                    <div id="bidPerformanceChartDiv" style="width:100%; height:400px;"> </div>
                 </div>
             </div>
         </div>
@@ -112,6 +129,8 @@ $mostActiveBiddersData = json_encode(['bidderNames' => $bidderNames, 'bidCounts'
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
 <script>
+
+    //Most Active Bidders Chart
     var $mostActiveBiddersData = <?php echo $mostActiveBiddersData;?>;
 
     if($mostActiveBiddersData.bidderNames.length > 0) {
@@ -146,6 +165,56 @@ $mostActiveBiddersData = json_encode(['bidderNames' => $bidderNames, 'bidCounts'
         Plotly.newPlot('mostActiveBiddersChartDiv',[trace1], layout1);
     } else {
        $('#mostActiveBiddersChartDiv').html('<div class="alert alert-warning">No active bidders data available.</div>');
+    }
+
+    //Bid Performance By Suppliers Chart
+    var $bidPerformanceData = <?php echo $bidPerformanceData;?>;
+
+    if($bidPerformanceData.supplierNames.length > 0) {
+        var trace2 = {
+            x: $bidPerformanceData.supplierNames,
+            y: $bidPerformanceData.totalBids,
+            type: 'bar',
+            name: 'Total Bids',
+            marker: {
+                color: '#694ecdff',
+                opacity: 1
+            },
+            hovertemplate: '<b>%{x}</b><br>Total Bids: %{y}<extra></extra>'
+        };
+
+        var trace3 = {
+            x: $bidPerformanceData.supplierNames,
+            y: $bidPerformanceData.wonBids,
+            type: 'bar',
+            name: 'Won Bids',
+            marker: {
+                color: '#6bff9cff',
+                opacity: 1
+            },
+            hovertemplate: '<b>%{x}</b><br>Won Bids: %{y}<extra></extra>'
+        };
+
+        var layout2 = {
+            title: {
+                text: 'Bid Performance By Suppliers',
+                font: { size: 15 }
+            },
+            xaxis: {
+                title: { text: 'Supplier' },
+                showticklabels: false, //Hide x axis names as it takes lot of space
+                tickangle: -45
+            },
+            yaxis: {
+                title: { text: 'Number of Bids' }
+                //,dtick: 1, commented as this will show all integer values on y-axis
+            },
+            margin: { t: 60, b: 170, l: 60, r: 40 }
+        };
+
+        Plotly.newPlot('bidPerformanceChartDiv',[trace2, trace3], layout2);
+    } else {
+       $('#bidPerformanceChartDiv').html('<div class="alert alert-warning">No bid performance data available.</div>');
     }
 </script>
 </html>
