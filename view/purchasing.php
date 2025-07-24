@@ -1,10 +1,33 @@
 <?php
 
 include_once '../commons/session.php';
+include_once '../model/purchase_order_model.php';
+
 
 
 //get user information from session
 $userSession=$_SESSION["user"];
+$userFunctions=$_SESSION['user_functions'];
+
+$poObj = new PurchaseOrder();
+
+//Get PO Pipeline Chart Data
+$poPipelineResult = $poObj->getPurchaseOrderPipelineWithinLast14Days();
+
+$poStatusNames = array();
+$poStatusCounts = array();
+
+if($poPipelineResult->num_rows>0){
+
+    while($row = $poPipelineResult->fetch_assoc()){
+
+        array_push($poStatusNames,$row["status_name"]);
+        array_push($poStatusCounts,$row["po_count"]);
+    }
+}
+
+$pipelineData = json_encode(['poStatusName'=>$poStatusNames , 'poStatusCounts'=>$poStatusCounts]);
+
 ?>
 
 <html lang="en">
@@ -43,9 +66,46 @@ $userSession=$_SESSION["user"];
             </ul>
         </div>
         <div class="col-md-9">
-
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="poPipelineChartDiv" style="width:100%; height:400px;"> </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    var pipelineData = <?php echo $pipelineData; ?>;
+    
+    // Purchase Order Pipeline Pie Chart
+    var trace1 = {
+        labels: pipelineData.poStatusName,
+        values: pipelineData.poStatusCounts,
+        type: 'pie',
+        textinfo: 'value',
+        //textinfo: 'label+percent+value',
+        textposition: 'inside',
+        hovertemplate: '<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<extra></extra>',
+        marker: {
+            colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD']
+        }
+    };
+
+    var layout1 = {
+        title: { 
+            text: 'Purchase Order Pipeline Status (Last 14 Days)',
+            font: { size: 16 }
+        },
+        showlegend: true,
+        legend: {
+            orientation: 'v',
+            x: 1,
+            y: 0.5
+        },
+        margin: { t: 60, b: 50, l: 50, r: 150 }
+    };
+
+    Plotly.newPlot('poPipelineChartDiv', [trace1], layout1, {responsive: true});
+</script>
 </html>

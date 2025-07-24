@@ -310,4 +310,32 @@ class PurchaseOrder{
         $result = $stmt->get_result();
         return $result;
     }
+
+    public function getPurchaseOrderPipelineWithinLast14Days() {
+        
+        $con = $GLOBALS["con"];
+
+        $fourteenDaysAgo = date('Y-m-d', strtotime('-14 days'));
+
+        $sql = "SELECT
+                    po_status,
+                    CASE
+                        WHEN po_status = 1 THEN 'Initiated'
+                        WHEN po_status = 2 THEN 'Approved'
+                        WHEN po_status = 3 THEN 'Invoice Attached'
+                        WHEN po_status = 4 THEN 'Partially Received'
+                        WHEN po_status = 5 THEN 'Completed'
+                        WHEN po_status = 6 THEN 'Paid'
+                        ELSE 'Unknown'
+                    END AS status_name,
+                    COUNT(po_id) AS po_count
+                FROM purchase_order
+                WHERE 
+                    po_status != -1 
+                    AND order_date >= '$fourteenDaysAgo' 
+                GROUP BY po_status, status_name ORDER BY po_count DESC";
+
+        $result = $con->query($sql) or die($con->error);
+        return $result;
+    }
 }

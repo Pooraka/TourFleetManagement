@@ -68,7 +68,7 @@ class Tour{
             FROM tour t 
             JOIN customer_invoice i ON t.invoice_id = i.invoice_id 
             JOIN customer c ON i.customer_id = c.customer_id 
-            WHERE t.tour_status IN (1, 2) ";
+            WHERE t.tour_status =1 ";
         
         if($dateFrom!="" && $dateTo!=""){
             
