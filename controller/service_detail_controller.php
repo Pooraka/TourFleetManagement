@@ -47,6 +47,12 @@ switch ($status){
             $busResult = $busObj->getBus($busId);
             $busRow = $busResult->fetch_assoc();
             
+            $existingCurrentMileage = $busRow["current_mileage_km"];
+            
+            if($currentMileage<$existingCurrentMileage){
+                throw new Exception("Entered current mileage cannot be less than bus's existing current mileage");
+            }
+            
             $startDate = date('Y-m-d');
 /**            $currentMileageAsAt = date('Y-m-d H:i:s', time());
  *              $busObj->updateBusMileage($busId, $currentMileage, $currentMileageAsAt);

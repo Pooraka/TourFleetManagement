@@ -60,7 +60,7 @@ $serviceStationObj = new ServiceStation();
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="servicetable">
+                    <table class="table" id="servicetable" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Vehicle</th>
@@ -91,18 +91,18 @@ $serviceStationObj = new ServiceStation();
                             
                             <tr>
                                 <td><?php echo $vehicleNo;?></td>
-                                <td><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp;Km</td>
+                                <td style="text-align:right"><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp;Km</td>
                                 <td><?php echo $serviceStationName;?></td>
                                 <td><?php echo $serviceDetailRow['start_date'];?></td>
                                 <td>
                                     <a href="complete-service.php?service_id=<?php echo $serviceId; ?>" 
-                                       class="btn btn-success" style="margin:2px;display:<?php echo checkPermissions(120); ?>">
-                                        <span class="glyphicon glyphicon-ok"></span>
+                                       class="btn btn-sm btn-success" style="margin:2px;display:<?php echo checkPermissions(120); ?>">
+                                        <span class="fas fa-check"></span>
                                         Complete
                                     </a>
                                     <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" onclick="return confirm('Are you sure you want to cancel?')" 
-                                       class="btn btn-danger" style="margin:2px;display:<?php echo checkPermissions(121); ?>">
-                                        <span class="glyphicon glyphicon-remove"></span>
+                                       class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(121); ?>">
+                                        <span class="fas fa-times"></span>
                                         Cancel
                                     </a> 
                                 </td>

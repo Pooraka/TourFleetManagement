@@ -167,4 +167,35 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+$(document).ready(function() {
+
+    $("form").submit(function () {
+
+        var busId = $("#bus_id").val();
+        var serviceStationId = $("#service_station_id").val();
+        var currentMileage = $("#currentmileage").val();
+
+        if(busId ==""){
+            $("#msg").html("<b>Please select a bus to initiate service.</b>");
+            $("#msg").addClass("alert alert-danger");
+            return false;
+        }
+
+        if(serviceStationId ==""){
+            $("#msg").html("<b>Please select a service station.</b>");
+            $("#msg").addClass("alert alert-danger");
+            return false;
+        }
+
+        if(currentMileage ==""){
+            $("#msg").html("<b>Please enter the current mileage.</b>");
+            $("#msg").addClass("alert alert-danger");
+            return false;
+        }   
+
+    });
+});
+
+</script>
 </html>
