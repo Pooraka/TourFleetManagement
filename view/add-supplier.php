@@ -24,7 +24,7 @@ $userSession=$_SESSION["user"];
         <form action="../controller/supplier_controller.php?status=add_supplier" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3" id="msg" >
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 

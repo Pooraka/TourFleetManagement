@@ -29,15 +29,27 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
         <form action="../controller/tender_controller.php?status=add_tender" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
-                        <?php if (isset($_GET["msg"])) { ?>
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
+                        <?php
+                        if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                            <script>
-                                var msgElement = document.getElementById("msg");
-                                msgElement.classList.add("alert", "alert-danger");
-                            </script>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                            <?php
+                        } elseif (isset($_GET["msg"])) {
 
-                            <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-danger" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
                             <?php
                         }
                         ?>
@@ -48,10 +60,10 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                         <label class="control-label">Spare Part</label>
                     </div>
                     <div class="col-md-3">
-                        <select class="form-control" name="part_id">
-                            <option value="">-------</option>
+                        <select class="form-control" name="part_id" id="part_id" required>
+                            <option value="">Select Spare Part</option>
                             <?php while($sparePartTypeRow = $sparePartTypeResult->fetch_assoc()){?>
-                            <option value="<?php echo $sparePartTypeRow['part_id']; ?>"><?php echo $sparePartTypeRow['part_number']; ?></option>
+                            <option value="<?php echo $sparePartTypeRow['part_id']; ?>"><?php echo $sparePartTypeRow['part_name']; ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -59,7 +71,7 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                         <label class="control-label">Quantity Required</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" name="quantity" class="form-control" min="1" step="1"/>
+                        <input type="number" id="quantity" name="quantity" class="form-control" min="1" step="1"/>
                     </div>
                 </div>
                 <div class="row">
@@ -70,13 +82,13 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                         <label class="control-label">Open Date</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" name="open_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
+                        <input type="date" id="open_date" name="open_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Close Date</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" name="close_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
+                        <input type="date" id="close_date" name="close_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -87,13 +99,13 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                         <label class="control-label">Advertisement</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="file" class="form-control" name="advertisement"/>
+                        <input type="file" id="advertisement" class="form-control" name="advertisement"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Description</label>
                     </div>
                     <div class="col-md-3">
-                        <textarea id="address" rows="2" name="tender_description" class="form-control"></textarea>
+                        <textarea id="tender_description" rows="2" name="tender_description" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -110,4 +122,60 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $("form").submit(function () {
+
+            var partId = $("#part_id").val();
+            var quantity = $("#quantity").val();
+            var openDate = $("#open_date").val();
+            var closeDate = $("#close_date").val();
+            var advertisement = $("#advertisement").val();
+            var tenderDescription = $("#tender_description").val();
+
+            if(partId=="" ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please select a spare part.</b>");
+                return false;
+            }
+
+            if(quantity=="" || quantity <= 0){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter a quantity above 0.</b>");
+                return false;
+            }
+
+            if(openDate==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please select an open date.</b>");
+                return false;
+            }
+
+            if(closeDate==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please select a close date.</b>");
+                return false;
+            }
+
+            if(new Date(openDate) > new Date(closeDate)){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Close date must be same or after open date.</b>");
+                return false;
+            }
+
+            if (advertisement == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please attach the advertisement proof.</b>");
+                return false;
+            }
+
+            if (tenderDescription == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter a tender description.</b>");
+                return false;
+            }
+        });
+    });
+</script>
 </html>

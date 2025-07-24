@@ -141,7 +141,7 @@ switch ($status){
             ?>
 
             <script>
-                window.location="../view/view-buses.php?msg=<?php echo $msg;?>";
+                window.location="../view/add-bus.php?msg=<?php echo $msg;?>&success=true";
             </script>
 
             <?php

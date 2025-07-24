@@ -79,7 +79,7 @@ switch ($status){
             ?>
 
                 <script>
-                    window.location="../view/open-tenders.php?msg=<?php echo $msg; ?>&success=true";
+                    window.location="../view/add-tender.php?msg=<?php echo $msg; ?>&success=true";
                 </script>
 
             <?php

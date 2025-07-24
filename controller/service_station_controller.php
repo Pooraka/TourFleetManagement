@@ -65,7 +65,7 @@ switch ($status){
             ?>
                                 
                 <script>
-                    window.location="../view/view-service-stations.php?msg=<?php echo $msg; ?>&success=true";
+                    window.location="../view/add-service-station.php?msg=<?php echo $msg; ?>&success=true";
                 </script>
                             
             <?php
