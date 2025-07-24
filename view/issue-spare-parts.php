@@ -31,20 +31,7 @@ $busResult = $busObj->getAllBuses();
         <?php $pageName="Spare Part Management - Issue Spare Parts" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="register-spareparts.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Register Spare Parts
-                </a>
-                <a href="spare-part-types.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Spare Part Types
-                </a>
-                <a href="add-spare-parts.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Add Spare Parts
-                </a>
-            </ul>
+            <?php include_once "../includes/spareparts_functions.php"; ?>
         </div>
         <form action="../controller/sparepart_controller.php?status=issue_spare_parts" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

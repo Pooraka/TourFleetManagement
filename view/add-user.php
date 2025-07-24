@@ -24,20 +24,7 @@ $roleResult = $userObj->getAllRoles();
     <?php $pageName="User Management - Add User" ?>
     <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-user.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add User
-                </a>
-                <a href="view-users.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Users
-                </a>
-                <a href="generate-user-reports.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate User Reports
-                </a>
-            </ul>
+            <?php include_once "../includes/user_functions.php"; ?>
         </div>
         <form action="../controller/user_controller.php?status=add_user" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

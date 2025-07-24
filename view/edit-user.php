@@ -52,18 +52,7 @@ while($function_row= $userFunctionResult->fetch_Assoc()){
     <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="add-user.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add User
-                </a>
-                <a href="view-users.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Users
-                </a>
-                <a href="generate-user-reports.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate User Reports
-                </a>
+                <?php include_once "../includes/user_functions.php"; ?>
             </ul>
         </div>
         <form action="../controller/user_controller.php?status=update_user" method="post" enctype="multipart/form-data">

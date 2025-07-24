@@ -18,28 +18,7 @@ $userSession=$_SESSION["user"];
         <?php $pageName="Finance Management - Customer Invoice Summary" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Service Payments
-                </a>
-                <a href="pending-supplier-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Supplier Payments
-                </a>
-                <a href="verify-customer-income.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Verify Customer Income
-                </a>
-                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Supplier Monthly Pmt Chart
-                </a>
-                <a href="customer-invoice-summary.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Customer Invoice Summary
-                </a>
-            </ul>
+            <?php include_once "../includes/finance_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

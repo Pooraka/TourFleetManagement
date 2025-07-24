@@ -81,28 +81,7 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
         <?php $pageName="Bus Maintenance - Complete Service" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-service-station.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Service Station
-                </a>
-                <a href="view-service-stations.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Service Stations
-                </a>
-                <a href="initiate-service.php" class="list-group-item">
-                    <span class="fa-solid fa-wrench"></span> &nbsp;
-                    Initiate Service
-                </a>
-                <a href="view-ongoing-services.php" class="list-group-item">
-                    <span class="fa-solid fa-gear fa-spin"></span> &nbsp;
-                    View Ongoing Services
-                </a>
-                <a href="service-history.php" class="list-group-item">
-                    <span class="fa fa-list-alt"></span> &nbsp;
-                    Service History
-                </a>
-            </ul>
+            <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
         <form action="../controller/service_detail_controller.php?status=update_service" method="post" enctype="multipart/form-data">
         <div class="col-md-9">

@@ -33,20 +33,7 @@ $supplierObj = new Supplier();
         <?php $pageName="Purchasing - Pending Purchase Orders" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="awarded-bids.php" class="list-group-item" style="display:<?php echo checkPermissions(89); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    View Awarded Bids
-                </a>
-                <a href="pending-purchase-orders.php" class="list-group-item" style="display:<?php echo checkPermissions(92); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    View Pending PO
-                </a>
-                <a href="po-status-report.php" class="list-group-item" style="display:<?php echo checkPermissions(97); ?>">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    PO Status Report
-                </a>
-            </ul>
+            <?php include_once "../includes/purchasing_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

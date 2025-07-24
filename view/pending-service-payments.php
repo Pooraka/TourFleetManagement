@@ -23,12 +23,7 @@ $serviceDetailResult = $serviceDetailObj->getPaymentPendingServiceStations();
         <?php $pageName="Finance Management - Pending Service Payments" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Service Payments
-                </a>
-            </ul>
+            <?php include_once "../includes/finance_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

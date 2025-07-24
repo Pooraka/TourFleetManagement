@@ -27,20 +27,7 @@ $inspectionFailedResult = $inspectionObj->getFailedInspectionsToAssignNewBusUsin
         <?php $pageName="Tour Management - Failed Inspections" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-tour.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Tour
-                </a>
-                <a href="pending-tours.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Tours
-                </a>
-                <a href="inspection-failed.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pre-Tour Failed Inspections
-                </a>
-            </ul>
+            <?php include_once "../includes/tour_management_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

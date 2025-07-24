@@ -36,20 +36,7 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
         <?php $pageName="Tender Management - View & Award Bids" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-supplier.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Supplier
-                </a>
-                <a href="view-suppliers.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Suppliers
-                </a>
-                <a href="add-tender.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Tender
-                </a>
-            </ul>
+            <?php include_once "../includes/tender_functions.php"; ?>   
         </div>
         <div class="col-md-9">
             <div class="row">

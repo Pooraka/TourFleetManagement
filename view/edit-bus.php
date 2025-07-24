@@ -28,20 +28,7 @@ $busRow = $busResult->fetch_assoc();
         <?php $pageName="Bus Management - Edit Bus" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-bus.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Bus
-                </a>
-                <a href="view-buses.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Buses
-                </a>
-                <a href="generate-bus-reports.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate Bus Reports
-                </a>
-            </ul>
+            <?php include_once "../includes/bus_management_functions.php"; ?>
         </div>
         <form action="../controller/bus_controller.php?status=update_bus" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

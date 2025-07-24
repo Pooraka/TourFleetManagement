@@ -19,12 +19,7 @@ $userSession=$_SESSION["user"];
         <?php $pageName="Tender Management - Add Supplier" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-customer.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Supplier
-                </a>
-            </ul>
+            <?php include_once "../includes/tender_functions.php"; ?>
         </div>
         <form action="../controller/supplier_controller.php?status=add_supplier" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

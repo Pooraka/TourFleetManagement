@@ -21,24 +21,7 @@ $userSession=$_SESSION["user"];
         <?php $pageName="User Management - User List Report" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="dashboard.php" class="list-group-item">
-                    <span class="fa-solid fa-house"></span> &nbsp;
-                    Back To Dashboard
-                </a>
-                <a href="add-user.php" class="list-group-item" style="display:<?php echo checkPermissions(148); ?>">
-                    <span class="fa-solid fa-plus"></span> &nbsp;
-                    Add User
-                </a>
-                <a href="view-users.php" class="list-group-item" style="display:<?php echo checkPermissions(54); ?>">
-                    <span class="fa-solid fa-users-cog"></span> &nbsp;
-                    View Users
-                </a>
-                <a href="user-list-report.php" target="_blank" class="list-group-item" style="display:<?php echo checkPermissions(55); ?>">
-                    <span class="fa-solid fa-address-book"></span> &nbsp;
-                    Generate User List
-                </a>
-            </ul>
+            <?php include_once "../includes/user_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

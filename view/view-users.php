@@ -27,20 +27,7 @@ $userResult = $userObj->getAllUsers();
         <?php $pageName="User Management - View Users" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-user.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add User
-                </a>
-                <a href="view-users.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Users
-                </a>
-                <a href="generate-user-reports.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate User Reports
-                </a>
-            </ul>
+            <?php include_once "../includes/user_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

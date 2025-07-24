@@ -42,16 +42,7 @@ if ($landlineResult->num_rows == 1) {
         <?php $pageName="Customer - Edit Customer" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-customer.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Customer
-                </a>
-                <a href="view-customers.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Customers
-                </a>
-            </ul>
+            <?php include_once "../includes/customer_functions.php"; ?>
         </div>
         <form action="../controller/customer_controller.php?status=update_customer" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

@@ -40,20 +40,7 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
         <?php $pageName="Booking Management - Accept Customer Payment" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="generate-quotation.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Generate Quotation
-                </a>
-                <a href="pending-quotations.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Quotations
-                </a>
-                <a href="pending-customer-invoices.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Invoice
-                </a>
-            </ul>
+            <?php include_once "../includes/booking_functions.php"; ?>
         </div>
         <form action="../controller/finance_controller.php?status=accept_payment" method="post" enctype="multipart/form-data">
         <div class="col-md-9">

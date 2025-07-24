@@ -38,20 +38,7 @@ if($mobileRow!=null && $mobileRow['contact_type']==2){
         <?php $pageName="Bus Maintenance - Edit Service Station" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="add-service-station.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-plus"></span> &nbsp;
-                    Add Service Station
-                </a>
-                <a href="view-service-stations.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Service Stations
-                </a>
-                <a href="" class="list-group-item">
-                    <span class="glyphicon glyphicon-book"></span> &nbsp;
-                    Generate Reports
-                </a>
-            </ul>
+            <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
         <form action="../controller/service_station_controller.php?status=update_service_station" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

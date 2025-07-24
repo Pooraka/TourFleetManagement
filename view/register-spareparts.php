@@ -18,16 +18,7 @@ $userSession=$_SESSION["user"];
         <?php $pageName="Spare Part Management - Register Spare Parts" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="register-spareparts.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Register Spare Parts
-                </a>
-                <a href="add-service-station.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Spare Parts
-                </a>
-            </ul>
+            <?php include_once "../includes/spareparts_functions.php"; ?>
         </div>
         <form action="../controller/sparepart_controller.php?status=register_sparepart" method="post" enctype="multipart/form-data">
             <div class="col-md-9">

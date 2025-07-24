@@ -23,20 +23,7 @@ $supplierResult = $supplierObj->getAllSuppliersIncludingRemoved();
         <?php $pageName="Finance Management - Monthly Supplier Payments" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Service Payments
-                </a>
-                <a href="pending-service-payments.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Pending Supplier Payments
-                </a>
-                <a href="supplier-payment-monthly-chart.php" class="list-group-item">
-                    <span class="fa fa-solid fa-chart-bar"></span> &nbsp;
-                    Generate Reports
-                </a>
-            </ul>
+            <?php include_once "../includes/finance_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">

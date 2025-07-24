@@ -37,24 +37,7 @@ $grnResult = $grnObj->getAllGRNsFiltered($dateFrom,$dateTo,$supplierId,$partId);
         <?php $pageName="Spare Part Management - View GRNs" ?>
         <?php include_once "../includes/header_row_includes.php";?>
         <div class="col-md-3">
-            <ul class="list-group">
-                <a href="register-spareparts.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Register Spare Parts
-                </a>
-                <a href="spare-part-types.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View Spare Part Types
-                </a>
-                <a href="add-spare-parts.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    Add Spare Parts
-                </a>
-                <a href="view-grns.php" class="list-group-item">
-                    <span class="glyphicon glyphicon-search"></span> &nbsp;
-                    View GRNs
-                </a>
-            </ul>
+            <?php include_once "../includes/spareparts_functions.php"; ?>
         </div>
         <div class="col-md-9">
             <div class="row">
