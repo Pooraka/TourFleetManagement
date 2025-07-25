@@ -66,8 +66,10 @@ $supplierResult = $supplierObj->getSuppliers();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while($supplierRow = $supplierResult->fetch_assoc()){ 
-                                
+                            <?php while($supplierRow = $supplierResult->fetch_assoc()){
+
+                                $supplierHasActiveTenders = $supplierObj->checkIfASupplierHasBidsInAnActiveTender($supplierRow['supplier_id']);
+
                                 $supplierStatus = match((int)$supplierRow['supplier_status']){
                                     
                                     -1=>"Removed",
@@ -88,7 +90,7 @@ $supplierResult = $supplierObj->getSuppliers();
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         Edit
                                     </a>
-                                    <?php if($supplierRow['supplier_status']==1){?>
+                                    <?php if($supplierRow['supplier_status']==1 && !$supplierHasActiveTenders){?>
                                     <a href="../controller/supplier_controller.php?status=deactivate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
                                        class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(65); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>
@@ -101,11 +103,13 @@ $supplierResult = $supplierObj->getSuppliers();
                                         Activate
                                     </a>
                                     <?php } ?>
+                                    <?php if(!$supplierHasActiveTenders){?>
                                     <a href="../controller/supplier_controller.php?status=remove_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
                                        class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(66); ?>">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         Remove
                                     </a>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <?php } ?>

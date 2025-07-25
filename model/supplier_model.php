@@ -119,4 +119,21 @@ class Supplier{
         return $result;
     }
 
+    public function checkIfASupplierHasBidsInAnActiveTender($supplierId) {
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT COUNT(*) AS bid_count 
+        FROM bid b JOIN tender t ON b.tender_id = t.tender_id 
+        WHERE b.supplier_id=? AND t.tender_status IN ('1', '2')";
+
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("i", $supplierId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        $row = $result->fetch_assoc();
+        return $row['bid_count'] > 0;
+    }
 }

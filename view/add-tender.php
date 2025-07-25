@@ -26,7 +26,7 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
         <div class="col-md-3">
             <?php include_once "../includes/tender_functions.php"; ?>
         </div>
-        <form action="../controller/tender_controller.php?status=add_tender" method="post" enctype="multipart/form-data">
+        <form id="addTenderForm" action="../controller/tender_controller.php?status=add_tender" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
@@ -121,11 +121,33 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
         </form>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        
-        $("form").submit(function () {
+
+        $("#addTenderForm").submit(function (event) {
+
+            event.preventDefault(); // Prevent the default form submission
 
             var partId = $("#part_id").val();
             var quantity = $("#quantity").val();
@@ -175,6 +197,14 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                 $("#msg").html("<b>Please enter a tender description.</b>");
                 return false;
             }
+
+            // If all validations pass, show the confirmation modal
+            $("#confirmationModal").modal('show');
+
+            // Set up the confirmation button to perform the actual submission
+            $("#confirmActionBtn").off("click").on("click", function() {
+                $("#addTenderForm").off("submit").submit();
+            });
         });
     });
 </script>

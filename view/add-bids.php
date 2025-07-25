@@ -38,10 +38,10 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
         <div class="col-md-3">
             <?php include_once "../includes/tender_functions.php"; ?>
         </div>
-        <form action="../controller/bid_controller.php?status=add_bid" method="post" enctype="multipart/form-data">
+        <form id="addBidForm" action="../controller/bid_controller.php?status=add_bid" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -105,8 +105,8 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                         <label class="control-label">Supplier</label>
                     </div>
                     <div class="col-md-3">
-                        <select class="form-control" name="supplier_id">
-                            <option value="">-------</option>
+                        <select class="form-control" name="supplier_id" id="supplier_id">
+                            <option value="">Select Supplier</option>
                             <?php while($supplierRow = $supplierResult->fetch_assoc()){?>
                             <option value="<?php echo $supplierRow['supplier_id']; ?>"><?php echo $supplierRow['supplier_name']; ?></option>
                             <?php } ?>
@@ -116,7 +116,7 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                         <label class="control-label">Unit Price</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="unit_price" min="0" step="0.01"/>
+                        <input type="number" id="unit_price" class="form-control" name="unit_price" step="0.01"/>
                         <input type="hidden" name="tender_id" value="<?php echo $tenderRow['tender_id'];?>"/>
                     </div>
                 </div>
@@ -159,4 +159,44 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#addBidForm").on("submit", function(event){
+            
+            var supplierId = $("#supplier_id").val();
+            var unitPrice = parseFloat($("#unit_price").val());
+
+            if(supplierId ==""){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Select a supplier.</b>");
+                return false;
+            }
+
+            if(isNaN(unitPrice) || unitPrice <= 0){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Enter a valid unit price.</b>");
+                return false;
+            }
+
+        });
+
+        $("#addBidForm").on("reset", function(){
+            $("#msg").removeClass("alert alert-danger");
+            $("#msg").removeClass("alert alert-success");
+            $("#msg").html("");
+        });
+
+        $("#unit_price").on("blur", function(){
+            var unitPrice = parseFloat($(this).val());
+            if(isNaN(unitPrice) || unitPrice <= 0){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Enter a valid unit price.</b>");
+                $("#unit_price").val("");
+            } else {
+                $("#msg").removeClass("alert alert-danger");
+                $("#msg").html("");
+            }
+        });
+    });
+</script>
 </html>
