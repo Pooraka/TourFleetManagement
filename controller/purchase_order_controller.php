@@ -117,9 +117,21 @@ switch ($status){
             $bidRow = $bidResult->fetch_assoc();
             
             $tenderId = $bidRow['tender_id'];
+
+            $tenderResult = $tenderObj->getTender($tenderId);
+            $tenderRow = $tenderResult->fetch_assoc();
+            
+            $today = date("Y-m-d");
+
+            if($tenderRow['close_date'] <= $today){
+
+                $tenderObj->changeTenderStatus($tenderId,2);   
+            }else{
+                $tenderObj->changeTenderStatus($tenderId,1);
+            }
             
             $bidObj->changeBidStatus($bidId,1);
-            $tenderObj->changeTenderStatus($tenderId,1);
+            
             $tenderObj->revokeBidFromTender($tenderId);
             
             $rejectedBy = $userId;

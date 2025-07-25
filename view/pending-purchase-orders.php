@@ -112,11 +112,11 @@ $supplierObj = new Supplier();
                                 <td>
                                     <?php if($poRow['po_status']==1){ ?>
                                     <a href="../controller/purchase_order_controller.php?status=approve_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" 
-                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(93); ?>">
+                                       class="btn btn-xs btn-success approve-po-btn" style="margin:2px;display:<?php echo checkPermissions(93); ?>">
                                     Approve
                                     </a>
                                     <a href="../controller/purchase_order_controller.php?status=reject_po&po_id=<?php echo base64_encode($poRow['po_id']);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(94); ?>">
+                                       class="btn btn-xs btn-danger reject-po-btn" style="margin:2px;display:<?php echo checkPermissions(94); ?>">
                                     Reject
                                     </a>
                                     <?php } elseif($poRow['po_status']==2){?>
@@ -124,7 +124,7 @@ $supplierObj = new Supplier();
                                        class="btn btn-xs btn-info" style="margin:2px;display:<?php echo checkPermissions(95); ?>" target="_blank">
                                     View
                                     </a>
-                                    <a href="#" data-toggle="modal" onclick="getSupplierInvoice(<?php echo $poRow['po_id'];?>)" data-target="#add_supplier_po" 
+                                    <a href="#" data-toggle="modal" onclick="getSupplierInvoice(<?php echo $poRow['po_id'];?>)" data-target="#add_supplier_invoice" 
                                        class="btn btn-xs btn-primary" style="margin:2px;display:<?php echo checkPermissions(96); ?>">
                                     Add Supplier Invoice
                                     </a>
@@ -139,20 +139,71 @@ $supplierObj = new Supplier();
         </div>
     </div>
 </body>
-<div class="modal fade" id="add_supplier_po" role="dialog">
+<div class="modal fade" id="add_supplier_invoice" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="../controller/purchase_order_controller.php?status=add_supplier_invoice" method="post" enctype="multipart/form-data">
+            <form id="addSupplierInvoiceForm" action="../controller/purchase_order_controller.php?status=add_supplier_invoice" method="post" enctype="multipart/form-data">
                 <div class="modal-header"><b><h4>Add Supplier Invoice</h4></b></div>
             <div class="modal-body">
                 <div id="display_data">
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success" value="Submit"/>
+                <input type="submit" id="addSupplierInvoiceBtn" class="btn btn-success" value="Submit"/>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addSupplierInvoiceConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addSupplierInvoiceConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="approvePOConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve this purchase order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="approvePOConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rejectPOConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to reject this purchase order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="rejectPOConfirmActionBtn">Confirm</button>
+            </div>
         </div>
     </div>
 </div>
@@ -164,6 +215,50 @@ $supplierObj = new Supplier();
     $(document).ready(function(){
 
         $("#pending_po").DataTable();
+
+
+        //Add SUpplier Invoice Confirmation Modal
+        $("#addSupplierInvoiceBtn").click(function(e){
+
+            e.preventDefault();
+            $("#add_supplier_invoice").modal("hide");
+            $("#addSupplierInvoiceConfirmationModal").modal("show");
+        });
+
+        $("#addSupplierInvoiceConfirmActionBtn").click(function(){
+
+            $("#addSupplierInvoiceForm").submit();
+        });
+
+        //Approve PO Confirmation Modal
+        $("#pending_po").on("click", ".approve-po-btn", function(event) {
+
+            event.preventDefault();
+
+            var approveUrl = $(this).attr("href");
+
+            $("#approvePOConfirmationModal").modal("show");
+
+            $("#approvePOConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = approveUrl;
+            });
+        });
+
+        //Reject PO Confirmation Modal
+        $("#pending_po").on("click", ".reject-po-btn", function(event) {
+
+            event.preventDefault();
+
+            var rejectUrl = $(this).attr("href");
+
+            $("#rejectPOConfirmationModal").modal("show");
+
+            $("#rejectPOConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = rejectUrl;
+            });
+        });
+
+
     });
     
     function getSupplierInvoice(poId){
