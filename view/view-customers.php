@@ -110,7 +110,7 @@ $customerResult = $customerObj->getCustomers();
                                         Edit
                                     </a>
                                     <a href="../controller/customer_controller.php?status=remove_customer&customer_id=<?php echo $customerId; ?>" 
-                                       class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(52); ?>">
+                                       class="btn btn-sm btn-danger remove-customer-btn" style="margin:2px;display:<?php echo checkPermissions(52); ?>">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         Remove
                                     </a> 
@@ -126,13 +126,41 @@ $customerResult = $customerObj->getCustomers();
         </div>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the customer?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#customertable").DataTable();
+
+        $("#customertable").on("click", ".remove-customer-btn", function(event) {
+            event.preventDefault();
+            var removeURL = $(this).attr("href");
+            $("#confirmationModal").modal("show");
+
+            $("#confirmActionBtn").off().on("click", function() {
+                window.location.href = removeURL;
+            });
+        });
     });
 </script>
 </html>
