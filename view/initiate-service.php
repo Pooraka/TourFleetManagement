@@ -47,18 +47,30 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
         <div class="col-md-3">
             <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
-        <form action="../controller/service_detail_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
+        <form id="addServiceForm" action="../controller/service_detail_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
-                        <?php if (isset($_GET["msg"])) { ?>
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
+                        <?php
+                        if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                            <script>
-                                var msgElement = document.getElementById("msg");
-                                msgElement.classList.add("alert", "alert-danger");
-                            </script>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                            <?php
+                        } elseif (isset($_GET["msg"])) {
 
-                            <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-danger" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
                             <?php
                         }
                         ?>
@@ -166,15 +178,38 @@ $serviceStationResult = $serviceStationObj->getServiceStations();
         </form>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
 
-    $("form").submit(function () {
+    $("#addServiceForm").submit(function () {
+
+        //prevent the form from submitting immediately
+        event.preventDefault();
 
         var busId = $("#bus_id").val();
         var serviceStationId = $("#service_station_id").val();
-        var currentMileage = $("#currentmileage").val();
+        var currentMileage = parseInt($("#currentmileage").val(), 10);
 
         if(busId ==""){
             $("#msg").html("<b>Please select a bus to initiate service.</b>");
@@ -188,11 +223,19 @@ $(document).ready(function() {
             return false;
         }
 
-        if(currentMileage ==""){
+        if(isNaN(currentMileage) || currentMileage <= 0){
             $("#msg").html("<b>Please enter the current mileage.</b>");
             $("#msg").addClass("alert alert-danger");
             return false;
-        }   
+        }
+        
+        // If all validations pass, show the confirmation modal
+        $("#confirmationModal").modal('show');
+        // Set up the confirmation button to perform the actual submission
+        $("#confirmActionBtn").off("click").on("click", function() {
+            // Remove the handler to avoid this validation logic from running again in a loop
+            $("#addServiceForm").off("submit").submit();
+        });
 
     });
 });

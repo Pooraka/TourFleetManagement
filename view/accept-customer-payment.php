@@ -42,10 +42,10 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
         <div class="col-md-3">
             <?php include_once "../includes/booking_functions.php"; ?>
         </div>
-        <form action="../controller/finance_controller.php?status=accept_payment" method="post" enctype="multipart/form-data">
+        <form id="acceptPaymentForm" action="../controller/finance_controller.php?status=accept_payment" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -250,49 +250,100 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
         </form>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
-    $('#actual_fare').on('input',function(){
+    $(document).ready(function() {
+
         
-        var advancePayment = <?php echo $advancePayment;?>;
-        var actualFare = parseFloat($(this).val()) || 0;
-        
-        var paymentToBeMade = actualFare-advancePayment;
-        
-        $('input[name="paymentMade"]').val(paymentToBeMade);
-        
-        if(paymentToBeMade<=0){
+        $('#actual_fare').on('blur', function() {
+
+            var invoiceAmount = <?php echo $invoiceAmount; ?>;
+            var advancePayment = <?php echo $advancePayment; ?>;
+            var actualFare = parseFloat($(this).val()) || 0;
             
-            $('#paymentNote').slideDown();
-            $('#paymentContainer').slideUp();
-        }else{
-            $('#paymentNote').slideUp();
-            $('#paymentContainer').slideDown();
-        }
-        
-        if(paymentToBeMade>=0){
-            paymentToBeMadeFormatted = paymentToBeMade.toLocaleString('en-LK', {
+            
+            if (actualFare < invoiceAmount) {
+                alert("Actual fare cannot be less than the invoice amount.");
+                $(this).val(invoiceAmount.toFixed(2)); // Reset the input field
+                actualFare = invoiceAmount; 
+            }
+
+            
+            var paymentToBeMade = actualFare - advancePayment;
+            
+            $('input[name="paymentMade"]').val(paymentToBeMade.toFixed(2));
+            
+            
+            var paymentToBeMadeFormatted = paymentToBeMade.toLocaleString('en-LK', {
                 style: 'currency',
                 currency: 'LKR',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-                });
-
+            });
             $('#payment_to_be_made').text(paymentToBeMadeFormatted);
-        }else{
-            $('#payment_to_be_made').text('');
-        }
-    });
-    
-    $('input[name="payment_method"]').on('change', function() {
+
             
-            if ($(this).val() == '2') { 
-                $('#receiptLabel').slideDown();
-                $('#receiptInputTag').slideDown();
-            } else { 
-                $('#receiptLabel').slideUp();
-                $('#receiptInputTag').slideUp();
+            if (paymentToBeMade <= 0) {
+                $('#paymentNote').slideDown();
+                $('#paymentContainer').slideUp();
+            } else {
+                $('#paymentNote').slideUp();
+                $('#paymentContainer').slideDown();
             }
         });
+    
+        $('input[name="payment_method"]').on('change', function() {
+            if ($(this).val() == '2') { 
+                $('#receiptLabel, #receiptInputTag').slideDown();
+            } else { 
+                $('#receiptLabel, #receiptInputTag').slideUp();
+            }
+        });
+
+        $("#acceptPaymentForm").on("submit", function(event) {
+            event.preventDefault(); 
+
+            var paymentMethod = $('input[name="payment_method"]:checked').val();
+
+            if (!paymentMethod) {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please select a payment method.");
+                return false;
+            }
+
+            if( paymentMethod == '2' && $('input[name="transfer_receipt"]').val() == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please upload a transfer receipt.");
+                return false;
+            }
+
+            $("#confirmationModal").modal('show');
+            $("#confirmActionBtn").off("click").on("click", function() {
+                $("#acceptPaymentForm").off("submit").submit(); 
+            });
+
+        });
+
+    });
 </script>
 </html>

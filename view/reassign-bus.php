@@ -54,10 +54,10 @@ $OldBusId = $inspectionRow["bus_id"];
         <div class="col-md-3">
             <?php include_once "../includes/tour_management_functions.php"; ?>
         </div>
-        <form action="../controller/tour_controller.php?status=reassign_bus_to_tour" method="post" enctype="multipart/form-data">
+        <form id="reassignBusForm" action="../controller/tour_controller.php?status=reassign_bus_to_tour" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -177,14 +177,64 @@ $OldBusId = $inspectionRow["bus_id"];
         </form>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#servicetable").DataTable();
 
+
+        $("#reassignBusForm").on("submit", function(event) {
+
+            // Prevent the form from submitting immediately
+            event.preventDefault();
+
+            // Validate that a bus is selected
+            if ($("#bus_id").val() === "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please select a bus to reassign.");
+                return false;
+            }
+
+            // Show confirmation modal
+            $("#confirmationModal").modal('show');
+
+            // Set up the confirmation button to perform the actual submission
+            $("#confirmActionBtn").off("click").on("click", function() {
+                $("#reassignBusForm").off("submit").submit();
+            });
+        });
+
+        $("#bus_id").on("change", function() {
+            var busId = $(this).val();
+            if (busId!=""){
+                $("#msg").removeClass("alert alert-danger");
+                $("#msg").html("");
+            }else{
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please select a bus to reassign.");
+            }
+        });
     });
 </script>
 </html>

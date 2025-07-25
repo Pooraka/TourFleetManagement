@@ -263,7 +263,7 @@ switch ($status){
             
             $totalPaidAmount = $advancePayment+$paymentMade;
             
-            $customerInvoiceObj->updateInvoiceAfterFinalPayment($totalPaidAmount,$actualFare);
+            $customerInvoiceObj->updateInvoiceAfterFinalPayment($totalPaidAmount,$actualFare, $invoiceId);
             
             $msg = "Invoice Completed Successfully";
             $msg = base64_encode($msg);

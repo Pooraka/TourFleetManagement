@@ -70,7 +70,7 @@ switch ($status){
             ?>
     
             <script>
-                window.location="../view/view-ongoing-services.php?msg=<?php echo $msg;?>&success=true";
+                window.location="../view/initiate-service.php?msg=<?php echo $msg;?>&success=true";
             </script>
             <?php
         }
