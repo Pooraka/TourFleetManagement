@@ -90,7 +90,7 @@ $serviceStationObj = new ServiceStation();
                                 ?>
                             
                             <tr>
-                                <td><?php echo $vehicleNo;?></td>
+                                <td style="white-space: nowrap;"><?php echo $vehicleNo;?></td>
                                 <td style="text-align:right"><?php echo number_format($serviceDetailRow['mileage_at_service'],0);?>&nbsp;Km</td>
                                 <td><?php echo $serviceStationName;?></td>
                                 <td><?php echo $serviceDetailRow['start_date'];?></td>
@@ -100,8 +100,8 @@ $serviceStationObj = new ServiceStation();
                                         <span class="fas fa-check"></span>
                                         Complete
                                     </a>
-                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>" id="cancelServiceBtn"
-                                        class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(121); ?>">
+                                    <a href="../controller/service_detail_controller.php?status=cancel_service&service_id=<?php echo $serviceId; ?>"
+                                        class="btn btn-sm btn-danger cancel-service-btn" style="margin:2px;display:<?php echo checkPermissions(121); ?>">
                                         <span class="fas fa-times"></span>
                                         Cancel
                                     </a>  
@@ -145,7 +145,7 @@ $serviceStationObj = new ServiceStation();
 
         $("#servicetable").DataTable();
 
-        $('#servicetable').on('click', '#cancelServiceBtn', function(event) {
+        $('#servicetable').on('click', '.cancel-service-btn', function(event) {
 
             event.preventDefault(); 
             

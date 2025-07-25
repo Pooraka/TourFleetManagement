@@ -82,13 +82,13 @@ $sparePartTypeResult = $sparePartObj->getSpareParts();
                         <label class="control-label">Open Date</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" id="open_date" name="open_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
+                        <input type="date" id="open_date" name="open_date" class="form-control" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"/>
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Close Date</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" id="close_date" name="close_date" class="form-control" min="<?php echo date('Y-m-d');?>"/>
+                        <input type="date" id="close_date" name="close_date" class="form-control" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"/>
                     </div>
                 </div>
                 <div class="row">

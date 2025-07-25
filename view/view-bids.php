@@ -121,15 +121,15 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
                             <td><?php echo "LKR ".number_format($bidRow['unit_price'],2);?></td>
                             <td><?php echo $bidRow['bid_date'];?></td>
                             <td>
-                                <?php if($today > $tenderCloseDate) { ?>   
+                                <?php if($today >= $tenderCloseDate) { ?>   
                                 <a href="../controller/bid_controller.php?status=award_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" 
-                                   class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(72); ?>">
+                                   class="btn btn-xs btn-success award-bid-btn" style="margin:2px;display:<?php echo checkPermissions(72); ?>">
                                     <span class="glyphicon glyphicon-ok"></span>
                                     Award Bid
                                 </a>
                                 <?php } ?>
                                 <a href="../controller/bid_controller.php?status=remove_bid&bid_id=<?php echo base64_encode($bidRow["bid_id"]);?>&tender_id=<?php echo base64_encode($bidRow["tender_id"]);?>" 
-                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(73); ?>">
+                                   class="btn btn-xs btn-danger remove-bid-btn" style="margin:2px;display:<?php echo checkPermissions(73); ?>">
                                     <span class="glyphicon glyphicon-remove"></span>
                                     Remove
                                 </a>
@@ -142,5 +142,75 @@ $bidResult = $bidObj->getBidsOfATender($tenderId);
         </div>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="removeBidModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the bid?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="removeBidActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="awardBidModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to award the bid?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="awardBidActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+        $(document).ready(function() {
+
+            $("#bid_table").on("click", ".award-bid-btn", function(event) {
+
+                event.preventDefault();
+
+                var awardUrl = $(this).attr("href");
+
+                $("#awardBidModal").modal("show");
+
+                $("#awardBidActionBtn").off("click").on("click", function() {
+                    window.location.href = awardUrl;
+                });
+            });
+
+            $("#bid_table").on("click", ".remove-bid-btn", function(event) {
+
+                event.preventDefault();
+
+                var removeUrl = $(this).attr("href");
+
+                $("#removeBidModal").modal("show");
+
+                $("#removeBidActionBtn").off("click").on("click", function() {
+                    window.location.href = removeUrl;
+                });
+            });
+
+        });
+
+</script>
 </html>

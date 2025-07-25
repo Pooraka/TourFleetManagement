@@ -87,12 +87,12 @@ $tenderObj = new Tender();
                                 <td><?php echo $bidRow['supplier_name'];?></td>
                                 <td>
                                     <a href="../controller/purchase_order_controller.php?status=generate_po&tender_id=<?php echo base64_encode($tenderId);?>" 
-                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(90); ?>">                                                 
+                                       class="btn btn-xs btn-success generate-po-btn" style="margin:2px;display:<?php echo checkPermissions(90); ?>">                                                 
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Generate PO
                                     </a>
                                     <a href="../controller/bid_controller.php?status=revoke_award&tender_id=<?php echo base64_encode($tenderId);?>&bid_id=<?php echo base64_encode($bidRow['bid_id']) ?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(91); ?>">                                                 
+                                       class="btn btn-xs btn-danger revoke-award-btn" style="margin:2px;display:<?php echo checkPermissions(91); ?>">                                                 
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Revoke Award
                                     </a>
@@ -106,13 +106,74 @@ $tenderObj = new Tender();
         </div>
     </div>
 </body>
+<div class="modal fade" id="revokeBidModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to revoke this bid?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="revokeBidActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="generatePOModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to generate a PO for this bid?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="generatePOActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#awarded_bids").DataTable();
+
+        $('#awarded_bids').on('click', '.revoke-award-btn', function(event) {
+
+            event.preventDefault(); 
+            
+            var revokeUrl = $(this).attr('href');
+            
+            $("#revokeBidModal").modal('show');
+            
+            $("#revokeBidActionBtn").off("click").on("click", function() {
+                window.location.href = revokeUrl;
+            });
+        });
+
+        $('#awarded_bids').on('click', '.generate-po-btn', function(event) {
+
+            event.preventDefault(); 
+            
+            var generatePOUrl = $(this).attr('href');
+            
+            $("#generatePOModal").modal('show');
+            
+            $("#generatePOActionBtn").off("click").on("click", function() {
+                window.location.href = generatePOUrl;
+            });
+        });
     });
 </script>
 </html>
