@@ -147,7 +147,7 @@ $tenderResult = $tenderObj->getOpenTendersFiltered($tenderStatus,$partId);
                                         View Bids
                                     </a>
                                     <a href="../controller/tender_controller.php?status=cancel_tender&tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(151); ?>">                                                 
+                                       class="btn btn-xs btn-danger cancel-tender-btn" style="margin:2px;display:<?php echo checkPermissions(151); ?>">                                                 
                                         Cancel
                                     </a>
                                 </td>
@@ -160,12 +160,39 @@ $tenderResult = $tenderObj->getOpenTendersFiltered($tenderStatus,$partId);
         </div>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
+
+        //Cancel Tender Confirmation Modal
+        $("#open_tenders").on("click", ".cancel-tender-btn", function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var cancelURL = $(this).attr("href");
+            $("#confirmationModal").modal("show");
+            $("#confirmActionBtn").off("click").on("click", function () {
+                window.location.href = cancelURL;
+            });
+        });
         
         var dataTableOptions = {
             "pageLength": 5,

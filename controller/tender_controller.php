@@ -281,7 +281,7 @@ switch ($status){
                     View Bids
                 </a>
                 <a href="../controller/tender_controller.php?status=cancel_tender&tender_id=<?php echo base64_encode($tenderRow["tender_id"]);?>" 
-                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(151); ?>">                                                 
+                   class="btn btn-xs btn-danger cancel-tender-btn" style="margin:2px;display:<?php echo checkPermissions(151); ?>">                                                 
                     Cancel
                 </a>
             </td>
