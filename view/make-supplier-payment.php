@@ -43,7 +43,7 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -70,7 +70,7 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
                 </div>
             </div>
             <div class="row">
-                <form action="../controller/finance_controller.php?status=make_supplier_payment" method="post" enctype="multipart/form-data"> 
+                <form id="makeSupplierPaymentForm" action="../controller/finance_controller.php?status=make_supplier_payment" method="post" enctype="multipart/form-data"> 
                 <div class="panel panel-info">
                     <div class="panel-heading"><?php echo "<b>".$supplierRow['supplier_name']."</b>"." Payments";?> </div>
                     <div class="panel-body">
@@ -130,7 +130,7 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
                                 <h4><span>Cheque Number or Funds Transfer reference</span></h4>
                             </div>
                             <div class="col-md-6">
-                                 <input type="text" class="form-control" name="reference" placeholder="FT125485 or 254785"/>
+                                 <input type="text" class="form-control" id="reference" name="reference" placeholder="FT125485 or 254785"/>
                             </div>
                         </div>
                         <div class="row">
@@ -141,7 +141,7 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
                                 <h4><span>Attach payment document</span></h4>
                             </div>
                             <div class="col-md-6">
-                                <input type="file" class="form-control" name="payment_document"/>
+                                <input type="file" class="form-control" id="payment_document" name="payment_document"/>
                             </div>
                         </div>
                         <div class="row">
@@ -162,7 +162,27 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
         </div>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
         
@@ -191,6 +211,53 @@ $poResult = $poObj->getPaymentPendingInvoices($supplierId);
         });
         
         calculateTotal();
+
+        $("#makeSupplierPaymentForm").on("submit", function(e) {
+
+            e.preventDefault();
+            
+
+            if($('input[name="invoice[]"]:checked').length === 0) {
+
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("No invoice is selected.");
+                return false;
+            }
+
+            var paymentMethod = $('input[name="payment_method"]:checked').val();
+
+            if (!paymentMethod) {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please select a payment method.");
+                return false;
+            }
+
+            var reference = $('#reference').val().trim();
+
+            if(reference == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please enter a reference number.");
+                return false;
+            }
+
+            var paymentDocument = $('#payment_document').val();
+
+            if(paymentDocument == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("Please attach a payment document.");
+                return false;
+            }
+
+            // If all validation passes, show the modal.
+            $("#confirmationModal").modal('show');
+            
+            //set up the confirmation button to perform the actual submission.
+            $("#confirmActionBtn").off("click").on("click", function() {
+                // To avoid this validation logic from running again in a loop,
+                // Remove the handler and then trigger the native form submission.
+                $("#makeSupplierPaymentForm").off("submit").submit();
+            });
+        });
         
     });
 </script>
