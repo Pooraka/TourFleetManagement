@@ -40,10 +40,10 @@ $checklistItemIdsResult = $inspectionObj->getChecklistItemsInATemplate($template
         <div class="col-md-3">
             <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
-        <form action="../controller/inspection_controller.php?status=perform_inspection" method="post" enctype="multipart/form-data">
+        <form id="inspectionForm" action="../controller/inspection_controller.php?status=perform_inspection" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -194,5 +194,99 @@ $checklistItemIdsResult = $inspectionObj->getChecklistItemsInATemplate($template
         </form>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#inspectionForm").on("submit", function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Validate That All Items Have a Status Selected
+            let allItemsChecked = true;
+
+            $("input[name^='item_status']").each(function() {
+                if (!$("input[name='" + $(this).attr("name") + "']:checked").length) {
+                    allItemsChecked = false;
+                    return false; // Break out of the loop
+                }
+            });
+
+            if (!allItemsChecked) {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please select a status for all checklist items.</b>");
+                return false; // Stop form submission
+            }
+
+            //If Fail is selected for any item, ensure comments are provided
+            let failWithoutComment = false;
+           
+            $("input[name^='item_status'][value='0']:checked").each(function() {
+                // Check the comment in the same row
+                if (!$(this).closest("tr").find("input[name^='item_comments']").val().trim()) {
+                    failWithoutComment = true;
+                    return false; // Break out of the loop
+                }
+            });
+
+            if (failWithoutComment) {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please provide comments for all failed checklist items.</b>");
+                return false; // Stop form submission
+            }
+
+            var overallResult = $("#overall_result").val();
+            var finalComments = $("#final_comments").val().trim();
+
+            if (overallResult == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please select an overall result.</b>");
+                return false; // Stop form submission
+            }   
+
+            if (finalComments == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please provide final comments.</b>");
+                return false; // Stop form submission
+            }
+
+            // If all validation passes, show the modal.
+            $("#confirmationModal").modal('show');
+            
+            //set up the confirmation button to perform the actual submission.
+            $("#confirmActionBtn").off("click").on("click", function() {
+                // To avoid this validation logic from running again in a loop,
+                // Remove the handler and then trigger the native form submission.
+                $("#inspectionForm").off("submit").submit();
+            });
+        });
+
+        $("#inspectionForm").on("reset", function() {
+            // Clear the message area when the form is reset
+            $("#msg").removeClass("alert alert-danger alert-success");
+            $("#msg").html("");
+        });
+    });
+
+</script>
 </html>
