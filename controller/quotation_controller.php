@@ -126,7 +126,7 @@ switch ($status){
             ?>
             
             <script>
-                window.location="../view/booking.php?msg=<?php echo $msg;?>&success=true";
+                window.location="../view/generate-quotation.php?msg=<?php echo $msg;?>&success=true";
             </script>
             
             <?php

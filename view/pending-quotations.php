@@ -88,7 +88,7 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" id="quotationtable" style="width:100%">
+                    <table class="table" id="quotationtable" style="">
                         <thead>
                             <tr>
                                 <th>Quotation Id</th>
@@ -132,9 +132,9 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                             <tr>
                                 <th>Page Total:</th>
                                 <th style="white-space: nowrap;text-align: right"></th>
-                                <th>Total Amount:</th>
+                                <th style="white-space: nowrap;">Total Amt:</th>
                                 <th style="white-space: nowrap;text-align: right"></th>
-                                <th colspan="4"></th>
+                                <th colspan="2"></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -174,7 +174,7 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
             "order": [
                 [ 1, "desc" ] //Desc order by quotation date
             ],
-             "scrollX": true,
+             //"scrollX": true,
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api();
                 
