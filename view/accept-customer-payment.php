@@ -290,10 +290,10 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
 
             
             var paymentToBeMade = actualFare - advancePayment;
-            
-            $('input[name="paymentMade"]').val(paymentToBeMade.toFixed(2));
-            
-            
+
+            $("#paymentMade").val(paymentToBeMade.toFixed(2));
+
+
             var paymentToBeMadeFormatted = paymentToBeMade.toLocaleString('en-LK', {
                 style: 'currency',
                 currency: 'LKR',
@@ -323,18 +323,28 @@ $advancePayment = (float)$invoiceRow['advance_payment'];
         $("#acceptPaymentForm").on("submit", function(event) {
             event.preventDefault(); 
 
-            var paymentMethod = $('input[name="payment_method"]:checked').val();
-
-            if (!paymentMethod) {
-                $("#msg").addClass("alert alert-danger");
-                $("#msg").html("Please select a payment method.");
-                return false;
+            if ($('#actual_fare').val() == "") {
+                 $("#msg").addClass("alert alert-danger");
+                 $("#msg").html("Please enter the Actual Fare first.");
+                 return false;
             }
 
-            if( paymentMethod == '2' && $('input[name="transfer_receipt"]').val() == "") {
-                $("#msg").addClass("alert alert-danger");
-                $("#msg").html("Please upload a transfer receipt.");
-                return false;
+            var paymentMade = parseFloat($('#paymentMade').val());
+
+            if (paymentMade > 0) {
+                var paymentMethod = $('input[name="payment_method"]:checked').val();
+
+                if (!paymentMethod) {
+                    $("#msg").addClass("alert alert-danger");
+                    $("#msg").html("Please select a payment method for the outstanding amount.");
+                    return false;
+                }
+
+                if (paymentMethod == '2' && $('input[name="transfer_receipt"]').val() == "") {
+                    $("#msg").addClass("alert alert-danger");
+                    $("#msg").html("Please upload a transfer receipt for the outstanding amount.");
+                    return false;
+                }
             }
 
             $("#confirmationModal").modal('show');

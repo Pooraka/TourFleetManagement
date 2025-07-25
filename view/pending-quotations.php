@@ -29,10 +29,9 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
         <div class="col-md-3">
             <?php include_once "../includes/booking_functions.php"; ?>
         </div>
-        <form action="../controller/service_detail_controller.php?status=initiate_service" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3" id="msg">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -120,7 +119,7 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                                         Generate Invoice
                                     </a>
                                     <a href="../controller/quotation_controller.php?status=cancel_quotation&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(80);?>">
+                                       class="btn btn-xs btn-danger cancel-quotation-btn" style="margin:2px;display:<?php echo checkPermissions(80);?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel
                                     </a>
@@ -141,7 +140,6 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                 </div>
             </div>
         </div>
-        </form>
     </div>
 </body>
 <div class="modal fade" id="generateInvoiceModal" role="dialog">
@@ -154,10 +152,44 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success" value="Generate Invoice"/>
+                <input type="submit" id="generateInvoiceSubmitBtn" class="btn btn-success" value="Generate Invoice"/>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="generateInvoiceConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve the quotation and generate the invoice?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="generateInvoiceConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="cancelQuotationConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel the quotation?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="cancelQuotationConfirmActionBtn">Confirm</button>
+            </div>
         </div>
     </div>
 </div>
@@ -291,6 +323,31 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                 }
             }
         });
+
+        $("#quotationtable").on("click", ".cancel-quotation-btn", function(e) {
+            e.preventDefault();
+            
+            var cancelUrl = $(this).attr("href");
+            $("#cancelQuotationConfirmationModal").modal("show");
+            $("#cancelQuotationConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = cancelUrl;
+            });
+        });
+
+
+        $("#generateInvoiceSubmitBtn").on("click", function(e) {
+
+            e.preventDefault();
+            $("#generateInvoiceModal").modal("hide");
+            $("#generateInvoiceConfirmationModal").modal("show");
+        });
+
+        $("#generateInvoiceConfirmActionBtn").on("click", function() {
+
+            $("#generateInvoiceModalForm").submit();
+        });
+
+
 
     });
     

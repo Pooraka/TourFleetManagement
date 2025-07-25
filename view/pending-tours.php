@@ -122,7 +122,7 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
                                         View Assigned Buses
                                     </a>
                                     <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
+                                       class="btn btn-xs btn-danger cancel-tour-btn" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>                                                  
                                         Cancel
                                     </a>
@@ -175,11 +175,28 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
                 <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
             </div>
             <div class="modal-body">
-                Are you sure you want to proceed?
+                Are you sure you want to complete the tour?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="cancelTourConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel the tour?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="cancelTourConfirmActionBtn">Yes, Confirm</button>
             </div>
         </div>
     </div>
@@ -266,6 +283,16 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
             $("#confirmActionBtn").off("click").on("click", function() {
                 
                 $("#completeTourModalForm").off("submit").submit(); // Submit the form
+            });
+        });
+
+        $("#tourtable").on("click", ".cancel-tour-btn", function(e) {
+            e.preventDefault();
+            
+            var cancelUrl = $(this).attr("href");
+            $("#cancelTourConfirmationModal").modal("show");
+            $("#cancelTourConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = cancelUrl;
             });
         });
 
