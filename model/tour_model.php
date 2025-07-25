@@ -64,7 +64,7 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT t.*, i.invoice_number, c.customer_fname, c.customer_lname, c.customer_email 
+        $sql = "SELECT t.*, i.invoice_number, i.round_trip_mileage, c.customer_fname, c.customer_lname, c.customer_email 
             FROM tour t 
             JOIN customer_invoice i ON t.invoice_id = i.invoice_id 
             JOIN customer c ON i.customer_id = c.customer_id 

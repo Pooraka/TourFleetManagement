@@ -96,6 +96,7 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Destination</th>
+                                <th>Estimated Mileage</th>
                                 <th>Invoice No</th>
                                 <th>Actions</th>
                             </tr>
@@ -107,6 +108,7 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
                                 <td style="white-space: nowrap"><?php echo $tourRow['start_date'];?></td>
                                 <td style="white-space: nowrap"><?php echo $tourRow['end_date'];?></td>
                                 <td><?php echo $tourRow['destination'];?></td>
+                                <td style="white-space: nowrap;text-align:right"><?php echo number_format($tourRow['round_trip_mileage'])." km";?></td>
                                 <td style="white-space: nowrap"><?php echo $tourRow['invoice_number'];?></td>
                                 <td>
                                     <a href="#" data-toggle="modal" onclick="loadTour(<?php echo $tourRow['tour_id'];?>)" data-target="#completeTourModal" 
@@ -137,7 +139,7 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
 <div class="modal fade" id="completeTourModal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="../controller/tour_controller.php?status=complete_tour" method="post">
+            <form id="completeTourModalForm" action="../controller/tour_controller.php?status=complete_tour" method="post">
                 <div class="modal-header"><b><h4>Complete Tour</h4></b></div>
             <div class="modal-body">
                 <div id="display_data">
@@ -165,6 +167,23 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
         </div>
     </div>
 </div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
@@ -176,7 +195,7 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
             
             "pageLength": 5,
             "order": [
-                [ 1, "desc" ] //Desc order by quotation date
+                [ 1, "desc" ]
             ],
              "scrollX": true
         };
@@ -226,6 +245,30 @@ $tourResult = $tourObj->getOngoingToursFiltered($dateFrom,$dateTo);
                 table = $("#tourtable").DataTable(dataTableOptions);
             });
         });
+
+
+        $("#completeTourModalForm").on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var actualMileage = parseInt($("#actual_mileage").val());
+
+            if( isNaN(actualMileage) || actualMileage <= 0) {
+
+                alert("Please enter a valid mileage.");
+                return false;
+            }
+
+            // Show confirmation modal
+            $("#confirmationModal").modal('show');
+            $("#completeTourModal").modal('hide'); // Hide the modal
+            
+            // Set up the confirmation button to perform the actual submission
+            $("#confirmActionBtn").off("click").on("click", function() {
+                
+                $("#completeTourModalForm").off("submit").submit(); // Submit the form
+            });
+        });
+
     });
     
     function loadTour(tourId){

@@ -332,7 +332,7 @@ switch ($status){
                 </div>
                 <div class="col-md-6">
                     <label>
-                        <input type="number" name="actual_mileage" class="form-control" min="0" required/>
+                        <input type="number" id="actual_mileage" name="actual_mileage" class="form-control" min="1" required/>
                         <input type="hidden" name="tour_id" value="<?php echo $tourId;?>"/>
                     </label>
                 </div>
