@@ -34,7 +34,7 @@ class Tender{
         
         $sql = "SELECT t.*, s.* FROM tender t 
             JOIN spare_part s ON t.part_id = s.part_id 
-            WHERE t.open_date <= '$today' ";
+            WHERE 1 ";
         
         if($tenderStatus!=""){
             $sql.="AND t.tender_status='$tenderStatus' ";
@@ -197,7 +197,7 @@ class Tender{
         
         $tomorrow = date("Y-m-d", strtotime("+1 day"));
         
-        $sql = "SELECT COUNT(*) AS count FROM tender WHERE close_date = $tomorrow AND tender_status = '1'";
+        $sql = "SELECT COUNT(*) AS count FROM tender WHERE close_date ='$tomorrow' AND tender_status = '1'";
 
         $result = $con->query($sql) or die($con->error);
         $row = $result->fetch_assoc();

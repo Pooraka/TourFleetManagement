@@ -27,7 +27,7 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3" id="msg">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -128,7 +128,7 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                                     Edit
                                 </a>
                                 <a href="../controller/inspection_controller.php?status=remove_checklist_item&checklist_item_id=<?php echo base64_encode($inspectionRow['checklist_item_id'])?>" 
-                                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(128); ?>">
+                                   class="btn btn-xs btn-danger remove-checklist-btn" style="margin:2px;display:<?php echo checkPermissions(128); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     Remove
                                 </a>
@@ -158,6 +158,23 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
         </div>
     </div>
 </div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the checklist item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
@@ -183,6 +200,15 @@ $inspectionResult = $inspectionObj->getAllChecklistItems();
                 $("#msg").addClass("alert alert-danger");
                 return false;
             }
+        });
+
+        $("#checklist_items").on("click", ".remove-checklist-btn", function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var removeURL = $(this).attr("href");
+            $("#confirmationModal").modal("show");
+            $("#confirmActionBtn").off("click").on("click", function () {
+                window.location.href = removeURL;
+            });
         });
 
     });

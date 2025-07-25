@@ -146,7 +146,7 @@ switch ($status){
         
         $inspectionObj->changeChecklistItemStatus($checklistItemId,-1);
         
-        $msg = "Checklist Item Activated Successfully";
+        $msg = "Checklist Item Removed Successfully";
         $msg = base64_encode($msg);
         ?>
 

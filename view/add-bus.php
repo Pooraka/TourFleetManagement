@@ -84,7 +84,7 @@ $categoryResult = $busObj->getAllBusCategories();
                     </div>
                     <div class="col-md-3">
                         <!-- <input type="text" class="form-control" name="year" id="year" placeholder="Ex: 2014"/> -->
-                        <input type="number" class="form-control" name="year" id="year" placeholder="Ex: 2014" min="1900" max="<?php echo date('Y'); ?>"/>
+                        <input type="number" class="form-control" name="year" id="year" placeholder="Ex: 2014" min="1950" max="<?php echo date('Y'); ?>"/>
                     </div>
                 </div>
                 <div class="row">

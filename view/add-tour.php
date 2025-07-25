@@ -118,14 +118,20 @@ $pendingInvoiceResult = $customerInvoiceObj->getInvoicesToAssignTours();
         $("#invoice_id").on("change", function() {
 
             var invoiceId = $('#invoice_id').val();
-            
-            var url = "../controller/tour_controller.php?status=get_data_to_add_tour";
-            
-            $.post(url, {invoiceId: invoiceId}, function (data) {
 
-                $("#dynamic_tour_data").html(data);
+            if(invoiceId!=""){
+            
+                var url = "../controller/tour_controller.php?status=get_data_to_add_tour";
+                
+                $.post(url, {invoiceId: invoiceId}, function (data) {
 
-            });
+                    $("#dynamic_tour_data").html(data);
+
+                });
+            }else{
+                $("#dynamic_tour_data").html("");
+            }
+            
         });
 
         //validation logic to the form's submit event

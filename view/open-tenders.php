@@ -197,7 +197,7 @@ $tenderResult = $tenderObj->getOpenTendersFiltered($tenderStatus,$partId);
         var dataTableOptions = {
             "pageLength": 5,
             "order": [
-                [ 0, "desc" ] //Desc order by tender created date
+                [ 5, "asc" ] //Desc order by tender created date
             ],
              "scrollX": true
         };
