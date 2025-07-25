@@ -148,7 +148,7 @@ $categoryResult = $busObj->getAllBusCategories();
                                             </a>
                                             <?php if(!$assignedToATour) { ?>                                    
                                             <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" 
-                                               class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
+                                               class="btn btn-sm btn-danger remove-bus-btn" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
                                                 <span class="glyphicon glyphicon-trash"></span>
                                             </a> 
                                             <?php } ?>
@@ -164,6 +164,23 @@ $categoryResult = $busObj->getAllBusCategories();
         </div>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
@@ -202,6 +219,21 @@ $categoryResult = $busObj->getAllBusCategories();
 
                 // Re-initialize the DataTable with the new content.
                 table = $("#bustable").DataTable(dataTableOptions);
+            });
+        });
+
+
+        $("#bustable").on("click", ".remove-bus-btn", function(event) {
+
+            event.preventDefault();
+
+            var removeUrl = $(this).attr("href");
+
+            $("#confirmationModal").modal("show");
+
+            $("#confirmActionBtn").off("click").on("click", function () {
+                // Redirect to the remove URL
+                window.location.href = removeUrl;
             });
         });
     });

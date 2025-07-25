@@ -92,20 +92,20 @@ $supplierResult = $supplierObj->getSuppliers();
                                     </a>
                                     <?php if($supplierRow['supplier_status']==1 && !$supplierHasActiveTenders){?>
                                     <a href="../controller/supplier_controller.php?status=deactivate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(65); ?>">
+                                       class="btn btn-xs btn-danger deactivate-supplier-btn" style="margin:2px;display:<?php echo checkPermissions(65); ?>">
                                         <span class="glyphicon glyphicon-remove"></span>
                                         Deactivate
                                     </a>
                                     <?php } elseif($supplierRow['supplier_status']==0){ ?>
                                     <a href="../controller/supplier_controller.php?status=activate_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
-                                       class="btn btn-xs btn-success" style="margin:2px;display:<?php echo checkPermissions(64); ?>">
+                                       class="btn btn-xs btn-success activate-supplier-button" style="margin:2px;display:<?php echo checkPermissions(64); ?>">
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Activate
                                     </a>
                                     <?php } ?>
                                     <?php if(!$supplierHasActiveTenders){?>
                                     <a href="../controller/supplier_controller.php?status=remove_supplier&supplier_id=<?php echo base64_encode($supplierRow['supplier_id']);?>" 
-                                       class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(66); ?>">
+                                       class="btn btn-xs btn-danger remove-supplier-btn" style="margin:2px;display:<?php echo checkPermissions(66); ?>">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         Remove
                                     </a>
@@ -120,13 +120,95 @@ $supplierResult = $supplierObj->getSuppliers();
         </div>
     </div>
 </body>
+<div class="modal fade" id="activateSupplierConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to activate this supplier?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="activateSupplierConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deactivateSupplierConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to deactivate this supplier?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="deactivateSupplierConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="removeSupplierConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this supplier?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="removeSupplierConfirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../js/datatable/jquery-3.5.1.js"></script>
 <script src="../js/datatable/jquery.dataTables.min.js"></script>
 <script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
 
         $("#suppliertable").DataTable();
+
+        $("#suppliertable").on("click", ".deactivate-supplier-btn", function(event) {
+            event.preventDefault();
+            var deactivateUrl = $(this).attr("href");
+            $("#deactivateSupplierConfirmationModal").modal("show");
+
+            $("#deactivateSupplierConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = deactivateUrl;
+            });
+        });
+
+        $("#suppliertable").on("click", ".activate-supplier-button", function(event) {
+            event.preventDefault();
+            var activateUrl = $(this).attr("href");
+            $("#activateSupplierConfirmationModal").modal("show");
+
+            $("#activateSupplierConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = activateUrl;
+            });
+        });
+
+        $("#suppliertable").on("click", ".remove-supplier-btn", function(event) {
+            event.preventDefault();
+            var removeUrl = $(this).attr("href");
+            $("#removeSupplierConfirmationModal").modal("show");
+
+            $("#removeSupplierConfirmActionBtn").off("click").on("click", function() {
+                window.location.href = removeUrl;
+            });
+        });
     });
 </script>
 </html>

@@ -118,7 +118,9 @@ $userSession=$_SESSION["user"];
 
         
 
-        $("#addSupplierForm").submit(function () {
+        $("#addSupplierForm").on("submit", function (event) {
+
+            event.preventDefault(); // Prevent the default form submission
 
             var name = $("#name").val();
             var contact = $("#contact").val();

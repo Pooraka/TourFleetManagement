@@ -412,7 +412,7 @@ switch ($status){
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
                     <a href="../controller/bus_controller.php?status=remove_bus&bus_id=<?php echo $busId; ?>" 
-                        class="btn btn-sm btn-danger" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
+                        class="btn btn-sm btn-danger remove-bus-btn" style="margin:2px;display:<?php echo checkPermissions(112); ?>" title="Remove">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a> 
                 </td>

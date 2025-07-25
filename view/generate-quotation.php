@@ -129,7 +129,7 @@ $userSession=$_SESSION["user"];
                     <label class="control-label">Amount (LKR)</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="number" class="form-control" id="amount" name="amount" step="0.01"/>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0.01"/>
                 </div>
             </div>
             <div class="row">
