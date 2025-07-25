@@ -3,6 +3,10 @@
         <span class="fa-solid fa-house"></span> &nbsp;
         Back To Dashboard
     </a>
+    <a href="customer.php" class="list-group-item">
+        <span class="fa-solid fa-window-restore"></span> &nbsp;
+        Back To Customer Module
+    </a>
     <a href="add-customer.php" class="list-group-item" style="display:<?php echo checkPermissions(49); ?>">
         <span class="fa-solid fa-plus"></span> &nbsp;
         Add Customer

@@ -3,6 +3,10 @@
         <span class="fa-solid fa-house"></span> &nbsp;
         Back To Dashboard
     </a>
+    <a href="spareparts.php" class="list-group-item">
+        <span class="fa-solid fa-window-restore"></span> &nbsp;
+        Back To Spare Parts Module
+    </a>
     <a href="register-spareparts.php" class="list-group-item" style="display:<?php echo checkPermissions(98); ?>">
         <span class="fa-solid fa-gears"></span> &nbsp;
         Register Spare Parts

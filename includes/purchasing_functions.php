@@ -3,6 +3,10 @@
         <span class="fa-solid fa-house"></span> &nbsp;
         Back To Dashboard
     </a>
+    <a href="purchasing.php" class="list-group-item">
+        <span class="fa-solid fa-window-restore"></span> &nbsp;
+        Back To Purchasing Module
+    </a>
     <a href="awarded-bids.php" class="list-group-item" style="display:<?php echo checkPermissions(89); ?>">
         <span class="fa-solid fa-gavel"></span> &nbsp;
         View Awarded Bids

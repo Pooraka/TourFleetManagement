@@ -20,7 +20,7 @@ $userSession=$_SESSION["user"];
         <div class="col-md-3">
             <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
-        <form action="../controller/service_station_controller.php?status=add_service_station" method="post" enctype="multipart/form-data">
+        <form id="addServiceStationForm" action="../controller/service_station_controller.php?status=add_service_station" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">

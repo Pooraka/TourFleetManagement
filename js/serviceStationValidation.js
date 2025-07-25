@@ -1,6 +1,6 @@
 $(document).ready(function () {
     
-    $("form").submit(function () {
+    $("#addServiceStationForm").submit(function () {
         
         var stationName = $("#stationname").val();
         var address = $("#address").val();
@@ -46,5 +46,11 @@ $(document).ready(function () {
             $("#msg").addClass("alert alert-danger");
             return false;
         }
+    });
+    
+    $("#addServiceStationForm").on("reset",function(){
+        
+        $("#msg").removeClass("alert alert-danger");
+        $("#msg").html("");
     });
 });

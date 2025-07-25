@@ -3,6 +3,10 @@
         <span class="fa-solid fa-house"></span> &nbsp;
         Back To Dashboard
     </a>
+    <a href="finance.php" class="list-group-item">
+        <span class="fa-solid fa-window-restore"></span> &nbsp;
+        Back To Finance Module
+    </a>
     <a href="pending-service-payments.php" class="list-group-item" style="display:<?php echo checkPermissions(134); ?>">
         <span class="fa-solid fa-file-invoice-dollar"></span> &nbsp;
         Pending Service Payments

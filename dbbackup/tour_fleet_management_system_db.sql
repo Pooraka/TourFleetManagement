@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2025 at 09:19 PM
+-- Generation Time: Jul 25, 2025 at 11:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,7 +58,12 @@ INSERT INTO `bid` (`bid_id`, `tender_id`, `supplier_id`, `unit_price`, `bid_date
 (15, 13, 6, 11900.00, '2025-07-25', 3),
 (16, 13, 5, 12400.00, '2025-07-25', 1),
 (17, 13, 4, 11755.00, '2025-07-25', 1),
-(18, 12, 4, 11900.00, '2025-07-25', 1);
+(18, 12, 4, 11900.00, '2025-07-25', 1),
+(19, 14, 8, 1425.00, '2025-07-25', 1),
+(20, 14, 9, 1500.00, '2025-07-25', 1),
+(21, 14, 8, 1390.00, '2025-07-25', 1),
+(22, 14, 5, 1950.00, '2025-07-25', 1),
+(23, 14, 1, 2000.00, '2025-07-25', 1);
 
 -- --------------------------------------------------------
 
@@ -95,7 +100,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (3, 3, '62-9102', 'Toyota', 'Coaster', '2019', 29, 'Y', 12000, 95000, '2025-04-25 14:18:59', 94001, 5, '2025-04-25', 4, NULL),
 (4, 2, 'CAB-1122', 'Tata', 'LP 909 / Starbus', '2020', 45, 'N', 10000, 117830, '2025-07-13 11:39:52', 117520, 6, '2025-07-02', -1, 3),
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 1, NULL),
-(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2900, '2025-07-13 00:42:37', 2400, 12, '2025-05-07', 1, NULL),
+(6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2900, '2025-07-13 00:42:37', 2400, 12, '2025-05-07', 1, 1),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210500, '2025-07-13 00:42:37', 201000, 6, '2025-03-01', 1, NULL),
 (8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 18245, '2025-06-25 18:23:45', 18245, 1, '2025-06-25', 2, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
@@ -1255,7 +1260,11 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (24, 4, 3, 2, 11, NULL, '2WBs Issued', 17, '2025-07-23 19:31:41'),
 (25, 6, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:34:54'),
 (26, 7, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:36:26'),
-(27, 3, 2, 1, NULL, 13, 'All Received', 1, '2025-07-25 09:40:34');
+(27, 3, 2, 1, NULL, 13, 'All Received', 1, '2025-07-25 09:40:34'),
+(28, 8, 1, 15, NULL, NULL, 'Initial Spare Part Registration', 1, '2025-07-25 21:30:34'),
+(29, 4, 4, 2, NULL, NULL, 'Defects', 1, '2025-07-25 22:29:42'),
+(30, 8, 3, 1, 13, NULL, '1 Bulb Issued', 1, '2025-07-25 22:40:42'),
+(31, 4, 3, 1, 11, NULL, '1 Wiper Issued', 1, '2025-07-25 22:41:24');
 
 -- --------------------------------------------------------
 
@@ -1577,7 +1586,11 @@ CREATE TABLE `service_station` (
 
 INSERT INTO `service_station` (`service_station_id`, `service_station_name`, `address`, `service_station_status`) VALUES
 (1, 'High Level Auto Servicing', 'No. 123, High Level Road, Pahathgama, Hanwella', 1),
-(2, 'Vinko Auto Repair', 'No. 526, Avissawella Road, Embulgama, Hanwella', 1);
+(2, 'Vinko Auto Repair', 'No. 526, Avissawella Road, Embulgama, Hanwella', 1),
+(3, 'Automiraj Grand 1', 'No. 354, Galle Road, Rathmalana', 1),
+(4, 'Highway Auto Garage', 'No. 455, Kandy Road, Kadawatha', 1),
+(5, 'Pugoda Motors', 'No. 210, Hanwella Road, Pugoda', 1),
+(6, 'Makola Auto Service', 'No. 88, Makola Road, Kiribathgoda', 1);
 
 -- --------------------------------------------------------
 
@@ -1600,7 +1613,15 @@ INSERT INTO `service_station_contact` (`service_station_contact_id`, `service_st
 (1, '0751235841', 1, 1),
 (2, '0366532148', 2, 1),
 (9, '0751231247', 1, 2),
-(10, '0366531234', 2, 2);
+(10, '0366531234', 2, 2),
+(11, '0777123456', 1, 3),
+(12, '0112738738', 2, 3),
+(13, '0718877665', 1, 4),
+(14, '0112401401', 2, 4),
+(15, '0771122334', 1, 5),
+(16, '0112401401', 2, 5),
+(17, '0755566778', 1, 6),
+(18, '0112912912', 2, 6);
 
 -- --------------------------------------------------------
 
@@ -1626,10 +1647,12 @@ INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, 
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 13, 25, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 44, 5, 1),
 (3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 6, 10, 1),
-(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 35, 15, 1),
+(4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 32, 15, 1),
 (5, 'TYRE-11R22.5', 'Bus Tire 11R22.5', 'Standard radial tire for Hino AK and Yutong ZK6938HQ buses.', 0, 5, 1),
 (6, 'TYRE-315-80R22.5', 'Bus Tire 315/80R22.5', 'Wide radial tire for Yutong ZK6122H and Tata Marcopolo buses.', 2, 5, 1),
-(7, 'TYRE-10R20', 'Bus Tire 10R20', 'Radial tire for Lanka Ashok Leyland Viking buses.', 2, 10, 1);
+(7, 'TYRE-10R20', 'Bus Tire 10R20', 'Radial tire for Lanka Ashok Leyland Viking buses.', 2, 10, 1),
+(8, 'GEN-HL-H4', 'Generic Headlight Bulb (H4 Type)', 'Standard H4 Halogen headlight bulb for various bus models. Used for high and low beams.', 14, 20, 1),
+(9, 'GEN-FS-MIX1', 'Assorted Blade Fuse Kit', 'Mixed kit of standard blade fuses (5A, 10A, 15A, 20A) for lights, horn, and other electrical components.', 0, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -1656,7 +1679,9 @@ INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `sup
 (4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
 (5, 'General Auto Traders', '0332255889', 'gat@email.com', 1),
 (6, 'DSI Tyres', '0761239876', 'sales@dsityres.com', 1),
-(8, 'Jenko Auto Traders', '0759652111', 'jenkoauto@gmail.com', 1);
+(8, 'Jenko Auto Traders', '0759652111', 'jenkoauto@gmail.com', 1),
+(9, 'Harsha Spare Parts', '0521152215', 'harshasp@gmail.com', 1),
+(10, 'Takraal Auto ', '0748551223', 'takraalauto@slt.net', 1);
 
 -- --------------------------------------------------------
 
@@ -1732,7 +1757,8 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (10, 2, 5, 'Need This Urgently', '1752649637_Test PDF.pdf', '2025-07-16', '2025-07-17', 3, 3, '2025-07-16 07:07:17', 12),
 (11, 3, 2, '2 Items are needed', '1753080684_Test PDF.pdf', '2025-07-21', '2025-07-22', -1, 3, '2025-07-21 06:51:24', NULL),
 (12, 7, 4, '4 Tyres required ', '1753443438_tender1.png', '2025-07-25', '2025-07-27', 1, 1, '2025-07-25 11:37:18', NULL),
-(13, 6, 4, '4 Tyres Needed', '1753445380_tender2.png', '2025-07-25', '2025-07-25', 3, 1, '2025-07-25 12:09:40', 15);
+(13, 6, 4, '4 Tyres Needed', '1753445380_tender2.png', '2025-07-25', '2025-07-25', 3, 1, '2025-07-25 12:09:40', 15),
+(14, 8, 5, '5 Bulbs needed urgently', '1753460377_tender4.png', '2025-07-25', '2025-07-25', 1, 1, '2025-07-25 16:19:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -2214,7 +2240,7 @@ ALTER TABLE `user_contact`
 -- AUTO_INCREMENT for table `bid`
 --
 ALTER TABLE `bid`
-  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `bid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `bus`
@@ -2310,7 +2336,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -2358,31 +2384,31 @@ ALTER TABLE `service_detail`
 -- AUTO_INCREMENT for table `service_station`
 --
 ALTER TABLE `service_station`
-  MODIFY `service_station_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `service_station_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `service_station_contact`
 --
 ALTER TABLE `service_station_contact`
-  MODIFY `service_station_contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `service_station_contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `spare_part`
 --
 ALTER TABLE `spare_part`
-  MODIFY `part_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `part_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tender`
 --
 ALTER TABLE `tender`
-  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `tender_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tour`
