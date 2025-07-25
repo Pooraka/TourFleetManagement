@@ -83,10 +83,10 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
         <div class="col-md-3">
             <?php include_once "../includes/bus_maintenance_functions.php"; ?>
         </div>
-        <form action="../controller/service_detail_controller.php?status=update_service" method="post" enctype="multipart/form-data">
+        <form id="editServiceForm" action="../controller/service_detail_controller.php?status=update_service" method="post" enctype="multipart/form-data">
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center;">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -231,4 +231,80 @@ $finalizedByUserRow = $finalizedByUserResult->fetch_assoc();
         </form>
     </div>
 </body>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to proceed?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function(){
+
+
+        $("#editServiceForm").submit(function(event){
+            event.preventDefault(); // Prevent the default form submission
+
+            var cost = $("#cost").val();
+            var invoiceNumber = $("#invoice_number").val();   
+
+            if(isNaN(cost) || cost <= 0) {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter a valid service cost.</b>");
+                return false;
+            }
+
+
+            if(invoiceNumber == "") {
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Please enter the invoice number.</b>");
+                return false;
+            }
+
+
+            // If all validations pass, submit the form
+            $("#confirmationModal").modal('show');
+
+            $("#confirmActionBtn").off("click").on("click", function() {
+                $("#editServiceForm").off("submit").submit(); // Submit the form
+            });
+        });
+
+        $("#cost").on("focus", function() {
+            $(this).data('last-value', $(this).val());
+        });
+
+        
+        $("#cost").on("blur", function() {
+            var cost = parseFloat($(this).val());
+            
+            
+            if(isNaN(cost) || cost <= 0) {
+                
+                if ($(this).val() !== '') {
+
+                    alert("Please enter a valid service cost.");
+                    
+                    $(this).val($(this).data('last-value'));
+                }
+            }
+        });
+    });
+
+</script>
 </html>
