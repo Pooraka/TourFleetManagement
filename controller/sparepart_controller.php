@@ -224,14 +224,18 @@ switch ($status){
         
         $partId = $_POST["partId"];
         
+        $partResult = $sparePartObj->getSparePart($partId);
+        $partRow = $partResult->fetch_assoc();
+        
+        $quantityOnHand =(int)$partRow["quantity_on_hand"];
         ?>
             <div class="row">
                 <div class="col-md-2">
                     <label>Remove Quantity</label>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" id="removeQuantityDiv" data-max-remove-quantity="<?php echo $quantityOnHand;?>">
                     <label>
-                        <input type="number" name="remove_quantity" min="1" class="form-control"/>
+                        <input type="number" id="remove_quantity" name="remove_quantity" min="1" max="<?php echo $quantityOnHand;?>" class="form-control"/>
                         <input type="hidden" name="part_id" value="<?php echo $partId;?>"/>
                     </label>
                 </div>

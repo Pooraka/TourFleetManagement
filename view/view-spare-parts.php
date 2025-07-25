@@ -29,7 +29,7 @@ $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
                     <?php
                     if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -129,10 +129,27 @@ $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-success" value="Submit"/>
+                <input type="submit" class="btn btn-success" value="Submit" id="submitRemoveSparePart"/>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove spareparts?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Yes, Confirm</button>
+            </div>
         </div>
     </div>
 </div>
@@ -142,6 +159,38 @@ $sparePartResult = $sparePartObj->getSparePartsFiltered($status);
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
+
+        $("#submitRemoveSparePart").on("click", function(e){
+            e.preventDefault();
+
+            var removeQuantity = parseInt($("#remove_quantity").val(), 10);
+            var removeReason = $("#remove_reason").val();
+            var maxRemoveQuantity = parseInt($("#add_remove_info").find("#removeQuantityDiv").data("max-remove-quantity"), 10);
+
+            if(isNaN(removeQuantity) || removeQuantity <= 0){
+                alert("Please enter a valid quantity to remove.");
+                return false;
+            }
+
+            if(removeQuantity > maxRemoveQuantity){
+                alert("You cannot remove more than " + maxRemoveQuantity + " units.");
+                return false;
+            }
+
+            if(removeReason == ""){
+                alert("Please enter a reason for removing the spare part.");
+                return false;
+            }
+
+            // If validation passes, show confirmation modal
+            $("#confirmationModal").modal("show");
+            $("#add_remove_info").modal("hide");
+
+            $("#confirmActionBtn").off("click").on("click", function () {
+                // Submit the form if confirmed
+                $("#add_remove_info form").submit();
+            });
+        });
 
         var dataTableOptions = {
             "pageLength": 5,

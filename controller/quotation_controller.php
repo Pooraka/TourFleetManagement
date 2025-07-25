@@ -191,7 +191,7 @@ switch ($status){
                     Generate Invoice
                 </a>
                 <a href="../controller/quotation_controller.php?status=cancel_quotation&quotation_id=<?php echo base64_encode($pendingQuotationRow['quotation_id']);?>" 
-                    class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(80);?>">
+                    class="btn btn-xs btn-danger cancel-quotation-btn" style="margin:2px;display:<?php echo checkPermissions(80);?>">
                     <span class="glyphicon glyphicon-remove"></span>                                                  
                     Cancel
                 </a>

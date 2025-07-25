@@ -33,10 +33,10 @@ $busResult = $busObj->getAllBuses();
         <div class="col-md-3">
             <?php include_once "../includes/spareparts_functions.php"; ?>
         </div>
-        <form action="../controller/sparepart_controller.php?status=issue_spare_parts" method="post" enctype="multipart/form-data">
+        <form id="issueSparePartsForm" action="../controller/sparepart_controller.php?status=issue_spare_parts" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align:center">
                         <?php
                         if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
@@ -141,7 +141,7 @@ $busResult = $busObj->getAllBuses();
                         <label class="control-label">Quantity To Issue</label>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="quantity_to_issue" min="1" step="1" max="<?php echo $sparePartRow['quantity_on_hand'];?>"/>
+                        <input type="number" class="form-control" id="quantity_to_issue" name="quantity_to_issue" min="1" step="1" max="<?php echo $sparePartRow['quantity_on_hand'];?>"/>
                     </div>
                 </div>
                 <div class="row">
@@ -167,11 +167,35 @@ $busResult = $busObj->getAllBuses();
         </form>
     </div>
 </body>
-<script src="../js/jquery-3.7.1.js"></script>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Confirm Action</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to issue spareparts?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmActionBtn">Yes, Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/datatable/jquery-3.5.1.js"></script>
+<script src="../js/datatable/jquery.dataTables.min.js"></script>
+<script src="../js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
 
     $("#bus_id").on("change", function() {
+
+        $("#msg").removeClass("alert alert-success alert-danger");
+        $("#msg").html(""); // Clear previous messages
+
         var busId = $(this).val();
 
         var url = "../controller/bus_controller.php?status=get_bus_details_to_issue_spare_parts";
@@ -183,6 +207,48 @@ $(document).ready(function() {
                 $("#vehicleInfo").html(data);
             });
         }
+    });
+
+    $("#issueSparePartsForm").on("submit", function(e) {
+
+        e.preventDefault();
+
+        var busId = $("#bus_id").val();
+        var quantityToIssue = parseInt($("#quantity_to_issue").val(), 10);
+        var issueNotes = $("#issue_notes").val();
+        var maxQuantityToIssue = parseInt($("#quantity_to_issue").attr("max"), 10);
+
+        if(busId === "") {
+            $("#msg").addClass("alert alert-danger");
+            $("#msg").html("<b>Please select a vehicle.</b>");
+            return false;
+        }   
+
+        if(isNaN(quantityToIssue) || quantityToIssue <= 0) {
+            $("#msg").addClass("alert alert-danger");
+            $("#msg").html("<b>Please enter a valid quantity to issue.</b>");
+            return false;
+        }
+
+        if(quantityToIssue > maxQuantityToIssue) {
+            $("#msg").addClass("alert alert-danger");
+            $("#msg").html("<b>Quantity to issue cannot exceed available quantity on hand.</b>");
+            return false;
+        }
+
+        if(issueNotes == "") {
+            $("#msg").addClass("alert alert-danger");
+            $("#msg").html("<b>Please enter notes for the issue.</b>");
+            return false;
+        }
+
+        //If all validations pass, show confirmation modal
+        $("#confirmationModal").modal("show");
+
+        $("#confirmActionBtn").off("click").on("click", function() {
+            $("#issueSparePartsForm").off("submit").submit(); // Submit the form
+        });
+
     });
 });
 </script>
