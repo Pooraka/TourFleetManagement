@@ -79,7 +79,7 @@ switch ($status){
                                 <th>Quantity</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="requested_buses_table">
                             <?php while($customerInvoiceItemRow = $customerInvoiceItemResult->fetch_assoc()){ ?>
                             <tr>
                                 <td><?php echo $customerInvoiceItemRow['category_name'];?></td>
@@ -129,7 +129,7 @@ switch ($status){
                                 <th>Passengers</th> 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="available_buses_table">
                             <?php while($busRow = $busResult->fetch_assoc()){ ?>
                             <tr>
                                 <td>
@@ -351,6 +351,17 @@ switch ($status){
             if($actualMileage=="" || $actualMileage<=0){
                 throw new Exception ("Enter Tour's Actual Mileage To Complete The Tour");
             }
+            
+            /*
+             * This prevents completion of tours if any pending scheduled inspections are there
+             * 
+            $scheduledInspectionsExist = $inspectionObj->checkIfScheduledInspectionsExistsForTour($tourId);
+            
+            if($scheduledInspectionsExist){
+                throw new Exception("Scheduled Inspections Must Be Finished To Complete The Tour");
+            }
+             * 
+             */
             
             $busResult = $tourObj->getBusListOfATour($tourId);
             

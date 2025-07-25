@@ -147,7 +147,7 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
 <div class="modal fade" id="generateInvoiceModal" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="../controller/customer_invoice_controller.php?status=generate_customer_invoice" method="post" enctype="multipart/form-data">
+            <form id="generateInvoiceModalForm" action="../controller/customer_invoice_controller.php?status=generate_customer_invoice" method="post" enctype="multipart/form-data">
                 <div class="modal-header"><b><h4>Generate Invoice</h4></b></div>
             <div class="modal-body">
                 <div id="display_data">
@@ -261,6 +261,37 @@ $pendingQuotationResult = $quotationObj->getPendingQuotationsFitered($dateFrom,$
                 table = $("#quotationtable").DataTable(dataTableOptions);
             });
         });
+
+        $('#generateInvoiceModalForm').on('submit', function(event) {
+
+            //Validate that a payment method has been selected
+            const paymentMethod = $('input[name="payment_method"]:checked'); //
+            if (paymentMethod.length === 0) {
+                alert('Please select a payment method.');
+                event.preventDefault();
+                return false;
+            }
+
+            //Validate that an advance payment amount has been entered
+            const advancePayment = parseFloat($('#advance_payment').val()); //
+            if (isNaN(advancePayment) || advancePayment <= 0) {
+                alert('Please enter a valid advance payment amount.');
+                event.preventDefault();
+                return false;
+            }
+
+            
+            //Conditionally validate that a receipt is uploaded for Funds Transfer
+            if (paymentMethod.val() == '2') { //
+                const receiptInput = $('input[name="transfer_receipt"]'); //
+                if (receiptInput.val() === '') {
+                    alert('Please upload the funds transfer receipt to proceed.');
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        });
+
     });
     
     function generateInvoiceModal(quotationId){

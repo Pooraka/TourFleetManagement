@@ -204,6 +204,24 @@ class Inspection{
         return ($result->num_rows > 0);
     }
     
+    public function checkIfScheduledInspectionsExistsForTour($tourId){
+        
+        $con = $GLOBALS["con"];
+        
+        $sql = "SELECT * FROM inspection WHERE tour_id=? AND inspection_status =1";
+
+        $stmt = $con->prepare($sql);
+        
+        $stmt->bind_param("i", $tourId);
+        
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        
+        $stmt->close();
+        return ($result->num_rows > 0);
+    }
+    
     public function getPendingInspections(){
         
         $con = $GLOBALS["con"];

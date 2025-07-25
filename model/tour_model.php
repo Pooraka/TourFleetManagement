@@ -203,7 +203,7 @@ class Tour{
         
         $con = $GLOBALS["con"];
         
-        $sql = "SELECT COUNT(*) as count FROM tour WHERE start_date <= CURDATE() AND end_date >= CURDATE()";
+        $sql = "SELECT COUNT(*) as count FROM tour WHERE start_date <= CURDATE() AND end_date >= CURDATE() AND tour_status!=-1";
 
         $result = $con->query($sql) or die($con->error);
         

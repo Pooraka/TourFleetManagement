@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2025 at 12:33 AM
+-- Generation Time: Jul 25, 2025 at 12:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -91,7 +91,7 @@ INSERT INTO `bus` (`bus_id`, `category_id`, `vehicle_no`, `make`, `model`, `year
 (5, 3, 'NA-4567', 'Mitsubishi', 'Fuso Rosa', '2016', 25, 'Y', 10000, 23000, '2025-04-28 10:35:00', 23000, 4, '2025-04-29', 3, NULL),
 (6, 2, 'NC-8899', 'Isuzu', 'Journey J', '2021', 42, 'N', 15000, 2900, '2025-07-13 00:42:37', 2400, 12, '2025-05-07', 1, NULL),
 (7, 2, 'PE-1111', 'Lanka Ashok Leyland', 'Viking', '2017', 52, 'N', 10000, 210500, '2025-07-13 00:42:37', 201000, 6, '2025-03-01', 1, NULL),
-(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 18245, '2025-06-25 18:23:45', 18245, 1, '2025-06-25', 1, NULL),
+(8, 1, 'CAC-8888', 'Yutong', 'ZK6122H', '2023', 45, 'Y', 20000, 18245, '2025-06-25 18:23:45', 18245, 1, '2025-06-25', 2, NULL),
 (9, 3, 'NB-0123', 'Toyota', 'Coaster', '2021', 29, 'Y', 12000, 55001, '2025-06-24 18:16:45', 48000, 3, '2025-02-28', 2, NULL),
 (10, 2, 'PA-9900', 'Tata', 'Marcopolo', '2019', 48, 'N', 10000, 13257, '2025-06-23 12:01:51', 13257, 6, '2025-06-23', 4, NULL),
 (11, 3, 'PC-5566', 'Mitsubishi', 'Fuso Rosa', '2018', 25, 'Y', 10000, 130260, '2025-07-17 10:52:10', 122000, 12, '2024-08-20', 1, NULL),
@@ -207,7 +207,9 @@ INSERT INTO `cash_book` (`cash_book_txn_id`, `cash_book_txn_date`, `txn_type`, `
 (25, '2025-07-21', 3, 19, 'Advance Booking Payment', 8400.00, 3, 2, '2025-07-21 13:15:55'),
 (26, '2025-07-23', 3, 20, 'Booking Refund', -8400.00, 1, 1, '2025-07-23 17:41:52'),
 (27, '2025-07-24', 3, 21, 'Advance Booking Payment', 2000.00, 1, 2, '2025-07-24 14:26:58'),
-(28, '2025-07-24', 3, 22, 'Booking Refund', -760.00, 1, 1, '2025-07-24 14:28:00');
+(28, '2025-07-24', 3, 22, 'Booking Refund', -760.00, 1, 1, '2025-07-24 14:28:00'),
+(29, '2025-07-25', 3, 23, 'Advance Booking Payment', 20000.00, 1, 2, '2025-07-25 05:57:19'),
+(30, '2025-07-25', 3, 24, 'Advance Booking Payment', 270000.00, 1, 2, '2025-07-25 06:23:18');
 
 -- --------------------------------------------------------
 
@@ -237,7 +239,8 @@ INSERT INTO `checklist_item` (`checklist_item_id`, `checklist_item_name`, `check
 (8, 'Check fire extinguisher', 'Ensure it is present, charged, and within its expiry date.', 1),
 (9, 'Inspect interior cleanliness', 'Check seats, floors, and windows for cleanliness.', 1),
 (11, 'Check passenger seat belts', 'Inspect for proper function and any visible damage.', 1),
-(12, 'Verify onboard entertainment system', 'For luxury buses, check if TVs and audio systems are working.', 1);
+(12, 'Verify onboard entertainment system', 'For luxury buses, check if TVs and audio systems are working.', 1),
+(13, 'Check for Fluid Leaks', 'Visually inspect the ground under the engine and chassis for any signs of oil, coolant, or other fluid leaks before starting the engine.', 1);
 
 -- --------------------------------------------------------
 
@@ -268,7 +271,8 @@ INSERT INTO `customer` (`customer_id`, `customer_nic`, `customer_fname`, `custom
 (7, '851234567V', 'Ayesha', 'De Silva', 'ayesha.ds@email.com', 1),
 (8, '928765432V', 'Bala', 'Kumar', 'kumar.b@email.com', 1),
 (9, '200154321098', 'Priya', 'Ramanathan', 'priya.r@email.com', 1),
-(10, '991203652V', 'Bashitha', 'Illeperuma', 'bashi.ile@gmail.com', 1);
+(10, '991203652V', 'Bashitha', 'Illeperuma', 'bashi.ile@gmail.com', 1),
+(11, '952514522V', 'Shehan', 'Mallawarachchi', 'shehan12mal@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -307,7 +311,8 @@ INSERT INTO `customer_contact` (`contact_id`, `contact_type`, `contact_number`, 
 (29, 1, '0746541254', 10),
 (30, 2, '0114698523', 10),
 (31, 1, '0769542365', 2),
-(32, 2, '0112963457', 2);
+(32, 2, '0112963457', 2),
+(33, 1, '0753662214', 11);
 
 -- --------------------------------------------------------
 
@@ -354,7 +359,9 @@ INSERT INTO `customer_invoice` (`invoice_id`, `invoice_number`, `quotation_id`, 
 (13, 'ST-IN-1EA8-15', 15, '2025-07-18', 36000.00, 7, -1, 'One Day Tour', '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 200, 12000.00, 0.00, NULL, NULL),
 (14, 'ST-IN-DDE7-16', 16, '2025-07-18', 23625.00, 7, -1, '1 Day Tour', '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', 250, 6500.00, 0.00, NULL, NULL),
 (15, 'ST-IN-D30A-17', 17, '2025-07-21', 42000.00, 10, -1, 'Short Distant Tour With Two Nights', '2025-07-24', '2025-07-26', 'Kohuwala', 'Ja-Ela', 'Kohuwala', 280, 8400.00, 0.00, NULL, NULL),
-(16, 'ST-IN-8245-18', 18, '2025-07-24', 6200.00, 4, -1, 'Short Range 1 Night Tour', '2025-07-25', '2025-07-26', 'Maharagama', 'Mount Lavinia', 'Maharagama', 62, 2000.00, 1240.00, NULL, NULL);
+(16, 'ST-IN-8245-18', 18, '2025-07-24', 6200.00, 4, -1, 'Short Range 1 Night Tour', '2025-07-25', '2025-07-26', 'Maharagama', 'Mount Lavinia', 'Maharagama', 62, 2000.00, 1240.00, NULL, NULL),
+(17, 'ST-IN-7784-19', 19, '2025-07-25', 87500.00, 3, 1, '1 Day trip to Digana', '2025-07-25', '2025-07-25', 'Ranala', 'Digana', 'Ranala', 215, 20000.00, 20000.00, NULL, NULL),
+(18, 'ST-IN-CF4F-20', 20, '2025-07-25', 270000.00, 11, 1, 'Two-night trip to Arugam Bay for a weekend surfing excursion.', '2025-07-26', '2025-07-27', 'Moratuwa', 'Arugam Bay', 'Moratuwa', 530, 270000.00, 270000.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -388,7 +395,10 @@ INSERT INTO `customer_invoice_item` (`item_id`, `invoice_id`, `category_id`, `qu
 (15, 13, 3, 1),
 (16, 14, 3, 1),
 (17, 15, 3, 1),
-(18, 16, 3, 1);
+(18, 16, 3, 1),
+(19, 17, 3, 1),
+(20, 18, 2, 1),
+(21, 18, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -916,7 +926,8 @@ INSERT INTO `grn` (`grn_id`, `grn_number`, `po_id`, `grn_quantity_received`, `ye
 (9, 'GRN-0706AEDA-7', 7, 7, 0, '2025-07-06', 3, 'All received', 1),
 (10, 'GRN-0706A649-5', 5, 20, 0, '2025-07-06', 3, 'No Defects', 1),
 (11, 'GRN-07137FF0-9', 9, 1, 1, '2025-07-13', 3, 'Only received 1 item', 1),
-(12, 'GRN-07235D73-8', 8, 5, 7, '2025-07-23', 3, 'All checked', 1);
+(12, 'GRN-07235D73-8', 8, 5, 7, '2025-07-23', 3, 'All checked', 1),
+(13, 'GRN-072524BE-9', 9, 1, 0, '2025-07-25', 1, 'All Received', 1);
 
 -- --------------------------------------------------------
 
@@ -1191,7 +1202,8 @@ INSERT INTO `part_transaction` (`transaction_id`, `part_id`, `transaction_type`,
 (23, 3, 2, 5, NULL, 12, 'All checked', 3, '2025-07-23 18:23:27'),
 (24, 4, 3, 2, 11, NULL, '2WBs Issued', 17, '2025-07-23 19:31:41'),
 (25, 6, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:34:54'),
-(26, 7, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:36:26');
+(26, 7, 1, 2, NULL, NULL, 'Initial Spare Part Registration', 17, '2025-07-23 19:36:26'),
+(27, 3, 2, 1, NULL, 13, 'All Received', 1, '2025-07-25 09:40:34');
 
 -- --------------------------------------------------------
 
@@ -1262,7 +1274,7 @@ INSERT INTO `purchase_order` (`po_id`, `po_number`, `bid_id`, `part_id`, `quanti
 (6, 'ST-PO-34DB-5', 7, 4, 5, 5, 2850.00, 14250.00, '2025-07-06', 6, 3, '2025-07-06 15:17:33', 3, NULL, '1751795280_Test PDF.pdf', 'INV23374', 8, '2025-07-06'),
 (7, 'ST-PO-A0D7-6', 8, 4, 7, 7, 2230.00, 15610.00, '2025-07-06', 5, 3, '2025-07-06 15:28:29', 3, NULL, '1751795934_Test PDF.pdf', 'IN25473', NULL, NULL),
 (8, 'ST-PO-08B3-7', 9, 3, 12, 5, 3650.00, 43800.00, '2025-07-06', 4, 3, '2025-07-06 18:14:46', 3, NULL, '1752155520_Test PDF.pdf', 'JKIN1254', NULL, NULL),
-(9, 'ST-PO-51FA-8', 10, 3, 2, 1, 3625.00, 7250.00, '2025-07-10', 4, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', 'CKIN18415', NULL, NULL),
+(9, 'ST-PO-51FA-8', 10, 3, 2, 2, 3625.00, 7250.00, '2025-07-10', 5, 3, '2025-07-10 16:48:49', 3, NULL, '1752155534_Test PDF.pdf', 'CKIN18415', NULL, NULL),
 (10, 'ST-PO-E42A-9', 11, 2, 5, 0, 2375.00, 11875.00, '2025-07-13', 2, 3, '2025-07-13 11:34:49', 3, NULL, NULL, NULL, NULL, NULL),
 (11, 'ST-PO-1EF1-10', 12, 2, 5, 0, 3624.00, 18120.00, '2025-07-16', 1, 3, '2025-07-16 12:47:46', NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -1309,7 +1321,9 @@ INSERT INTO `quotation` (`quotation_id`, `issued_date`, `customer_id`, `tour_sta
 (15, '2025-07-18', 7, '2025-07-18', '2025-07-18', 'Moratuwa', 'Galle', 'Moratuwa', 'One Day Tour', 200, 36000.00, 2),
 (16, '2025-07-18', 7, '2025-07-18', '2025-07-18', 'Colombo', 'Matara', 'Colombo', '1 Day Tour', 250, 23625.00, 2),
 (17, '2025-07-21', 10, '2025-07-24', '2025-07-26', 'Kohuwala', 'Ja-Ela', 'Kohuwala', 'Short Distant Tour With Two Nights', 280, 42000.00, 2),
-(18, '2025-07-24', 4, '2025-07-25', '2025-07-26', 'Maharagama', 'Mount Lavinia', 'Maharagama', 'Short Range 1 Night Tour', 62, 6200.00, 2);
+(18, '2025-07-24', 4, '2025-07-25', '2025-07-26', 'Maharagama', 'Mount Lavinia', 'Maharagama', 'Short Range 1 Night Tour', 62, 6200.00, 2),
+(19, '2025-07-25', 3, '2025-07-25', '2025-07-25', 'Ranala', 'Digana', 'Ranala', '1 Day trip to Digana', 215, 87500.00, 2),
+(20, '2025-07-25', 11, '2025-07-26', '2025-07-27', 'Moratuwa', 'Arugam Bay', 'Moratuwa', 'Two-night trip to Arugam Bay for a weekend surfing excursion.', 530, 270000.00, 2);
 
 -- --------------------------------------------------------
 
@@ -1347,7 +1361,10 @@ INSERT INTO `quotation_item` (`item_id`, `quotation_id`, `category_id`, `quantit
 (20, 15, 3, 1),
 (21, 16, 3, 1),
 (22, 17, 3, 1),
-(23, 18, 3, 1);
+(23, 18, 3, 1),
+(24, 19, 3, 1),
+(25, 20, 2, 1),
+(26, 20, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1546,7 +1563,7 @@ CREATE TABLE `spare_part` (
 INSERT INTO `spare_part` (`part_id`, `part_number`, `part_name`, `description`, `quantity_on_hand`, `reorder_level`, `part_status`) VALUES
 (1, 'LAL-BP-VK01', 'LAL Viking Brake Pad Set', 'Front brake pads for Lanka Ashok Leyland Viking models.', 13, 25, 1),
 (2, 'YT-OF-ZK6938', 'Yutong ZK6938HQ Oil Filter', 'Standard oil filter for Yutong ZK6938HQ engines.', 44, 5, 1),
-(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 5, 10, 1),
+(3, 'TC-AF-CSTR', 'Toyota Coaster Air Filter', 'Engine air filter for Toyota Coaster models.', 6, 10, 1),
 (4, 'GEN-WB-18', 'Generic Wiper Blade 18\"', 'Standard 18-inch wiper blade, fits multiple models.', 35, 15, 1),
 (5, 'TYRE-11R22.5', 'Bus Tire 11R22.5', 'Standard radial tire for Hino AK and Yutong ZK6938HQ buses.', 0, 5, 1),
 (6, 'TYRE-315-80R22.5', 'Bus Tire 315/80R22.5', 'Wide radial tire for Yutong ZK6122H and Tata Marcopolo buses.', 2, 5, 1),
@@ -1571,8 +1588,9 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `supplier_contact`, `supplier_email`, `supplier_status`) VALUES
+(0, 'DSI Tyres', '0761239876', 'sales@dsityres.com', 1),
 (1, 'United Motors Lanka', '0112448112', 'info@unitedmotors.lk', 1),
-(2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 1),
+(2, 'Lanka Ashok Leyland PLC - Spare Parts', '0112867435', 'parts@lal.lk', 0),
 (3, 'Japan Auto Parts Colombo', '0777321654', 'sales@japanautoparts.lk', 1),
 (4, 'Dragon Auto Supplies', '0718989765', 'contact@dragonauto.com', 1),
 (5, 'General Auto Traders', '0332255889', 'gat@email.com', 1);
@@ -1611,7 +1629,8 @@ INSERT INTO `template_item_link` (`template_id`, `checklist_item_id`) VALUES
 (3, 4),
 (3, 8),
 (3, 9),
-(3, 11);
+(3, 11),
+(3, 13);
 
 -- --------------------------------------------------------
 
@@ -1648,7 +1667,7 @@ INSERT INTO `tender` (`tender_id`, `part_id`, `quantity_required`, `tender_descr
 (8, 3, 2, '2 Air Filters Required', '1752045968_Test PDF.pdf', '2025-07-09', '2025-07-10', 3, 3, '2025-07-09 07:26:08', 10),
 (9, 2, 5, 'Test Tender', '1752386422_Test PDF.pdf', '2025-07-13', '2025-07-15', 3, 3, '2025-07-13 06:00:22', 11),
 (10, 2, 5, 'Need This Urgently', '1752649637_Test PDF.pdf', '2025-07-16', '2025-07-17', 3, 3, '2025-07-16 07:07:17', 12),
-(11, 3, 2, '2 Items are needed', '1753080684_Test PDF.pdf', '2025-07-21', '2025-07-22', 2, 3, '2025-07-21 06:51:24', NULL);
+(11, 3, 2, '2 Items are needed', '1753080684_Test PDF.pdf', '2025-07-21', '2025-07-22', -1, 3, '2025-07-21 06:51:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -1727,7 +1746,9 @@ INSERT INTO `tour_income` (`tour_income_id`, `receipt_number`, `invoice_id`, `pa
 (19, 'ST-RT-4A15-15', 15, '2025-07-21', 8400.00, 1, '', 1, 3, 1, NULL),
 (20, 'ST-RF-4685-15', 15, '2025-07-23', -8400.00, 1, NULL, 3, 1, 1, 2),
 (21, 'ST-RT-8C8F-16', 16, '2025-07-24', 2000.00, 1, '', 1, 1, 1, NULL),
-(22, 'ST-RF-5251-16', 16, '2025-07-24', -760.00, 1, NULL, 3, 1, 1, 1);
+(22, 'ST-RF-5251-16', 16, '2025-07-24', -760.00, 1, NULL, 3, 1, 1, 1),
+(23, 'ST-RT-2C81-17', 17, '2025-07-25', 20000.00, 1, '', 1, 1, 1, NULL),
+(24, 'ST-RT-F025-18', 18, '2025-07-25', 270000.00, 1, '', 1, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2139,37 +2160,37 @@ ALTER TABLE `bus_category`
 -- AUTO_INCREMENT for table `cash_book`
 --
 ALTER TABLE `cash_book`
-  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `cash_book_txn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `checklist_item`
 --
 ALTER TABLE `checklist_item`
-  MODIFY `checklist_item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `checklist_item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `customer_contact`
 --
 ALTER TABLE `customer_contact`
-  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `contact_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice`
 --
 ALTER TABLE `customer_invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `customer_invoice_item`
 --
 ALTER TABLE `customer_invoice_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `function`
@@ -2181,7 +2202,7 @@ ALTER TABLE `function`
 -- AUTO_INCREMENT for table `grn`
 --
 ALTER TABLE `grn`
-  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `grn_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `inspection`
@@ -2217,7 +2238,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `part_transaction`
 --
 ALTER TABLE `part_transaction`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -2235,13 +2256,13 @@ ALTER TABLE `purchase_order`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `quotation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -2295,7 +2316,7 @@ ALTER TABLE `tour`
 -- AUTO_INCREMENT for table `tour_income`
 --
 ALTER TABLE `tour_income`
-  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `tour_income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `transaction_category`
