@@ -23,15 +23,27 @@ $userSession=$_SESSION["user"];
         <form action="../controller/sparepart_controller.php?status=register_sparepart" method="post" enctype="multipart/form-data">
             <div class="col-md-9">
                 <div class="row">
-                    <div id="msg" class="col-md-offset-3 col-md-6" style="text-align:center;">
-                        <?php if (isset($_GET["msg"])) { ?>
+                    <div class="col-md-6 col-md-offset-3" id="msg" style="text-align: center;">
+                        <?php
+                        if (isset($_GET["msg"]) && isset($_GET["success"]) && $_GET["success"] == true) {
 
-                            <script>
-                                var msgElement = document.getElementById("msg");
-                                msgElement.classList.add("alert", "alert-danger");
-                            </script>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-success" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
+                            <?php
+                        } elseif (isset($_GET["msg"])) {
 
-                            <b> <p> <?php echo base64_decode($_GET["msg"]); ?></p></b>
+                            $msg = base64_decode($_GET["msg"]);
+                            ?>
+                            <div class="row">
+                                <div class="alert alert-danger" style="text-align:center">
+                                    <?php echo $msg; ?>
+                                </div>
+                            </div>
                             <?php
                         }
                         ?>
@@ -80,7 +92,7 @@ $userSession=$_SESSION["user"];
                         <label class="control-label">Description</label>
                     </div>
                     <div class="col-md-5">
-                        <textarea id="address" name="description" rows="2" class="form-control" placeholder="Front brake pads for Lanka Ashok Leyland Viking models."></textarea>
+                        <textarea id="description" name="description" rows="2" class="form-control" placeholder="Front brake pads for Lanka Ashok Leyland Viking models."></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -97,4 +109,54 @@ $userSession=$_SESSION["user"];
     </div>
 </body>
 <script src="../js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("form").submit(function () {
+
+            var partNumber = $("#part_number").val();
+            var partName = $("#part_name").val();
+            var quantity = $("#quantity").val();
+            var reorderLevel = $("#reorder_level").val();
+            var description = $("#description").val();
+
+            if( partNumber == "" ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Part Number is required.</b>");
+                return false;
+            }
+
+            if( partName == "" ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Part Name is required.</b>");
+                return false;
+            }
+
+            if( quantity == "" || quantity < 0 ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Minimum quantity on hand must be 0.</b>");
+                return false;
+            }
+
+            if( reorderLevel == "" || reorderLevel < 1 ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Re-order level must be at least 1.</b>");
+                return false;
+            }
+
+            if( description == "" ){
+                $("#msg").addClass("alert alert-danger");
+                $("#msg").html("<b>Description is required.</b>");
+                return false;
+            }
+
+        });
+
+        $("form").on("reset", function () {
+            $("#msg").removeClass("alert alert-danger");
+            $("#msg").html("");
+        });
+
+    });
+</script>
 </html>

@@ -38,7 +38,7 @@ switch ($status){
             //quantity received to create this grn
             $quantityReceived =(int)$_POST['quantity_received'];
             
-            if($quantityReceived<=0){
+            if($quantityReceived=="" || $quantityReceived<=0){
                 throw new Exception("Quantity Received Should Be Higher Than 0");
             }
             

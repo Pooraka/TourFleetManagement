@@ -249,8 +249,12 @@ switch ($status){
         $partId = $poRow['part_id'];
         $sparePartResult = $sparePartObj->getSparePart($partId);
         $sparePartRow = $sparePartResult->fetch_assoc();
+
+        // Calculate the maximum quantity that can be received
+        $maxReceivableQuantity = (int)$poRow['quantity_ordered'] - (int)$poRow['quantity_received'];
         
         ?>
+        <div id="po_data_container" data-max-quantity="<?php echo $maxReceivableQuantity; ?>">
             <div class="row">
                 <div class="col-md-3" style="margin-bottom: 10px">
                     <span class="fa-solid fa-bus"></span>&nbsp;<b>Supplier Name</b>
@@ -280,6 +284,7 @@ switch ($status){
                     <span><?php echo number_format($poRow['quantity_received'],0); ?> </span>
                 </div>
             </div>
+        </div>
             
         <?php
         
