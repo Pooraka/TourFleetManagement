@@ -570,7 +570,7 @@ switch ($status){
                     View Assigned Buses
                 </a>
                 <a href="../controller/tour_controller.php?status=cancel_tour&tour_id=<?php echo base64_encode($tourRow['tour_id']);?>" 
-                   class="btn btn-xs btn-danger" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
+                   class="btn btn-xs btn-danger cancel-tour-btn" style="margin:2px;display:<?php echo checkPermissions(86); ?>">
                     <span class="glyphicon glyphicon-remove"></span>                                                  
                     Cancel
                 </a>
